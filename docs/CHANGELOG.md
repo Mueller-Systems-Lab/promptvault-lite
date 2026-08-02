@@ -1,12 +1,37 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.7.2
+version: 1.8.0-dev
 ---
 
 # Changelog
 
 ## Unreleased
+
+### Added
+
+- **Missing-Info-Gate** (Issue #216): Dynamische Vorab-Fragen vor der Optimierung. Identifiziert fehlende Informationen mit gestaffelten Fragen (REQUIRED/RECOMMENDED/OPTIONAL). Sanitized Answer Merging. Feature-Flag `PROMPTVAULT_MISSING_INFO_GATE` (default disabled). ADR-002 accepted.
+
+- **Direction Profiles & Variants** (Issue #215): Erzeugt mehrere Optimierungsvarianten in verschiedenen Richtungen (concise, elaborate, creative, structured, technical). Variantenvergleich und "Save as New Version". Constraint Preservation während der Generierung. Feature-Flag `PROMPTVAULT_DIRECTION_PROFILES` (default disabled).
+
+- **Epic #214 geschlossen:** Prompt-Optimierung mit Ergebnisvarianten und dynamischen Rückfragen — Sub-Issues #215 und #216 vollständig implementiert.
+
+### Fixed
+
+- **Optimizer Gate Session Guard** (Issue #289): Null-Check für `handleOpenOptimizer` und `handleBlueprintOptimize` bei fehlender Gate-Session. Optional Chaining (`session?.items ?? []`) verhindert TypeError.
+
+- **Sensitive Content Optimizer Blocking** (Issue #291): Normaler Optimizer wird für `BLOCKING_SENSITIVE_CONTENT` vollständig geblockt. Gate→Blocked→Complete-Pfad abgesichert. 10+ Red Tests.
+
+### Quality Gates
+
+| Gate                | Ergebnis                              |
+| ------------------- | ------------------------------------- |
+| `pnpm test`         | **1460 passed** (54 files, 0 failures)|
+| `pnpm lint`         | **0 errors, 0 warnings**              |
+| `pnpm exec tsc`     | **0 errors**                          |
+| `cargo test`        | **156 passed** (2 ignored)            |
+
+## v1.7.2 — Settings, Audio, Paste Analyzer, Embeddings
 
 ### Added
 

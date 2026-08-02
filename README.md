@@ -4,8 +4,8 @@
 
 PromptVault Lite helps you turn messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls.
 
-![Release](https://img.shields.io/badge/release-v1.7.1-blue)
-![Platform](https://img.shields.io/badge/platform-Windows%20x64-lightgrey)
+![Release](https://img.shields.io/badge/release-v1.7.2-blue)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -52,6 +52,12 @@ It is built for people who collect, write and refine many prompts — especially
 - **Export Tools**
   Export prompt data and analysis results as JSON, Markdown or ZIP.
 
+- **Direction Profiles & Variants** (opt-in)
+  Generate multiple optimization variants in different directions (concise, elaborate, creative, structured, technical). Compare variants side-by-side and save the best result as a new version. Retains original constraints during generation. Enabled via `PROMPTVAULT_DIRECTION_PROFILES=1`.
+
+- **Missing-Info-Gate** (opt-in)
+  Dynamic pre-optimization questionnaire that identifies missing information before generating variants. Structured tiered questions (REQUIRED/RECOMMENDED/OPTIONAL) with sanitized answer merging. Enabled via `PROMPTVAULT_MISSING_INFO_GATE=1`.
+
 - **Embeddings (Phase 1 — Mock)**
   Embedding feature flag and mock provider for future semantic search. Disabled by default. No real ML model.
 
@@ -62,22 +68,24 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release
 
-**v1.7.1** is the current stable release.
+**v1.7.2** is the current stable release.
 
-A Windows x64 installer is available as a GitHub Release asset:
+A Windows x64 installer and Linux packages are available as GitHub Release assets:
 
-- `PromptVault.Lite_1.7.1_x64-setup.exe`
+| Platform | Asset |
+|---|---|
+| Windows x64 | `PromptVault Lite_1.7.2_x64-setup.exe` |
+| Linux (AppImage) | `PromptVault Lite_1.7.2_amd64.AppImage` |
+| Linux (Debian/Ubuntu) | `PromptVault Lite_1.7.2_amd64.deb` |
+| Linux (Fedora/RHEL) | `PromptVault Lite-1.7.2-1.x86_64.rpm` |
 
 Note: The installer is currently unsigned. Windows SmartScreen may show an "Unknown publisher" warning.
 
-Since v1.7.1, the `master` branch has received many improvements (not yet in a release):
+Since v1.7.2, the `master` branch has received significant improvements (not yet in a release):
 
-- **Settings Modal** — theme, export format, dev mode, reset
-- **Audio Summary** — TTS via Web Speech API
-- **Paste Prompt Analyzer** — direct clipboard/text analysis
-- **Embeddings Phase 1** — mock provider + feature flag
-- **Classification improvements** — GUIDELINE, BLUEPRINT/DOC boundary, UNKNOWN fallback
-- Docs Baseline Sync (#207) completed via PR #208. v1.7.2 release readiness has been reviewed. Release execution still requires separate manual owner approval.
+- **Missing-Info-Gate** (#216) — dynamic pre-optimization questionnaire with tiered questions
+- **Direction Profiles & Variants** (#215) — multi-direction variant generation, comparison, and "Save as New Version"
+- **Optimizer fixes** (#289, #291) — gate session guard and sensitive-content optimizer blocking
 
 ---
 
@@ -88,7 +96,7 @@ Since v1.7.1, the `master` branch has received many improvements (not yet in a r
 Download the Windows x64 installer from the latest GitHub Release and run:
 
 ```text
-PromptVault.Lite_1.7.1_x64-setup.exe
+PromptVault Lite_1.7.2_x64-setup.exe
 ```
 
 ### Developer / source install
@@ -132,25 +140,26 @@ PromptVault Lite is designed as a local-first tool:
 
 ## Project Status
 
-PromptVault Lite is in a stable public release state (v1.7.1).
+PromptVault Lite is in a stable public release state (v1.7.2).
 
-Master branch has significant improvements merged since v1.7.1, including the Docs Baseline Sync (PR #208). v1.7.2 release readiness has been reviewed. Release execution still requires separate manual owner approval.
+Master branch has significant improvements merged since v1.7.2, including Missing-Info-Gate (#216), Direction Profiles (#215), and optimizer fixes (#289, #291). v1.8.0 release readiness is pending manual owner approval.
 
 Known limitations:
 
 - unsigned Windows installer (no code signing certificate)
 - no auto-updater
-- no macOS/Linux pre-built installers
+- no macOS pre-built installer
 - Remote-CI is infra-blocked (Issue #154); local CI is authoritative
 - Embeddings Phase 1 is mock-only (no real semantic search)
+- Direction Profiles and Missing-Info-Gate are opt-in via feature flags (default disabled)
 - Docker/Web/LAN deployment is deferred
 
 ---
 
 ## Best next improvements
 
-- Create v1.7.2 release with accumulated improvements (manual owner approval required before release execution)
+- Decide on Direction Profiles default (opt-in vs. standard feature) for v1.8.0
+- Create v1.8.0 release with #214/#215/#216/#289/#291
 - Embeddings Phase 2: DB schema planning (#199)
 - Code signing for Windows installer
 - macOS `.dmg` build
-- Linux `.AppImage` build

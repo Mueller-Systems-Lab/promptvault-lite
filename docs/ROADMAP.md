@@ -1,8 +1,8 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-07-10
-**Current version:** v1.7.1 (stable release)
-**Next target:** v1.7.2 (Docs Sync completed via PR #208, release readiness reviewed)
+**Last updated:** 2026-08-02
+**Current version:** v1.7.2 (stable release)
+**Next target:** v1.8.0 (master ahead of release with #214/#215/#216/#289/#291)
 
 ---
 
@@ -32,9 +32,11 @@
 
 | Priority | Task                                    | Issue | Status                                                     |
 | -------- | --------------------------------------- | ----- | ---------------------------------------------------------- |
-| P0       | Docs Baseline Sync (pre v1.7.2 release) | #207  | ✅ Completed (PR #208 merged)                              |
-| P1       | v1.7.2 Release Readiness                | #209  | 🔄 Reviewed — manual owner approval required               |
-| P2       | Missing-Info-Gate                       | #216  | ✅ Implemented — ready for owner review (ADR-002 accepted) |
+| P0       | Missing-Info-Gate                       | #216     | ✅ Implemented (ADR-002 accepted) — master, behind feature flag  |
+| P0       | Direction Profiles & Variants           | #215     | ✅ Implemented — master, behind feature flag                    |
+| P0       | Epic: Optimierung mit Varianten         | #214     | ✅ Closed (2026-07-11) — sub-issues #215, #216 complete         |
+| P0       | Optimizer Gate Session Guard            | #289     | ✅ Closed (2026-07-13) — null-safe session access               |
+| P0       | Sensitive Content Optimizer Blocking    | #291     | ✅ Closed (2026-07-14) — normal optimizer blocked for sensitive  |
 
 ---
 
@@ -46,7 +48,7 @@
 | P2       | Architecture Contract Audit            | —     | Planned                                                                                  |
 | P2       | Security Posture Review                | —     | Planned                                                                                  |
 | P2       | Tool-Gap Closure (mkdocs, secret scan) | —     | Planned                                                                                  |
-| P2       | VariantGenerator / Direction Profiles  | #215  | ✅ Implemented — ready for owner review (Feature-Flag: `PROMPTVAULT_DIRECTION_PROFILES`) |
+| P1       | v1.8.0 Release Preparation              | —     | 🔄 Pending: Direction-Profiles-Entscheidung, CHANGELOG, Governance-Gates |
 | P2       | Agentic Browser Repair Kit             | #71   | Planned                                                                                  |
 | P2       | Prompt suggestions workflow            | #45   | Planned                                                                                  |
 
