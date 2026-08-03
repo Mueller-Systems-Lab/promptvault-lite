@@ -1,8 +1,8 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-08-02
-**Current version:** v1.7.2 (stable release)
-**Next target:** v1.8.0 (master ahead of release with #214/#215/#216/#289/#291)
+**Last updated:** 2026-08-03
+**Current version:** v1.8.0 (stable release)
+**Next target:** TBD — requires separate owner prioritization
 
 ---
 
@@ -48,7 +48,7 @@
 | P2       | Architecture Contract Audit            | —     | Planned                                                                                  |
 | P2       | Security Posture Review                | —     | Planned                                                                                  |
 | P2       | Tool-Gap Closure (mkdocs, secret scan) | —     | Planned                                                                                  |
-| P1       | v1.8.0 Release Preparation              | —     | 🔄 Pending: Direction-Profiles-Entscheidung, CHANGELOG, Governance-Gates |
+| P1       | v1.8.0 Release Preparation              | —     | ✅ Completed — Direction Profiles, Missing-Info-Gate, Optimizer Hardening, Visual Gate |
 | P2       | Agentic Browser Repair Kit             | #71   | Planned                                                                                  |
 | P2       | Prompt suggestions workflow            | #45   | Planned                                                                                  |
 
