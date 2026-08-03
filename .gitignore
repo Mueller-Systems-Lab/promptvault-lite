@@ -49,7 +49,10 @@ coverage/
 
 # WIP / Isolated Features (nicht für Release-Scope)
 .tmp/
-scripts/
+scripts/*
+!scripts/verify-all.mjs
+!scripts/lib/
+!scripts/__tests__/
 site/
 
 # Python cache

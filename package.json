@@ -17,7 +17,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "test:e2e:usb": "playwright test tests/e2e/usb-corpus.spec.ts"
+    "test:e2e:usb": "playwright test tests/e2e/usb-corpus.spec.ts",
+    "verify:quick": "node scripts/verify-all.mjs --quick",
+    "verify:all": "node scripts/verify-all.mjs --full",
+    "verify:independent": "node scripts/verify-all.mjs --independent"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0",

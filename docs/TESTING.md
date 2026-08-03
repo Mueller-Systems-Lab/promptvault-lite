@@ -127,6 +127,65 @@ mkdocs build --strict
 
 MkDocs ist auf einigen Hosts nicht installiert (Tool Gap). Dieser Check ist nicht blockierend.
 
+## Autonomous Test Harness
+
+Der Autonomous Test Harness (`scripts/verify-all.mjs`) orchestriert alle Kern-Gates in einem einzigen Durchlauf und erzeugt strukturierte Evidence unter `evidence/autonomous-test/<RUN_ID>/`.
+
+### Schnell-Check (lokal, Pre-Commit)
+
+```bash
+pnpm verify:quick
+```
+
+Führt aus: `git diff --check`, ESLint, TypeScript, Vitest, Version Consistency, Feature Flag Defaults.
+
+### Vollständige Verifikation (Pre-PR, Pre-Release)
+
+```bash
+pnpm verify:all
+```
+
+Führt die komplette Gate-Matrix aus:
+
+| Gate | Befehl |
+|------|--------|
+| E1 | `git diff --check` |
+| E2 | `pnpm install --frozen-lockfile` |
+| E3 | `pnpm test` (Vitest) |
+| E4 | `pnpm lint` (ESLint) |
+| E5 | `pnpm exec tsc --noEmit` |
+| E6 | `pnpm build` |
+| E7 | `cargo fmt --check --all` |
+| E8 | `cargo test --workspace` |
+| E9 | `cargo clippy --workspace --all-targets -- -D warnings` |
+| E10 | Secret Scan (CI-Patterns) |
+| E11 | `pnpm exec playwright test` |
+| E12 | Version Consistency |
+| E13 | Lockfile Drift |
+| E14 | Feature Flag Defaults |
+| E15 | Visual Evidence (optional) |
+
+### Independent Verifier
+
+```bash
+pnpm verify:independent -- --target-sha <SHA>
+```
+
+Klont das Repository frisch, checkt den Ziel-SHA aus und führt die vollständige Matrix erneut aus. Vergleicht Build-Chunk-Hashes zwischen Primär- und Verifier-Lauf.
+
+### Evidence
+
+Evidence wird unter `evidence/autonomous-test/<RUN_ID>/` abgelegt (gitignoriert):
+
+- `00-context-manifest.json` — OS, Tool-Versionen, SHA
+- `03-primary-summary.json` — Strukturierte Gate-Ergebnisse
+- `04-primary-logs/` — stdout/stderr pro Gate
+- `FINAL-REPORT.md` — Menschlbarer Abschlussbericht
+
+### Status-Klassifikationen
+
+Siehe `docs/testing/autonomous-test-harness-contract.md` für das vollständige Statusmodell.
+
 ## Remote-CI
 
 GitHub Actions / Remote-CI ist `REMOTE_CI_INFRA_BLOCKED` (Issue #154).
