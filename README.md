@@ -4,7 +4,7 @@
 
 PromptVault Lite helps you turn messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls.
 
-![Release](https://img.shields.io/badge/release-v1.7.2-blue)
+![Release](https://img.shields.io/badge/release-v1.8.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
@@ -68,36 +68,41 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release
 
-**v1.7.2** is the current stable release.
+**v1.8.0** is the current stable release.
 
-A Windows x64 installer and Linux packages are available as GitHub Release assets:
+Linux packages (`.deb` and `.rpm`) are available as GitHub Release assets for v1.8.0:
 
 | Platform | Asset |
 |---|---|
-| Windows x64 | `PromptVault Lite_1.7.2_x64-setup.exe` |
-| Linux (AppImage) | `PromptVault Lite_1.7.2_amd64.AppImage` |
-| Linux (Debian/Ubuntu) | `PromptVault Lite_1.7.2_amd64.deb` |
-| Linux (Fedora/RHEL) | `PromptVault Lite-1.7.2-1.x86_64.rpm` |
+| Linux (Debian/Ubuntu) | `PromptVault Lite_1.8.0_amd64.deb` |
+| Linux (Fedora/RHEL) | `PromptVault Lite-1.8.0-1.x86_64.rpm` |
 
-Note: The installer is currently unsigned. Windows SmartScreen may show an "Unknown publisher" warning.
+Windows is supported as a build target but no pre-built v1.8.0 installer is available for this release. Build from source or use a previous release. macOS is not pre-built.
 
-Since v1.7.2, the `master` branch has received significant improvements (not yet in a release):
+Since v1.7.2, the `master` branch has received these v1.8.0 improvements:
 
-- **Missing-Info-Gate** (#216) — dynamic pre-optimization questionnaire with tiered questions
-- **Direction Profiles & Variants** (#215) — multi-direction variant generation, comparison, and "Save as New Version"
+- **Missing-Info-Gate** (#216) — dynamic pre-optimization questionnaire (opt-in, `PROMPTVAULT_MISSING_INFO_GATE=1`)
+- **Direction Profiles & Variants** (#215) — multi-direction variant generation and comparison (opt-in, `PROMPTVAULT_DIRECTION_PROFILES=1`)
 - **Optimizer fixes** (#289, #291) — gate session guard and sensitive-content optimizer blocking
+- **Visual Release Gate** (#152) — Playwright E2E test coverage for layout and theming
 
 ---
 
 ## Install
 
-### Recommended for Windows users
+### Recommended for Linux users (v1.8.0)
 
-Download the Windows x64 installer from the latest GitHub Release and run:
+Download and install the `.deb` or `.rpm` package from the latest GitHub Release:
 
 ```text
-PromptVault Lite_1.7.2_x64-setup.exe
+# Debian/Ubuntu
+sudo dpkg -i PromptVault Lite_1.8.0_amd64.deb
+
+# Fedora/RHEL
+sudo rpm -i PromptVault Lite-1.8.0-1.x86_64.rpm
 ```
+
+Windows and macOS users: build from source (see below) or use a previous release.
 
 ### Developer / source install
 
@@ -140,15 +145,15 @@ PromptVault Lite is designed as a local-first tool:
 
 ## Project Status
 
-PromptVault Lite is in a stable public release state (v1.7.2).
+PromptVault Lite is in a stable public release state (v1.8.0).
 
-Master branch has significant improvements merged since v1.7.2, including Missing-Info-Gate (#216), Direction Profiles (#215), and optimizer fixes (#289, #291). v1.8.0 release readiness is pending manual owner approval.
+Master branch contains v1.8.0 release with Missing-Info-Gate (#216), Direction Profiles (#215), optimizer fixes (#289, #291), and visual release gate (#152).
 
 Known limitations:
 
 - unsigned Windows installer (no code signing certificate)
 - no auto-updater
-- no macOS pre-built installer
+- no macOS or Windows pre-built installer for v1.8.0
 - Remote-CI is infra-blocked (Issue #154); local CI is authoritative
 - Embeddings Phase 1 is mock-only (no real semantic search)
 - Direction Profiles and Missing-Info-Gate are opt-in via feature flags (default disabled)

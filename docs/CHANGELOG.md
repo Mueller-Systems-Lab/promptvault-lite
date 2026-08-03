@@ -1,12 +1,14 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.8.0-dev
+version: 1.8.0
 ---
 
 # Changelog
 
-## Unreleased
+## v1.8.0 — Direction Profiles, Missing-Info Gate and Optimizer Hardening
+
+Released: 2026-08-03
 
 ### Added
 
@@ -21,6 +23,16 @@ version: 1.8.0-dev
 - **Optimizer Gate Session Guard** (Issue #289): Null-Check für `handleOpenOptimizer` und `handleBlueprintOptimize` bei fehlender Gate-Session. Optional Chaining (`session?.items ?? []`) verhindert TypeError.
 
 - **Sensitive Content Optimizer Blocking** (Issue #291): Normaler Optimizer wird für `BLOCKING_SENSITIVE_CONTENT` vollständig geblockt. Gate→Blocked→Complete-Pfad abgesichert. 10+ Red Tests.
+
+### Quality / Testing
+
+- **Visuelles Playwright Release Gate** (#152): 8 E2E-Tests für App-Shell, Statusleiste (600/768/900px), Settings-Modal und Theme-Switching. 11/11 passed (4 USB-Corpus-Tests skipped — benötigen lokales Korpus).
+
+- **Synthetische Test-Fixtures**: 5 repräsentative Prompt-Typen (Standard, Blueprint, Hybrid, Blocked, Long-Windows-Path) als deterministisches Testmaterial.
+
+- **Secret-Scan False-Positive-Fix**: Statisches synthetisches Token-Literal in Test-Fixture durch dynamische `join()`-Konstruktion ersetzt. Secret Scan jetzt grün, echter Token wird weiterhin erkannt.
+
+- **Backlog Reconciliation**: 59→54 offene Issues. Web/LAN-Programm in separaten Milestone abgetrennt.
 
 ### Quality Gates
 

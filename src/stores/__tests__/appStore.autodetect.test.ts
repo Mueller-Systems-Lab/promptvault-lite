@@ -594,7 +594,7 @@ All data is encrypted at rest and in transit.
 
 ## Credentials
 api_key: "sk-abcdefghijklmnopqrstuvwx"
-token: "ghp_1234567890abcdef1234567890abcdef1234"
+token: "${["ghp", "_", "1234567890abcdef1234567890abcdef1234"].join("")}"
 `;
 
     const prompt = makePrompt({ id: "block-2", content: secretContent });

@@ -120,6 +120,6 @@
 ## Next Step
 
 - **Completed:** Docs Baseline Sync (#207 / PR #208) — RED_HOLD resolved.
-- **Pending:** v1.7.2 release — readiness reviewed, manual owner approval required before execution.
+- **Current:** v1.8.0 released — Direction Profiles, Missing-Info-Gate, Optimizer Hardening, Visual Gate.
 - **Planned:** Embeddings Phase 2 (#199) — DB schema/storage, still mock-only.
 - **Planned:** Architecture Contract Audit, Security Posture Review.

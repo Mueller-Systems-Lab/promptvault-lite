@@ -127,9 +127,8 @@ Remote-CI is `REMOTE_CI_INFRA_BLOCKED` (Issue #154). Local CI is authoritative.
 
 ## Next Steps (Recommended)
 
-1. **v1.7.2 Release Execution:** Manual owner approval required. After approval, create release with accumulated improvements (separate release run).
+1. **v1.8.0 Released:** Direction Profiles, Missing-Info-Gate, Optimizer Hardening, Visual Gate merged and released.
 2. **Embeddings Phase 2 (#199):** DB schema/storage planning (still mock-only, no real provider).
-3. **Embeddings Phase 2 (#199):** DB schema/storage planning (still mock-only, no real provider).
-4. **Architecture Contract Audit:** Validate current architecture docs against code.
-5. **Security Posture Review:** Document CSP, capabilities, update_prompt trust model.
-6. **Tool Gap Closure:** mkdocs, secret scan, Playwright stability.
+3. **Architecture Contract Audit:** Validate current architecture docs against code.
+4. **Security Posture Review:** Document CSP, capabilities, update_prompt trust model.
+5. **Tool Gap Closure:** mkdocs, secret scan, Playwright stability.

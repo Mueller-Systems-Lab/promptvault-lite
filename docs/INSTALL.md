@@ -1,7 +1,7 @@
 ---
 title: Installation
 description: Installationsanleitung für PromptVault Lite.
-version: 1.7.2-dev
+version: 1.8.0
 last_updated: 2026-07-06
 ---
 
