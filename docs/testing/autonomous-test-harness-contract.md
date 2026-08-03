@@ -1,7 +1,7 @@
 # Autonomous Test Harness — Verification Contract
 
-> Version 1.1.0 | Candidate SHA: `918b81a` | Branch: `fix/autonomous-test-harness-trust`
-> Repaired: 2026-08-03 | Status: GREEN_AUTONOMOUS_TEST_HARNESS_PERSISTENT_AND_VALIDATED
+> Version 1.2.0-rc1 | Candidate SHA: `4177b72` | Branch: `fix/autonomous-test-harness-trust`
+> Repaired: 2026-08-03 | Status: AMBER_REMAINING_ISOLATION_AND_VALIDATION_GAPS
 
 ## 1. Purpose
 
@@ -45,7 +45,7 @@ This contract defines the gate names, commands, status model, evidence schema, a
 Same as Full Gate, executed on a **fresh clone** at the identical target SHA. The verifier:
 1. Creates a fresh clone from origin
 2. Checks out exact SHA in detached HEAD
-3. Runs full matrix independently
+3. Runs full matrix independently in **isolated evidence subdirectory** (`06-independent-logs/`)
 4. Compares primary vs verifier results
 5. Compares build chunk hashes byte-for-byte
 6. Produces AMBER_PRIMARY_VERIFIER_DIVERGENCE on mismatch
@@ -94,9 +94,10 @@ evidence/autonomous-test/<RUN_ID>/
 01-test-inventory.json         — Reserved for future use
 02-skill-state.json            — Reserved for future use
 03-primary-summary.json        — Primary run gate results (structured)
-04-primary-logs/               — Per-gate stdout/stderr (one file per gate)
+04-primary-logs/               — Per-gate stdout/stderr (primary run only)
 05-playwright-report/          — Playwright JSON output (if E2E executed)
 06-independent-summary.json    — Independent verifier results
+06-independent-logs/           — Per-gate stdout/stderr (verifier run only, NOT shared with primary)
 07-primary-verifier-delta.json — Comparison between primary and verifier
 08-build-hashes-primary.json   — SHA-256 of primary build outputs
 09-build-hashes-independent.json — SHA-256 of verifier build outputs
@@ -114,12 +115,13 @@ FINAL-REPORT.md                — Human-readable summary
 7. No inherited `dist/`, `target/`, Playwright outputs, or test reports.
 8. Run `pnpm install --frozen-lockfile`.
 9. Execute Full Matrix (E1-E15).
-10. Produce own evidence under the same evidence directory.
-11. Check working tree is clean after all gates.
-12. Compare results against primary run.
-13. Compare build chunk hashes (dist/, target/) byte-for-byte via SHA-256.
-14. On divergence: classify `AMBER_PRIMARY_VERIFIER_DIVERGENCE`, exit non-zero.
-15. Keep clone directory on failure for diagnosis; clean up on success.
+10. Write verifier gate logs to `06-independent-logs/` (NOT `04-primary-logs/`).
+11. Produce own evidence under the same evidence directory.
+12. Check working tree is clean after all gates.
+13. Compare results against primary run.
+14. Compare build chunk hashes (dist/, target/) byte-for-byte via SHA-256.
+15. On divergence: classify `AMBER_PRIMARY_VERIFIER_DIVERGENCE`, exit non-zero.
+16. Keep clone directory on failure for diagnosis; clean up on success.
 
 ## 6. Flakiness Rules
 
@@ -150,7 +152,43 @@ On test failure:
 - Push changes, create PRs, delete branches, create tags/releases.
 - Modify issues, change feature flags, auto-repair production files.
 
-## 8. Module Structure
+## 8. Runner Interface
+
+```
+node scripts/verify-all.mjs [options]
+
+Options:
+  --quick              Quick gate only
+  --full               Full gate (default)
+  --independent        Independent verifier (fresh clone)
+  --gate <name>        Run single named gate (e.g., "E3")
+  --evidence-dir <path> Override evidence output path (path-validated)
+  --json-summary <path> Write JSON summary to path (path-validated)
+  --target-sha <sha>   Pin to specific SHA (required for --independent)
+  --no-color           Disable ANSI colors
+```
+
+## 9. Repaired Defects (as of 4177b72)
+
+| ID | Defect | Fix | Status |
+|----|--------|-----|--------|
+| F1 | Independent mode: no fresh clone | `verifier.mjs`: full clone → checkout → verify → delta → build hash comparison | **GAP**: Verifier schreibt Logs in `04-primary-logs/`, nicht in eigenes Verzeichnis |
+| F2 | Feature flags: always PASS | `gates.mjs`: dynamic import + static source inspection fallback | ✅ Fixed |
+| F3 | Lockfile drift: ignored exit codes | `gates.mjs`: explicit exit code checks, both lockfiles, `git status` verification | ✅ Fixed (Cargo.lock nicht im Repo existent) |
+| F4 | Playwright: optional | `gates.mjs`: E11 mandatory=true, E15 stays optional | ✅ Fixed |
+| F5 | Secret scan: incomplete | `gates.mjs`: pattern scan + .env + .db checks (matching CI) | ✅ Fixed |
+| F6 | Tests: helpers only | `harness-contract.test.js`: 32 tests — CLI getestet für T7, T10 | **GAP**: T3-T6 testen `classifyGate`-Helper statt echten CLI-Kontrollfluss |
+| F7 | Evidence: path safety | `sanitizePath` implementiert aber nicht auf `--evidence-dir`/`--json-summary` angewandt | **GAP** |
+
+## 10. Known Gaps (to be resolved in this repair cycle)
+
+| Gap ID | Description | Severity |
+|--------|-------------|----------|
+| G1 | Independent verifier writes gate logs to `04-primary-logs/`, overwriting primary evidence | AMBER |
+| G2 | `--evidence-dir` and `--json-summary` CLI paths not validated via `sanitizePath` | AMBER |
+| G3 | Contract tests for secret scan, lockfile drift, feature flags, and playwright test `classifyGate` helper, not actual CLI control flow | AMBER |
+
+## 11. Module Structure
 
 ```
 scripts/
@@ -163,31 +201,3 @@ scripts/
     ├── runner.test.js      — Runner unit tests (16 tests, 176 lines)
     └── harness-contract.test.js — Contract tests (32 tests, 422 lines)
 ```
-
-## 9. Runner Interface
-
-```
-node scripts/verify-all.mjs [options]
-
-Options:
-  --quick              Quick gate only
-  --full               Full gate (default)
-  --independent        Independent verifier (fresh clone)
-  --gate <name>        Run single named gate (e.g., "E3")
-  --evidence-dir <path> Override evidence output path
-  --json-summary <path> Write JSON summary to path
-  --target-sha <sha>   Pin to specific SHA (required for --independent)
-  --no-color           Disable ANSI colors
-```
-
-## 10. Repaired Defects
-
-| ID | Defect | Fix |
-|----|--------|-----|
-| F1 | Independent mode: no fresh clone | `verifier.mjs`: full clone → checkout → verify → delta → build hash comparison |
-| F2 | Feature flags: always PASS | `gates.mjs`: dynamic import of flag modules, static source inspection as fallback |
-| F3 | Lockfile drift: ignored exit codes, missing Cargo.lock | `gates.mjs`: explicit exit code checks, both lockfiles, `git status` verification |
-| F4 | Playwright: optional | `gates.mjs`: E11 mandatory=true, E15 stays optional (visual baselines) |
-| F5 | Secret scan: incomplete | `gates.mjs`: pattern scan + `.env` check + `.db` check (matching CI) |
-| F6 | Tests: helpers only | `harness-contract.test.js`: 32 tests for CLI control flow, classification, evidence |
-| F7 | Evidence: Run-ID collision, cross-FS, branch, error class | PID+random Run-ID, same-FS atomic write, ESM branch detection, classification preservation |

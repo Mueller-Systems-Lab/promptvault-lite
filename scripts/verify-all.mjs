@@ -23,6 +23,7 @@ import {
   runCommand,
   writeEvidenceAtomic,
   generateRunId,
+  sanitizePath,
 } from "./lib/runner.mjs";
 
 import { runIndependentVerifier } from "./lib/verifier.mjs";
@@ -48,6 +49,7 @@ const { values: opts } = parseArgs({
     gate: { type: "string" },
     "evidence-dir": { type: "string" },
     "json-summary": { type: "string" },
+    "logs-dir": { type: "string" },
     "target-sha": { type: "string" },
     "no-color": { type: "boolean", default: false },
     help: { type: "boolean", default: false },
@@ -89,8 +91,28 @@ const mode = opts.independent
 
 const ROOT = gitRoot();
 const RUN_ID = generateRunId();
+
+// Path safety: reject traversal attempts in user-supplied paths
+const BASE = ROOT;
+if (opts["evidence-dir"]) {
+  const validated = sanitizePath(opts["evidence-dir"], BASE);
+  if (!validated && opts["evidence-dir"].includes("..")) {
+    console.error("Error: --evidence-dir path traversal rejected");
+    process.exit(1);
+  }
+}
+if (opts["json-summary"]) {
+  const validated = sanitizePath(opts["json-summary"], BASE);
+  if (!validated && opts["json-summary"].includes("..")) {
+    console.error("Error: --json-summary path traversal rejected");
+    process.exit(1);
+  }
+}
+
 const EVIDENCE_DIR =
   opts["evidence-dir"] || join(ROOT, "evidence", "autonomous-test", RUN_ID);
+
+const LOGS_DIR = opts["logs-dir"] || "04-primary-logs";
 
 const C = opts["no-color"]
   ? { G: "", Y: "", R: "", B: "", N: "" }
@@ -179,8 +201,8 @@ async function buildGateResult(gate, raw, sha, startTime, evidenceDir) {
     exit_code: raw.exitCode,
     signal: raw.signal || null,
     ...testMetrics,
-    stdout_log: join(evidenceDir, "04-primary-logs", `${gate.id}-stdout.txt`),
-    stderr_log: join(evidenceDir, "04-primary-logs", `${gate.id}-stderr.txt`),
+    stdout_log: join(evidenceDir, LOGS_DIR, `${gate.id}-stdout.txt`),
+    stderr_log: join(evidenceDir, LOGS_DIR, `${gate.id}-stderr.txt`),
     stdout_sha256: stdoutSha,
     stderr_sha256: stderrSha,
     classification,
@@ -288,7 +310,7 @@ function generateFinalReport(summary, results, sha, branch, manifest) {
   lines.push("");
   lines.push(`- Evidence directory: \`evidence/autonomous-test/${summary.run_id}/\``);
   lines.push(`- JSON summary: \`03-primary-summary.json\``);
-  lines.push(`- Logs: \`04-primary-logs/\``);
+  lines.push(`- Logs: \`${LOGS_DIR}/\``);
 
   return lines.join("\n");
 }
@@ -331,7 +353,7 @@ async function main() {
   }
 
   // Setup evidence directory
-  await mkdir(join(EVIDENCE_DIR, "04-primary-logs"), { recursive: true });
+  await mkdir(join(EVIDENCE_DIR, LOGS_DIR), { recursive: true });
   await mkdir(join(EVIDENCE_DIR, "05-playwright-report"), { recursive: true });
 
   // Select gates
@@ -382,11 +404,11 @@ async function main() {
 
     // Write log files
     await writeEvidenceAtomic(
-      join(EVIDENCE_DIR, "04-primary-logs", `${gate.id}-stdout.txt`),
+      join(EVIDENCE_DIR, LOGS_DIR, `${gate.id}-stdout.txt`),
       result.stdout_raw || ""
     );
     await writeEvidenceAtomic(
-      join(EVIDENCE_DIR, "04-primary-logs", `${gate.id}-stderr.txt`),
+      join(EVIDENCE_DIR, LOGS_DIR, `${gate.id}-stderr.txt`),
       result.stderr_raw || ""
     );
 

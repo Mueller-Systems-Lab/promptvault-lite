@@ -207,6 +207,7 @@ export async function runIndependentVerifier({
     join(cloneDir, "scripts", "verify-all.mjs"),
     "--full",
     `--evidence-dir=${evidenceDir}`,
+    `--logs-dir=06-independent-logs`,
     `--json-summary=${join(evidenceDir, "06-independent-summary.json")}`,
     `--target-sha=${targetSha}`,
   ], { cwd: cloneDir, timeout: 900_000 });

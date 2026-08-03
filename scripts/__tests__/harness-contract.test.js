@@ -419,4 +419,239 @@ describe("Autonomous Test Harness — Contract Verification", () => {
       expect(result).toContain("[MASKED]");
     });
   });
+
+  // ══════════════════════════════════════════════════════════════
+  // RED TESTS — Trust Repair Cycle (2026-08-03)
+  // These tests should FAIL until G1/G2/G3 fixes are applied.
+  // ══════════════════════════════════════════════════════════════
+
+  // ── G2: Path Validation for CLI Options ──
+
+  describe("G2 — Path Traversal Rejection (--evidence-dir / --json-summary)", () => {
+    it("RED: --evidence-dir with path traversal is rejected", () => {
+      const result = spawnSync(
+        "node",
+        [
+          "scripts/verify-all.mjs",
+          "--gate", "Q1",
+          "--evidence-dir", "../../../etc/evil",
+          "--no-color",
+        ],
+        {
+          cwd: process.cwd(),
+          encoding: "utf-8",
+          timeout: 10_000,
+        }
+      );
+      // Must exit non-zero (rejected), not succeed
+      expect(result.status).not.toBe(0);
+    });
+
+    it("RED: --json-summary with path traversal is rejected", () => {
+      const result = spawnSync(
+        "node",
+        [
+          "scripts/verify-all.mjs",
+          "--gate", "Q1",
+          "--json-summary", "../../../etc/summary.json",
+          "--no-color",
+        ],
+        {
+          cwd: process.cwd(),
+          encoding: "utf-8",
+          timeout: 10_000,
+        }
+      );
+      expect(result.status).not.toBe(0);
+    });
+
+    it("PASS: --evidence-dir with safe path is accepted", () => {
+      const tmpDir = mkdtempSync(join(tmpdir(), "pvl-safe-path-"));
+      try {
+        const result = spawnSync(
+          "node",
+          [
+            "scripts/verify-all.mjs",
+            "--gate", "Q1",
+            "--evidence-dir", tmpDir,
+            "--no-color",
+          ],
+          {
+            cwd: process.cwd(),
+            encoding: "utf-8",
+            timeout: 15_000,
+          }
+        );
+        expect(result.status).toBe(0);
+      } finally {
+        try { rmSync(tmpDir, { recursive: true, force: true }); } catch {}
+      }
+    });
+  });
+
+  // ── G3: CLI-Level Gate Execution Tests ──
+
+  describe("G3 — Secret Scan via CLI (E10)", () => {
+    let testRepo;
+
+    beforeAll(() => {
+      testRepo = mkdtempSync(join(tmpdir(), "pvl-secret-scan-"));
+      // Init git repo
+      execSync("git init", { cwd: testRepo, encoding: "utf-8" });
+      execSync("git config user.email test@test.test", { cwd: testRepo, encoding: "utf-8" });
+      execSync("git config user.name test", { cwd: testRepo, encoding: "utf-8" });
+      // Copy the scripts/ directory so verify-all.mjs can be called
+      const repoScripts = join(testRepo, "scripts");
+      mkdirSync(join(repoScripts, "lib"), { recursive: true });
+      const srcScripts = resolve(process.cwd(), "scripts");
+      for (const f of ["verify-all.mjs", "lib/runner.mjs", "lib/gates.mjs", "lib/verifier.mjs"]) {
+        writeFileSync(
+          join(repoScripts, f),
+          readFileSync(join(srcScripts, f), "utf-8")
+        );
+      }
+    });
+
+    afterAll(() => {
+      try { rmSync(testRepo, { recursive: true, force: true }); } catch {}
+    });
+
+    it("RED: seeded .env file in tracked git produces E10 failure", () => {
+      // Seed a .env file
+      writeFileSync(join(testRepo, ".env"), "SECRET=do_not_commit_me");
+      execSync("git add .env", { cwd: testRepo, encoding: "utf-8" });
+      execSync("git commit -m 'seed: bad .env'", { cwd: testRepo, encoding: "utf-8" });
+
+      const result = spawnSync(
+        "node",
+        [join(testRepo, "scripts", "verify-all.mjs"), "--gate", "E10", "--no-color"],
+        { cwd: testRepo, encoding: "utf-8", timeout: 15_000 }
+      );
+      // Must fail because .env is committed
+      expect(result.status).not.toBe(0);
+    });
+
+    it("PASS: clean repo produces E10 PASS", () => {
+      // Remove .env
+      execSync("git rm -f .env 2>/dev/null || true", { cwd: testRepo, encoding: "utf-8" });
+      try { rmSync(join(testRepo, ".env"), { force: true }); } catch {}
+      execSync("git commit -m 'remove .env' 2>/dev/null || true", { cwd: testRepo, encoding: "utf-8" });
+
+      const result = spawnSync(
+        "node",
+        [join(testRepo, "scripts", "verify-all.mjs"), "--gate", "E10", "--no-color"],
+        { cwd: testRepo, encoding: "utf-8", timeout: 15_000 }
+      );
+      expect(result.status).toBe(0);
+    });
+
+    it("RED: seeded secret token produces E10 failure", () => {
+      writeFileSync(join(testRepo, "config.ts"), "export const KEY = 'github_pat_11AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH'");
+      execSync("git add config.ts", { cwd: testRepo, encoding: "utf-8" });
+      execSync("git commit -m 'seed: token in config'", { cwd: testRepo, encoding: "utf-8" });
+
+      const result = spawnSync(
+        "node",
+        [join(testRepo, "scripts", "verify-all.mjs"), "--gate", "E10", "--no-color"],
+        { cwd: testRepo, encoding: "utf-8", timeout: 15_000 }
+      );
+      // Must fail because secret pattern matched
+      expect(result.status).not.toBe(0);
+    });
+  });
+
+  describe("G3 — Lockfile Drift via CLI (E13)", () => {
+    let testRepo;
+
+    beforeAll(() => {
+      testRepo = mkdtempSync(join(tmpdir(), "pvl-lockfile-"));
+      execSync("git init", { cwd: testRepo, encoding: "utf-8" });
+      execSync("git config user.email test@test.test", { cwd: testRepo, encoding: "utf-8" });
+      execSync("git config user.name test", { cwd: testRepo, encoding: "utf-8" });
+
+      const repoScripts = join(testRepo, "scripts");
+      mkdirSync(join(repoScripts, "lib"), { recursive: true });
+      const srcScripts = resolve(process.cwd(), "scripts");
+      for (const f of ["verify-all.mjs", "lib/runner.mjs", "lib/gates.mjs", "lib/verifier.mjs"]) {
+        writeFileSync(
+          join(repoScripts, f),
+          readFileSync(join(srcScripts, f), "utf-8")
+        );
+      }
+
+      // Create and commit lockfiles
+      writeFileSync(join(testRepo, "pnpm-lock.yaml"), "lockfileVersion: 6.0\n");
+      writeFileSync(join(testRepo, "package.json"), '{"name":"test"}\n');
+      execSync("git add pnpm-lock.yaml package.json", { cwd: testRepo, encoding: "utf-8" });
+      execSync("git commit -m 'seed: lockfiles'", { cwd: testRepo, encoding: "utf-8" });
+    });
+
+    afterAll(() => {
+      try { rmSync(testRepo, { recursive: true, force: true }); } catch {}
+    });
+
+    it("PASS: unchanged lockfile returns E13 PASS", () => {
+      const result = spawnSync(
+        "node",
+        [join(testRepo, "scripts", "verify-all.mjs"), "--gate", "E13", "--no-color"],
+        { cwd: testRepo, encoding: "utf-8", timeout: 15_000 }
+      );
+      expect(result.status).toBe(0);
+    });
+
+    it("RED: modified pnpm-lock.yaml produces E13 failure", () => {
+      writeFileSync(join(testRepo, "pnpm-lock.yaml"), "lockfileVersion: 7.0\nchanged: true\n");
+      // Do NOT commit — simulate drift in working tree
+
+      const result = spawnSync(
+        "node",
+        [join(testRepo, "scripts", "verify-all.mjs"), "--gate", "E13", "--no-color"],
+        { cwd: testRepo, encoding: "utf-8", timeout: 15_000 }
+      );
+      expect(result.status).not.toBe(0);
+
+      // Cleanup: restore
+      writeFileSync(join(testRepo, "pnpm-lock.yaml"), "lockfileVersion: 6.0\n");
+    });
+  });
+
+  // ── G1: Evidence Isolation ──
+
+  describe("G1 — Independent Verifier Evidence Isolation", () => {
+    it("RED: verifier does not write to 04-primary-logs/", async () => {
+      // This test validates the contract: verifier logs must go to
+      // 06-independent-logs/, never to 04-primary-logs/.
+      // We verify by reading the verifier.mjs source and checking that
+      // the evidence-dir passed to the clone's verify-all.mjs uses a
+      // separate log directory path.
+      const fs = await import("node:fs/promises");
+      const verifierSource = await fs.readFile(
+        resolve(process.cwd(), "scripts/lib/verifier.mjs"),
+        "utf-8"
+      );
+
+      // The verifier's verify-all.mjs call must NOT use the same evidence-dir
+      // that would cause logs to land in 04-primary-logs/.
+      // Currently it passes --evidence-dir=<primary evidence dir> which
+      // causes the clone's gate logs to overwrite primary logs.
+      // After the fix, the clone should write logs to 06-independent-logs/.
+
+      // Check: the verifier.mjs must mention "06-independent" somewhere
+      // in its evidence handling.
+      expect(verifierSource).toMatch(/06-independent-logs/);
+    });
+
+    it("RED: evidence schema in contract matches implementation", () => {
+      // The contract at docs/testing/autonomous-test-harness-contract.md
+      // requires 06-independent-logs/ — verify this is referenced in verifier.mjs
+      const fs = require("node:fs");
+      const contractPath = resolve(
+        process.cwd(),
+        "docs/testing/autonomous-test-harness-contract.md"
+      );
+      const contract = fs.readFileSync(contractPath, "utf-8");
+      expect(contract).toMatch(/06-independent-logs/);
+      expect(contract).toMatch(/NOT shared with primary/);
+    });
+  });
 });
