@@ -70,16 +70,14 @@ It is built for people who collect, write and refine many prompts — especially
 
 **v1.8.0** is the current stable release.
 
-A Windows x64 installer and Linux packages are available as GitHub Release assets:
+Linux packages (`.deb` and `.rpm`) are available as GitHub Release assets for v1.8.0:
 
 | Platform | Asset |
 |---|---|
-| Windows x64 | `PromptVault Lite_1.8.0_x64-setup.exe` |
-| Linux (AppImage) | `PromptVault Lite_1.8.0_amd64.AppImage` |
 | Linux (Debian/Ubuntu) | `PromptVault Lite_1.8.0_amd64.deb` |
 | Linux (Fedora/RHEL) | `PromptVault Lite-1.8.0-1.x86_64.rpm` |
 
-Note: The installer is currently unsigned. Windows SmartScreen may show an "Unknown publisher" warning.
+Windows is supported as a build target but no pre-built v1.8.0 installer is available for this release. Build from source or use a previous release. macOS is not pre-built.
 
 Since v1.7.2, the `master` branch has received these v1.8.0 improvements:
 
@@ -92,13 +90,19 @@ Since v1.7.2, the `master` branch has received these v1.8.0 improvements:
 
 ## Install
 
-### Recommended for Windows users
+### Recommended for Linux users (v1.8.0)
 
-Download the Windows x64 installer from the latest GitHub Release and run:
+Download and install the `.deb` or `.rpm` package from the latest GitHub Release:
 
 ```text
-PromptVault Lite_1.8.0_x64-setup.exe
+# Debian/Ubuntu
+sudo dpkg -i PromptVault Lite_1.8.0_amd64.deb
+
+# Fedora/RHEL
+sudo rpm -i PromptVault Lite-1.8.0-1.x86_64.rpm
 ```
+
+Windows and macOS users: build from source (see below) or use a previous release.
 
 ### Developer / source install
 
@@ -149,7 +153,7 @@ Known limitations:
 
 - unsigned Windows installer (no code signing certificate)
 - no auto-updater
-- no macOS pre-built installer
+- no macOS or Windows pre-built installer for v1.8.0
 - Remote-CI is infra-blocked (Issue #154); local CI is authoritative
 - Embeddings Phase 1 is mock-only (no real semantic search)
 - Direction Profiles and Missing-Info-Gate are opt-in via feature flags (default disabled)
