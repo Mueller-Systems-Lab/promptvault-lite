@@ -79,9 +79,12 @@ describe("verify-all Runner", () => {
     expect(result).toBe(input);
   });
 
-  it("9 — generateRunId: produces stable-format IDs", () => {
+  it("9 — generateRunId: produces stable-format IDs with PID and random suffix", () => {
     const id = generateRunId();
-    expect(id).toMatch(/^PVL-AUTONOMOUS-TEST-HARNESS-\d{8}-\d{3}$/);
+    // Format: PVL-AUTONOMOUS-TEST-HARNESS-YYYYMMDD-NNN-PID-RND
+    expect(id).toMatch(
+      /^PVL-AUTONOMOUS-TEST-HARNESS-\d{8}-\d{3}-\d+-[0-9a-f]{6}$/
+    );
   });
 
   it("10 — generateRunId: two consecutive calls produce different IDs", () => {

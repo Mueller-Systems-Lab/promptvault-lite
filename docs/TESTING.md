@@ -20,7 +20,7 @@ last_updated: 2026-07-06
 | Rust Tests        | `cargo test --workspace`                                   |
 | Whitespace Check  | `git diff --check`                                         |
 | MkDocs Build      | `mkdocs build --strict` (optional, tool gap on some hosts) |
-| Playwright E2E    | `pnpm exec playwright test` (optional)                     |
+| Playwright E2E    | `pnpm exec playwright test` (core gate: mandatory) |
 
 ## Rust-Tests ausführen
 
@@ -78,7 +78,7 @@ pnpm test:e2e
 pnpm exec playwright test
 ```
 
-Standard run executes app-shell smoke tests only. These always pass without corpus.
+Standard run executes app-shell smoke tests. These are mandatory core gates in the autonomous test harness (E11).
 
 ### USB Corpus Run (Requires Local Corpus)
 
@@ -117,7 +117,7 @@ When `PROMPTVAULT_USB_CORPUS` is not set:
 - Standard app-shell smoke tests run normally.
 - No error, no failure.
 
-Playwright ist optional und unterliegt gelegentlichen Tool-Konflikten. Ergebnisse sind nicht blockierend, solange die normalen Gates grün sind.
+Playwright ist ein Kern-Gate (E11) im Autonomous Test Harness. Nur die USB-Corpus-Abdeckung und visuelle Baselines bleiben optional.
 
 ## Optional: MkDocs
 
