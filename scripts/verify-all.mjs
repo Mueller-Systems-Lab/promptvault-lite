@@ -24,19 +24,19 @@ import {
   writeEvidenceAtomic,
   generateRunId,
   sanitizePath,
+  getGitBranchState,
 } from "./lib/runner.mjs";
 
 import { runIndependentVerifier } from "./lib/verifier.mjs";
 
 import {
   GATES,
+  EXECUTORS,
   sha256,
-  parseTestOutput,
   hashBuildOutput,
-  runSecretScan,
-  checkVersionConsistency,
-  checkFeatureFlags,
-  checkLockfileDrift,
+  validateGateDefinition,
+  validateGateResult,
+  validateGateInventory,
 } from "./lib/gates.mjs";
 
 // ── CLI argument parsing ──
@@ -123,51 +123,57 @@ const C = opts["no-color"]
 async function runGate(gate, sha, evidenceDir) {
   const startTime = Date.now();
 
-  // Handle built-in gates
-  if (gate.id === "E10") {
-    const result = await runSecretScan(ROOT);
-    return await buildGateResult(gate, result, sha, startTime, evidenceDir);
-  }
-  if (gate.id === "E12" || gate.id === "Q5") {
-    const result = await checkVersionConsistency(ROOT);
-    return await buildGateResult(gate, result, sha, startTime, evidenceDir);
-  }
-  if (gate.id === "E13") {
-    const result = await checkLockfileDrift(ROOT);
-    return await buildGateResult(gate, result, sha, startTime, evidenceDir);
-  }
-  if (gate.id === "E14" || gate.id === "Q6") {
-    const result = await checkFeatureFlags(ROOT);
-    return await buildGateResult(gate, result, sha, startTime, evidenceDir);
-  }
-
-  try {
-    const result = await runCommand(gate.command, gate.args, {
-      cwd: ROOT,
-      timeout: 600_000,
-    });
-    return await buildGateResult(gate, result, sha, startTime, evidenceDir);
-  } catch (err) {
-    return await buildGateResult(
+  // Validate the gate DEFINITION before execution (Run Card §7)
+  const definitionViolations = validateGateDefinition(gate, ROOT);
+  if (definitionViolations.length > 0) {
+    return buildGateResult(
       gate,
-      { stdout: "", stderr: err.message, exitCode: -1, signal: null },
+      {
+        stdout: "",
+        stderr: definitionViolations.join("\n"),
+        exitCode: -1,
+        signal: null,
+        assertionCount: 0,
+        artifactCount: 0,
+        isProductFailure: false,
+        definitionViolations,
+      },
       sha,
       startTime,
-      evidenceDir
+      evidenceDir,
+      false
     );
   }
+
+  const executor = EXECUTORS[gate.executor];
+  let raw;
+  try {
+    raw = await executor({ root: ROOT, gate });
+  } catch (err) {
+    raw = {
+      stdout: "",
+      stderr: `Executor '${gate.executor}' threw: ${err.message}`,
+      exitCode: -1,
+      signal: null,
+      assertionCount: 0,
+      artifactCount: 0,
+      isProductFailure: false,
+    };
+  }
+
+  return await buildGateResult(gate, raw, sha, startTime, evidenceDir, true);
 }
 
-async function buildGateResult(gate, raw, sha, startTime, evidenceDir) {
+async function buildGateResult(gate, raw, sha, startTime, evidenceDir, executed) {
   const endTime = Date.now();
   const duration = endTime - startTime;
 
-  const stdoutContent = raw.stdout ? raw.stdout.replace(
-    /-----BEGIN.*PRIVATE KEY-----[\s\S]*?-----END.*PRIVATE KEY-----/g,
+  const stdoutContent = raw.stdout ? String(raw.stdout).replace(
+    /-----BEGIN.*PRIVATE KEY-----[\\s\\S]*?-----END.*PRIVATE KEY-----/g,
     "[MASKED]"
   ) : "";
-  const stderrContent = raw.stderr ? raw.stderr.replace(
-    /-----BEGIN.*PRIVATE KEY-----[\s\S]*?-----END.*PRIVATE KEY-----/g,
+  const stderrContent = raw.stderr ? String(raw.stderr).replace(
+    /-----BEGIN.*PRIVATE KEY-----[\\s\\S]*?-----END.*PRIVATE KEY-----/g,
     "[MASKED]"
   ) : "";
 
@@ -179,27 +185,73 @@ async function buildGateResult(gate, raw, sha, startTime, evidenceDir) {
   const stdoutSha = sha256(stdoutFinal);
   const stderrSha = sha256(stderrFinal);
 
-  const testMetrics = gate.parseOutput ? parseTestOutput(raw.stdout, gate.id) : {};
+  // Test metrics (when the executor reports a parseable output)
+  let testMetrics = {};
+  if (raw.extra && typeof raw.extra === "object" && "passed" in raw.extra && "failed" in raw.extra) {
+    testMetrics = {
+      passed: raw.extra.passed,
+      failed: raw.extra.failed,
+      skipped: raw.extra.skipped,
+    };
+  }
+
+  const assertionCount =
+    typeof raw.assertionCount === "number" ? raw.assertionCount : 0;
+  const artifactCount =
+    typeof raw.artifactCount === "number" ? raw.artifactCount : 0;
 
   const { classifyGate } = await import("./lib/runner.mjs");
-  const classification = classifyGate(raw.exitCode, {
+  let classification = classifyGate(raw.exitCode, {
     gate: gate.id,
-    isOptional: gate.isOptional || false,
-    visualBaselinesMissing: gate.visualBaselinesMissing || false,
+    isOptional: false,
     isProductFailure: raw.isProductFailure || false,
   });
+
+  // NOOP / schema enforcement (Run Card §7-8):
+  // PASS is only allowed with executed=true, exit 0, assertions or contract, no skip.
+  if (executed === false) {
+    classification = "RED_GATE_IMPLEMENTATION_NOOP";
+  } else if (classification === "PASS") {
+    const resultProbe = {
+      gate: gate.id,
+      executed: true,
+      exit_code: raw.exitCode,
+      started_at: new Date(startTime).toISOString(),
+      ended_at: new Date(endTime).toISOString(),
+      assertion_count: assertionCount,
+      contract_verified: raw.exitCode === 0,
+      skipped: 0,
+    };
+    const resultViolations = validateGateResult(resultProbe);
+    if (resultViolations.length > 0) {
+      classification = "RED_GATE_IMPLEMENTATION_NOOP";
+    }
+  } else if (classification.startsWith("RED_")) {
+    // Non-zero exit from an executor/command is a product or infra failure
+    // unless the definition itself was invalid (handled above).
+  }
 
   return {
     gate: gate.id,
     name: gate.name,
-    command: `${gate.command} ${gate.args.join(" ")}`,
+    executor: gate.executor,
+    command: gate.command
+      ? `${gate.command} ${gate.args.join(" ")}`
+      : `executor:${gate.executor}`,
     runner: "primary",
     tested_git_sha: sha,
+    executed: executed === true,
     started_at: new Date(startTime).toISOString(),
     ended_at: new Date(endTime).toISOString(),
     duration_ms: duration,
     exit_code: raw.exitCode,
     signal: raw.signal || null,
+    assertion_count: assertionCount,
+    artifact_count: artifactCount,
+    skipped: 0,
+    optional: gate.isOptional === true,
+    contract: gate.contract || null,
+    contract_verified: raw.exitCode === 0 && executed === true,
     ...testMetrics,
     stdout_log: join(evidenceDir, LOGS_DIR, `${gate.id}-stdout.txt`),
     stderr_log: join(evidenceDir, LOGS_DIR, `${gate.id}-stderr.txt`),
@@ -218,34 +270,50 @@ function updateSummaryClassification(summary, newClassification) {
 }
 
 function buildSummary(gateResults, sha, branch) {
-  const coreGates = gateResults.filter((g) => !g.classification.startsWith("YELLOW"));
-  const optionalGaps = gateResults.filter((g) => g.classification.startsWith("YELLOW"));
+  const counts = {
+    passed: 0, red: 0, yellow: 0, amber: 0,
+    noop: 0, skipped: 0, notExecuted: 0,
+  };
 
-  const allCoreGreen = coreGates.every((g) => g.classification === "PASS");
-  const hasRed = gateResults.some((g) => g.classification.startsWith("RED_"));
-  const hasAmber = gateResults.some((g) => g.classification.startsWith("AMBER_"));
-  const hasDivergence = gateResults.some(
-    (g) => g.classification === "AMBER_PRIMARY_VERIFIER_DIVERGENCE"
-  );
+  for (const g of gateResults) {
+    if (g.classification === "PASS") counts.passed += 1;
+    else if (g.classification.startsWith("RED_")) counts.red += 1;
+    else if (g.classification.startsWith("YELLOW")) counts.yellow += 1;
+    else if (g.classification.startsWith("AMBER")) counts.amber += 1;
+    if (g.classification === "RED_GATE_IMPLEMENTATION_NOOP") counts.noop += 1;
+    if (g.skipped && g.skipped > 0) counts.skipped += 1;
+    if (g.executed !== true) counts.notExecuted += 1;
+  }
+
+  const fullMatrix = gateResults.length >= 20;
+  const allPass = counts.passed === gateResults.length && gateResults.length > 0;
+  const noSkipped = counts.skipped === 0 && counts.notExecuted === 0;
 
   let runClassification;
-  if (hasRed) {
+  if (gateResults.length === 0) {
+    runClassification = "RED_TEST_INFRASTRUCTURE_FAILURE";
+  } else if (fullMatrix && allPass && noSkipped && counts.noop === 0) {
+    runClassification =
+      "GREEN_PR_294_REAL_E2E_ALL_GATES_EXECUTED_READY_FOR_OWNER_REVIEW";
+  } else if (counts.noop > 0) {
+    runClassification = "RED_GATE_IMPLEMENTATION_NOOP";
+  } else if (gateResults.some((g) => g.gate === "E19" && g.classification !== "PASS")) {
+    runClassification = "RED_NATIVE_TAURI_E2E_NOT_EXECUTED";
+  } else if (gateResults.some((g) => g.gate === "E20" && g.classification !== "PASS")) {
+    runClassification = "RED_PACKAGING_SMOKE_NOT_EXECUTED";
+  } else if (gateResults.some((g) => g.gate === "E16" && g.optional === true)) {
+    runClassification = "RED_ACCESSIBILITY_CORE_GATE_NOT_ENFORCED";
+  } else if (counts.red > 0) {
     const hasProductFailure = gateResults.some(
       (g) => g.classification === "RED_PRODUCT_FAILURE"
     );
     runClassification = hasProductFailure
       ? "RED_REPRODUCIBLE_PRODUCT_FAILURE"
       : "RED_TEST_INFRASTRUCTURE_FAILURE";
-  } else if (hasDivergence) {
-    runClassification = "AMBER_PRIMARY_VERIFIER_DIVERGENCE";
-  } else if (hasAmber) {
+  } else if (counts.amber > 0) {
     runClassification = "AMBER_FLAKY_TESTS_BLOCK_COMPLETION_CLAIM";
-  } else if (allCoreGreen && optionalGaps.length > 0) {
-    runClassification =
-      "GREEN_CORE_GATES_AMBER_OPTIONAL_PLATFORM_OR_HARDWARE_COVERAGE";
-  } else if (allCoreGreen) {
-    runClassification =
-      "GREEN_AUTONOMOUS_TEST_HARNESS_PERSISTENT_AND_VALIDATED";
+  } else if (counts.yellow > 0 || counts.skipped > 0 || counts.notExecuted > 0) {
+    runClassification = "AMBER_FLAKY_TESTS_BLOCK_COMPLETION_CLAIM";
   } else {
     runClassification = "AMBER_FLAKY_TESTS_BLOCK_COMPLETION_CLAIM";
   }
@@ -257,10 +325,15 @@ function buildSummary(gateResults, sha, branch) {
     tested_at: new Date().toISOString(),
     classification: runClassification,
     total_gates: gateResults.length,
-    passed: gateResults.filter((g) => g.classification === "PASS").length,
-    failed: gateResults.filter((g) => g.classification.startsWith("RED_")).length,
-    yellow: gateResults.filter((g) => g.classification.startsWith("YELLOW")).length,
-    amber: gateResults.filter((g) => g.classification.startsWith("AMBER")).length,
+    executed: gateResults.filter((g) => g.executed === true).length,
+    passed: counts.passed,
+    failed: counts.red,
+    red: counts.red,
+    yellow: counts.yellow,
+    amber: counts.amber,
+    noop: counts.noop,
+    skipped: counts.skipped,
+    not_executed: counts.notExecuted,
   };
 }
 
@@ -371,6 +444,21 @@ async function main() {
     gatesToRun = Object.values(GATES).filter((g) => g.level === "full");
   }
 
+  // Canonical inventory check (Run Card §9): E1-E20 exactly once, no gaps/extras.
+  if (mode === "full") {
+    const inventoryViolations = validateGateInventory(GATES);
+    if (inventoryViolations.length > 0) {
+      console.error(
+        `${C.R}RED_GATE_IMPLEMENTATION_NOOP: invalid E1-E20 inventory:${C.N}`
+      );
+      for (const v of inventoryViolations) console.error(`  - ${v}`);
+      process.exit(1);
+    }
+    console.log(
+      `${C.G}Gate inventory E1-E20: canonical (no duplicates, no gaps)${C.N}`
+    );
+  }
+
   // Sort gates by ID numerically
   const numSort = (a, b) => {
     const numA = parseInt(a.id.replace(/^[QE]/, ""), 10);
@@ -425,14 +513,19 @@ async function main() {
     }
   }
 
-  // Get branch
+  // Get branch (Run Card §10: distinguish branch / detached HEAD / no repo)
+  const gitState = getGitBranchState(ROOT);
   let branch = "unknown";
-  try {
-    const { stdout: branchOut } = await runCommand("git", [
-      "branch", "--show-current",
-    ]);
-    branch = branchOut.trim() || "detached HEAD";
-  } catch { /* leave as unknown */ }
+  if (gitState.kind === "branch") {
+    branch = gitState.branch;
+  } else if (gitState.kind === "detached") {
+    branch = "detached HEAD";
+  } else if (gitState.kind === "no-repo" || gitState.kind === "error") {
+    console.error(
+      `${C.R}RED_TEST_INFRASTRUCTURE_FAILURE: not a git repository or git unavailable (${gitState.error || gitState.kind})${C.N}`
+    );
+    process.exit(1);
+  }
 
   const summary = buildSummary(results, sha, branch);
 
@@ -551,14 +644,17 @@ async function main() {
   console.log(`${C.B}=== Summary ===${C.N}`);
   console.log(`Classification: ${summary.classification}`);
   console.log(
-    `Gates: ${summary.passed} PASS / ${summary.failed} RED / ${summary.yellow} YELLOW / ${summary.amber} AMBER`
+    `Gates: ${summary.executed}/${summary.total_gates} executed — ${summary.passed} PASS / ${summary.red} RED / ${summary.yellow} YELLOW / ${summary.amber} AMBER / ${summary.noop} NOOP / ${summary.skipped} SKIPPED / ${summary.not_executed} NOT_EXECUTED`
   );
   console.log(`Evidence: ${EVIDENCE_DIR}`);
   console.log();
 
   // Exit with appropriate code
   if (summary.classification.startsWith("RED_")) process.exit(1);
-  if (summary.classification === "AMBER_PRIMARY_VERIFIER_DIVERGENCE") process.exit(1);
+  if (mode === "full") {
+    // Full matrix: only the exact GREEN classification is a pass
+    if (!summary.classification.startsWith("GREEN")) process.exit(1);
+  }
   process.exit(0);
 }
 

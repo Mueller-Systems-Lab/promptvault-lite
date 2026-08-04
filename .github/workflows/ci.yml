@@ -16,8 +16,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # ─────────────────────────────────────────────────────────────────────────
+  # Frontend Unit/Integration (E3/E4/E5/E6 + Harness-Contract-Tests)
+  # ─────────────────────────────────────────────────────────────────────────
   frontend:
-    name: Frontend (TypeScript/React)
+    name: Frontend Unit/Integration
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -39,18 +42,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Typecheck
+      - name: Typecheck (E5)
         run: npx tsc --noEmit
 
-      - name: Lint
+      - name: Lint (E4)
         run: pnpm lint
 
-      - name: Test
+      - name: Unit/Integration tests (E3)
         run: pnpm test
 
-      - name: Build
+      - name: Build (E6)
         run: pnpm build
 
+  # ─────────────────────────────────────────────────────────────────────────
+  # Rust (E7/E8/E9)
+  # ─────────────────────────────────────────────────────────────────────────
   rust:
     name: Rust (Tauri Backend)
     runs-on: ubuntu-latest
@@ -85,22 +91,21 @@ jobs:
             src-tauri/target
           key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
 
-      - name: Format check
+      - name: Format check (E7)
         working-directory: src-tauri
-        run: cargo fmt --check
+        run: cargo fmt --check --all
 
-      - name: Clippy
+      - name: Clippy (E9)
         working-directory: src-tauri
-        run: cargo clippy --all-targets -- -D warnings
+        run: cargo clippy --workspace --locked --all-targets -- -D warnings
 
-      - name: Test
+      - name: Test (E8)
         working-directory: src-tauri
-        run: cargo test
+        run: cargo test --workspace --locked
 
-      - name: Build check
-        working-directory: src-tauri
-        run: cargo build
-
+  # ─────────────────────────────────────────────────────────────────────────
+  # Secret Scan (E10)
+  # ─────────────────────────────────────────────────────────────────────────
   secret-scan:
     name: Secret Scan
     runs-on: ubuntu-latest
@@ -110,62 +115,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Scan for secrets
+      - name: Run harness secret scan (E10)
         run: |
-          echo "::group::Scanning for common secret patterns"
-          # High-confidence patterns (check all tracked files)
-          # High-specificity patterns only — broad terms like "secret", "password",
-          # "api_key" match legitimate code/docs and produce false positives.
-          # The project's own Rust `detect_secrets()` covers content-level scanning.
-          PATTERNS=(
-            "-----BEGIN.*PRIVATE KEY-----"
-            "AKIA[0-9A-Z]{16}"
-            "gh[opsur]_[0-9a-zA-Z]{36}"
-            "github_pat_[0-9a-zA-Z]{22,}"
-            "sk_live_[0-9a-zA-Z]{24}"
-          )
-          FOUND=0
-          for pattern in "${PATTERNS[@]}"; do
-            matches=$(git ls-files -z | xargs -0 grep -n -i -E "$pattern" 2>/dev/null || true)
-            if [ -n "$matches" ]; then
-              # Filter out legitimate uses (e.g. in .gitignore, docs about patterns, test fixtures with runtime-assembled tokens)
-              filtered=$(echo "$matches" | grep -v ".gitignore\|SECURITY_GATES.md\|AGENTS.md\|CLAUDE.md\|runner.test.js\|harness-contract.test.js\|gates.mjs\|runner.mjs\|tauri-ipc-integration.test.ts" || true)
-              if [ -n "$filtered" ]; then
-                echo "WARNING: Potential secret pattern '$pattern' found:"
-                echo "$filtered"
-                FOUND=1
-              fi
-            fi
-          done
-          if [ $FOUND -eq 1 ]; then
-            echo "::error::Potential secrets found. Review warnings above."
-            exit 1
-          fi
-          echo "No secrets detected."
-          echo "::endgroup::"
+          pnpm install --frozen-lockfile
+          node scripts/verify-all.mjs --gate E10 --no-color
 
-      - name: Check .env files
-        run: |
-          ENV_FILES=$(git ls-files | grep -i "\.env$" || true)
-          if [ -n "$ENV_FILES" ]; then
-            echo "::error::.env files found in repository:"
-            echo "$ENV_FILES"
-            exit 1
-          fi
-          echo "No .env files found."
-
-      - name: Check DB files
-        run: |
-          DB_FILES=$(git ls-files | grep -E "\.db(-shm|-wal|-journal)?$" || true)
-          if [ -n "$DB_FILES" ]; then
-            echo "::error::Database files found in repository:"
-            echo "$DB_FILES"
-            exit 1
-          fi
-          echo "No database files found."
-
-  playwright-e2e:
-    name: Playwright E2E
+  # ─────────────────────────────────────────────────────────────────────────
+  # Playwright Chromium (E11-Leg + E15 Structural Evidence)
+  # ─────────────────────────────────────────────────────────────────────────
+  playwright-chromium:
+    name: Playwright Chromium (E11/E15)
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -188,32 +147,125 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium firefox webkit
+        run: pnpm exec playwright install --with-deps chromium
 
-      - name: Run Playwright E2E (Chromium)
-        run: pnpm exec playwright test --project=chromium
+      - name: Renderer E2E + Journeys (E11 chromium)
+        run: pnpm exec playwright test tests/e2e/core-flows.spec.ts tests/e2e/journeys.spec.ts --project=chromium
         env:
           CI: "true"
 
-      - name: Run Playwright E2E (Firefox)
-        run: pnpm exec playwright test --project=firefox
-        env:
-          CI: "true"
-        continue-on-error: true
-
-      - name: Run Playwright E2E (WebKit)
-        run: pnpm exec playwright test --project=webkit
-        env:
-          CI: "true"
-        continue-on-error: true
-
-      - name: Run Accessibility Tests
-        run: pnpm exec playwright test accessibility.spec.ts --project=chromium
+      - name: Visual Structural Evidence (E15)
+        run: pnpm exec playwright test tests/e2e/visual-release-gate.spec.ts --project=chromium
         env:
           CI: "true"
 
-  tauri-native-linux-e2e:
-    name: Tauri Native Linux E2E
+  # ─────────────────────────────────────────────────────────────────────────
+  # Playwright Firefox (E11-Leg) — kein continue-on-error: roter Browser = rotes E11
+  # ─────────────────────────────────────────────────────────────────────────
+  playwright-firefox:
+    name: Playwright Firefox (E11)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps firefox
+
+      - name: Renderer E2E + Journeys (E11 firefox)
+        run: pnpm exec playwright test tests/e2e/core-flows.spec.ts tests/e2e/journeys.spec.ts --project=firefox
+        env:
+          CI: "true"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Playwright WebKit (E11-Leg) — kein continue-on-error
+  # ─────────────────────────────────────────────────────────────────────────
+  playwright-webkit:
+    name: Playwright WebKit (E11)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps webkit
+
+      - name: Renderer E2E + Journeys (E11 webkit)
+        run: pnpm exec playwright test tests/e2e/core-flows.spec.ts tests/e2e/journeys.spec.ts --project=webkit
+        env:
+          CI: "true"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Accessibility (E16 — Pflicht-Gate)
+  # ─────────────────────────────────────────────────────────────────────────
+  accessibility:
+    name: Accessibility (E16)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Accessibility (E16)
+        run: pnpm exec playwright test tests/e2e/accessibility.spec.ts --project=chromium
+        env:
+          CI: "true"
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Tauri debug build — teilt Binary + Bundle + dist mit E18/E19/E20
+  # ─────────────────────────────────────────────────────────────────────────
+  build-tauri-debug:
+    name: Build Tauri Debug Binary
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -231,8 +283,99 @@ jobs:
             libssl-dev \
             libgtk-3-dev \
             libayatana-appindicator3-dev \
+            libfuse2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Tauri debug binary + bundles
+        run: pnpm tauri build --debug
+        env:
+          CI: "true"
+
+      - name: Upload artifacts (binary + bundles + dist)
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-debug-artifacts
+          path: |
+            target/debug/promptvault-lite
+            target/debug/bundle
+            dist
+          retention-days: 3
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Build Artifact Integrity (E18 — Pflicht)
+  # ─────────────────────────────────────────────────────────────────────────
+  build-artifact-integrity:
+    name: Build Artifact Integrity (E18)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build-tauri-debug
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: tauri-debug-artifacts
+          path: .
+
+      - name: Build Artifact Integrity (E18)
+        run: node scripts/verify-all.mjs --gate E18 --no-color
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Native Tauri Real E2E (E19 — Pflicht, echter WebDriver-Lauf)
+  # Der Jobname ist nur zulässig, weil die App WIRKLICH über WebDriver
+  # (tauri-driver + WebdriverIO) bedient wird — kein Datei-Existenz-Smoke.
+  # ─────────────────────────────────────────────────────────────────────────
+  native-tauri-real-e2e:
+    name: Native Tauri Real E2E (E19)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build-tauri-debug
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
             webkit2gtk-driver \
-            xvfb
+            xvfb \
+            python3-xlib \
+            xdotool
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -251,17 +394,52 @@ jobs:
       - name: Install tauri-driver
         run: cargo install tauri-driver --locked
 
-      - name: Install frontend dependencies
+      - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build Tauri debug binary
-        run: pnpm tauri build --debug
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: tauri-debug-artifacts
+          path: .
+
+      - name: Native Tauri Real E2E (E19)
+        run: node scripts/e19-gate.mjs
         env:
           CI: "true"
 
-      - name: Tauri Native Smoke Test
-        run: |
-          xvfb-run --auto-servernum \
-            pnpm exec playwright test native-tauri-e2e.spec.ts --project=chromium
-        env:
-          CI: "true"
+  # ─────────────────────────────────────────────────────────────────────────
+  # Packaging Smoke (E20 — Pflicht, dpkg-deb-basiert)
+  # ─────────────────────────────────────────────────────────────────────────
+  packaging-smoke:
+    name: Packaging Smoke (E20)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build-tauri-debug
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: tauri-debug-artifacts
+          path: .
+
+      - name: Packaging Smoke (E20)
+        run: node scripts/verify-all.mjs --gate E20 --no-color

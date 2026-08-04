@@ -1,3 +1,4 @@
+use crate::database::Database;
 use crate::models::PromptItem;
 use crate::scanner::{file_scanner, DebouncedWatcher};
 use std::sync::Mutex;
@@ -31,6 +32,7 @@ pub fn scan_directory(
     path: String,
     state: tauri::State<'_, AppState>,
     app_handle: tauri::AppHandle,
+    db: tauri::State<'_, Database>,
 ) -> Result<Vec<PromptItem>, String> {
     let prompts = file_scanner::scan_directory(&path)?;
 
@@ -44,6 +46,32 @@ pub fn scan_directory(
             .map(|p| p.to_string_lossy().to_string())
             .unwrap_or(path.clone());
         *vp = Some(canonical);
+    }
+
+    // Gescannte Prompts in der Datenbank upserten (Favoriten-Persistenz).
+    // Ohne diesen Schritt schlagen toggle_favorite/get_favorites für alle
+    // gescannten Prompts mit "Prompt not found" fehl (stiller Revert).
+    if let Err(e) = db.save_prompts(&prompts) {
+        log::warn!(
+            "Prompts konnten nicht in die Datenbank persistiert werden: {}",
+            e
+        );
+    }
+
+    // Favoriten-Status aus der DB zurück in die gescannten Prompts hydratisieren.
+    // Sonst gehen Favoriten bei jedem Re-Scan/Neustart in der UI verloren,
+    // obwohl sie in der DB persistiert sind (E19-Persistenzreise).
+    let mut prompts = prompts;
+    if let Ok(persisted) = db.load_prompts() {
+        let fav_by_path: std::collections::HashMap<&str, bool> = persisted
+            .iter()
+            .map(|p| (p.file_path.as_str(), p.is_favorite))
+            .collect();
+        for p in prompts.iter_mut() {
+            if let Some(is_fav) = fav_by_path.get(p.file_path.as_str()) {
+                p.is_favorite = *is_fav;
+            }
+        }
     }
 
     // Auto-start watcher after scan

@@ -1,6 +1,7 @@
 import React from "react";
 import type { ExportFormat } from "@/types";
 import { useExport } from "@/hooks/useExport";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface ExportDialogProps {
   onClose: () => void;
@@ -40,7 +41,7 @@ export const ExportDialog: React.FC<ExportDialogProps> = ({ onClose }) => {
   } = useExport();
 
   const [favoritesOnly, setFavoritesOnly] = React.useState(false);
-  const dialogRef = React.useRef<HTMLDivElement>(null);
+  const dialogRef = useFocusTrap(true);
 
   const handleExport = () => {
     void startExport(favoritesOnly);
@@ -60,8 +61,6 @@ export const ExportDialog: React.FC<ExportDialogProps> = ({ onClose }) => {
       }
     };
     document.addEventListener("keydown", handleKeyDown);
-    // Auto-focus first interactive element
-    dialogRef.current?.querySelector<HTMLElement>("input, button")?.focus();
     return () => { document.removeEventListener("keydown", handleKeyDown); };
   }, [isExporting, onClose]);
 

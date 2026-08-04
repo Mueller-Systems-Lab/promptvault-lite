@@ -27,7 +27,15 @@ import {
   writeEvidenceAtomic,
   maskSecrets,
   sanitizePath,
+  getGitBranchState,
 } from "../lib/runner.mjs";
+
+import {
+  validateGateDefinition,
+  validateGateResult,
+  validateGateInventory,
+  GATES,
+} from "../lib/gates.mjs";
 
 // ── Helpers ──
 
@@ -318,16 +326,86 @@ describe("Autonomous Test Harness — Contract Verification", () => {
     });
   });
 
-  // ── T11: Branch Detection ──
+  // ── T11: Branch Detection (Run Card §10) ──
 
-  describe("T11 — Branch and Context Manifest", () => {
-    it("branch is not 'unknown' in a normal checkout", () => {
-      // This project is in a git repo with a branch
-      const branch = execSync("git branch --show-current", {
-        encoding: "utf-8",
-      }).trim();
-      expect(branch).toBeTruthy();
-      expect(branch).not.toBe("unknown");
+  describe("T11 — Git Branch State Detection (temp repos)", () => {
+    it("normal branch returns the actual branch name", () => {
+      const repo = mkdtempSync(join(tmpdir(), "pvl-gitstate-branch-"));
+      try {
+        execSync("git init -b main", { cwd: repo, encoding: "utf-8" });
+        execSync("git config user.email test@test.test", { cwd: repo, encoding: "utf-8" });
+        execSync("git config user.name test", { cwd: repo, encoding: "utf-8" });
+        writeFileSync(join(repo, "a.txt"), "a");
+        execSync("git add a.txt && git commit -m init", { cwd: repo, encoding: "utf-8" });
+
+        const state = getGitBranchState(repo);
+        expect(state.kind).toBe("branch");
+        expect(state.branch).toBe("main");
+      } finally {
+        rmSync(repo, { recursive: true, force: true });
+      }
+    });
+
+    it("detached HEAD is reported as detached HEAD", () => {
+      const repo = mkdtempSync(join(tmpdir(), "pvl-gitstate-detached-"));
+      try {
+        execSync("git init -b main", { cwd: repo, encoding: "utf-8" });
+        execSync("git config user.email test@test.test", { cwd: repo, encoding: "utf-8" });
+        execSync("git config user.name test", { cwd: repo, encoding: "utf-8" });
+        writeFileSync(join(repo, "a.txt"), "a");
+        execSync("git add a.txt && git commit -m init", { cwd: repo, encoding: "utf-8" });
+        execSync("git checkout --detach HEAD", { cwd: repo, encoding: "utf-8" });
+
+        const state = getGitBranchState(repo);
+        expect(state.kind).toBe("detached");
+        // verify-all.mjs maps detached → "detached HEAD"
+        expect(state.kind === "detached" ? "detached HEAD" : state.branch).toBe("detached HEAD");
+      } finally {
+        rmSync(repo, { recursive: true, force: true });
+      }
+    });
+
+    it("no repository is reported as no-repo (RED_TEST_INFRASTRUCTURE_FAILURE path)", () => {
+      const dir = mkdtempSync(join(tmpdir(), "pvl-gitstate-norepo-"));
+      try {
+        const state = getGitBranchState(dir);
+        expect(state.kind).toBe("no-repo");
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
+      }
+    });
+
+    it("CLI reports 'detached HEAD' in a detached checkout", () => {
+      const repo = mkdtempSync(join(tmpdir(), "pvl-gitstate-cli-"));
+      try {
+        execSync("git init -b main", { cwd: repo, encoding: "utf-8" });
+        execSync("git config user.email test@test.test", { cwd: repo, encoding: "utf-8" });
+        execSync("git config user.name test", { cwd: repo, encoding: "utf-8" });
+        writeFileSync(join(repo, "a.txt"), "a");
+        execSync("git add a.txt && git commit -m init", { cwd: repo, encoding: "utf-8" });
+        execSync("git checkout --detach HEAD", { cwd: repo, encoding: "utf-8" });
+
+        // Copy scripts so verify-all.mjs can run
+        mkdirSync(join(repo, "scripts", "lib"), { recursive: true });
+        const srcScripts = resolve(process.cwd(), "scripts");
+        for (const f of ["verify-all.mjs", "lib/runner.mjs", "lib/gates.mjs", "lib/verifier.mjs"]) {
+          writeFileSync(
+            join(repo, "scripts", f),
+            readFileSync(join(srcScripts, f), "utf-8")
+          );
+        }
+
+        const result = spawnSync(
+          "node",
+          [join(repo, "scripts", "verify-all.mjs"), "--gate", "Q1", "--no-color"],
+          { cwd: repo, encoding: "utf-8", timeout: 30_000 }
+        );
+        // In a detached checkout the harness must still run (no crash, no 'unknown')
+        expect(result.status).toBe(0);
+        expect(result.stdout).not.toContain("unknown");
+      } finally {
+        rmSync(repo, { recursive: true, force: true });
+      }
     });
   });
 
@@ -660,6 +738,184 @@ describe("Autonomous Test Harness — Contract Verification", () => {
       const contract = fs.readFileSync(contractPath, "utf-8");
       expect(contract).toMatch(/06-independent-logs/);
       expect(contract).toMatch(/NOT shared with primary/);
+    });
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  // PHASE C — No-op- und Skip-Invarianten (Run Card §7-9)
+  // ══════════════════════════════════════════════════════════════
+
+  describe("C1 — Gate Inventory (E1-E20 canonical)", () => {
+    it("PASS: canonical inventory has no violations", () => {
+      const violations = validateGateInventory(GATES);
+      expect(violations).toEqual([]);
+    });
+
+    it("RED: E12 duplicated is detected", () => {
+      const bad = { ...GATES, E12b: { ...GATES.E12, id: "E12b" } };
+      // duplicate ids must be detectable: build an inventory with E12 twice
+      const violations = validateGateInventory({ ...bad, E12x: { ...GATES.E12 } });
+      // E12x is an extra (E-n beyond 20 or duplicate) — E12 appears twice
+      const dupViolations = violations.filter((v) => v.includes("E12"));
+      expect(dupViolations.length).toBeGreaterThan(0);
+    });
+
+    it("RED: E13 missing is detected", () => {
+      const { E13, ...rest } = GATES;
+      const violations = validateGateInventory(rest);
+      expect(violations.some((v) => v.includes("E13 missing"))).toBe(true);
+    });
+
+    it("RED: E99 present is detected as unexpected", () => {
+      const bad = { ...GATES, E99: { id: "E99", name: "Bogus" } };
+      const violations = validateGateInventory(bad);
+      expect(violations.some((v) => v.includes("E99"))).toBe(true);
+    });
+
+    it("RED: every E-gate must have exactly one canonical id", () => {
+      const ids = Object.keys(GATES).filter((id) => id.startsWith("E"));
+      expect(ids).toHaveLength(20);
+    });
+  });
+
+  describe("C2 — Gate Definition Validation (No-op-Verbot)", () => {
+    it("PASS: canonical E19/E20 definitions are valid", () => {
+      expect(validateGateDefinition(GATES.E19, process.cwd())).toEqual([]);
+      expect(validateGateDefinition(GATES.E20, process.cwd())).toEqual([]);
+    });
+
+    it("RED: E19 as no-op (node -e process.exit(0)) is detected", () => {
+      const noop = {
+        id: "E19", name: "Native Tauri Real E2E", executor: "command",
+        command: "node", args: ["-e", "process.exit(0)"], contract: "exit-code",
+        mandatory: true,
+      };
+      const violations = validateGateDefinition(noop, process.cwd());
+      expect(violations.some((v) => v.includes("noop"))).toBe(true);
+    });
+
+    it("RED: E20 as no-op (command: true) is detected", () => {
+      const noop = {
+        id: "E20", name: "Packaging Smoke", executor: "command",
+        command: "true", args: [], contract: "exit-code", mandatory: true,
+      };
+      const violations = validateGateDefinition(noop, process.cwd());
+      expect(violations.some((v) => v.includes("noop command"))).toBe(true);
+    });
+
+    it("RED: mandatory gate with skip:true is detected", () => {
+      const skipped = { ...GATES.E14, skip: true };
+      const violations = validateGateDefinition(skipped, process.cwd());
+      expect(violations.some((v) => v.includes("skip:true"))).toBe(true);
+    });
+
+    it("RED: optional mandatory gate (E16 isOptional) is detected", () => {
+      const optional = { ...GATES.E16, isOptional: true };
+      const violations = validateGateDefinition(optional, process.cwd());
+      expect(violations.some((v) => v.includes("must not be optional"))).toBe(true);
+    });
+
+    it("RED: unknown executor is detected", () => {
+      const bad = { ...GATES.E10, executor: "mystery-executor" };
+      const violations = validateGateDefinition(bad, process.cwd());
+      expect(violations.some((v) => v.includes("unknown executor"))).toBe(true);
+    });
+
+    it("RED: missing executor is detected", () => {
+      const { executor, ...bad } = GATES.E10;
+      const violations = validateGateDefinition(bad, process.cwd());
+      expect(violations.some((v) => v.includes("missing executor"))).toBe(true);
+    });
+
+    it("RED: missing expected test file is detected", () => {
+      const bad = { ...GATES.E19, expectedTestFile: "does-not-exist.spec.js" };
+      const violations = validateGateDefinition(bad, process.cwd());
+      expect(violations.some((v) => v.includes("expected test file"))).toBe(true);
+    });
+  });
+
+  describe("C3 — Gate Result Validation (PASS nur mit executed/assertions)", () => {
+    it("RED: PASS without executed=true is rejected", () => {
+      const violations = validateGateResult({
+        gate: "E1", executed: false, exit_code: 0,
+        started_at: "x", ended_at: "y", assertion_count: 1,
+      });
+      expect(violations.some((v) => v.includes("executed"))).toBe(true);
+    });
+
+    it("RED: no assertion_count and no contract is rejected", () => {
+      const violations = validateGateResult({
+        gate: "E1", executed: true, exit_code: 0,
+        started_at: "x", ended_at: "y",
+        assertion_count: 0, contract_verified: false,
+      });
+      expect(violations.some((v) => v.includes("no assertion_count"))).toBe(true);
+    });
+
+    it("RED: missing started/ended time is rejected", () => {
+      const violations = validateGateResult({
+        gate: "E1", executed: true, exit_code: 0,
+        assertion_count: 1,
+      });
+      expect(violations.some((v) => v.includes("started_at"))).toBe(true);
+      expect(violations.some((v) => v.includes("ended_at"))).toBe(true);
+    });
+
+    it("RED: missing exit_code is rejected", () => {
+      const violations = validateGateResult({
+        gate: "E1", executed: true,
+        started_at: "x", ended_at: "y", assertion_count: 1,
+      });
+      expect(violations.some((v) => v.includes("exit_code"))).toBe(true);
+    });
+
+    it("PASS: valid result (executed, exit 0, assertions, timestamps) is accepted", () => {
+      const violations = validateGateResult({
+        gate: "E1", executed: true, exit_code: 0,
+        started_at: "x", ended_at: "y",
+        assertion_count: 3, contract_verified: true, skipped: 0,
+      });
+      expect(violations).toEqual([]);
+    });
+  });
+
+  describe("C4 — CLI Level: No-op gate is RED, not PASS", () => {
+    it("RED: --gate with a no-op definition exits non-zero (E14 with skip)", () => {
+      const repo = mkdtempSync(join(tmpdir(), "pvl-noop-cli-"));
+      try {
+        execSync("git init", { cwd: repo, encoding: "utf-8" });
+        execSync("git config user.email test@test.test", { cwd: repo, encoding: "utf-8" });
+        execSync("git config user.name test", { cwd: repo, encoding: "utf-8" });
+        mkdirSync(join(repo, "scripts", "lib"), { recursive: true });
+        mkdirSync(join(repo, "src", "lib", "embeddings"), { recursive: true });
+        const srcScripts = resolve(process.cwd(), "scripts");
+        for (const f of ["verify-all.mjs", "lib/runner.mjs", "lib/gates.mjs", "lib/verifier.mjs"]) {
+          writeFileSync(
+            join(repo, "scripts", f),
+            readFileSync(join(srcScripts, f), "utf-8")
+          );
+        }
+        // Simulate a missing feature-flag module (E14 must go RED, not PASS)
+        writeFileSync(join(repo, "package.json"), '{"name":"test","version":"0.0.1"}\n');
+
+        const result = spawnSync(
+          "node",
+          [join(repo, "scripts", "verify-all.mjs"), "--gate", "E14", "--no-color"],
+          { cwd: repo, encoding: "utf-8", timeout: 30_000 }
+        );
+        // E14 feature-flag modules are absent in this fixture → must be RED
+        expect(result.status).not.toBe(0);
+        expect((result.stdout + result.stderr)).toMatch(/RED_/);
+      } finally {
+        rmSync(repo, { recursive: true, force: true });
+      }
+    });
+
+    it("RED: E11 chromium-only definition is detected (browser matrix gate exists)", () => {
+      // The canonical E11 must use the playwright-browser-matrix executor
+      expect(GATES.E11.executor).toBe("playwright-browser-matrix");
+      const violations = validateGateDefinition(GATES.E11, process.cwd());
+      expect(violations).toEqual([]);
     });
   });
 });

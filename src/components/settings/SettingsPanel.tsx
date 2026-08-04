@@ -5,6 +5,7 @@
 // with Theme, Export, Layout, Keyboard Shortcuts, and Language sections.
 
 import { useEffect } from "react";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useAppStore } from "@/stores/appStore";
 import type { Theme, ExportFormat } from "@/stores/appStore";
 
@@ -70,6 +71,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
         role="dialog"
         aria-modal="true"
         aria-label="Einstellungen"
+        ref={useFocusTrap(true)}
       >
         <div className="modal-header">
           <h2>Einstellungen</h2>

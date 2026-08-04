@@ -1,7 +1,7 @@
 // scripts/lib/runner.mjs — Autonomous Test Harness Runner
 // Core module: git ops, command execution, classification, evidence.
 
-import { spawn, execSync } from "node:child_process";
+import { spawn, execFileSync } from "node:child_process";
 import { writeFile, mkdir, rename } from "node:fs/promises";
 import { randomBytes } from "node:crypto";
 import { resolve, normalize, sep, isAbsolute, dirname } from "node:path";
@@ -32,6 +32,63 @@ export function gitRoot() {
   } catch {
     return process.cwd();
   }
+}
+
+/**
+ * Safe synchronous command execution for git state detection.
+ * Never throws — returns { stdout, stderr, exitCode }.
+ */
+function execSyncSafe(command, args, cwd) {
+  try {
+    const stdout = execFileSync(command, args, {
+      cwd,
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    return { stdout: stdout.trim(), stderr: "", exitCode: 0 };
+  } catch (err) {
+    return {
+      stdout: "",
+      stderr: String(err?.stderr || err?.message || ""),
+      exitCode: err?.status ?? 1,
+    };
+  }
+}
+
+/**
+ * Determine the git branch state of a directory.
+ *
+ * Distinguishes (Run Card §10):
+ *   - normal branch   → { kind: "branch", branch: "<name>" }
+ *   - detached HEAD   → { kind: "detached", branch: "<short-sha>" }
+ *   - no repository   → { kind: "no-repo" }
+ *   - git failure     → { kind: "error", error: "<message>" }
+ *
+ * @param {string} cwd
+ * @returns {{ kind: "branch"|"detached"|"no-repo"|"error", branch?: string, error?: string }}
+ */
+export function getGitBranchState(cwd) {
+  const dir = cwd || process.cwd();
+  const inside = execSyncSafe("git", ["rev-parse", "--is-inside-work-tree"], dir);
+  if (inside.exitCode !== 0 || inside.stdout !== "true") {
+    return { kind: "no-repo" };
+  }
+
+  const symbolic = execSyncSafe(
+    "git",
+    ["symbolic-ref", "-q", "--short", "HEAD"],
+    dir
+  );
+  if (symbolic.exitCode === 0 && symbolic.stdout) {
+    return { kind: "branch", branch: symbolic.stdout };
+  }
+
+  const head = execSyncSafe("git", ["rev-parse", "--short", "HEAD"], dir);
+  if (head.exitCode === 0 && head.stdout) {
+    return { kind: "detached", branch: head.stdout };
+  }
+
+  return { kind: "error", error: head.stderr || "unable to resolve HEAD" };
 }
 
 /**
