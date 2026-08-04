@@ -156,11 +156,13 @@ async function loadArchiveViaDialog(archive, timeoutMs = 30000) {
     while (Date.now() < deadline) {
       if (dialogVisible()) break;
       if (firstCheck) {
-        // Diagnose: alle Fenstertitel dumpen
+        // Diagnose: vollständigen xwininfo-Dump (unfiltered) + Button-Zustand
         const xw = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
-        console.log("DIAG xwininfo titles:", JSON.stringify(
-          (xw.stdout || "").split("\n").filter((l) => /"/.test(l)).slice(0, 8)
-        ));
+        const lines = (xw.stdout || "").split("\n");
+        console.log("DIAG xwininfo ALL:", JSON.stringify(lines.slice(0, 15)));
+        // Button-Zustand prüfen
+        const btn = await $('button[title*="Ordner öffnen"]');
+        console.log("DIAG button exists:", await btn.isExisting(), "enabled:", await btn.isEnabled());
         firstCheck = false;
       }
       await browser.pause(500);
