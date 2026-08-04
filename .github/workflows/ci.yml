@@ -411,7 +411,8 @@ jobs:
             webkit2gtk-driver \
             xvfb \
             python3-xlib \
-            xdotool
+            xdotool \
+            x11-utils
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
