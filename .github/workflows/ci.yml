@@ -363,6 +363,9 @@ jobs:
           name: tauri-debug-artifacts
           path: .
 
+      - name: Restore executable bit (upload-artifact@v4 strips it)
+        run: chmod +x target/debug/promptvault-lite
+
       - name: Build Artifact Integrity (E18)
         run: node scripts/verify-all.mjs --gate E18 --no-color
 
