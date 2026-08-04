@@ -190,6 +190,33 @@ export const GATES = {
     isOptional: true,
     visualBaselinesMissing: true,
   },
+  E16: {
+    id: "E16",
+    name: "Accessibility",
+    command: "pnpm",
+    args: ["exec", "playwright", "test", "accessibility.spec.ts"],
+    mandatory: false,
+    level: "full",
+    isOptional: true,
+  },
+  E17: {
+    id: "E17",
+    name: "Tauri IPC Integration",
+    command: "pnpm",
+    args: ["vitest", "run", "src/__tests__/tauri-ipc-integration.test.ts"],
+    mandatory: true,
+    level: "full",
+  },
+  E18: {
+    id: "E18",
+    name: "Native Tauri Linux E2E",
+    command: "pnpm",
+    args: ["exec", "playwright", "test", "native-tauri-e2e.spec.ts"],
+    mandatory: false,
+    level: "full",
+    isOptional: true,
+    requiresNativeBinary: true,
+  },
 };
 
 // ── Helpers ──

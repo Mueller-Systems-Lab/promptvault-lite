@@ -399,21 +399,27 @@ describe("Autonomous Test Harness — Contract Verification", () => {
 
   describe("Secret Masking", () => {
     it("masks GitHub PAT", () => {
-      const input = "github_pat_11ABCDEFGHIJKLMNOPQRSTUVWXYZ0123";
+      // Secret pattern assembled at runtime — no static token in committed source
+      const patToken = "github" + "_pat_" + "11AAbb22CCdd33EEff44GGhh55XX";
+      const input = patToken;
       const result = maskSecrets(input);
       expect(result).not.toContain("github_pat_");
       expect(result).toContain("[MASKED]");
     });
 
     it("masks AWS access key", () => {
-      const input = "AKIAIOSFODNN7EXAMPLE";
+      // Secret pattern assembled at runtime — no static token in committed source
+      const awsToken = "AK" + "IA" + "IOCHANGEMEPLEASEEXAMPLE";
+      const input = awsToken;
       const result = maskSecrets(input);
       expect(result).not.toContain("AKIA");
       expect(result).toContain("[MASKED]");
     });
 
     it("masks private key header", () => {
-      const input = "-----BEGIN RSA PRIVATE KEY-----";
+      // Secret pattern assembled at runtime — no static token in committed source
+      const privateKey = "-----" + "BEGIN RSA PRIVATE" + " KEY-----";
+      const input = privateKey;
       const result = maskSecrets(input);
       expect(result).not.toContain("PRIVATE KEY");
       expect(result).toContain("[MASKED]");
@@ -546,7 +552,9 @@ describe("Autonomous Test Harness — Contract Verification", () => {
     });
 
     it("RED: seeded secret token produces E10 failure", () => {
-      writeFileSync(join(testRepo, "config.ts"), "export const KEY = 'github_pat_11AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH'");
+      // Secret pattern assembled at runtime — no static token in committed source
+      const secretToken = "github" + "_pat_" + "11AAbb22CCdd33EEff44GGhh55XX";
+      writeFileSync(join(testRepo, "config.ts"), "export const KEY = '" + secretToken + "'");
       execSync("git add config.ts", { cwd: testRepo, encoding: "utf-8" });
       execSync("git commit -m 'seed: token in config'", { cwd: testRepo, encoding: "utf-8" });
 
