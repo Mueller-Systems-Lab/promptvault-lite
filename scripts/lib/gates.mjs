@@ -674,18 +674,20 @@ export async function runBuildArtifactIntegrity(ctx) {
   let artifactCount = 0;
 
   const add = (name, ok, detail) => {
-    checks.push({ check: name, ok, detail: ok ? "" : detail });
-    if (!ok) failures.push(`${name}: ${detail}`);
+    checks.push({ check: name, ok, detail: detail || (ok ? "" : `check failed`) });
+    if (!ok) failures.push({ check: name, detail: detail || "" });
   };
 
-  // 1. Binary exists
-  add("binary exists", existsSync(binary), `missing: ${binary}`);
-  // 2. Binary executable
+  // 1. Binary exists — always report path for diagnostics
+  add("binary exists", existsSync(binary), binary);
+  // 2. Binary executable — mode 644 = infrastructure (artifact transport), not product
   if (existsSync(binary)) {
     const mode = statSync(binary).mode;
-    add("binary executable", (mode & 0o111) !== 0, `mode ${mode.toString(8)}`);
+    const modeStr = mode.toString(8);
+    const isExecutable = (mode & 0o111) !== 0;
+    add("binary executable", isExecutable, `mode ${modeStr} (${isExecutable ? "executable" : "NOT EXECUTABLE — artifact transport permission loss"})`);
   }
-  // 3. Binary format (ELF on Linux)
+  // 3. Binary format (ELF on Linux) — always report magic + size
   if (existsSync(binary) && process.platform === "linux") {
     const header = readFileSync(binary).subarray(0, 4);
     const elfMagic = Buffer.from([0x7f, 0x45, 0x4c, 0x46]);
@@ -757,10 +759,18 @@ export async function runBuildArtifactIntegrity(ctx) {
   }
 
   if (failures.length > 0) {
+    // Differenziere Infrastruktur- von Produkt-Fehlern:
+    // mode-644 bei sonst validem Binary = Artifact-Transport → Infrastruktur.
+    // Fehlendes Binary, ELF-Fehler oder fehlendes dist = Produkt.
+    const hasProductFailure = failures.some((f) =>
+      !f.check.includes("executable"));
+    const failureLines = failures.map((f) => `${f.check}: ${f.detail}`);
     return executorResult({
-      exitCode: 1, stderr: failures.join("\n"),
+      exitCode: 1,
+      stderr: failureLines.join("\n"),
       stdout: JSON.stringify(checks, null, 2),
-      assertionCount: checks.length, artifactCount, isProductFailure: true,
+      assertionCount: checks.length, artifactCount,
+      isProductFailure: hasProductFailure,
       extra: { checks },
     });
   }

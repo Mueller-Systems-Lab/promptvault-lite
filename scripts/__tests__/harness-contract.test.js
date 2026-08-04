@@ -15,6 +15,7 @@ import {
   rmSync,
   existsSync,
   readFileSync,
+  chmodSync,
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
@@ -916,6 +917,92 @@ describe("Autonomous Test Harness — Contract Verification", () => {
       expect(GATES.E11.executor).toBe("playwright-browser-matrix");
       const violations = validateGateDefinition(GATES.E11, process.cwd());
       expect(violations).toEqual([]);
+    });
+  });
+
+  /** Regression: E18 muss mode-644-Binaries als Infrastruktur-Fehler klassifizieren,
+   *  nicht als Produkt-Fehler (Artifact-Transport-Permission-Loss). */
+  describe("E18 — executable bit regression (artifact transport)", () => {
+    let testRepo;
+    const ROOT = process.cwd();
+
+    beforeAll(() => {
+      testRepo = mkdtempSync("/tmp/harness-e18-");
+      // Nur Harness-Skripte + package.json kopieren — kein node_modules
+      execSync(`git clone "${ROOT}" "${testRepo}" 2>/dev/null`, { encoding: "utf-8" });
+
+      // Dummy ELF binary (valid magic, plausible size >1MB)
+      const targetDir = join(testRepo, "target", "debug");
+      mkdirSync(targetDir, { recursive: true });
+
+      // Minimales dist/ mit Version — damit die Version-Prüfung besteht
+      const distDir = join(testRepo, "dist");
+      mkdirSync(distDir, { recursive: true });
+      const assetsDir = join(distDir, "assets");
+      mkdirSync(assetsDir, { recursive: true });
+      const pkg = JSON.parse(readFileSync(join(testRepo, "package.json"), "utf-8"));
+      writeFileSync(join(distDir, "index.html"), `<!doctype><title>${pkg.version}</title>`);
+      // Asset mit Version im Inhalt — check #5 walkt dist/assets/
+      writeFileSync(join(assetsDir, "app.js"), `console.log("v${pkg.version}")`);
+      // Leere bundle-Verzeichnisse (deb/rpm checks)
+      const bundleDir = join(testRepo, "target", "debug", "bundle");
+      [join(bundleDir, "deb"), join(bundleDir, "rpm")].forEach((d) =>
+        mkdirSync(d, { recursive: true })
+      );
+
+      const binary = join(targetDir, "promptvault-lite");
+      const elfMagic = Buffer.from([0x7f, 0x45, 0x4c, 0x46]); // \x7fELF
+      const buf = Buffer.alloc(1_048_577); // > 1MB
+      elfMagic.copy(buf, 0);
+      writeFileSync(binary, buf);
+    });
+
+    afterAll(() => {
+      try { rmSync(testRepo, { recursive: true, force: true }); } catch {}
+    });
+
+    it("RED: mode 644 → binary executable check fails with mode detail", async () => {
+      const binary = join(testRepo, "target", "debug", "promptvault-lite");
+      chmodSync(binary, 0o644);
+
+      const { runBuildArtifactIntegrity } = await import(
+        join(testRepo, "scripts", "lib", "gates.mjs")
+      );
+      const result = await runBuildArtifactIntegrity({
+        root: testRepo,
+        gate: { id: "E18" },
+      });
+
+      expect(result.exitCode).toBe(1);
+      // Check-Details: mode 100644 + NOT EXECUTABLE
+      const exeCheck = result.extra.checks.find(
+        (c) => c.check === "binary executable"
+      );
+      expect(exeCheck).toBeTruthy();
+      expect(exeCheck.ok).toBe(false);
+      expect(exeCheck.detail).toMatch(/mode 100644/);
+      expect(exeCheck.detail).toContain("NOT EXECUTABLE");
+    });
+
+    it("PASS: mode 755 → binary executable check OK", async () => {
+      const binary = join(testRepo, "target", "debug", "promptvault-lite");
+      chmodSync(binary, 0o755);
+
+      const { runBuildArtifactIntegrity } = await import(
+        join(testRepo, "scripts", "lib", "gates.mjs")
+      );
+      const result = await runBuildArtifactIntegrity({
+        root: testRepo,
+        gate: { id: "E18" },
+      });
+
+      // Mode 755: exec check OK; version/dist checks may fail → separate error
+      const exeCheck = result.extra.checks.find(
+        (c) => c.check === "binary executable"
+      );
+      expect(exeCheck).toBeTruthy();
+      expect(exeCheck.ok).toBe(true);
+      expect(exeCheck.detail).not.toContain("NOT EXECUTABLE");
     });
   });
 });
