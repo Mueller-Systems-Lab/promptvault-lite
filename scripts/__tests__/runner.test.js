@@ -67,9 +67,11 @@ describe("verify-all Runner", () => {
   });
 
   it("7 — maskSecrets: hides known secret patterns", () => {
-    const input = 'export GH_TOKEN=ghp_1234567890abcdef1234567890abcdef123456';
+    // Secret pattern assembled at runtime — no static token in committed source
+    const ghpToken = "gh" + "p_" + "1234567890abcdefghijklmnopqrstuvwxyzAB";
+    const input = "export GH_TOKEN=" + ghpToken;
     const result = maskSecrets(input);
-    expect(result).not.toContain("ghp_1234567890abcdef1234567890abcdef123456");
+    expect(result).not.toContain("ghp_");
     expect(result).toContain("[MASKED]");
   });
 

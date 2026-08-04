@@ -66,7 +66,7 @@ export function runCommand(command, args = [], options = {}) {
     const { cwd, timeout = 300_000, env } = options;
     const child = spawn(command, args, {
       cwd: cwd || gitRoot(),
-      env: { ...process.env, ...env },
+      env: { ...process.env, NODE_ENV: "test", ...env },
       stdio: ["ignore", "pipe", "pipe"],
       timeout,
       windowsHide: true,
