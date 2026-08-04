@@ -320,14 +320,24 @@ jobs:
         env:
           CI: "true"
 
-      - name: Upload artifacts (binary + bundles + dist)
+      - name: Verify executable and create artifact manifest
+        run: |
+          test -x target/debug/promptvault-lite
+          sha256sum target/debug/promptvault-lite > tauri-debug-artifacts.sha256
+
+      - name: Package artifacts (tar preserves permissions)
+        run: |
+          tar --format=posix -czf tauri-debug-artifacts.tar.gz \
+            target/debug/promptvault-lite \
+            target/debug/bundle \
+            dist \
+            tauri-debug-artifacts.sha256
+
+      - name: Upload artifacts (tar archive)
         uses: actions/upload-artifact@v4
         with:
           name: tauri-debug-artifacts
-          path: |
-            target/debug/promptvault-lite
-            target/debug/bundle
-            dist
+          path: tauri-debug-artifacts.tar.gz
           retention-days: 3
 
   # ─────────────────────────────────────────────────────────────────────────
@@ -363,8 +373,11 @@ jobs:
           name: tauri-debug-artifacts
           path: .
 
-      - name: Restore executable bit (upload-artifact@v4 strips it)
-        run: chmod +x target/debug/promptvault-lite
+      - name: Extract artifacts and verify integrity
+        run: |
+          tar -xzf tauri-debug-artifacts.tar.gz
+          test -x target/debug/promptvault-lite
+          sha256sum --check tauri-debug-artifacts.sha256
 
       - name: Build Artifact Integrity (E18)
         run: node scripts/verify-all.mjs --gate E18 --no-color
@@ -420,13 +433,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: tauri-debug-artifacts
-          path: .
-
       - name: Native Tauri Real E2E (E19)
+        # Hermetic wrapper rebuilds the binary via tauri CLI (embedded dist);
+        # artifact download is unnecessary — E19 is self-contained.
         run: node scripts/e19-gate.mjs
         env:
           CI: "true"
@@ -463,6 +472,9 @@ jobs:
         with:
           name: tauri-debug-artifacts
           path: .
+
+      - name: Extract artifacts
+        run: tar -xzf tauri-debug-artifacts.tar.gz
 
       - name: Packaging Smoke (E20)
         run: node scripts/verify-all.mjs --gate E20 --no-color
