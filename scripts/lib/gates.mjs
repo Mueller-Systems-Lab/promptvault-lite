@@ -151,7 +151,7 @@ export const GATES = {
   },
   E19: {
     id: "E19", name: "Native Tauri Real E2E",
-    command: "node", args: ["-e", "process.exit(0)"],
+    command: "pnpm", args: ["exec", "wdio", "run", "e2e-tests/wdio.conf.mjs"],
     mandatory: false, level: "full",
     isOptional: true,
     requiresNativeBinary: true,
@@ -159,7 +159,24 @@ export const GATES = {
   },
   E20: {
     id: "E20", name: "Packaging Smoke",
-    command: "node", args: ["-e", "process.exit(0)"],
+    command: "node", args: ["-e", `
+      const fs = require("fs");
+      const path = require("path");
+      const binary = path.resolve("target/debug/promptvault-lite");
+      const debDir = path.resolve("target/debug/bundle/deb");
+      const errors = [];
+      if (!fs.existsSync(binary)) errors.push("Binary missing: " + binary);
+      if (!fs.existsSync(debDir)) errors.push("Deb bundle dir missing: " + debDir);
+      else {
+        const debs = fs.readdirSync(debDir).filter(f => f.endsWith(".deb"));
+        if (debs.length === 0) errors.push("No .deb package found in " + debDir);
+      }
+      if (errors.length > 0) {
+        console.error(errors.join("\\n"));
+        process.exit(1);
+      }
+      console.log("Packaging smoke: binary + deb bundle verified");
+    `],
     mandatory: false, level: "full",
     isOptional: true,
   },
