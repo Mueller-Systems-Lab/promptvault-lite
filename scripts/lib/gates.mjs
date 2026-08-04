@@ -7,6 +7,8 @@
 
 import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { readFile, access } from "node:fs/promises";
 import { maskSecrets, runCommand, classifyGate } from "./runner.mjs";
 
 // ── Gate definitions ──
@@ -178,19 +180,18 @@ export function parseTestOutput(stdout, stderr) {
 }
 
 export function hashBuildOutput(root) {
-  const fs = require("node:fs");
-  const path = require("node:path");
-  const distDir = path.join(root, "dist");
-  if (!fs.existsSync(distDir)) return [];
+  const distDir = join(root, "dist");
+  if (!existsSync(distDir)) return [];
 
   const artifacts = [];
   function walk(dir) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name);
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
       if (entry.isDirectory()) { walk(full); continue; }
-      const content = fs.readFileSync(full);
+      const content = readFileSync(full);
       artifacts.push({
-        relative_path: path.relative(root, full),
+        relative_path: resolve(root),
+        relative: full.slice(root.length + 1),
         size: content.length,
         sha256: sha256(content),
       });
@@ -201,34 +202,80 @@ export function hashBuildOutput(root) {
 }
 
 export async function runSecretScan(ROOT) {
-  const { runCommand } = await import("./runner.mjs");
-  const patterns = [
-    /-----BEGIN.*PRIVATE KEY-----/g,
-    /AKIA[0-9A-Z]{16}/g,
-    /gh[opsur]_[0-9a-zA-Z]{36}/g,
-    /github_pat_[0-9a-zA-Z]{22,}/g,
-    /sk_live_[0-9a-zA-Z]{24}/g,
-  ];
-  const { stdout } = await runCommand("git", ["ls-files", "-z"], { cwd: ROOT });
-  const files = stdout.split("\0").filter(Boolean);
-  for (const file of files) {
-    // Skip known safe files
-    if (file.match(/\.(gitignore|md|json)$/) && !file.match(/\.env/)) continue;
-    if (file.match(/SECURITY_GATES|AGENTS\.md|CLAUDE\.md/)) continue;
-    // Skip test files with runtime-assembled tokens
-    if (file.match(/runner\.test\.js|harness-contract\.test\.js|gates\.mjs|runner\.mjs|tauri-ipc-integration\.test\.ts/)) continue;
+  const failures = [];
+
+  // 1. Pattern scan
+  try {
+    const patterns = [
+      "-----BEGIN.*PRIVATE KEY-----",
+      "AKIA[0-9A-Z]{16}",
+      "gh[opsur]_[0-9a-zA-Z]{36}",
+      "github_pat_[0-9a-zA-Z]{22,}",
+      "sk_live_[0-9a-zA-Z]{24}",
+    ];
+
+    for (const pattern of patterns) {
+      const { stdout } = await runCommand("bash", [
+        "-c",
+        `git ls-files -z | xargs -0 grep -n -i -E '${pattern}' 2>/dev/null || true`,
+      ], { cwd: ROOT });
+      if (stdout.trim()) {
+        const filtered = stdout.split("\n").filter((line) =>
+          line &&
+          !line.includes(".gitignore") &&
+          !line.includes("SECURITY_GATES.md") &&
+          !line.includes("AGENTS.md") &&
+          !line.includes("CLAUDE.md")
+        ).join("\n") || "";
+
+        if (filtered.trim()) {
+          failures.push(`SECRET_PATTERN: ${pattern} found:\n${filtered}`);
+        }
+      }
+    }
+  } catch (err) {
+    failures.push(`Secret scan error: ${err.message}`);
   }
-  return { exitCode: 0, stdout: "No secrets detected", stderr: "" };
+
+  // 2. Check .env files
+  try {
+    const { stdout: envOut } = await runCommand("bash", [
+      "-c",
+      'git ls-files | grep -i "\\.env$" || true',
+    ], { cwd: ROOT });
+    if (envOut.trim()) {
+      failures.push(`COMMITTED_ENV: .env files found:\n${envOut.trim()}`);
+    }
+  } catch (err) {
+    failures.push(`Secret scan .env check error: ${err.message}`);
+  }
+
+  // 3. Check .db files
+  try {
+    const { stdout: dbOut } = await runCommand("bash", [
+      "-c",
+      'git ls-files | grep -E "\\.db(-shm|-wal|-journal)?$" || true',
+    ], { cwd: ROOT });
+    if (dbOut.trim()) {
+      failures.push(`COMMITTED_DB: Database files found:\n${dbOut.trim()}`);
+    }
+  } catch (err) {
+    failures.push(`Secret scan .db check error: ${err.message}`);
+  }
+
+  if (failures.length > 0) {
+    return { exitCode: 1, stdout: "", stderr: failures.join("\n"), isProductFailure: true };
+  }
+  return { exitCode: 0, stdout: "No secrets detected.", stderr: "" };
 }
 
 export async function checkVersionConsistency(ROOT) {
-  const fs = await import("node:fs/promises");
-  const path = await import("node:path");
-  const pkgPath = path.join(ROOT, "package.json");
-  const cargoPath = path.join(ROOT, "src-tauri", "Cargo.toml");
-  const pkg = JSON.parse(await fs.readFile(pkgPath, "utf-8"));
-  const cargo = await fs.readFile(cargoPath, "utf-8");
-  const cargoVersion = cargo.match(/version\s*=\s*"([^"]+)"/)?.[1];
+  const pkgPath = join(ROOT, "package.json");
+  const cargoPath = join(ROOT, "src-tauri", "Cargo.toml");
+  const pkgJson = await readFile(pkgPath, "utf-8");
+  const cargoToml = await readFile(cargoPath, "utf-8");
+  const pkg = JSON.parse(pkgJson);
+  const cargoVersion = cargoToml.match(/version\s*=\s*"([^"]+)"/)?.[1];
   if (pkg.version !== cargoVersion) {
     return { exitCode: 1, stdout: "", stderr: `Version mismatch: package.json=${pkg.version} Cargo.toml=${cargoVersion}`, isProductFailure: true };
   }
@@ -236,11 +283,9 @@ export async function checkVersionConsistency(ROOT) {
 }
 
 export async function checkFeatureFlags(ROOT) {
-  const fs = await import("node:fs/promises");
-  const path = await import("node:path");
-  const flagFile = path.join(ROOT, "src", "lib", "embeddings", "featureFlag.test.ts");
+  const flagFile = join(ROOT, "src", "lib", "embeddings", "featureFlag.test.ts");
   try {
-    await fs.access(flagFile);
+    await access(flagFile);
     return { exitCode: 0, stdout: "Feature flags: all defaults verified (disabled)", stderr: "" };
   } catch {
     return { exitCode: 0, stdout: "Feature flag test file not found — skipped", stderr: "" };
