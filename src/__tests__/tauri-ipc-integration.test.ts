@@ -11,6 +11,7 @@
  * Requires: @tauri-apps/api ^2.0.0 (already in devDependencies)
  */
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck — Tauri mock IPC types are dynamic; args type narrowing in tests
 // is handled by runtime assertions (expect().toHaveProperty()).
 // See: https://v2.tauri.app/develop/tests/mocking/
