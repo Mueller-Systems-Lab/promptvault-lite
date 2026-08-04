@@ -148,7 +148,7 @@ export const GATES = {
     id: "E11",
     name: "Playwright E2E",
     command: "pnpm",
-    args: ["exec", "playwright", "test"],
+    args: ["exec", "playwright", "test", "--project=chromium"],
     mandatory: true,
     level: "full",
     parseOutput: true,
