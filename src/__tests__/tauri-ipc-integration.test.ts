@@ -11,7 +11,7 @@
  * Requires: @tauri-apps/api ^2.0.0 (already in devDependencies)
  */
 
-import { describe, it, expect, afterEach, vi } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import { mockIPC, clearMocks } from "@tauri-apps/api/mocks";
 import { invoke } from "@tauri-apps/api/core";
 
@@ -42,13 +42,13 @@ describe("IPC-01 — Scan Commands", () => {
   it("scan_directory returns error for invalid path", async () => {
     mockIPC((cmd) => {
       if (cmd === "scan_directory") {
-        return Promise.reject("Path not found or not readable");
+        return Promise.reject(new Error("Path not found or not readable"));
       }
     });
 
     await expect(
       invoke("scan_directory", { path: "/nonexistent" })
-    ).rejects.toBe("Path not found or not readable");
+    ).rejects.toThrow("Path not found or not readable");
   });
 
   it("start_file_watcher invokes correctly", async () => {
@@ -139,6 +139,7 @@ describe("IPC-03 — CRUD Commands", () => {
         expect(args).toHaveProperty("description");
         expect(args).toHaveProperty("category");
         expect(args).toHaveProperty("tags");
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         return { id: "new-1", title: args.title };
       }
     });
@@ -155,13 +156,13 @@ describe("IPC-03 — CRUD Commands", () => {
   it("create_prompt returns error when no vault path set", async () => {
     mockIPC((cmd) => {
       if (cmd === "create_prompt") {
-        return Promise.reject("No vault path set. Scan a directory first.");
+        return Promise.reject(new Error("No vault path set. Scan a directory first."));
       }
     });
 
     await expect(
       invoke("create_prompt", { title: "Test" })
-    ).rejects.toBe("No vault path set. Scan a directory first.");
+    ).rejects.toThrow("No vault path set. Scan a directory first.");
   });
 
   it("update_prompt invokes with id and updated fields", async () => {
@@ -169,6 +170,7 @@ describe("IPC-03 — CRUD Commands", () => {
       if (cmd === "update_prompt") {
         expect(args).toHaveProperty("id");
         expect(args).toHaveProperty("title");
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         return { id: args.id, title: args.title };
       }
     });
@@ -231,13 +233,13 @@ describe("IPC-04 — Export Commands", () => {
   it("export commands return error for empty vault", async () => {
     mockIPC((cmd) => {
       if (cmd === "export_json" || cmd === "export_markdown" || cmd === "export_zip") {
-        return Promise.reject("No prompts to export");
+        return Promise.reject(new Error("No prompts to export"));
       }
     });
 
     await expect(
       invoke("export_json", { vaultPath: "/empty" })
-    ).rejects.toBe("No prompts to export");
+    ).rejects.toThrow("No prompts to export");
   });
 });
 
@@ -264,13 +266,13 @@ describe("IPC-05 — Favorites Commands", () => {
   it("toggle_favorite returns error for invalid ID", async () => {
     mockIPC((cmd) => {
       if (cmd === "toggle_favorite") {
-        return Promise.reject("Prompt not found");
+        return Promise.reject(new Error("Prompt not found"));
       }
     });
 
     await expect(
       invoke("toggle_favorite", { promptId: "nonexistent" })
-    ).rejects.toBe("Prompt not found");
+    ).rejects.toThrow("Prompt not found");
   });
 
   it("get_favorites returns list of IDs", async () => {
