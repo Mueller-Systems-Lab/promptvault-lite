@@ -385,6 +385,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            librsvg2-dev \
+            patchelf \
+            libssl-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            libfuse2 \
             webkit2gtk-driver \
             xvfb \
             python3-xlib \
