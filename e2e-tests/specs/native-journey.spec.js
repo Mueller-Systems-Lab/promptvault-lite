@@ -134,10 +134,16 @@ async function loadArchiveViaDialog(archive, timeoutMs = 30000) {
   const deadline = Date.now() + timeoutMs;
 
   const dialogVisible = () => {
-    // wmctrl braucht einen Window-Manager (unter nacktem Xvfb nicht vorhanden) —
-    // xwininfo -root -tree funktioniert WM-frei.
+    // xwininfo -root -tree funktioniert WM-frei auch unter CI-Xvfb.
+    // Bunter Fenstertitel-Fallback: GTK-Dialoge zeigen je nach Locale/Umgebung
+    // unterschiedliche Titel — breite Regex deckt „Ordner", „File", „Prompt" ab.
     const r = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
-    return !!r.stdout && /Prompt-Ordner auswählen/.test(r.stdout);
+    return (
+      !!r.stdout &&
+      /Prompt-Ordner auswählen|Ordner öffnen|prompt.*ordner|open.*folder|select.*folder|file chooser/i.test(
+        r.stdout,
+      )
+    );
   };
 
   for (let attempt = 1; attempt <= 2; attempt += 1) {
@@ -146,8 +152,17 @@ async function loadArchiveViaDialog(archive, timeoutMs = 30000) {
     await openBtn.click();
 
     // Auf das native Dialog-Fenster warten
+    let firstCheck = true;
     while (Date.now() < deadline) {
       if (dialogVisible()) break;
+      if (firstCheck) {
+        // Diagnose: alle Fenstertitel dumpen
+        const xw = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
+        console.log("DIAG xwininfo titles:", JSON.stringify(
+          (xw.stdout || "").split("\n").filter((l) => /"/.test(l)).slice(0, 8)
+        ));
+        firstCheck = false;
+      }
       await browser.pause(500);
     }
     if (!dialogVisible()) {
