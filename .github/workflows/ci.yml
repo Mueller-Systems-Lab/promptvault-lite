@@ -115,6 +115,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
       - name: Run harness secret scan (E10)
         run: |
           pnpm install --frozen-lockfile
@@ -303,7 +314,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Tauri debug binary + bundles
-        run: pnpm tauri build --debug
+        # deb,rpm explizit: AppImage-Bundling (targets:"all") hängt lokal und
+        # in CI >19min (linuxdeploy) — E18/E20 prüfen nur deb+rpm.
+        run: pnpm tauri build --debug --bundles deb,rpm
         env:
           CI: "true"
 
