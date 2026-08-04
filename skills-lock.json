@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "playwright-best-practices": {
+      "source": "currents-dev/playwright-best-practices-skill",
+      "sourceType": "github",
+      "skillPath": "playwright-best-practices/SKILL.md",
+      "computedHash": "42684b93abd595551d6f4b6949b951645503baa445aefa76aa2f0d52ddda2bf7"
+    },
+    "subagent-driven-development": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/subagent-driven-development/SKILL.md",
+      "computedHash": "349a08ad8b59b19b86c13a7d2f34a1a38719bf88257004a863eefefa8d9f9e40"
+    },
+    "testing-tauri-apps": {
+      "source": "dchuk/claude-code-tauri-skills",
+      "sourceType": "github",
+      "skillPath": "tauri/tauri-testing/SKILL.md",
+      "computedHash": "12084f72d1e7c13dc0c11e882df9a65b252cdb8184fb1e93bc06a4516a4c3a35"
+    },
+    "using-git-worktrees": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "skillPath": "skills/using-git-worktrees/SKILL.md",
+      "computedHash": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
+    },
+    "webapp-testing": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/webapp-testing/SKILL.md",
+      "computedHash": "51b7349e77ec63b7744a6f63647e7566a0b4d2e301121cc10e8c2113af6556a2"
+    }
+  }
+}

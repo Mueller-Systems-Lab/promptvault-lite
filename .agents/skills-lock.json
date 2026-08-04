@@ -1,0 +1,102 @@
+{
+  "version": "1.0",
+  "created_at": "2026-08-03T00:00:00Z",
+  "run_id": "PVL-AUTONOMOUS-TEST-HARNESS-20260803-001",
+  "skills": [
+    {
+      "source": "https://github.com/obra/superpowers",
+      "source_commit": "44c9b2d6e889982ac18c27d05a19fefe335194e1",
+      "skill": "subagent-driven-development",
+      "files": {
+        "SKILL.md": {
+          "git_blob": "6c0b8349d27bf91aaf4ec8ad93cad2f2f38ef5b2",
+          "sha256": "349a08ad8b59b19b86c13a7d2f34a1a38719bf88257004a863eefefa8d9f9e40"
+        }
+      },
+      "installed_path": ".agents/skills/subagent-driven-development",
+      "validated_at": "2026-08-03T00:00:00Z",
+      "agent": "hermes",
+      "discovery": "PASS_AFTER_EXTERNAL_DIRS_CONFIG"
+    },
+    {
+      "source": "https://github.com/obra/superpowers",
+      "source_commit": "44c9b2d6e889982ac18c27d05a19fefe335194e1",
+      "skill": "using-git-worktrees",
+      "files": {
+        "SKILL.md": {
+          "git_blob": "1381dacb3516b94382dd6ec736ede21ee8ede2b3",
+          "sha256": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
+        }
+      },
+      "installed_path": ".agents/skills/using-git-worktrees",
+      "validated_at": "2026-08-03T00:00:00Z",
+      "agent": "hermes",
+      "discovery": "PASS_AFTER_EXTERNAL_DIRS_CONFIG",
+      "security_note": "Snyk: Med Risk — local audit required per Run Card 5.4"
+    },
+    {
+      "source": "https://github.com/anthropics/skills",
+      "source_commit": "b29e7cf65e5cb78a5ac33d582270551bc74a14eb",
+      "skill": "webapp-testing",
+      "files": {
+        "SKILL.md": {
+          "git_blob": "4726215301db64a0cc4d41fc3219c61f37a30f4a",
+          "sha256": "51b7349e77ec63b7744a6f63647e7566a0b4d2e301121cc10e8c2113af6556a2"
+        },
+        "scripts/with_server.py": {
+          "git_blob": "431f2eba16b268b7f3e2ae4daae9db41c0289b6d",
+          "sha256": "b0dcf4918935b795f4eda9821579b9902119235ff4447f687a30286e7d0925fd"
+        }
+      },
+      "installed_path": ".agents/skills/webapp-testing",
+      "validated_at": "2026-08-03T00:00:00Z",
+      "agent": "hermes",
+      "discovery": "PASS_AFTER_EXTERNAL_DIRS_CONFIG"
+    },
+    {
+      "source": "https://github.com/currents-dev/playwright-best-practices-skill",
+      "source_commit": "283d5cbc5d11aac1abda058b16ad22c317d54dc0",
+      "skill": "playwright-best-practices",
+      "files": {
+        "SKILL.md": {
+          "git_blob": "0da736253c343081ab8c0cb9802729a707c23196",
+          "sha256": "42684b93abd595551d6f4b6949b951645503baa445aefa76aa2f0d52ddda2bf7"
+        }
+      },
+      "installed_path": ".agents/skills/playwright-best-practices",
+      "validated_at": "2026-08-03T00:00:00Z",
+      "agent": "hermes",
+      "discovery": "PASS_AFTER_EXTERNAL_DIRS_CONFIG",
+      "metadata_version": "1.2"
+    }
+  ],
+  "hermes_existing_equivalents": {
+    "verification-before-completion": {
+      "status": "ALREADY_INSTALLED_AS_HERMES_SKILL",
+      "path": "~/.hermes/skills/software-development/verification-before-completion",
+      "origin": "obra/superpowers (adapted)"
+    },
+    "systematic-debugging": {
+      "status": "ALREADY_INSTALLED_AS_HERMES_SKILL",
+      "path": "~/.hermes/skills/software-development/systematic-debugging",
+      "origin": "obra/superpowers (adapted)"
+    },
+    "test-driven-development": {
+      "status": "ALREADY_INSTALLED_AS_HERMES_SKILL",
+      "path": "~/.hermes/skills/software-development/test-driven-development",
+      "origin": "obra/superpowers (adapted)"
+    }
+  },
+  "hermes_config_change": {
+    "key": "skills.external_dirs",
+    "added": "/home/xxammaxx/Schreibtisch/promptvault-lite/.agents/skills",
+    "reason": "Project .agents/skills/ required for Hermes discovery of npx-installed skills"
+  },
+  "excluded_by_run_card": [
+    {
+      "source": "https://github.com/microsoft/playwright-cli",
+      "skill": "playwright-cli",
+      "reason": "current public Snyk audit is failing; no concrete capability gap remains"
+    }
+  ]
+}

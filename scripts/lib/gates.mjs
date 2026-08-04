@@ -151,7 +151,7 @@ export const GATES = {
   },
   E19: {
     id: "E19", name: "Native Tauri Real E2E",
-    command: "pnpm", args: ["exec", "wdio", "run", "e2e-tests/wdio.conf.mjs"],
+    command: "xvfb-run", args: ["--auto-servernum", "pnpm", "exec", "wdio", "run", "e2e-tests/wdio.conf.mjs"],
     mandatory: false, level: "full",
     isOptional: true,
     requiresNativeBinary: true,
