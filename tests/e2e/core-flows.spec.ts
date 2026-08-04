@@ -111,7 +111,7 @@ test.describe("E2E-F2 — Prompt Archive & Explorer", () => {
   });
 
   test("explorer panel is visible and contains file tree elements after scan trigger", async ({ page }) => {
-    const explorer = page.locator(".explorer-panel");
+    const explorer = page.locator(".panel-explorer");
     await expect(explorer).toBeVisible();
 
     // Try to trigger a scan if scan button exists
@@ -131,7 +131,7 @@ test.describe("E2E-F2 — Prompt Archive & Explorer", () => {
 
   test("explorer panel renders without error", async ({ page }) => {
     // The explorer panel should at minimum render its container without JS errors
-    const explorer = page.locator(".explorer-panel");
+    const explorer = page.locator(".panel-explorer");
     await expect(explorer).toBeVisible();
     // Verify no uncaught error appears in console
     const errors: string[] = [];

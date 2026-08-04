@@ -36,7 +36,6 @@ const __dirname = path.dirname(__filename);
 const BINARY_PATH = path.resolve(
   __dirname,
   "..",
-  "src-tauri",
   "target",
   "debug",
   "promptvault-lite",
