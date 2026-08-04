@@ -490,6 +490,21 @@ async function main() {
       `${statusColor}${result.classification}${C.N} (${result.duration_ms}ms)`
     );
 
+    // Diagnose: bei RED die Executor-Details ausgeben (stderr/stdout-Tail),
+    // damit CI-Logs die Fehlerursache direkt zeigen.
+    if (result.classification.startsWith("RED_")) {
+      const tail = (s, n) =>
+        (s || "")
+          .split("\n")
+          .filter((l) => l.trim().length > 0)
+          .slice(-n)
+          .join("\n");
+      const stderrTail = tail(result.stderr_raw, 12);
+      const stdoutTail = tail(result.stdout_raw, 8);
+      if (stderrTail) console.error(`${C.R}  └ stderr:${C.N}\n${stderrTail}`);
+      if (stdoutTail) console.error(`${C.R}  └ stdout:${C.N}\n${stdoutTail}`);
+    }
+
     // Write log files
     await writeEvidenceAtomic(
       join(EVIDENCE_DIR, LOGS_DIR, `${gate.id}-stdout.txt`),
