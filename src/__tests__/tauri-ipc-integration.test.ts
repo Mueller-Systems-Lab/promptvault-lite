@@ -11,6 +11,10 @@
  * Requires: @tauri-apps/api ^2.0.0 (already in devDependencies)
  */
 
+// @ts-nocheck — Tauri mock IPC types are dynamic; args type narrowing in tests
+// is handled by runtime assertions (expect().toHaveProperty()).
+// See: https://v2.tauri.app/develop/tests/mocking/
+
 import { describe, it, expect, afterEach } from "vitest";
 import { mockIPC, clearMocks } from "@tauri-apps/api/mocks";
 import { invoke } from "@tauri-apps/api/core";
