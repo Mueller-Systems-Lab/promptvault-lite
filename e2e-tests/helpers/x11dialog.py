@@ -312,6 +312,12 @@ def _dump_all_windows(d):
         )
 
 
+def _window_exists(d, wid):
+    """Check if a window ID is still present in the X11 tree."""
+    windows = _parse_xwininfo_tree()
+    return wid in windows
+
+
 # ── Main ────────────────────────────────────────────────────────────────
 
 def main():
@@ -409,24 +415,55 @@ def main():
 
     time.sleep(0.2)
 
-    # Press Return twice:
-    #  - first Enter navigates into the folder (location entry)
-    #  - second Enter activates the "Öffnen"/"Open" button
+    # ── Step 6: Confirm the dialog — diagnose each stage ──────────────
     ret = d.keysym_to_keycode(XK.string_to_keysym("Return"))
+
+    # Phase A: Navigate into the folder (first Return)
+    sys.stderr.write("PATH_TYPED: sending navigation Return\n")
     d.xtest_fake_input(X.KeyPress, ret)
     d.xtest_fake_input(X.KeyRelease, ret)
     d.sync()
     time.sleep(0.6)
+
+    # Diagnose: dialog state after navigation
+    dialog_alive = _window_exists(d, dialog_wid)
+    focus_after_nav = _get_input_focus(d)
+    focus_str = f"0x{focus_after_nav:x}" if focus_after_nav is not None else "None"
+    sys.stderr.write(
+        f"DIALOG_AFTER_NAVIGATION: exists={dialog_alive} focus={focus_str}\n"
+    )
+
+    # Phase B: Confirm the selection (second Return)
+    sys.stderr.write("DIALOG_CONFIRMATION_SENT: sending confirmation Return\n")
     d.xtest_fake_input(X.KeyPress, ret)
     d.xtest_fake_input(X.KeyRelease, ret)
     d.sync()
 
-    # ── Step 6: Report input sent to verified dialog ──────────────────
-    # The caller (E19 journey spec) must independently verify that the
-    # dialog closed and the archive was loaded.
-    print(f"INPUT_SENT_TO_VERIFIED_DIALOG: wid=0x{dialog_wid:x} "
-          f"chars={len(args.path)}")
-    return 0
+    # Phase C: Wait for the dialog to close (up to 5 seconds)
+    confirm_deadline = time.time() + 5.0
+    dialog_closed = False
+    while time.time() < confirm_deadline:
+        if not _window_exists(d, dialog_wid):
+            dialog_closed = True
+            break
+        time.sleep(0.2)
+
+    if dialog_closed:
+        sys.stderr.write("DIALOG_CLOSED_AFTER_CONFIRMATION\n")
+        print(f"INPUT_SENT_TO_VERIFIED_DIALOG: wid=0x{dialog_wid:x} "
+              f"chars={len(args.path)}")
+        return 0
+    else:
+        # Dialog still present — confirmation did not take effect
+        focus_now = _get_input_focus(d)
+        f_str = f"0x{focus_now:x}" if focus_now is not None else "None"
+        sys.stderr.write(
+            f"DIALOG_CONFIRMATION_FAILED: dialog 0x{dialog_wid:x} "
+            f"still present after 5s, focus={f_str}\n"
+        )
+        sys.stderr.write("DIAG: window tree after failed confirmation:\n")
+        _dump_all_windows(d)
+        return 7
 
 
 if __name__ == "__main__":

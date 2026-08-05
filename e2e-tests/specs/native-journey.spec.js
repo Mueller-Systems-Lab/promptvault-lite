@@ -201,6 +201,7 @@ async function loadArchiveViaDialog(archive, timeoutMs = 30000) {
 describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function () {
   this.timeout(600000);
   let archive;
+  let archiveLoaded = false;
 
   before(async () => {
     archive = createNativeArchive();
@@ -213,6 +214,15 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
     const errs = await getJsErrors();
     expect(errs).toEqual([]);
   });
+
+  // Helper: dependent tests call this to mark themselves as blocked
+  // if the archive was never loaded. Uses this.skip() (Mocha) — requires
+  // function() syntax, not arrow functions, in the dependent tests.
+  function requireArchive() {
+    if (!archiveLoaded) {
+      this.skip();
+    }
+  }
 
   it("1. Hauptfenster sichtbar — Titel, Toolbar, Statusbar", async () => {
     const heading = await $("h1");
@@ -236,9 +246,11 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
       // Ordner muss im Explorer stehen
       expect(folders).toContain(f);
     }
+    archiveLoaded = true;
   });
 
-  it("3. Explorer zeigt erwartete Dateien (clean/…)", async () => {
+  it("3. Explorer zeigt erwartete Dateien (clean/…)", async function () {
+    requireArchive.call(this);
     const cleanFolder = await $('[aria-label*="Ordner clean"]');
     await cleanFolder.click();
     await browser.pause(500);
@@ -249,7 +261,8 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
     expect(files).toContain("missing-info-prompt");
   });
 
-  it("4. Clean Prompt auswählen → Titel/Inhalt/Tags in Details", async () => {
+  it("4. Clean Prompt auswählen → Titel/Inhalt/Tags in Details", async function () {
+    requireArchive.call(this);
     await $(".tree-file*=basic-prompt").click();
     await $(".prompt-content").waitForExist({ timeout: 10000 });
 
@@ -259,7 +272,8 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
     expect(detailsText).toMatch(/Basic Prompt/);
   });
 
-  it("5. Realer Rust-Command via UI: Analysieren → Score in der Analyse", async () => {
+  it("5. Realer Rust-Command via UI: Analysieren → Score in der Analyse", async function () {
+    requireArchive.call(this);
     const analyzeBtn = await $('button[title="Neu analysieren"]');
     await analyzeBtn.waitForEnabled({ timeout: 10000 });
     await analyzeBtn.click();
@@ -308,7 +322,8 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
     expect(await themeBtn.getAttribute("aria-label")).toContain("Hell");
   });
 
-  it("9. Favorit setzen → echte Rust/SQLite-Persistenz", async () => {
+  it("9. Favorit setzen → echte Rust/SQLite-Persistenz", async function () {
+    requireArchive.call(this);
     // basic-prompt ist noch ausgewählt
     const favBtn = await $('[aria-label="Als Favorit markieren"]');
     await favBtn.waitForExist({ timeout: 10000 });
@@ -323,7 +338,8 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
     expect(await heading.getText()).toMatch(/PromptVault Lite/);
   });
 
-  it("11. Persistenz verifiziert: Theme Hell + Favorit überleben Neustart", async () => {
+  it("11. Persistenz verifiziert: Theme Hell + Favorit überleben Neustart", async function () {
+    requireArchive.call(this);
     // Theme persistiert (WebView localStorage)
     const themeBtn = await $(".theme-toggle");
     await themeBtn.waitForExist({ timeout: 30000 });
@@ -338,7 +354,8 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
     await $('[aria-label="Favorit entfernen"]').waitForExist({ timeout: 15000 });
   });
 
-  it("12. Sicherheitsreise: BLOCKED-Marker nie sichtbar, Optimizer blockiert", async () => {
+  it("12. Sicherheitsreise: BLOCKED-Marker nie sichtbar, Optimizer blockiert", async function () {
+    requireArchive.call(this);
     await $('[aria-label*="Ordner blocked"]').click();
     await $(".tree-file*=sensitive-prompt").click();
     await browser.pause(500);
