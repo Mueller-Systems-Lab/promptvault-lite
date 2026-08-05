@@ -85,14 +85,18 @@ describe("E21 — Native File Dialog Smoke (Desktop-Integrationsgrenze)", functi
     expect(out).toContain("ATSPI_CONFIRM_BUTTON_FOUND");
 
     // Sauberer Cancel: Escape schließt den Dialog (Standard-Cancel, kein
-    // Bestätigungs-Fallback). Danach prüfen, dass kein Dialog mehr da ist.
+    // Bestätigungs-Fallback). Danach mit xdotool gezielt prüfen, dass das
+    // Dialog-Fenster weg ist. WID-Diffing würde fälschlich Portal-/GTK-
+    // Helper-Fenster (xdg-desktop-portal-gtk etc.) als offenen Dialog
+    // zählen — diese transienten Fenster sind kein Dialog-Leak.
     await browser.keys("Escape");
-    await browser.pause(1000);
-    const after = captureWids();
-    const stillFresh = after.filter((w) => !preWids.includes(w));
-    // Der Dialog-WID sollte verschwunden sein; toleriere nur das App-Fenster
-    console.log(`E21: WIDs nach Escape: ${after.join(",")}`);
-    // Fail-closed-Erwartung: kein zusätzliches Dialog-WID mehr
-    expect(stillFresh.length).toBe(0);
+    await browser.pause(1500);
+    const check = spawnSync("xdotool", [
+      "search", "--name", "Prompt-Ordner auswählen",
+    ], { encoding: "utf-8" });
+    const dialogWids = (check.stdout || "").trim();
+    console.log(`E21: xdotool search nach Escape: "${dialogWids}" (exit=${check.status})`);
+    // fail-closed: kein Treffer → Dialog ist geschlossen
+    expect(dialogWids).toBe("");
   });
 });
