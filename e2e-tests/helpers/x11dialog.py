@@ -5,13 +5,16 @@ x11dialog.py — type a path into a native file chooser dialog via X11 XTEST.
 FAIL-CLOSED: Success is ONLY reported when a genuine dialog window has been
 verified. Without that proof: DIALOG_WINDOW_NOT_FOUND (exit 2).
 
-Pre-/post-click window snapshots are essential: the caller must capture all
-visible window IDs BEFORE clicking the button and pass them via --pre-wids.
-Only NEW windows (or windows with WM_TRANSIENT_FOR pointing to the app) are
-considered as dialog candidates. Title matching alone is not sufficient.
+Exit codes:
+  0  INPUT_SENT_TO_VERIFIED_DIALOG + DIALOG_CLOSED_AFTER_CONFIRMATION
+  2  DIALOG_WINDOW_NOT_FOUND (X11)
+  3  DIALOG_FOCUS_VERIFICATION_FAILED
+  6  UNMAPPABLE_CHARACTERS_IN_PATH
+  7  DIALOG_CONFIRMATION_FAILED / DIALOG_REPLACED_STILL_OPEN
 
-Used by the E19 Native Tauri E2E Journey (Run Card §22).
+Used by the E19 Native Tauri E2E Journey.
 Requirements: python3 + python-xlib (XTEST extension).
+AT-SPI packages (python3-gi, gir1.2-atspi-2.0) are optional for diagnostics.
 
 Usage:
     python3 x11dialog.py --path /tmp/pvl-archive-xyz --pre-wids 0x400001,0x400002
@@ -454,13 +457,29 @@ def main():
               f"chars={len(args.path)}")
         return 0
     else:
-        # Dialog still present — confirmation did not take effect
+        # Dialog still present — confirmation did not take effect.
+        # Check for replacement dialog with same title/pid.
+        windows_now = _parse_xwininfo_tree()
+        replacement = None
+        for wid, title in windows_now.items():
+            if wid == dialog_wid:
+                continue
+            if _looks_like_dialog(title.lower()):
+                replacement = wid
+                break
+
         focus_now = _get_input_focus(d)
         f_str = f"0x{focus_now:x}" if focus_now is not None else "None"
-        sys.stderr.write(
-            f"DIALOG_CONFIRMATION_FAILED: dialog 0x{dialog_wid:x} "
-            f"still present after 5s, focus={f_str}\n"
-        )
+        if replacement:
+            sys.stderr.write(
+                f"DIALOG_REPLACED_STILL_OPEN: original 0x{dialog_wid:x} gone, "
+                f"new candidate 0x{replacement:x} present, focus={f_str}\n"
+            )
+        else:
+            sys.stderr.write(
+                f"DIALOG_CONFIRMATION_FAILED: dialog 0x{dialog_wid:x} "
+                f"still present after 5s, focus={f_str}\n"
+            )
         sys.stderr.write("DIAG: window tree after failed confirmation:\n")
         _dump_all_windows(d)
         return 7

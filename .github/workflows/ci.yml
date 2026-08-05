@@ -409,7 +409,11 @@ jobs:
             xvfb \
             python3-xlib \
             xdotool \
-            x11-utils
+            x11-utils \
+            python3-gi \
+            gir1.2-atspi-2.0 \
+            at-spi2-core \
+            dbus-daemon
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -445,9 +449,13 @@ jobs:
           sha256sum --check tauri-debug-artifacts.sha256 || { echo "ARTIFACT_HASH_MISMATCH"; exit 1; }
 
       - name: Native Tauri Real E2E (E19)
-        run: node scripts/e19-gate.mjs
+        # dbus-run-session stellt eine private D-Bus-Session bereit,
+        # damit AT-SPI (at-spi2-core) den GTK-Dialogbaum lesen kann.
+        # xvfb-run wird innerhalb von e19-gate.mjs aufgerufen.
+        run: dbus-run-session -- node scripts/e19-gate.mjs
         env:
           CI: "true"
+          NO_AT_BRIDGE: "0"
 
   # ─────────────────────────────────────────────────────────────────────────
   # Packaging Smoke (E20 — Pflicht, dpkg-deb-basiert)
