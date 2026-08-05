@@ -125,61 +125,69 @@ async function treeNames(selector) {
 }
 
 /**
+ * Extrahiere alle WIDs aus xwininfo -root -tree (Hex-Strings).
+ * Wird als Pre-Klick-Snapshot an x11dialog.py übergeben.
+ */
+function captureWids() {
+  const { spawnSync } = require("node:child_process");
+  const r = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
+  if (!r.stdout) return [];
+  const wids = [];
+  const re = /^\s*(0x[0-9a-fA-F]+)\s/gm;
+  let m;
+  while ((m = re.exec(r.stdout)) !== null) {
+    wids.push(m[1]);
+  }
+  return wids;
+}
+
+/**
  * Lade das Archiv über den ECHTEN nativen GTK-Dialog (Run Card §22).
- * Robust: wartet mit wmctrl auf das Dialog-Fenster, tippt den Pfad via
- * XTEST und prüft, ob der Explorer die Ordner zeigt. Retry bis zu 2x.
+ *
+ * x11dialog.py arbeitet fail-closed: es prüft eigenständig, ob ein
+ * echtes Dialogfenster existiert (Pre-/Post-Snapshot, WM_TRANSIENT_FOR,
+ * XGetInputFocus). Titel-Matching allein reicht nicht.
+ *
+ * Diese Funktion erfasst den Pre-Klick-Fensterbestand, klickt den Button,
+ * und übergibt die WIDs an x11dialog.py. Der Helper entscheidet selbst,
+ * ob ein Dialog erkannt wurde (exit 0) oder nicht (exit 2/3/6).
  */
 async function loadArchiveViaDialog(archive, timeoutMs = 30000) {
   const { spawnSync } = await import("node:child_process");
   const deadline = Date.now() + timeoutMs;
 
-  const dialogVisible = () => {
-    // xwininfo -root -tree funktioniert WM-frei auch unter CI-Xvfb.
-    // Bunter Fenstertitel-Fallback: GTK-Dialoge zeigen je nach Locale/Umgebung
-    // unterschiedliche Titel — breite Regex deckt „Ordner", „File", „Prompt" ab.
-    const r = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
-    return (
-      !!r.stdout &&
-      /Prompt-Ordner auswählen|Ordner öffnen|prompt.*ordner|open.*folder|select.*folder|file chooser/i.test(
-        r.stdout,
-      )
-    );
-  };
-
   for (let attempt = 1; attempt <= 2; attempt += 1) {
+    // ── Pre-Klick-Snapshot: alle sichtbaren WIDs erfassen ──────────
+    const preWids = captureWids();
+    console.log(`DIALOG pre-click WIDs (${preWids.length}):`, preWids.join(","));
+
     const openBtn = await $('button[title*="Ordner öffnen"]');
     await openBtn.waitForEnabled({ timeout: 15000 });
     await openBtn.click();
 
-    // Auf das native Dialog-Fenster warten
-    let firstCheck = true;
-    while (Date.now() < deadline) {
-      if (dialogVisible()) break;
-      if (firstCheck) {
-        // Diagnose: vollständigen xwininfo-Dump (unfiltered) + Button-Zustand
-        const xw = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
-        const lines = (xw.stdout || "").split("\n");
-        console.log("DIAG xwininfo ALL:", JSON.stringify(lines.slice(0, 15)));
-        // Button-Zustand prüfen
-        const btn = await $('button[title*="Ordner öffnen"]');
-        console.log("DIAG button exists:", await btn.isExisting(), "enabled:", await btn.isEnabled());
-        firstCheck = false;
-      }
-      await browser.pause(500);
-    }
-    if (!dialogVisible()) {
-      console.warn(`DIALOG attempt ${attempt}: kein Dialog-Fenster erkannt`);
+    // x11dialog.py erkennt den Dialog eigenständig (fail-closed).
+    // --pre-wids übergibt den Pre-Klick-Snapshot zur Differenzbildung.
+    const preWidsArg = preWids.join(",");
+    const r = spawnSync("python3", [
+      HELPER,
+      "--path", archive,
+      "--pre-wids", preWidsArg,
+      "--timeout-s", String(Math.floor(timeoutMs / 1000)),
+    ], {
+      stdio: "inherit",
+      timeout: Math.max(timeoutMs + 10000, 70000),
+    });
+
+    if (r.status !== 0) {
+      console.warn(`DIALOG attempt ${attempt}: x11dialog.py exit ${r.status}`);
+      // Diagnose nach Fehlschlag
+      const xw = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
+      console.log("DIAG post-failure xwininfo:", JSON.stringify((xw.stdout || "").split("\n").slice(0, 15)));
       continue;
     }
 
-    const r = spawnSync("python3", [HELPER, "--path", archive], {
-      stdio: "inherit",
-      timeout: 60000,
-    });
-    // x11dialog.py muss erfolgreich tippen
-    expect(r.status).toBe(0);
-
-    // Explorer zeigt die Ordnerstruktur?
+    // Explorer zeigt die Ordnerstruktur? (Dialog wurde geschlossen,
+    // Archiv wurde übernommen — E19-spezifische Prüfung)
     try {
       await $(".tree-folder").waitForExist({ timeout: 15000 });
       return; // Erfolg

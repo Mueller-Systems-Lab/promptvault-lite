@@ -384,30 +384,27 @@ jobs:
 
   # ─────────────────────────────────────────────────────────────────────────
   # Native Tauri Real E2E (E19 — Pflicht, echter WebDriver-Lauf)
-  # Der Jobname ist nur zulässig, weil die App WIRKLICH über WebDriver
-  # (tauri-driver + WebdriverIO) bedient wird — kein Datei-Existenz-Smoke.
+  #
+  # Verwendet EXAKT dasselbe Binary wie E18 und E20 (vom build-tauri-debug-Job).
+  # Kein eigener Build — Artifact-Download mit SHA-256-Prüfung und
+  # Executable-Bit-Verifikation. Bei fehlendem Artifact, Hashabweichung
+  # oder fehlendem Executable-Bit bricht E19 fail-closed ab.
   # ─────────────────────────────────────────────────────────────────────────
   native-tauri-real-e2e:
     name: Native Tauri Real E2E (E19)
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
     needs: build-tauri-debug
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install system dependencies
+      - name: Install system dependencies (runtime only — kein Build)
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             libwebkit2gtk-4.1-dev \
-            librsvg2-dev \
-            patchelf \
-            libssl-dev \
-            libgtk-3-dev \
-            libayatana-appindicator3-dev \
-            libfuse2 \
             webkit2gtk-driver \
             xvfb \
             python3-xlib \
@@ -434,9 +431,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tauri-debug-artifacts
+          path: .
+
+      - name: Extract and verify artifact integrity
+        run: |
+          tar -xzf tauri-debug-artifacts.tar.gz
+          test -f target/debug/promptvault-lite || { echo "ARTIFACT_MISSING: binary not found"; exit 1; }
+          test -x target/debug/promptvault-lite || { echo "ARTIFACT_NOT_EXECUTABLE"; exit 1; }
+          sha256sum --check tauri-debug-artifacts.sha256 || { echo "ARTIFACT_HASH_MISMATCH"; exit 1; }
+
       - name: Native Tauri Real E2E (E19)
-        # Hermetic wrapper rebuilds the binary via tauri CLI (embedded dist);
-        # artifact download is unnecessary — E19 is self-contained.
         run: node scripts/e19-gate.mjs
         env:
           CI: "true"
