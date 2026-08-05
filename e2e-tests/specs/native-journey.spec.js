@@ -141,57 +141,25 @@ function captureWids() {
 }
 
 /**
- * Lade das Archiv über den ECHTEN nativen GTK-Dialog (Run Card §22).
+ * Lade das Archiv über den ECHTEN invoke-Pfad (ADR-005 Variante B —
+ * Owner-Freigabe 2026-08-05). Der OS-Dateidialog ist unter CI-Xvfb nicht
+ * automatisierbar (AtkAction ≠ GtkButton.clicked, 10 reproduzierbare Läufe);
+ * der Contract wurde per Owner-Entscheidung aufgeteilt:
+ *   E19 = Core-Journey via echtem scan_directory-Invoke (kein Mock)
+ *   E21 = separater Native-File-Dialog-Smoke (AT-SPI-Grundlage)
  *
- * x11dialog.py arbeitet fail-closed: es prüft eigenständig, ob ein
- * echtes Dialogfenster existiert (Pre-/Post-Snapshot, WM_TRANSIENT_FOR,
- * XGetInputFocus). Titel-Matching allein reicht nicht.
- *
- * Diese Funktion erfasst den Pre-Klick-Fensterbestand, klickt den Button,
- * und übergibt die WIDs an x11dialog.py. Der Helper entscheidet selbst,
- * ob ein Dialog erkannt wurde (exit 0) oder nicht (exit 2/3/6).
+ * __pvlLoadArchive ruft im Frontend den echten scanFolder()-Store-Pfad auf
+ * → echte Tauri-IPC → echter Rust-Command scan_directory → echtes FS.
  */
-async function loadArchiveViaDialog(archive, timeoutMs = 30000) {
-  for (let attempt = 1; attempt <= 2; attempt += 1) {
-    // ── Pre-Klick-Snapshot: alle sichtbaren WIDs erfassen ──────────
-    const preWids = captureWids();
-    console.log(`DIALOG pre-click WIDs (${preWids.length}):`, preWids.join(","));
+async function loadArchiveViaInvoke(archive) {
+  await browser.execute((p) => {
+    // window.__pvlLoadArchive wird von App.tsx registriert (ADR-005)
+    window.__pvlLoadArchive(p);
+  }, archive);
 
-    const openBtn = await $('button[title*="Ordner öffnen"]');
-    await openBtn.waitForEnabled({ timeout: 15000 });
-    await openBtn.click();
-
-    // x11dialog.py erkennt den Dialog eigenständig (fail-closed).
-    // --pre-wids übergibt den Pre-Klick-Snapshot zur Differenzbildung.
-    const preWidsArg = preWids.join(",");
-    const r = spawnSync("python3", [
-      HELPER,
-      "--path", archive,
-      "--pre-wids", preWidsArg,
-      "--timeout-s", String(Math.floor(timeoutMs / 1000)),
-    ], {
-      stdio: "inherit",
-      timeout: Math.max(timeoutMs + 10000, 70000),
-    });
-
-    if (r.status !== 0) {
-      console.warn(`DIALOG attempt ${attempt}: x11dialog.py exit ${r.status}`);
-      // Diagnose nach Fehlschlag
-      const xw = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
-      console.log("DIAG post-failure xwininfo:", JSON.stringify((xw.stdout || "").split("\n").slice(0, 15)));
-      continue;
-    }
-
-    // Explorer zeigt die Ordnerstruktur? (Dialog wurde geschlossen,
-    // Archiv wurde übernommen — E19-spezifische Prüfung)
-    try {
-      await $(".tree-folder").waitForExist({ timeout: 15000 });
-      return; // Erfolg
-    } catch {
-      console.warn(`DIALOG attempt ${attempt}: Ordner nicht erschienen — Retry`);
-    }
-  }
-  throw new Error("Archiv konnte nicht über den nativen Dialog geladen werden");
+  // Explorer zeigt die Ordnerstruktur (App hat den Pfad übernommen)
+  await $(".tree-folder").waitForExist({ timeout: 20000 });
+  await browser.pause(500);
 }
 
 // ---------------------------------------------------------------------------
@@ -237,8 +205,8 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
     expect(await statusbar.getText()).toMatch(/PromptVault Lite v\d+\.\d+\.\d+/);
   });
 
-  it("2. Archiv über reale UI laden — nativer GTK-Dialog via XTEST", async () => {
-    await loadArchiveViaDialog(archive);
+  it("2. Archiv über echten Invoke laden — Explorer zeigt Ordnerstruktur", async () => {
+    await loadArchiveViaInvoke(archive);
 
     // Explorer zeigt die Ordnerstruktur
     const folders = await treeNames(".tree-folder");
@@ -345,8 +313,8 @@ describe("E19 — Native Tauri Real E2E (echte WebView, echte IPC)", function ()
     await themeBtn.waitForExist({ timeout: 30000 });
     expect(await themeBtn.getAttribute("aria-label")).toContain("Hell");
 
-    // Archiv erneut laden (Dialog ist wieder nötig — neue Session)
-    await loadArchiveViaDialog(archive, 45000);
+    // Archiv erneut laden (neue Session — via echtem Invoke, ADR-005)
+    await loadArchiveViaInvoke(archive);
 
     // Favorit persistiert (Rust/SQLite) — clean expandieren + basic-prompt wählen
     await $('[aria-label*="Ordner clean"]').click();

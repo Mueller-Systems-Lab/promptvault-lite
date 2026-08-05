@@ -444,18 +444,18 @@ async function main() {
     gatesToRun = Object.values(GATES).filter((g) => g.level === "full");
   }
 
-  // Canonical inventory check (Run Card §9): E1-E20 exactly once, no gaps/extras.
+  // Canonical inventory check (Run Card §9 + ADR-005): E1-E21 exactly once, no gaps/extras.
   if (mode === "full") {
     const inventoryViolations = validateGateInventory(GATES);
     if (inventoryViolations.length > 0) {
       console.error(
-        `${C.R}RED_GATE_IMPLEMENTATION_NOOP: invalid E1-E20 inventory:${C.N}`
+        `${C.R}RED_GATE_IMPLEMENTATION_NOOP: invalid E1-E21 inventory:${C.N}`
       );
       for (const v of inventoryViolations) console.error(`  - ${v}`);
       process.exit(1);
     }
     console.log(
-      `${C.G}Gate inventory E1-E20: canonical (no duplicates, no gaps)${C.N}`
+      `${C.G}Gate inventory E1-E21: canonical (no duplicates, no gaps)${C.N}`
     );
   }
 

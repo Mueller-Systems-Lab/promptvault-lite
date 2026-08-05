@@ -458,6 +458,77 @@ jobs:
           NO_AT_BRIDGE: "0"
 
   # ─────────────────────────────────────────────────────────────────────────
+  # Native File Dialog Smoke (E21 — ADR-005, Owner-Freigabe 2026-08-05)
+  # Desktop-Integrationsgrenze: echter OS-Dialog, X11-fail-closed-Erkennung,
+  # AT-SPI-Mapping + affirmativer Default-Button. Dasselbe Artifact wie
+  # E18/E19/E20. Bestätigung (Dialog schließen) ist dokumentiertes
+  # Plattform-Limit (AtkAction ≠ GtkButton.clicked) → Cancel via Escape.
+  # ─────────────────────────────────────────────────────────────────────────
+  native-dialog-smoke:
+    name: Native File Dialog Smoke (E21)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: build-tauri-debug
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies (runtime only — kein Build)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            webkit2gtk-driver \
+            xvfb \
+            python3-xlib \
+            xdotool \
+            x11-utils \
+            python3-gi \
+            gir1.2-atspi-2.0 \
+            at-spi2-core \
+            dbus-daemon
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install tauri-driver
+        run: cargo install tauri-driver --locked
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tauri-debug-artifacts
+          path: .
+
+      - name: Extract and verify artifact integrity
+        run: |
+          tar -xzf tauri-debug-artifacts.tar.gz
+          test -f target/debug/promptvault-lite || { echo "ARTIFACT_MISSING: binary not found"; exit 1; }
+          test -x target/debug/promptvault-lite || { echo "ARTIFACT_NOT_EXECUTABLE"; exit 1; }
+          sha256sum --check tauri-debug-artifacts.sha256 || { echo "ARTIFACT_HASH_MISMATCH"; exit 1; }
+
+      - name: Native File Dialog Smoke (E21)
+        run: node scripts/e21-gate.mjs
+        env:
+          CI: "true"
+          NO_AT_BRIDGE: "0"
+
+  # ─────────────────────────────────────────────────────────────────────────
   # Packaging Smoke (E20 — Pflicht, dpkg-deb-basiert)
   # ─────────────────────────────────────────────────────────────────────────
   packaging-smoke:

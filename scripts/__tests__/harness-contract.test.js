@@ -775,14 +775,16 @@ describe("Autonomous Test Harness — Contract Verification", () => {
 
     it("RED: every E-gate must have exactly one canonical id", () => {
       const ids = Object.keys(GATES).filter((id) => id.startsWith("E"));
-      expect(ids).toHaveLength(20);
+      // ADR-005: E21 (Native File Dialog Smoke) ergänzt das Inventar auf E1-E21
+      expect(ids).toHaveLength(21);
     });
   });
 
   describe("C2 — Gate Definition Validation (No-op-Verbot)", () => {
-    it("PASS: canonical E19/E20 definitions are valid", () => {
+    it("PASS: canonical E19/E20/E21 definitions are valid", () => {
       expect(validateGateDefinition(GATES.E19, process.cwd())).toEqual([]);
       expect(validateGateDefinition(GATES.E20, process.cwd())).toEqual([]);
+      expect(validateGateDefinition(GATES.E21, process.cwd())).toEqual([]);
     });
 
     it("RED: E19 as no-op (node -e process.exit(0)) is detected", () => {

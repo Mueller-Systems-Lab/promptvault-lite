@@ -14,6 +14,7 @@ import { setApprovalProvider } from "./actions";
 import type { ApprovalRequest } from "./actions";
 import { classifyContent, evaluateBlueprint } from "./lib/blueprintDetection";
 import { rememberProcessedFingerprint } from "./lib/cacheUtils";
+import { installE2EBridgeIfAuthorized } from "./lib/e2eBridge";
 import "./App.css";
 
 const MIN_EXPLORER_WIDTH = 240;
@@ -47,6 +48,23 @@ function App() {
 
   const isMac = navigator.platform.toUpperCase().includes("MAC");
   const modLabel = isMac ? "Cmd" : "Strg";
+
+  // E2E-Test-Einstieg (ADR-005, Variante B — Owner-Freigabe 2026-08-05):
+  // Erlaubt dem nativen E2E-Test (E19), den Archivpfad über den ECHTEN
+  // scanFolder-Store-Pfad zu setzen — der macht den echten
+  // scan_directory-Invoke, echte Rust-Commands und echtes Dateisystem.
+  // Ersatz für den OS-Dateidialog, der unter CI-Xvfb nicht automatisierbar
+  // ist (AtkAction löst GtkButton.clicked nicht aus). Kein Mock.
+  // Der native Dialog selbst wird separat als E21-Smoke getestet.
+  //
+  // SICHERHEITSVERTRAG (ADR-005): installE2EBridgeIfAuthorized exponiert
+  // die Bridge NUR, wenn is_e2e_bridge_available() true liefert (Rust,
+  // cfg!(debug_assertions)). Produktions-Build: false → window.__pvlLoadArchive
+  // bleibt undefined. invoke-Fehler: fail-closed. Die Bridge ersetzt
+  // scanFolder nicht — der Pfad durchläuft die reale Produktvalidierung.
+  useEffect(() => {
+    void installE2EBridgeIfAuthorized(scanFolder);
+  }, [scanFolder]);
 
   // Cleanup watcher on component unmount
   useEffect(() => {

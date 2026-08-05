@@ -1,9 +1,9 @@
 // scripts/lib/gates.mjs — Gate definitions, executors, and validation
 //
-// Gate Inventory (E1-E20): canonical list per Run Card
+// Gate Inventory (E1-E21): canonical list per Run Card + ADR-005
 // PVL-PR294-NOOP-ELIMINATION-REAL-NATIVE-E2E-CLOSURE-20260804-001
 // Invariants:
-//   - each gate ID exactly once (no duplicates, no gaps E1..E20)
+//   - each gate ID exactly once (no duplicates, no gaps E1..E21; ADR-005 added E21)
 //   - every gate has a real executor (no `node -e process.exit(0)`, no `skip: true`)
 //   - every gate reports executed=true, exit_code, assertion_count or contract,
 //     started_at, ended_at
@@ -49,7 +49,7 @@ export const SECRET_PATTERNS = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Gate definitions (Q1-Q6 quick, E1-E20 full)
+// Gate definitions (Q1-Q6 quick, E1-E21 full)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const GATES = {
@@ -85,7 +85,7 @@ export const GATES = {
     contract: "executor", mandatory: true, level: "quick",
   },
 
-  // ── Full gates (E1-E20) ──
+  // ── Full gates (E1-E21; E21 per ADR-005) ──
   E1: {
     id: "E1", name: "Repo Hygiene",
     executor: "command", command: "git", args: ["diff", "--check"],
@@ -200,6 +200,15 @@ export const GATES = {
     executor: "packaging-smoke",
     contract: "executor", mandatory: true, level: "full",
   },
+  E21: {
+    id: "E21", name: "Native File Dialog Smoke",
+    executor: "command",
+    command: "node",
+    args: ["scripts/e21-gate.mjs"],
+    contract: "test-output", parseOutput: true, parseWdio: true,
+    mandatory: true, level: "full",
+    expectedTestFile: "e2e-tests/specs/native-dialog-smoke.spec.js",
+  },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -296,7 +305,7 @@ export function validateGateResult(result) {
 }
 
 /**
- * Validate the canonical E1-E20 inventory (Run Card §9).
+ * Validate the canonical E1-E21 inventory (Run Card §9 + ADR-005).
  * Each E-gate exactly once, no gaps, no extras.
  *
  * @returns {string[]} violations
@@ -304,7 +313,9 @@ export function validateGateResult(result) {
 export function validateGateInventory(gates) {
   const violations = [];
   const ids = Object.keys(gates).filter((id) => id.startsWith("E"));
-  for (let n = 1; n <= 20; n += 1) {
+  // ADR-005 (Owner-Freigabe 2026-08-05): Inventar auf E1-E21 erweitert —
+  // E21 = Native File Dialog Smoke (Desktop-Integrationsgrenze).
+  for (let n = 1; n <= 21; n += 1) {
     const id = `E${n}`;
     const count = ids.filter((x) => x === id).length;
     if (count === 0) violations.push(`inventory: E${n} missing`);
@@ -312,7 +323,7 @@ export function validateGateInventory(gates) {
   }
   for (const id of ids) {
     const n = parseInt(id.slice(1), 10);
-    if (n < 1 || n > 20) violations.push(`inventory: unexpected gate ${id}`);
+    if (n < 1 || n > 21) violations.push(`inventory: unexpected gate ${id}`);
   }
   // Detect duplicate ids smuggled via mismatched value.id fields
   for (const [key, gate] of Object.entries(gates)) {
