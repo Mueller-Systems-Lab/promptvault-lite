@@ -129,7 +129,6 @@ async function treeNames(selector) {
  * Wird als Pre-Klick-Snapshot an x11dialog.py übergeben.
  */
 function captureWids() {
-  const { spawnSync } = require("node:child_process");
   const r = spawnSync("xwininfo", ["-root", "-tree"], { encoding: "utf-8" });
   if (!r.stdout) return [];
   const wids = [];
@@ -153,9 +152,6 @@ function captureWids() {
  * ob ein Dialog erkannt wurde (exit 0) oder nicht (exit 2/3/6).
  */
 async function loadArchiveViaDialog(archive, timeoutMs = 30000) {
-  const { spawnSync } = await import("node:child_process");
-  const deadline = Date.now() + timeoutMs;
-
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     // ── Pre-Klick-Snapshot: alle sichtbaren WIDs erfassen ──────────
     const preWids = captureWids();
