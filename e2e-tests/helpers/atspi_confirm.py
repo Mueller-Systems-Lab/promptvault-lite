@@ -281,8 +281,13 @@ def find_atspi_dialog(dialog_title="", dialog_pid=None):
 
 # ── Confirm button discovery (Run Card §10) ──────────────────────────────
 
-def find_confirm_button(dialog):
+def find_confirm_button(dialog, verify_only=False):
     """Find the affirmative confirm button within an AT-SPI dialog.
+
+    verify_only: when True, the caller wants to verify button existence
+    and semantics without invoking the action. Disabled buttons (like
+    'Open' in an empty folder chooser) are then considered valid
+    candidates — they become enabled after a valid path is entered.
 
     Returns (button_node, status_code) — fail-closed:
       (node, EXIT_OK)                 → ATSPI_CONFIRM_BUTTON_FOUND
@@ -323,12 +328,12 @@ def find_confirm_button(dialog):
         sys.stderr.write("ATSPI_CONFIRM_BUTTON_NOT_FOUND: no buttons in dialog\n")
         return None, EXIT_BUTTON_NOT_FOUND
 
-    selected = select_confirm_button_candidate(candidates)
+    selected = select_confirm_button_candidate(candidates, allow_disabled=verify_only)
     if selected is None:
         # Distinguish NOT_FOUND vs AMBIGUOUS for the diagnostic
         viable = [
             c for c in candidates
-            if c["visible"] and c["enabled"] and c["has_action"]
+            if c["visible"] and (c["enabled"] or verify_only) and c["has_action"]
             and not _is_cancel(c["name"])
         ]
         # Diagnostic: dump all buttons in the dialog
@@ -459,7 +464,7 @@ def run_confirmation(dialog_title="", dialog_pid=None, post_action_delay_s=0.6,
     if dialog is None:
         return code, None
 
-    button, code = find_confirm_button(dialog)
+    button, code = find_confirm_button(dialog, verify_only=verify_only)
     if button is None:
         return code, None
 

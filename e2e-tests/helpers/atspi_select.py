@@ -82,14 +82,20 @@ def select_dialog_candidate(candidates):
 
 # ── Confirm button selection (§10: default-preferring, fail-closed) ───────
 
-def select_confirm_button_candidate(buttons):
+def select_confirm_button_candidate(buttons, allow_disabled=False):
     """Pick the unique affirmative confirm button, or None (fail-closed).
 
     buttons: iterable of dicts with keys:
         name, enabled, visible, is_default, has_action
 
+    allow_disabled: when True, also consider disabled buttons that are
+    visible and have an action. Used in verify-only mode where the caller
+    wants to verify button existence/semantics without invoking it
+    (e.g. the default 'Open' button in an empty folder chooser is
+    disabled until a valid path is entered).
+
     Selection order (Run Card §10):
-      1. keep only visible + enabled buttons with a real action
+      1. keep only visible (+ enabled unless allow_disabled) buttons with a real action
       2. exclude cancel buttons
       3. prefer exact affirmative names over substring matches
       4. prefer the GTK default-state button
@@ -101,7 +107,7 @@ def select_confirm_button_candidate(buttons):
     viable = [
         b for b in buttons
         if b.get("visible", True)
-        and b.get("enabled", True)
+        and (b.get("enabled", True) or allow_disabled)
         and b.get("has_action", True)
         and not is_cancel(b.get("name"))
     ]
