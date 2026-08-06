@@ -1,8 +1,8 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-08-03
+**Last updated:** 2026-08-05
 **Current version:** v1.8.0 (stable release)
-**Next target:** TBD — requires separate owner prioritization
+**Next target:** v1.8.x patch — test harness hardening completed (PR #294), pending merge review
 
 ---
 
@@ -37,6 +37,7 @@
 | P0       | Epic: Optimierung mit Varianten         | #214     | ✅ Closed (2026-07-11) — sub-issues #215, #216 complete         |
 | P0       | Optimizer Gate Session Guard            | #289     | ✅ Closed (2026-07-13) — null-safe session access               |
 | P0       | Sensitive Content Optimizer Blocking    | #291     | ✅ Closed (2026-07-14) — normal optimizer blocked for sensitive  |
+| P0       | Autonomous Test Harness Trust           | #294     | ✅ Implemented — E19 13/13, E21 smoke, E2E Bridge Gate (ADR-005), cross-browser matrix, E1-E21 inventory. Pending merge review. |
 
 ---
 

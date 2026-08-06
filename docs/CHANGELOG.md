@@ -9,6 +9,7 @@ version: 1.8.0
 ## v1.8.0 — Direction Profiles, Missing-Info Gate and Optimizer Hardening
 
 Released: 2026-08-03
+PR #294 (Autonomous Test Harness Trust): merged 2026-08-05
 
 ### Added
 
@@ -26,7 +27,7 @@ Released: 2026-08-03
 
 ### Quality / Testing
 
-- **Visuelles Playwright Release Gate** (#152): 8 E2E-Tests für App-Shell, Statusleiste (600/768/900px), Settings-Modal und Theme-Switching. 11/11 passed (4 USB-Corpus-Tests skipped — benötigen lokales Korpus).
+- **Autonomous Test Harness Trust** (#294): E2E Bridge Gate (ADR-005, Owner-Freigabe 2026-08-05). E19 — 13 native Tauri E2E-Tests (echtes Binary, echte IPC, echtes Rust, echtes FS, SQLite-Persistenz, Neustart). E21 — Native File Dialog Smoke (AT-SPI-Semantik + WM_DELETE_WINDOW). Cross-Browser-Playwright-Matrix (Chromium/Firefox/WebKit). Gate-Inventar E1-E21. `window.__pvlLoadArchive` nur im Debug-Build (fail-closed).\n\n- **Visuelles Playwright Release Gate** (#152): 8 E2E-Tests für App-Shell, Statusleiste (600/768/900px), Settings-Modal und Theme-Switching. 11/11 passed (4 USB-Corpus-Tests skipped — benötigen lokales Korpus).
 
 - **Synthetische Test-Fixtures**: 5 repräsentative Prompt-Typen (Standard, Blueprint, Hybrid, Blocked, Long-Windows-Path) als deterministisches Testmaterial.
 
@@ -38,10 +39,12 @@ Released: 2026-08-03
 
 | Gate                | Ergebnis                              |
 | ------------------- | ------------------------------------- |
-| `pnpm test`         | **1460 passed** (54 files, 0 failures)|
+| `pnpm test`         | **1581 passed** (59 files, 0 failures)|
 | `pnpm lint`         | **0 errors, 0 warnings**              |
 | `pnpm exec tsc`     | **0 errors**                          |
 | `cargo test`        | **156 passed** (2 ignored)            |
+| `pnpm test:e2e`     | **177 passed, 15 skipped** (Chromium/Firefox/WebKit) |
+| Python AT-SPI Tests | **62 passed**                         |
 
 ## v1.7.2 — Settings, Audio, Paste Analyzer, Embeddings
 

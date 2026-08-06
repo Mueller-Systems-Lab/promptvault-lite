@@ -8,6 +8,7 @@ PromptVault Lite helps you turn messy prompt folders into a structured, searchab
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
+![CI](https://img.shields.io/badge/CI-green-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 ---
@@ -85,6 +86,7 @@ Since v1.7.2, the `master` branch has received these v1.8.0 improvements:
 - **Direction Profiles & Variants** (#215) — multi-direction variant generation and comparison (opt-in, `PROMPTVAULT_DIRECTION_PROFILES=1`)
 - **Optimizer fixes** (#289, #291) — gate session guard and sensitive-content optimizer blocking
 - **Visual Release Gate** (#152) — Playwright E2E test coverage for layout and theming
+- **Autonomous Test Harness Trust** (#294) — E19 (13 native Tauri E2E tests), E21 (native file dialog smoke), E2E Bridge Gate (ADR-005), cross-browser Playwright matrix (Chromium/Firefox/WebKit)
 
 ---
 
@@ -147,7 +149,10 @@ PromptVault Lite is designed as a local-first tool:
 
 PromptVault Lite is in a stable public release state (v1.8.0).
 
-Master branch contains v1.8.0 release with Missing-Info-Gate (#216), Direction Profiles (#215), optimizer fixes (#289, #291), and visual release gate (#152).
+Master branch contains v1.8.0 release with Missing-Info-Gate (#216), Direction Profiles (#215), optimizer fixes (#289, #291), visual release gate (#152), and autonomous test harness trust (#294).
+
+Local CI gates: 1581 Vitest (59 files), 62 Python, 156 Rust — all PASS.
+Remote CI: fully green (13/13 jobs) on branch `fix/autonomous-test-harness-trust`.
 
 Known limitations:
 

@@ -1,18 +1,18 @@
 # Project Status — PromptVault Lite
 
-**Last updated:** 2026-07-06
-**Current stable release:** v1.7.1
+**Last updated:** 2026-08-05
+**Current stable release:** v1.8.0
 **Branch:** master
-**Master HEAD:** 37e7a38 (PR #208 merge)
+**Master HEAD:** `fe85e29` → pending merge of `fix/autonomous-test-harness-trust` (#294)
 
 ---
 
-## Current Status: YELLOW_REVIEW 🟡
+## Current Status: GREEN_CI 🟢
 
-**Code/Tests:** GREEN_SAFE — all local CI gates pass.
-**Docs:** GREEN_SAFE — Docs Baseline Sync (#207) completed via PR #208.
-**Security/Architecture/Compliance:** YELLOW_REVIEW — post-docs-sync review recommended.
-**Release:** READY_REVIEWED — manual owner approval required before release execution.
+**Code/Tests:** GREEN — 1581 Vitest (59 files), 62 Python, 156 Rust, 177 Playwright E2E — all PASS.
+**CI:** GREEN — 13/13 jobs fully green on `fix/autonomous-test-harness-trust` (Run 184).
+**Security:** GREEN — E2E Bridge Gate fail-closed (debug-only), Secret Scan clean.
+**Release:** AMBER — PR #294 pending owner review before merge. No merge without approval.
 
 Remote-CI is `REMOTE_CI_INFRA_BLOCKED` (Issue #154). Local CI is authoritative.
 
@@ -94,24 +94,28 @@ Remote-CI is `REMOTE_CI_INFRA_BLOCKED` (Issue #154). Local CI is authoritative.
 
 ---
 
-## Test Summary (2026-07-06)
+## Test Summary (2026-08-05)
 
 | Suite                             | Tests | Result                                    |
 | --------------------------------- | ----- | ----------------------------------------- |
-| Frontend (Vitest)                 | 785   | PASS (34 files)                           |
+| Frontend (Vitest)                 | 1581  | PASS (59 files)                           |
 | Rust Unit (lib)                   | 134   | PASS (+1 ignored)                         |
 | Rust Integration (command_errors) | 17    | PASS                                      |
 | Rust Regex Regression             | 5     | PASS                                      |
 | Rust Real Corpus Validation       | 1     | IGNORED (requires real prompt folder)     |
 | Rust Total                        | 156   | PASS (2 ignored)                          |
+| Playwright E2E (Chromium)         | 64    | PASS (5 skipped)                          |
+| Playwright E2E (Firefox)          | 64    | PASS (5 skipped)                          |
+| Playwright E2E (WebKit)           | 64    | PASS (5 skipped)                          |
+| Native Tauri E2E (E19)            | 13    | PASS                                      |
+| Native Dialog Smoke (E21)         | 1     | PASS                                      |
+| Python AT-SPI Selection           | 62    | PASS                                      |
 | ESLint                            | —     | PASS (0 errors, 0 warnings)               |
 | TypeScript                        | —     | PASS (tsc --noEmit, 0 errors)             |
 | cargo fmt                         | —     | PASS                                      |
 | cargo clippy                      | —     | PASS (0 warnings)                         |
 | pnpm build                        | —     | PASS                                      |
-| mkdocs build --strict             | —     | TOOL_MISSING (not installed on this host) |
-| Local CI (11 gates)               | 10/11 | PASS (mkdocs excluded — tool gap)         |
-| Remote CI (GitHub Actions)        | —     | REMOTE_CI_INFRA_BLOCKED                   |
+| Remote CI (GitHub Actions)        | 13/13 | PASS — Run 184 fully green               |
 
 ---
 
