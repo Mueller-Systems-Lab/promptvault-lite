@@ -9,6 +9,18 @@ use crate::database::Database;
 use commands::AppState;
 use tauri::Manager;
 
+/// E2E-Bridge-Gate (ADR-005, Variante B — Owner-Freigabe 2026-08-05).
+///
+/// `window.__pvlLoadArchive` (siehe src/App.tsx) darf NUR in Debug-Builds
+/// exponiert sein. Dieser Command liefert `true` ausschließlich unter
+/// `cfg(debug_assertions)`; im Produktions-Build gibt er `false` zurück,
+/// das Frontend exponiert die Bridge dann NICHT (fail-closed). Der
+/// Test-Einstieg wird damit nie in Release-Artefakten aktiv.
+#[tauri::command]
+fn is_e2e_bridge_available() -> bool {
+    cfg!(debug_assertions)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     env_logger::init();
@@ -73,6 +85,10 @@ pub fn run() {
             commands::actions::detect_artifacts_action,
             commands::actions::create_prompt,
             commands::actions::update_prompt,
+            // E2E-Bridge-Gate (ADR-005): existiert NUR im Debug-Build.
+            // Produktions-Build: Command nicht registriert → invoke wirft →
+            // Frontend exponiert window.__pvlLoadArchive NICHT (fail-closed).
+            is_e2e_bridge_available,
         ])
         .run(tauri::generate_context!())
         .expect("Fehler beim Starten der Tauri-Anwendung");

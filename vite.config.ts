@@ -22,6 +22,7 @@ export default defineConfig({
       ".opencode/**",
       "src-tauri/**",
       "tests/e2e/**",
+      "e2e-tests/**",
       "test-results/**",
       "playwright-report/**",
     ],

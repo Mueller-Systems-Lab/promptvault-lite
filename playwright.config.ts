@@ -16,20 +16,36 @@ export default defineConfig({
   expect: {
     timeout: 10000,
   },
-  // Retry once to tolerate dev server startup race
+  // Retry once to tolerate dev server startup race; capture traces on first retry
   retries: 1,
   workers: 1,
   use: {
     baseURL: "http://localhost:1420",
-    browserName: "chromium",
     headless: true,
     viewport: { width: 1280, height: 800 },
     actionTimeout: 10000,
     // Privacy: no screenshots/traces/video by default
     screenshot: "off",
-    trace: "off",
+    trace: "retain-on-first-retry",
     video: "off",
   },
+
+  // Multi-browser projects: chromium, firefox, webkit
+  projects: [
+    {
+      name: "chromium",
+      use: { browserName: "chromium" },
+    },
+    {
+      name: "firefox",
+      use: { browserName: "firefox" },
+    },
+    {
+      name: "webkit",
+      use: { browserName: "webkit" },
+    },
+  ],
+
   webServer: {
     command: "pnpm dev",
     url: "http://localhost:1420",
@@ -38,5 +54,8 @@ export default defineConfig({
   },
   // Output directories (gitignored)
   outputDir: "./test-results/artifacts",
-  reporter: [["list"], ["json", { outputFile: "./test-results/report.json" }]],
+  reporter: [
+    ["list"],
+    ["json", { outputFile: "./test-results/report.json" }],
+  ],
 });

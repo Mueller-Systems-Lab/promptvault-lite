@@ -172,3 +172,22 @@ Delegate to these agents for specialized work. The orchestrator (`issue-orchestr
 - **Package Manager:** pnpm (Node.js), cargo (Rust)
 - **Git:** 2.47.0+
 - **OpenCode:** 1.15.0
+
+---
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live as GitHub issues (via `gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` at repo root; ADRs at `.opencode/spec/adr/` (project convention). See `docs/agents/domain.md`.
+
+### Engineering skills
+
+Project-local skills in `.agents/skills/` (shared by Hermes/OpenCode/Codex/Cursor), installed from `mattpocock/skills` at pinned commit (see `skills-lock.json`):
+
+- `domain-modeling`, `to-spec`, `to-tickets`, `tdd`, `implement`, `code-review`, `handoff`, `setup-matt-pocock-skills`
+- Orchestrator: `question-firewall-vertical-slices` — resolve project context before asking, persist decisions, escalate only genuine blockers, structure work as observable vertical slices.

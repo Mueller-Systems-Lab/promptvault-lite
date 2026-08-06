@@ -1,12 +1,11 @@
 // scripts/lib/runner.mjs — Autonomous Test Harness Runner
 // Core module: git ops, command execution, classification, evidence.
 
-import { spawn } from "node:child_process";
+import { spawn, execFileSync } from "node:child_process";
 import { writeFile, mkdir, rename } from "node:fs/promises";
 import { randomBytes } from "node:crypto";
-import { resolve, normalize, sep, isAbsolute } from "node:path";
+import { resolve, normalize, sep, isAbsolute, dirname } from "node:path";
 import { tmpdir } from "node:os";
-import { execSync } from "node:child_process";
 
 // ── Secret patterns (aligned with .github/workflows/ci.yml) ──
 
@@ -33,6 +32,63 @@ export function gitRoot() {
   } catch {
     return process.cwd();
   }
+}
+
+/**
+ * Safe synchronous command execution for git state detection.
+ * Never throws — returns { stdout, stderr, exitCode }.
+ */
+function execSyncSafe(command, args, cwd) {
+  try {
+    const stdout = execFileSync(command, args, {
+      cwd,
+      encoding: "utf-8",
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+    return { stdout: stdout.trim(), stderr: "", exitCode: 0 };
+  } catch (err) {
+    return {
+      stdout: "",
+      stderr: String(err?.stderr || err?.message || ""),
+      exitCode: err?.status ?? 1,
+    };
+  }
+}
+
+/**
+ * Determine the git branch state of a directory.
+ *
+ * Distinguishes (Run Card §10):
+ *   - normal branch   → { kind: "branch", branch: "<name>" }
+ *   - detached HEAD   → { kind: "detached", branch: "<short-sha>" }
+ *   - no repository   → { kind: "no-repo" }
+ *   - git failure     → { kind: "error", error: "<message>" }
+ *
+ * @param {string} cwd
+ * @returns {{ kind: "branch"|"detached"|"no-repo"|"error", branch?: string, error?: string }}
+ */
+export function getGitBranchState(cwd) {
+  const dir = cwd || process.cwd();
+  const inside = execSyncSafe("git", ["rev-parse", "--is-inside-work-tree"], dir);
+  if (inside.exitCode !== 0 || inside.stdout !== "true") {
+    return { kind: "no-repo" };
+  }
+
+  const symbolic = execSyncSafe(
+    "git",
+    ["symbolic-ref", "-q", "--short", "HEAD"],
+    dir
+  );
+  if (symbolic.exitCode === 0 && symbolic.stdout) {
+    return { kind: "branch", branch: symbolic.stdout };
+  }
+
+  const head = execSyncSafe("git", ["rev-parse", "--short", "HEAD"], dir);
+  if (head.exitCode === 0 && head.stdout) {
+    return { kind: "detached", branch: head.stdout };
+  }
+
+  return { kind: "error", error: head.stderr || "unable to resolve HEAD" };
 }
 
 /**
@@ -67,7 +123,7 @@ export function runCommand(command, args = [], options = {}) {
     const { cwd, timeout = 300_000, env } = options;
     const child = spawn(command, args, {
       cwd: cwd || gitRoot(),
-      env: { ...process.env, ...env },
+      env: { ...process.env, NODE_ENV: "test", ...env },
       stdio: ["ignore", "pipe", "pipe"],
       timeout,
       windowsHide: true,
@@ -106,19 +162,46 @@ export function runCommand(command, args = [], options = {}) {
  * @param {string} [context.previousResult] — classification of prior run
  * @param {boolean} [context.visualBaselinesMissing] — no baselines configured
  * @param {string} [context.skippedReason] — why the gate was skipped
+ * @param {boolean} [context.isProductFailure] — true when gate detected a product-level bug (not test infra)
  * @returns {string} Classification label.
  */
 export function classifyGate(exitCode, context = {}) {
-  const { isOptional, previousExitCode, previousResult, visualBaselinesMissing, skippedReason } =
-    context;
+  const {
+    isOptional,
+    previousExitCode,
+    previousResult,
+    visualBaselinesMissing,
+    skippedReason,
+    isProductFailure,
+  } = context;
 
-  // Prior failure → transient anomaly if retry passes
+  // Prior failure → preserve original classification, mark transient if retry passes
   if (
     previousExitCode !== undefined &&
     previousExitCode !== 0 &&
-    exitCode === 0
+    exitCode === 0 &&
+    previousResult
   ) {
+    // RED_ failures that later pass are transient anomalies
+    if (previousResult.startsWith("RED_")) {
+      return "YELLOW_TRANSIENT_RUNNER_INVOCATION_ANOMALY";
+    }
+    // AMBER_ that later passes is still noteworthy
+    if (previousResult.startsWith("AMBER_")) {
+      return "YELLOW_TRANSIENT_RUNNER_INVOCATION_ANOMALY";
+    }
     return "YELLOW_TRANSIENT_RUNNER_INVOCATION_ANOMALY";
+  }
+
+  // Prior RED that remains RED — preserve the original classification
+  if (
+    previousExitCode !== undefined &&
+    previousExitCode !== 0 &&
+    exitCode !== 0 &&
+    previousResult &&
+    previousResult.startsWith("RED_")
+  ) {
+    return previousResult;
   }
 
   // Optional gates
@@ -132,12 +215,17 @@ export function classifyGate(exitCode, context = {}) {
   // Core gates
   if (exitCode === 0) return "PASS";
 
-  // Exit 126 = "command invoked cannot execute" → infrastructure
+  // Exit 126/127 = "command invoked cannot execute" / "command not found" → infrastructure
   if (exitCode === 126 || exitCode === 127) {
     return "RED_INFRASTRUCTURE_FAILURE";
   }
 
-  // Non-zero exit → test or product failure
+  // Product failure (explicitly detected by gate logic) vs test failure
+  if (isProductFailure) {
+    return "RED_PRODUCT_FAILURE";
+  }
+
+  // Non-zero exit → test failure (default for unknown failures)
   return "RED_TEST_FAILURE";
 }
 
@@ -169,17 +257,19 @@ export function maskSecrets(text) {
 // ── Evidence I/O ──
 
 /**
- * Write a file atomically (temp file → rename).
+ * Write a file atomically (temp file in destination dir → rename).
+ * Avoids cross-filesystem rename issues by writing the temp file
+ * in the same directory as the target.
  */
 export async function writeEvidenceAtomic(filePath, content) {
   // Ensure directory exists
-  const dir = resolve(filePath, "..");
+  const dir = dirname(resolve(filePath));
   await mkdir(dir, { recursive: true });
 
-  // Write to temp file, then rename
+  // Write to temp file in the SAME directory as the target (same filesystem)
   const tmpPath = resolve(
-    tmpdir(),
-    `pvl-evidence-${randomBytes(8).toString("hex")}.tmp`
+    dir,
+    `.pvl-evidence-${randomBytes(8).toString("hex")}.tmp`
   );
   await writeFile(tmpPath, content, "utf-8");
   await rename(tmpPath, filePath);
@@ -190,12 +280,18 @@ export async function writeEvidenceAtomic(filePath, content) {
 let _runIdCounter = 0;
 
 /**
- * Generate a unique run ID.
+ * Generate a unique run ID safe across separate processes.
+ * Format: PVL-AUTONOMOUS-TEST-HARNESS-YYYYMMDD-NNN-PID-RND
+ * Includes PID and random suffix to prevent collisions between
+ * parallel processes or cron invocations.
  */
 export function generateRunId() {
   const now = new Date();
   const date = now.toISOString().slice(0, 10).replace(/-/g, "");
+  const ts = String(now.getUTCMilliseconds()).padStart(3, "0");
   _runIdCounter += 1;
   const seq = String(_runIdCounter).padStart(3, "0");
-  return `PVL-AUTONOMOUS-TEST-HARNESS-${date}-${seq}`;
+  const pid = process.pid;
+  const rnd = randomBytes(3).toString("hex");
+  return `PVL-AUTONOMOUS-TEST-HARNESS-${date}-${seq}-${pid}-${rnd}`;
 }

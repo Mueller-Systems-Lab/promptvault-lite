@@ -562,6 +562,35 @@ mod tests {
         let found = db.get_prompt("abc").unwrap();
         assert!(found.is_some());
         assert_eq!(found.unwrap().title, "My Prompt");
+
+        // Nicht vorhandener Prompt → None
+        let missing = db.get_prompt("nope").unwrap();
+        assert!(missing.is_none());
+    }
+
+    /// Regression: gescannte Prompts müssen in der DB liegen, damit
+    /// toggle_favorite (E19-Native-Reise) nicht mit "Prompt not found" fehlschlägt.
+    #[test]
+    fn test_scanned_prompts_support_favorites() {
+        let db = Database::new_in_memory().unwrap();
+        let prompt = create_test_prompt("scan-1", "Scanned Prompt", "general");
+        db.save_prompts(&[prompt]).unwrap();
+
+        // toggle_favorite_impl äquivalent: get + set_favorite
+        let loaded = db
+            .get_prompt("scan-1")
+            .unwrap()
+            .expect("Prompt muss in DB sein");
+        db.set_favorite(&loaded.id, true).unwrap();
+
+        let favs: Vec<String> = db
+            .load_prompts()
+            .unwrap()
+            .into_iter()
+            .filter(|p| p.is_favorite)
+            .map(|p| p.id)
+            .collect();
+        assert_eq!(favs, vec!["scan-1".to_string()]);
     }
 
     #[test]

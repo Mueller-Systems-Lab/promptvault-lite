@@ -7,6 +7,7 @@
 import { useEffect } from "react";
 import type { ApprovalRequest } from "@/actions";
 import { useAppStore } from "@/stores/appStore";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 interface ApprovalDialogProps {
   request: ApprovalRequest;
@@ -62,6 +63,7 @@ export function ApprovalDialog({
         role="dialog"
         aria-modal="true"
         aria-label="Write-Action-Bestätigung"
+        ref={useFocusTrap(true)}
       >
         <div className="modal-header">
           <h2>

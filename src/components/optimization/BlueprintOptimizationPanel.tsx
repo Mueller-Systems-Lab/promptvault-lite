@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { optimizeBlueprint } from "@/lib/blueprintOptimizer";
 import { evaluateBlueprint } from "@/lib/blueprintDetection";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import type {
   BlueprintOptimizationMode,
   BlueprintOptimizationDiff,
@@ -146,6 +147,7 @@ export const BlueprintOptimizationPanel: React.FC<
         }}
         role="dialog"
         aria-label="Blueprint-Optimierung"
+        ref={useFocusTrap(true)}
       >
         {/* Header */}
         <div className="modal-header">

@@ -15,18 +15,29 @@
 import { parseArgs } from "node:util";
 import { join, resolve } from "node:path";
 import { mkdir } from "node:fs/promises";
-import { createHash } from "node:crypto";
 
 import {
   gitRoot,
   gitHeadSha,
   isWorkingTreeDirty,
   runCommand,
-  classifyGate,
-  maskSecrets,
   writeEvidenceAtomic,
   generateRunId,
+  sanitizePath,
+  getGitBranchState,
 } from "./lib/runner.mjs";
+
+import { runIndependentVerifier } from "./lib/verifier.mjs";
+
+import {
+  GATES,
+  EXECUTORS,
+  sha256,
+  hashBuildOutput,
+  validateGateDefinition,
+  validateGateResult,
+  validateGateInventory,
+} from "./lib/gates.mjs";
 
 // ── CLI argument parsing ──
 
@@ -38,6 +49,7 @@ const { values: opts } = parseArgs({
     gate: { type: "string" },
     "evidence-dir": { type: "string" },
     "json-summary": { type: "string" },
+    "logs-dir": { type: "string" },
     "target-sha": { type: "string" },
     "no-color": { type: "boolean", default: false },
     help: { type: "boolean", default: false },
@@ -71,7 +83,7 @@ const mode = opts.independent
   ? "independent"
   : opts.quick
     ? "quick"
-    : opts.single
+    : opts.gate
       ? "single"
       : "full";
 
@@ -79,494 +91,232 @@ const mode = opts.independent
 
 const ROOT = gitRoot();
 const RUN_ID = generateRunId();
+
+// Path safety: reject traversal attempts in user-supplied paths
+const BASE = ROOT;
+if (opts["evidence-dir"]) {
+  const validated = sanitizePath(opts["evidence-dir"], BASE);
+  if (!validated && opts["evidence-dir"].includes("..")) {
+    console.error("Error: --evidence-dir path traversal rejected");
+    process.exit(1);
+  }
+}
+if (opts["json-summary"]) {
+  const validated = sanitizePath(opts["json-summary"], BASE);
+  if (!validated && opts["json-summary"].includes("..")) {
+    console.error("Error: --json-summary path traversal rejected");
+    process.exit(1);
+  }
+}
+
 const EVIDENCE_DIR =
   opts["evidence-dir"] || join(ROOT, "evidence", "autonomous-test", RUN_ID);
+
+const LOGS_DIR = opts["logs-dir"] || "04-primary-logs";
 
 const C = opts["no-color"]
   ? { G: "", Y: "", R: "", B: "", N: "" }
   : { G: "\x1b[32m", Y: "\x1b[33m", R: "\x1b[31m", B: "\x1b[34m", N: "\x1b[0m" };
 
-// ── Gate definitions ──
+// ── Gate runner ──
 
-const GATES = {
-  // Quick gates
-  Q1: {
-    id: "Q1",
-    name: "Repo Hygiene",
-    command: "git",
-    args: ["diff", "--check"],
-    mandatory: true,
-    level: "quick",
-  },
-  Q2: {
-    id: "Q2",
-    name: "ESLint",
-    command: "pnpm",
-    args: ["lint"],
-    mandatory: true,
-    level: "quick",
-  },
-  Q3: {
-    id: "Q3",
-    name: "TypeScript",
-    command: "pnpm",
-    args: ["exec", "tsc", "--noEmit"],
-    mandatory: true,
-    level: "quick",
-  },
-  Q4: {
-    id: "Q4",
-    name: "Vitest (Quick)",
-    command: "pnpm",
-    args: ["test"],
-    mandatory: true,
-    level: "quick",
-  },
-  Q5: {
-    id: "Q5",
-    name: "Version Consistency",
-    command: "node",
-    args: ["-e", "const p=require('./package.json');const c=require('./src-tauri/Cargo.toml');process.exit(p.version==='1.8.0'?0:1)"],
-    mandatory: true,
-    level: "quick",
-    skip: true, // Requires custom parsing, done inline
-  },
-  Q6: {
-    id: "Q6",
-    name: "Feature Flags",
-    command: "node",
-    args: ["-e", "process.exit(0)"],
-    mandatory: true,
-    level: "quick",
-    skip: true,
-  },
-
-  // Full gates
-  E1: {
-    id: "E1",
-    name: "Repo Hygiene (Full)",
-    command: "git",
-    args: ["diff", "--check"],
-    mandatory: true,
-    level: "full",
-  },
-  E2: {
-    id: "E2",
-    name: "Dependency Integrity",
-    command: "pnpm",
-    args: ["install", "--frozen-lockfile"],
-    mandatory: true,
-    level: "full",
-  },
-  E3: {
-    id: "E3",
-    name: "Frontend Tests (Vitest)",
-    command: "pnpm",
-    args: ["test"],
-    mandatory: true,
-    level: "full",
-    parseOutput: true,
-  },
-  E4: {
-    id: "E4",
-    name: "ESLint",
-    command: "pnpm",
-    args: ["lint"],
-    mandatory: true,
-    level: "full",
-  },
-  E5: {
-    id: "E5",
-    name: "TypeScript",
-    command: "pnpm",
-    args: ["exec", "tsc", "--noEmit"],
-    mandatory: true,
-    level: "full",
-  },
-  E6: {
-    id: "E6",
-    name: "Frontend Build",
-    command: "pnpm",
-    args: ["build"],
-    mandatory: true,
-    level: "full",
-  },
-  E7: {
-    id: "E7",
-    name: "Rust Format",
-    command: "cargo",
-    args: ["fmt", "--check", "--all"],
-    mandatory: true,
-    level: "full",
-  },
-  E8: {
-    id: "E8",
-    name: "Rust Tests",
-    command: "cargo",
-    args: ["test", "--workspace"],
-    mandatory: true,
-    level: "full",
-    parseOutput: true,
-  },
-  E9: {
-    id: "E9",
-    name: "Rust Clippy",
-    command: "cargo",
-    args: ["clippy", "--workspace", "--all-targets", "--", "-D", "warnings"],
-    mandatory: true,
-    level: "full",
-  },
-  E10: {
-    id: "E10",
-    name: "Secret Scan",
-    command: "node",
-    args: ["-e", "process.exit(0)"],
-    mandatory: true,
-    level: "full",
-    skip: true, // Custom implementation
-  },
-  E11: {
-    id: "E11",
-    name: "Playwright E2E",
-    command: "pnpm",
-    args: ["exec", "playwright", "test"],
-    mandatory: false,
-    level: "full",
-    isOptional: true,
-    parseOutput: true,
-  },
-  E12: {
-    id: "E12",
-    name: "Version Consistency",
-    command: "node",
-    args: ["-e", "process.exit(0)"],
-    mandatory: true,
-    level: "full",
-    skip: true,
-  },
-  E13: {
-    id: "E13",
-    name: "Lockfile Drift",
-    command: "node",
-    args: ["-e", "process.exit(0)"],
-    mandatory: true,
-    level: "full",
-    skip: true,
-  },
-  E14: {
-    id: "E14",
-    name: "Feature Flag Defaults",
-    command: "node",
-    args: ["-e", "process.exit(0)"],
-    mandatory: true,
-    level: "full",
-    skip: true,
-  },
-  E15: {
-    id: "E15",
-    name: "Visual Evidence",
-    command: "pnpm",
-    args: ["exec", "playwright", "test", "visual-release-gate.spec.ts"],
-    mandatory: false,
-    level: "full",
-    isOptional: true,
-    visualBaselinesMissing: true,
-  },
-};
-
-// ── Helpers ──
-
-function sha256(text) {
-  return createHash("sha256").update(text).digest("hex");
-}
-
-function parseTestOutput(stdout, gateId) {
-  if (gateId === "E3") {
-    // Vitest: "Tests  1460 passed (1460)"
-    const match = stdout.match(/Tests\s+(\d+)\s+passed\s+\((\d+)\)/);
-    if (match) {
-      return { passed: parseInt(match[1]), total: parseInt(match[2]) };
-    }
-    // Files match
-    const filesMatch = stdout.match(/Test Files\s+(\d+)\s+passed/);
-    return filesMatch ? { files: parseInt(filesMatch[1]) } : {};
-  }
-  if (gateId === "E8") {
-    // Cargo: "test result: ok. 156 passed; 0 failed; 2 ignored"
-    const match = stdout.match(
-      /test result:.*?(\d+)\s+passed;\s*(\d+)\s+failed;\s*(\d+)\s+ignored/
-    );
-    if (match) {
-      return {
-        passed: parseInt(match[1]),
-        failed: parseInt(match[2]),
-        ignored: parseInt(match[3]),
-      };
-    }
-    return {};
-  }
-  if (gateId === "E11") {
-    // Playwright
-    const passedMatch = stdout.match(/(\d+)\s+passed/);
-    const skippedMatch = stdout.match(/(\d+)\s+skipped/);
-    return {
-      passed: passedMatch ? parseInt(passedMatch[1]) : 0,
-      skipped: skippedMatch ? parseInt(skippedMatch[1]) : 0,
-    };
-  }
-  return {};
-}
-
-function gateToLevel(gateId) {
-  if (gateId.startsWith("Q")) return "quick";
-  return "full";
-}
-
-// ── Secret scan (inline, matches CI) ──
-
-async function runSecretScan() {
-  // Replicate the exact CI secret scan from .github/workflows/ci.yml
-  try {
-    const patterns = [
-      "-----BEGIN.*PRIVATE KEY-----",
-      "AKIA[0-9A-Z]{16}",
-      "gh[opsur]_[0-9a-zA-Z]{36}",
-      "github_pat_[0-9a-zA-Z]{22,}",
-      "sk_live_[0-9a-zA-Z]{24}",
-    ];
-
-    let allMatches = "";
-    let found = 0;
-
-    for (const pattern of patterns) {
-      const { stdout } = await runCommand("bash", [
-        "-c",
-        `git ls-files -z | xargs -0 grep -n -i -E '${pattern}' 2>/dev/null || true`,
-      ]);
-      if (stdout.trim()) {
-        // Filter out legitimate uses (same as CI)
-        const filtered =
-          stdout
-            .split("\n")
-            .filter(
-              (line) =>
-                line &&
-                !line.includes(".gitignore") &&
-                !line.includes("SECURITY_GATES.md") &&
-                !line.includes("AGENTS.md") &&
-                !line.includes("CLAUDE.md")
-            )
-            .join("\n") || "";
-
-        if (filtered.trim()) {
-          allMatches += filtered + "\n";
-          found = 1;
-        }
-      }
-    }
-
-    return {
-      exitCode: found ? 1 : 0,
-      stdout: found ? allMatches.trim() : "No secrets detected.",
-      stderr: "",
-    };
-  } catch (err) {
-    return {
-      exitCode: 1,
-      stdout: "",
-      stderr: `Secret scan error: ${err.message}`,
-    };
-  }
-}
-
-// ── Version consistency check ──
-
-async function checkVersionConsistency() {
-  const failures = [];
-  try {
-    const pkg = JSON.parse(
-      await (await import("node:fs/promises")).readFile(
-        join(ROOT, "package.json"),
-        "utf-8"
-      )
-    );
-    const expected = pkg.version;
-    // Check Cargo.toml
-    const cargoPath = join(ROOT, "src-tauri", "Cargo.toml");
-    const cargoContent = await (
-      await import("node:fs/promises")
-    ).readFile(cargoPath, "utf-8");
-    const cargoVersionMatch = cargoContent.match(/^version\s*=\s*"([^"]+)"/m);
-    if (!cargoVersionMatch || cargoVersionMatch[1] !== expected) {
-      failures.push(
-        `Cargo.toml version ${
-          cargoVersionMatch ? cargoVersionMatch[1] : "NOT_FOUND"
-        } != ${expected}`
-      );
-    }
-    // Check tauri.conf.json
-    const tauriConfPath = join(ROOT, "src-tauri", "tauri.conf.json");
-    const tauriConf = JSON.parse(
-      await (
-        await import("node:fs/promises")
-      ).readFile(tauriConfPath, "utf-8")
-    );
-    if (tauriConf.version !== expected) {
-      failures.push(
-        `tauri.conf.json version ${tauriConf.version} != ${expected}`
-      );
-    }
-  } catch (err) {
-    failures.push(`Version check error: ${err.message}`);
-  }
-
-  return {
-    exitCode: failures.length > 0 ? 1 : 0,
-    stdout: failures.length > 0 ? failures.join("\n") : `All versions: consistent`,
-    stderr: "",
-  };
-}
-
-// ── Feature flag check ──
-
-async function checkFeatureFlags() {
-  try {
-    const { stdout: content } = await runCommand("grep", [
-      "-r",
-      "DIRECTION_PROFILES|MISSING_INFO_GATE|EMBEDDINGS",
-      join(ROOT, "src"),
-      "--include=*.ts",
-      "--include=*.tsx",
-      "-l",
-    ]);
-    // Check that flags default to disabled
-    const { stdout: flagContent } = await runCommand("grep", [
-      "-r",
-      "DIRECTION_PROFILES|MISSING_INFO_GATE|EMBEDDINGS",
-      join(ROOT, "src/lib/embeddings/__tests__/featureFlag.test.ts"),
-      "-h",
-    ]);
-    // If feature flag tests pass, defaults are correct
-    return { exitCode: 0, stdout: "Feature flags: defaults verified", stderr: "" };
-  } catch {
-    return { exitCode: 0, stdout: "Feature flags: check skipped (no flag files)", stderr: "" };
-  }
-}
-
-// ── Lockfile drift check ──
-
-async function checkLockfileDrift() {
-  try {
-    // Check if pnpm-lock.yaml differs from committed version
-    const { stdout } = await runCommand("git", [
-      "diff",
-      "--exit-code",
-      "pnpm-lock.yaml",
-    ]);
-    return { exitCode: 0, stdout: "No lockfile drift detected", stderr: "" };
-  } catch {
-    return { exitCode: 1, stdout: "", stderr: "LOCKFILE_DRIFT: pnpm-lock.yaml has uncommitted changes" };
-  }
-}
-
-// ── Core runner ──
-
-async function runGate(gate, sha, evidenceDir, runNumber = 1) {
+async function runGate(gate, sha, evidenceDir) {
   const startTime = Date.now();
 
-  // Handle built-in gates
-  if (gate.id === "E10") {
-    const result = await runSecretScan();
-    return buildGateResult(gate, result, sha, startTime, evidenceDir);
-  }
-  if (gate.id === "E12" || gate.id === "Q5") {
-    const result = await checkVersionConsistency();
-    return buildGateResult(gate, result, sha, startTime, evidenceDir);
-  }
-  if (gate.id === "E13") {
-    const result = await checkLockfileDrift();
-    return buildGateResult(gate, result, sha, startTime, evidenceDir);
-  }
-  if (gate.id === "E14" || gate.id === "Q6") {
-    const result = await checkFeatureFlags();
-    return buildGateResult(gate, result, sha, startTime, evidenceDir);
-  }
-
-  try {
-    const result = await runCommand(gate.command, gate.args, {
-      cwd: ROOT,
-      timeout: 600_000,
-    });
-    return buildGateResult(gate, result, sha, startTime, evidenceDir);
-  } catch (err) {
+  // Validate the gate DEFINITION before execution (Run Card §7)
+  const definitionViolations = validateGateDefinition(gate, ROOT);
+  if (definitionViolations.length > 0) {
     return buildGateResult(
       gate,
-      { stdout: "", stderr: err.message, exitCode: -1, signal: null },
+      {
+        stdout: "",
+        stderr: definitionViolations.join("\n"),
+        exitCode: -1,
+        signal: null,
+        assertionCount: 0,
+        artifactCount: 0,
+        isProductFailure: false,
+        definitionViolations,
+      },
       sha,
       startTime,
-      evidenceDir
+      evidenceDir,
+      false
     );
   }
+
+  const executor = EXECUTORS[gate.executor];
+  let raw;
+  try {
+    raw = await executor({ root: ROOT, gate });
+  } catch (err) {
+    raw = {
+      stdout: "",
+      stderr: `Executor '${gate.executor}' threw: ${err.message}`,
+      exitCode: -1,
+      signal: null,
+      assertionCount: 0,
+      artifactCount: 0,
+      isProductFailure: false,
+    };
+  }
+
+  return await buildGateResult(gate, raw, sha, startTime, evidenceDir, true);
 }
 
-function buildGateResult(gate, raw, sha, startTime, evidenceDir) {
+async function buildGateResult(gate, raw, sha, startTime, evidenceDir, executed) {
   const endTime = Date.now();
   const duration = endTime - startTime;
 
-  const stdoutContent = maskSecrets(raw.stdout);
-  const stderrContent = maskSecrets(raw.stderr);
+  const stdoutContent = raw.stdout ? String(raw.stdout).replace(
+    /-----BEGIN.*PRIVATE KEY-----[\\s\\S]*?-----END.*PRIVATE KEY-----/g,
+    "[MASKED]"
+  ) : "";
+  const stderrContent = raw.stderr ? String(raw.stderr).replace(
+    /-----BEGIN.*PRIVATE KEY-----[\\s\\S]*?-----END.*PRIVATE KEY-----/g,
+    "[MASKED]"
+  ) : "";
 
-  const stdoutSha = sha256(stdoutContent);
-  const stderrSha = sha256(stderrContent);
+  // Also apply pattern-based masking from runner
+  const { maskSecrets } = await import("./lib/runner.mjs");
+  const stdoutFinal = maskSecrets(stdoutContent);
+  const stderrFinal = maskSecrets(stderrContent);
 
-  const testMetrics = gate.parseOutput ? parseTestOutput(raw.stdout, gate.id) : {};
+  const stdoutSha = sha256(stdoutFinal);
+  const stderrSha = sha256(stderrFinal);
 
-  const classification = classifyGate(raw.exitCode, {
+  // Test metrics (when the executor reports a parseable output)
+  let testMetrics = {};
+  if (raw.extra && typeof raw.extra === "object" && "passed" in raw.extra && "failed" in raw.extra) {
+    testMetrics = {
+      passed: raw.extra.passed,
+      failed: raw.extra.failed,
+      skipped: raw.extra.skipped,
+    };
+  }
+
+  const assertionCount =
+    typeof raw.assertionCount === "number" ? raw.assertionCount : 0;
+  const artifactCount =
+    typeof raw.artifactCount === "number" ? raw.artifactCount : 0;
+
+  const { classifyGate } = await import("./lib/runner.mjs");
+  let classification = classifyGate(raw.exitCode, {
     gate: gate.id,
-    isOptional: gate.isOptional || false,
-    visualBaselinesMissing: gate.visualBaselinesMissing || false,
+    isOptional: false,
+    isProductFailure: raw.isProductFailure || false,
   });
+
+  // NOOP / schema enforcement (Run Card §7-8):
+  // PASS is only allowed with executed=true, exit 0, assertions or contract, no skip.
+  if (executed === false) {
+    classification = "RED_GATE_IMPLEMENTATION_NOOP";
+  } else if (classification === "PASS") {
+    const resultProbe = {
+      gate: gate.id,
+      executed: true,
+      exit_code: raw.exitCode,
+      started_at: new Date(startTime).toISOString(),
+      ended_at: new Date(endTime).toISOString(),
+      assertion_count: assertionCount,
+      contract_verified: raw.exitCode === 0,
+      skipped: 0,
+    };
+    const resultViolations = validateGateResult(resultProbe);
+    if (resultViolations.length > 0) {
+      classification = "RED_GATE_IMPLEMENTATION_NOOP";
+    }
+  } else if (classification.startsWith("RED_")) {
+    // Non-zero exit from an executor/command is a product or infra failure
+    // unless the definition itself was invalid (handled above).
+  }
 
   return {
     gate: gate.id,
     name: gate.name,
-    command: `${gate.command} ${gate.args.join(" ")}`,
+    executor: gate.executor,
+    command: gate.command
+      ? `${gate.command} ${gate.args.join(" ")}`
+      : `executor:${gate.executor}`,
     runner: "primary",
     tested_git_sha: sha,
+    executed: executed === true,
     started_at: new Date(startTime).toISOString(),
     ended_at: new Date(endTime).toISOString(),
     duration_ms: duration,
     exit_code: raw.exitCode,
     signal: raw.signal || null,
+    assertion_count: assertionCount,
+    artifact_count: artifactCount,
+    skipped: 0,
+    optional: gate.isOptional === true,
+    contract: gate.contract || null,
+    contract_verified: raw.exitCode === 0 && executed === true,
     ...testMetrics,
-    stdout_log: join(evidenceDir, "04-primary-logs", `${gate.id}-stdout.txt`),
-    stderr_log: join(evidenceDir, "04-primary-logs", `${gate.id}-stderr.txt`),
+    stdout_log: join(evidenceDir, LOGS_DIR, `${gate.id}-stdout.txt`),
+    stderr_log: join(evidenceDir, LOGS_DIR, `${gate.id}-stderr.txt`),
     stdout_sha256: stdoutSha,
     stderr_sha256: stderrSha,
     classification,
-    stdout_raw: stdoutContent,
-    stderr_raw: stderrContent,
+    stdout_raw: stdoutFinal,
+    stderr_raw: stderrFinal,
   };
 }
 
 // ── Summary ──
 
-function buildSummary(gateResults, sha, branch) {
-  const coreGates = gateResults.filter((g) => !g.classification.startsWith("YELLOW"));
-  const optionalGaps = gateResults.filter((g) => g.classification.startsWith("YELLOW"));
+function updateSummaryClassification(summary, newClassification) {
+  summary.classification = newClassification;
+}
 
-  const allCoreGreen = coreGates.every((g) => g.classification === "PASS");
-  const hasRed = gateResults.some((g) => g.classification.startsWith("RED_"));
-  const hasAmber = gateResults.some((g) => g.classification.startsWith("AMBER_"));
+function buildSummary(gateResults, sha, branch) {
+  const counts = {
+    passed: 0, red: 0, yellow: 0, amber: 0,
+    noop: 0, skipped: 0, notExecuted: 0,
+  };
+
+  for (const g of gateResults) {
+    if (g.classification === "PASS") counts.passed += 1;
+    else if (g.classification.startsWith("RED_")) counts.red += 1;
+    else if (g.classification.startsWith("YELLOW")) counts.yellow += 1;
+    else if (g.classification.startsWith("AMBER")) counts.amber += 1;
+    if (g.classification === "RED_GATE_IMPLEMENTATION_NOOP") counts.noop += 1;
+    if (g.skipped && g.skipped > 0) counts.skipped += 1;
+    if (g.executed !== true) counts.notExecuted += 1;
+  }
+
+  const fullMatrix = gateResults.length >= 20;
+  const allPass = counts.passed === gateResults.length && gateResults.length > 0;
+  const noSkipped = counts.skipped === 0 && counts.notExecuted === 0;
 
   let runClassification;
-  if (hasRed) runClassification = "RED_TEST_INFRASTRUCTURE_FAILURE";
-  else if (hasAmber) runClassification = "AMBER_FLAKY_TESTS_BLOCK_COMPLETION_CLAIM";
-  else if (allCoreGreen && optionalGaps.length > 0)
-    runClassification = "GREEN_CORE_GATES_AMBER_OPTIONAL_PLATFORM_OR_HARDWARE_COVERAGE";
-  else if (allCoreGreen)
-    runClassification = "GREEN_AUTONOMOUS_TEST_HARNESS_PERSISTENT_AND_VALIDATED";
-  else runClassification = "AMBER_FLAKY_TESTS_BLOCK_COMPLETION_CLAIM";
+  if (gateResults.length === 0) {
+    runClassification = "RED_TEST_INFRASTRUCTURE_FAILURE";
+  } else if (fullMatrix && allPass && noSkipped && counts.noop === 0) {
+    runClassification =
+      "GREEN_PR_294_REAL_E2E_ALL_GATES_EXECUTED_READY_FOR_OWNER_REVIEW";
+  } else if (counts.noop > 0) {
+    runClassification = "RED_GATE_IMPLEMENTATION_NOOP";
+  } else if (gateResults.some((g) => g.gate === "E19" && g.classification !== "PASS")) {
+    runClassification = "RED_NATIVE_TAURI_E2E_NOT_EXECUTED";
+  } else if (gateResults.some((g) => g.gate === "E20" && g.classification !== "PASS")) {
+    runClassification = "RED_PACKAGING_SMOKE_NOT_EXECUTED";
+  } else if (gateResults.some((g) => g.gate === "E16" && g.optional === true)) {
+    runClassification = "RED_ACCESSIBILITY_CORE_GATE_NOT_ENFORCED";
+  } else if (counts.red > 0) {
+    const hasProductFailure = gateResults.some(
+      (g) => g.classification === "RED_PRODUCT_FAILURE"
+    );
+    runClassification = hasProductFailure
+      ? "RED_REPRODUCIBLE_PRODUCT_FAILURE"
+      : "RED_TEST_INFRASTRUCTURE_FAILURE";
+  } else if (counts.amber > 0) {
+    runClassification = "AMBER_FLAKY_TESTS_BLOCK_COMPLETION_CLAIM";
+  } else if (counts.yellow > 0 || counts.skipped > 0 || counts.notExecuted > 0) {
+    runClassification = "AMBER_FLAKY_TESTS_BLOCK_COMPLETION_CLAIM";
+  } else {
+    runClassification = "AMBER_FLAKY_TESTS_BLOCK_COMPLETION_CLAIM";
+  }
 
   return {
     run_id: RUN_ID,
@@ -575,11 +325,67 @@ function buildSummary(gateResults, sha, branch) {
     tested_at: new Date().toISOString(),
     classification: runClassification,
     total_gates: gateResults.length,
-    passed: gateResults.filter((g) => g.classification === "PASS").length,
-    failed: gateResults.filter((g) => g.classification.startsWith("RED_")).length,
-    yellow: gateResults.filter((g) => g.classification.startsWith("YELLOW")).length,
-    amber: gateResults.filter((g) => g.classification.startsWith("AMBER")).length,
+    executed: gateResults.filter((g) => g.executed === true).length,
+    passed: counts.passed,
+    failed: counts.red,
+    red: counts.red,
+    yellow: counts.yellow,
+    amber: counts.amber,
+    noop: counts.noop,
+    skipped: counts.skipped,
+    not_executed: counts.notExecuted,
   };
+}
+
+// ── Final Report ──
+
+function generateFinalReport(summary, results, sha, branch, manifest) {
+  const lines = [];
+  lines.push(`# FINAL REPORT — ${summary.run_id}`);
+  lines.push("");
+  lines.push(`## Status: ${summary.classification}`);
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push("## 1. Repository Snapshot");
+  lines.push("");
+  lines.push("| Field | Value |");
+  lines.push("|-------|-------|");
+  lines.push(`| SHA | ${sha} |`);
+  lines.push(`| Branch | ${branch} |`);
+  lines.push(`| Node | ${manifest.tools.node || "N/A"} |`);
+  lines.push(`| pnpm | ${manifest.tools.pnpm || "N/A"} |`);
+  lines.push(`| Rust | ${manifest.tools.rustc || "N/A"} |`);
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push("## 2. Gate Matrix");
+  lines.push("");
+  lines.push("| Gate | Status | Duration | Details |");
+  lines.push("|------|--------|----------|---------|");
+  for (const r of results) {
+    const details = [
+      r.passed !== undefined ? `${r.passed} passed` : "",
+      r.failed ? `${r.failed} failed` : "",
+      r.skipped ? `${r.skipped} skipped` : "",
+      r.ignored ? `${r.ignored} ignored` : "",
+    ]
+      .filter(Boolean)
+      .join(", ") || "-";
+    lines.push(
+      `| ${r.gate} — ${r.name} | ${r.classification} | ${r.duration_ms}ms | ${details} |`
+    );
+  }
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push("## 3. Evidence");
+  lines.push("");
+  lines.push(`- Evidence directory: \`evidence/autonomous-test/${summary.run_id}/\``);
+  lines.push(`- JSON summary: \`03-primary-summary.json\``);
+  lines.push(`- Logs: \`${LOGS_DIR}/\``);
+
+  return lines.join("\n");
 }
 
 // ── Main ──
@@ -616,13 +422,11 @@ async function main() {
   // Check working tree
   const dirty = await isWorkingTreeDirty();
   if (dirty) {
-    console.log(
-      `${C.Y}⚠ Working tree has uncommitted changes${C.N}`
-    );
+    console.log(`${C.Y}⚠ Working tree has uncommitted changes${C.N}`);
   }
 
   // Setup evidence directory
-  await mkdir(join(EVIDENCE_DIR, "04-primary-logs"), { recursive: true });
+  await mkdir(join(EVIDENCE_DIR, LOGS_DIR), { recursive: true });
   await mkdir(join(EVIDENCE_DIR, "05-playwright-report"), { recursive: true });
 
   // Select gates
@@ -640,7 +444,22 @@ async function main() {
     gatesToRun = Object.values(GATES).filter((g) => g.level === "full");
   }
 
-  // Sort gates by ID numerically (E1, E2, ..., E10, E11, ...)
+  // Canonical inventory check (Run Card §9 + ADR-005): E1-E21 exactly once, no gaps/extras.
+  if (mode === "full") {
+    const inventoryViolations = validateGateInventory(GATES);
+    if (inventoryViolations.length > 0) {
+      console.error(
+        `${C.R}RED_GATE_IMPLEMENTATION_NOOP: invalid E1-E21 inventory:${C.N}`
+      );
+      for (const v of inventoryViolations) console.error(`  - ${v}`);
+      process.exit(1);
+    }
+    console.log(
+      `${C.G}Gate inventory E1-E21: canonical (no duplicates, no gaps)${C.N}`
+    );
+  }
+
+  // Sort gates by ID numerically
   const numSort = (a, b) => {
     const numA = parseInt(a.id.replace(/^[QE]/, ""), 10);
     const numB = parseInt(b.id.replace(/^[QE]/, ""), 10);
@@ -671,13 +490,28 @@ async function main() {
       `${statusColor}${result.classification}${C.N} (${result.duration_ms}ms)`
     );
 
+    // Diagnose: bei RED die Executor-Details ausgeben (stderr/stdout-Tail),
+    // damit CI-Logs die Fehlerursache direkt zeigen.
+    if (result.classification.startsWith("RED_")) {
+      const tail = (s, n) =>
+        (s || "")
+          .split("\n")
+          .filter((l) => l.trim().length > 0)
+          .slice(-n)
+          .join("\n");
+      const stderrTail = tail(result.stderr_raw, 12);
+      const stdoutTail = tail(result.stdout_raw, 8);
+      if (stderrTail) console.error(`${C.R}  └ stderr:${C.N}\n${stderrTail}`);
+      if (stdoutTail) console.error(`${C.R}  └ stdout:${C.N}\n${stdoutTail}`);
+    }
+
     // Write log files
     await writeEvidenceAtomic(
-      join(EVIDENCE_DIR, "04-primary-logs", `${gate.id}-stdout.txt`),
+      join(EVIDENCE_DIR, LOGS_DIR, `${gate.id}-stdout.txt`),
       result.stdout_raw || ""
     );
     await writeEvidenceAtomic(
-      join(EVIDENCE_DIR, "04-primary-logs", `${gate.id}-stderr.txt`),
+      join(EVIDENCE_DIR, LOGS_DIR, `${gate.id}-stderr.txt`),
       result.stderr_raw || ""
     );
 
@@ -690,33 +524,101 @@ async function main() {
         `${C.R}Critical gate ${gate.id} failed — aborting${C.N}`
       );
       criticalFailure = true;
-      // Don't abort — collect remaining evidence but don't continue
       break;
     }
   }
 
-  // Build summary
-  const branch = (() => {
-    try {
-      return require("child_process")
-        .execSync("git branch --show-current", { encoding: "utf-8" })
-        .trim();
-    } catch {
-      return "unknown";
-    }
-  })();
+  // Get branch (Run Card §10: distinguish branch / detached HEAD / no repo)
+  const gitState = getGitBranchState(ROOT);
+  let branch = "unknown";
+  if (gitState.kind === "branch") {
+    branch = gitState.branch;
+  } else if (gitState.kind === "detached") {
+    branch = "detached HEAD";
+  } else if (gitState.kind === "no-repo" || gitState.kind === "error") {
+    console.error(
+      `${C.R}RED_TEST_INFRASTRUCTURE_FAILURE: not a git repository or git unavailable (${gitState.error || gitState.kind})${C.N}`
+    );
+    process.exit(1);
+  }
 
   const summary = buildSummary(results, sha, branch);
 
   // Write summary
   const summaryPath =
     opts["json-summary"] || join(EVIDENCE_DIR, "03-primary-summary.json");
-  // Strip raw output from summary
   const cleanResults = results.map(({ stdout_raw, stderr_raw, ...r }) => r);
   await writeEvidenceAtomic(
     summaryPath,
     JSON.stringify({ ...summary, gates: cleanResults }, null, 2)
   );
+
+  // Write build hashes for primary
+  const primaryBuildHashes = await hashBuildOutput(ROOT);
+  await writeEvidenceAtomic(
+    join(EVIDENCE_DIR, "08-build-hashes-primary.json"),
+    JSON.stringify(primaryBuildHashes, null, 2)
+  );
+
+  // ── Independent Verifier (if --independent mode) ──
+  if (mode === "independent") {
+    console.log(`\n${C.B}=== Independent Verifier ===${C.N}`);
+
+    let originUrl = "";
+    try {
+      const { stdout: originOut } = await runCommand("git", [
+        "config", "--get", "remote.origin.url",
+      ]);
+      originUrl = originOut.trim();
+    } catch {
+      console.error(`${C.R}Cannot determine origin URL${C.N}`);
+      process.exit(2);
+    }
+
+    console.log(`Origin: ${originUrl}`);
+
+    const verifierResult = await runIndependentVerifier({
+      targetSha: sha,
+      originUrl,
+      evidenceDir: EVIDENCE_DIR,
+      primarySummaryPath:
+        opts["json-summary"] || join(EVIDENCE_DIR, "03-primary-summary.json"),
+      primaryBuildHashes,
+    });
+
+    const deltaPath = join(EVIDENCE_DIR, "07-primary-verifier-delta.json");
+    let delta = null;
+    try {
+      const fs = await import("node:fs/promises");
+      delta = JSON.parse(await fs.readFile(deltaPath, "utf-8"));
+    } catch { /* delta unavailable */ }
+
+    console.log();
+    console.log(`${C.B}=== Independent Verifier Result ===${C.N}`);
+    console.log(`Clone dir:    ${verifierResult.cloneDir}`);
+    console.log(`Classification: ${verifierResult.classification}`);
+
+    if (verifierResult.failures.length > 0) {
+      console.log(`${C.R}Failures:${C.N}`);
+      for (const f of verifierResult.failures) {
+        console.log(`  - ${f}`);
+      }
+    }
+
+    if (delta?.hasDivergence) {
+      console.log(`${C.Y}AMBER_PRIMARY_VERIFIER_DIVERGENCE detected${C.N}`);
+      updateSummaryClassification(summary, "AMBER_PRIMARY_VERIFIER_DIVERGENCE");
+    }
+
+    if (verifierResult.classification === "RED_INFRASTRUCTURE_FAILURE") {
+      updateSummaryClassification(summary, "RED_TEST_INFRASTRUCTURE_FAILURE");
+    }
+
+    await writeEvidenceAtomic(
+      opts["json-summary"] || join(EVIDENCE_DIR, "03-primary-summary.json"),
+      JSON.stringify({ ...summary, gates: cleanResults }, null, 2)
+    );
+  }
 
   // Write context manifest
   const manifest = {
@@ -730,7 +632,6 @@ async function main() {
     started_at: results[0]?.started_at || new Date().toISOString(),
     tools: {},
   };
-  // Get tool versions
   try {
     manifest.tools.node = process.version;
     const { stdout: pnpmV } = await runCommand("pnpm", ["--version"]);
@@ -739,9 +640,7 @@ async function main() {
     manifest.tools.rustc = rustcV.trim().split(" ")[1] || rustcV.trim();
     const { stdout: gitV } = await runCommand("git", ["--version"]);
     manifest.tools.git = gitV.trim();
-  } catch {
-    // non-critical
-  }
+  } catch { /* non-critical */ }
 
   await writeEvidenceAtomic(
     join(EVIDENCE_DIR, "00-context-manifest.json"),
@@ -760,63 +659,18 @@ async function main() {
   console.log(`${C.B}=== Summary ===${C.N}`);
   console.log(`Classification: ${summary.classification}`);
   console.log(
-    `Gates: ${summary.passed} PASS / ${summary.failed} RED / ${summary.yellow} YELLOW / ${summary.amber} AMBER`
+    `Gates: ${summary.executed}/${summary.total_gates} executed — ${summary.passed} PASS / ${summary.red} RED / ${summary.yellow} YELLOW / ${summary.amber} AMBER / ${summary.noop} NOOP / ${summary.skipped} SKIPPED / ${summary.not_executed} NOT_EXECUTED`
   );
   console.log(`Evidence: ${EVIDENCE_DIR}`);
   console.log();
 
   // Exit with appropriate code
   if (summary.classification.startsWith("RED_")) process.exit(1);
-  process.exit(0);
-}
-
-function generateFinalReport(summary, results, sha, branch, manifest) {
-  const lines = [];
-  lines.push(`# FINAL REPORT — ${summary.run_id}`);
-  lines.push("");
-  lines.push(`## Status: ${summary.classification}`);
-  lines.push("");
-  lines.push("---");
-  lines.push("");
-  lines.push("## 1. Repository Snapshot");
-  lines.push("");
-  lines.push(`| Field | Value |`);
-  lines.push(`|-------|-------|`);
-  lines.push(`| SHA | ${sha} |`);
-  lines.push(`| Branch | ${branch} |`);
-  lines.push(`| Node | ${manifest.tools.node || "N/A"} |`);
-  lines.push(`| pnpm | ${manifest.tools.pnpm || "N/A"} |`);
-  lines.push(`| Rust | ${manifest.tools.rustc || "N/A"} |`);
-  lines.push("");
-  lines.push("---");
-  lines.push("");
-  lines.push("## 2. Gate Matrix");
-  lines.push("");
-  lines.push("| Gate | Status | Duration | Details |");
-  lines.push("|------|--------|----------|---------|");
-  for (const r of results) {
-    const details = [
-      r.passed !== undefined ? `${r.passed} passed` : "",
-      r.failed ? `${r.failed} failed` : "",
-      r.skipped ? `${r.skipped} skipped` : "",
-      r.ignored ? `${r.ignored} ignored` : "",
-    ]
-      .filter(Boolean)
-      .join(", ") || "-";
-    lines.push(
-      `| ${r.gate} — ${r.name} | ${r.classification} | ${r.duration_ms}ms | ${details} |`
-    );
+  if (mode === "full") {
+    // Full matrix: only the exact GREEN classification is a pass
+    if (!summary.classification.startsWith("GREEN")) process.exit(1);
   }
-  lines.push("");
-  lines.push("---");
-  lines.push("");
-  lines.push("## 3. Evidence");
-  lines.push("");
-  lines.push(`- Evidence directory: \`evidence/autonomous-test/${summary.run_id}/\``);
-  lines.push(`- JSON summary: \`03-primary-summary.json\``);
-  lines.push(`- Logs: \`04-primary-logs/\``);
-
-  return lines.join("\n");
+  process.exit(0);
 }
 
 // ── Run ──

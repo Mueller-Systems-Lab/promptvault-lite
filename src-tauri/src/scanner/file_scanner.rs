@@ -285,7 +285,15 @@ pub fn scan_directory(dir_path: &str) -> Result<Vec<PromptItem>, String> {
                     .unwrap_or_else(|| file.modified.clone());
 
                 let prompt = PromptItem {
-                    id: uuid::Uuid::new_v4().to_string(),
+                    // Deterministische ID aus dem kanonischen Pfad (uuid v5).
+                    // Random-IDs (new_v4) pro Scan machen Favoriten/Persistenz
+                    // über Neustarts hinweg unmöglich — die DB referenziert die
+                    // ID, nicht den Pfad. v5 ist pfadstabil und kollisionsfrei.
+                    id: uuid::Uuid::new_v5(
+                        &uuid::Uuid::NAMESPACE_URL,
+                        file.path.to_string_lossy().as_bytes(),
+                    )
+                    .to_string(),
                     file_path: file.path.to_string_lossy().to_string(),
                     file_name: file.file_name.clone(),
                     title,
@@ -381,6 +389,21 @@ mod tests {
             result[0].category,
             dir.path().file_name().unwrap().to_str().unwrap()
         );
+    }
+
+    /// Regression (E19-Native-Reise): Prompt-IDs müssen pfadstabil sein,
+    /// sonst überleben Favoriten keinen App-Neustart (DB referenziert die ID).
+    #[test]
+    fn test_prompt_ids_are_deterministic_across_scans() {
+        let dir = TempDir::new().unwrap();
+        create_test_file(dir.path(), "stable.md", "# Stable\n\nInhalt");
+
+        let first = scan_directory(dir.path().to_str().unwrap()).unwrap();
+        let second = scan_directory(dir.path().to_str().unwrap()).unwrap();
+
+        assert_eq!(first[0].id, second[0].id);
+        // uuid v5 ist ein gültiges UUID-Format
+        assert!(uuid::Uuid::parse_str(&first[0].id).is_ok());
     }
 
     #[test]

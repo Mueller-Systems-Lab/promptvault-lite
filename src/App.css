@@ -32,8 +32,8 @@
    Dark Theme (Default)
    ============================================================ */
 [data-theme="dark"] {
-  --color-primary: #6366f1;
-  --color-primary-hover: #818cf8;
+  --color-primary: #5d61ed;
+  --color-primary-hover: #4f52d8;
   --color-primary-light: #2d2a5c;
   --color-success: #22c55e;
   --color-success-light: #052e16;
@@ -47,7 +47,7 @@
   --color-border: #2a2a4a;
   --color-text: #e2e8f0;
   --color-text-muted: #94a3b8;
-  --color-text-light: #64748b;
+  --color-text-light: #8ba0bd;
 }
 
 [data-theme="light"] {
@@ -521,7 +521,7 @@ body {
 }
 .badge-note {
   background: #64748b20;
-  color: #64748b;
+  color: var(--color-text-light);
   border: 1px solid #64748b40;
 }
 .badge-doc {

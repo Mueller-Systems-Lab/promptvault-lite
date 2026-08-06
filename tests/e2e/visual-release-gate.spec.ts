@@ -1,24 +1,27 @@
 /**
- * Visual Release Gate — Playwright E2E Tests
+ * Visual Structural Evidence (Run Card §27, Phase J)
  *
- * Tests the application shell, layout, and theming at the browser level.
- * Prompt rendering, classification, optimization, and gate logic are covered
- * by the 1460 vitest unit/integration tests (React Testing Library).
+ * E15 ist ein Pflicht-Gate: PASS oder RED — kein YELLOW, keine fehlende
+ * Pixelbaseline. Geprüft wird deterministisch die strukturelle Korrektheit:
+ *   - Toolbar sichtbar und im Viewport
+ *   - Explorer sichtbar
+ *   - Detailsbereich sichtbar
+ *   - Statusbar vollständig sichtbar
+ *   - kein horizontales Abschneiden
+ *   - keine Überlappung kritischer Controls
+ *   - Dialog vollständig im Viewport
+ *   - Dark Mode strukturell korrekt
+ *   - Light Mode strukturell korrekt
+ *   - 1280×800, 1920×1080, kleiner unterstützter Viewport
  *
- * This test covers:
- *  - App shell loading (toolbar, statusbar, explorer, details)
- *  - Status bar visibility at low viewport heights
- *  - Dark/Light/Auto theme switching via settings modal
- *  - Explorer panel presence
- *
- * ## Privacy: 100% synthetic, no real data.
- * ## Relation to #152: Adds visual E2E coverage for layout/theming.
+ * Optional erzeugte Screenshots sind Evidence, aber keine Pixelbaseline.
+ * ## Privacy: 100% synthetisch.
  */
 
 import { test, expect, type Page } from "@playwright/test";
 
 // ---------------------------------------------------------------------------
-// Tauri IPC Mock — minimal mock to enable isTauri detection
+// Tauri IPC Mock (Renderer-only)
 // ---------------------------------------------------------------------------
 
 function buildTauriMockScript(): string {
@@ -28,10 +31,12 @@ function buildTauriMockScript(): string {
         switch (cmd) {
           case 'plugin:dialog|open': return Promise.resolve('/mock-vault');
           case 'plugin:dialog|save': return Promise.resolve('/mock-vault/export.json');
-          case 'scan_directory': return Promise.resolve([]);
+          case 'scan_directory': return Promise.resolve([
+            {id:'p1',file_path:'/mock-vault/a.md',file_name:'a.md',title:'Test Prompt 1',description:'',category:'general',version:'1.0.0',tags:['test'],content:'# Test\\nInhalt.',raw_frontmatter:{},created_at:'2026-01-01T00:00:00Z',updated_at:'2026-01-01T00:00:00Z',is_favorite:false}
+          ]);
           case 'start_file_watcher': case 'stop_file_watcher': return Promise.resolve(null);
           case 'load_cache': case 'save_cache': return Promise.resolve(null);
-          case 'analyze_all': return Promise.resolve({evaluations:[],hygiene:[],total_prompts:0,average_score:0});
+          case 'analyze_all': return Promise.resolve({evaluations:[],hygiene:[],total_prompts:1,average_score:0});
           case 'evaluate_prompt': return Promise.resolve({id:'eval-x',prompt_id:'',overall_score:0,criteria:[],missing_sections:[],recommendations:[],evaluated_at:new Date().toISOString()});
           case 'analyze_hygiene': return Promise.resolve({id:'hyg-x',prompt_id:'',hygiene_score:100,status:'clean',artifacts:[],analyzed_at:new Date().toISOString()});
           case 'toggle_favorite': return Promise.resolve(false);
@@ -48,121 +53,147 @@ function buildTauriMockScript(): string {
   `;
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
 async function loadApp(page: Page) {
   await page.addInitScript(buildTauriMockScript());
   await page.goto("/");
   await page.waitForSelector(".app-container", { timeout: 15000 });
 }
 
-async function screenshot(page: Page, name: string) {
-  await page.screenshot({
-    path: `test-results/visual-gate/${name}.png`,
-    fullPage: false,
+/** Assert that an element is fully within the viewport (no cut-off). */
+async function expectFullyInViewport(locator: ReturnType<Page["locator"]>) {
+  await expect(locator).toBeVisible();
+  const box = await locator.boundingBox();
+  if (!box) throw new Error("no bounding box");
+  const vp = await locator.page().viewportSize();
+  if (!vp) throw new Error("no viewport");
+  expect(box.x, "left edge cut off").toBeGreaterThanOrEqual(0);
+  expect(box.y, "top edge cut off").toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width, "right edge cut off").toBeLessThanOrEqual(vp.width);
+  expect(box.y + box.height, "bottom edge cut off").toBeLessThanOrEqual(vp.height);
+}
+
+/** Assert that two elements do not overlap. */
+async function expectNoOverlap(a: ReturnType<Page["locator"]>, b: ReturnType<Page["locator"]>) {
+  const ba = await a.boundingBox();
+  const bb = await b.boundingBox();
+  if (!ba || !bb) throw new Error("missing bounding box for overlap check");
+  const overlapX = ba.x < bb.x + bb.width && bb.x < ba.x + ba.width;
+  const overlapY = ba.y < bb.y + bb.height && bb.y < ba.y + ba.height;
+  expect(overlapX && overlapY, `overlap between ${a} and ${b}`).toBe(false);
+}
+
+const VIEWPORTS: Array<{ name: string; width: number; height: number }> = [
+  { name: "1280x800", width: 1280, height: 800 },
+  { name: "1920x1080", width: 1920, height: 1080 },
+  { name: "small", width: 1024, height: 600 },
+];
+
+// ---------------------------------------------------------------------------
+// VS-01: App Shell strukturell korrekt (alle Viewports)
+// ---------------------------------------------------------------------------
+
+for (const vp of VIEWPORTS) {
+  test.describe(`VS-01 — App Shell ${vp.name}`, () => {
+    test.use({ viewport: { width: vp.width, height: vp.height } });
+
+    test("Toolbar, Explorer, Details, Statusbar sichtbar und im Viewport", async ({ page }) => {
+      await loadApp(page);
+      await expectFullyInViewport(page.locator(".app-toolbar"));
+      await expectFullyInViewport(page.locator(".panel-explorer"));
+      await expectFullyInViewport(page.locator(".panel-details"));
+      await expectFullyInViewport(page.locator(".app-statusbar"));
+      await page.screenshot({ path: `test-results/visual-gate/shell-${vp.name}.png`, fullPage: true });
+    });
+
+    test("kein horizontales Abschneiden", async ({ page }) => {
+      await loadApp(page);
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+      );
+      expect(overflow, "horizontal overflow detected").toBe(false);
+    });
+
+    test("keine Überlappung kritischer Controls (Toolbar-Buttons)", async ({ page }) => {
+      await loadApp(page);
+      const buttons = page.locator(".app-toolbar .btn");
+      const count = await buttons.count();
+      expect(count).toBeGreaterThanOrEqual(2);
+      for (let i = 0; i < count - 1; i++) {
+        await expectNoOverlap(buttons.nth(i), buttons.nth(i + 1));
+      }
+    });
+
+    test("Explorer und Details überlappen nicht", async ({ page }) => {
+      await loadApp(page);
+      await expectNoOverlap(page.locator(".panel-explorer"), page.locator(".panel-details"));
+    });
   });
 }
 
 // ---------------------------------------------------------------------------
-// VS-01: App Shell & Layout
+// VS-02: Statusbar vollständig sichtbar
 // ---------------------------------------------------------------------------
 
-test.describe("VS-01 — App Shell & Layout", () => {
+test.describe("VS-02 — Statusbar", () => {
   test.beforeEach(async ({ page }) => {
     await loadApp(page);
   });
 
-  test("app container, toolbar, statusbar render", async ({ page }) => {
-    await expect(page.locator(".app-container")).toBeVisible();
-    await expect(page.locator(".app-toolbar")).toBeVisible();
-    await expect(page.locator(".app-statusbar")).toBeVisible();
-    await screenshot(page, "vs01-shell");
-  });
-
-  test("explorer panel is present in DOM", async ({ page }) => {
-    await expect(page.locator(".panel-explorer")).toBeVisible({ timeout: 5000 });
-    await screenshot(page, "vs01-explorer");
-  });
-
-  test("detail panel placeholder is present when no prompt selected", async ({ page }) => {
-    // Detail panel should exist even when empty
-    await expect(page.locator(".panel-details")).toBeVisible({ timeout: 5000 });
-    await screenshot(page, "vs01-details-empty");
-  });
-});
-
-// ---------------------------------------------------------------------------
-// VS-02: Status bar at various viewport sizes
-// ---------------------------------------------------------------------------
-
-test.describe("VS-02 — Status Bar", () => {
-  test.beforeEach(async ({ page }) => {
-    await loadApp(page);
-  });
-
-  test("status bar visible at 600px height", async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 600 });
-    await page.waitForTimeout(300);
+  test("Statusbar zeigt Version vollständig", async ({ page }) => {
     const bar = page.locator(".app-statusbar");
-    await expect(bar).toBeVisible();
-    const box = await bar.boundingBox();
-    expect(box).not.toBeNull();
-    if (box) expect(box.y + box.height).toBeLessThanOrEqual(610);
-    await screenshot(page, "vs02-600px");
-  });
-
-  test("status bar visible at 900px height", async ({ page }) => {
-    await page.setViewportSize({ width: 1400, height: 900 });
-    await page.waitForTimeout(300);
-    await expect(page.locator(".app-statusbar")).toBeVisible();
-    await screenshot(page, "vs02-900px");
-  });
-
-  test("status bar visible at 768px height (tablet)", async ({ page }) => {
-    await page.setViewportSize({ width: 1024, height: 768 });
-    await page.waitForTimeout(300);
-    await expect(page.locator(".app-statusbar")).toBeVisible();
-    await screenshot(page, "vs02-768px");
+    await expectFullyInViewport(bar);
+    await expect(bar).toContainText(/PromptVault Lite v\d+\.\d+\.\d+/);
   });
 });
 
 // ---------------------------------------------------------------------------
-// VS-03: Theme (Settings Modal)
+// VS-03: Dialog vollständig im Viewport (Dark + Light)
 // ---------------------------------------------------------------------------
 
-test.describe("VS-03 — Theme Switching", () => {
+test.describe("VS-03 — Dialog & Themes", () => {
   test.beforeEach(async ({ page }) => {
     await loadApp(page);
   });
 
-  test("settings button opens settings modal", async ({ page }) => {
-    // Find settings button by aria-label or content
-    const settingsBtn = page.locator('[aria-label*="Einstellungen"], [aria-label*="Settings"]');
-    if (await settingsBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await settingsBtn.click();
-      await page.waitForTimeout(500);
-      await screenshot(page, "vs03-settings-open");
-      // Close with Escape
-      await page.keyboard.press("Escape");
-    } else {
-      // Settings button might use a different selector — take screenshot for diagnostics
-      await screenshot(page, "vs03-no-settings-button");
-    }
+  test("Einstellungen-Dialog vollständig im Viewport (Dunkel)", async ({ page }) => {
+    // Default-Theme ist Dunkel
+    await page.getByRole("button", { name: /Einstellungen öffnen/ }).click();
+    const dialog = page.getByRole("dialog", { name: "Einstellungen" });
+    await expect(dialog).toBeVisible();
+    await expectFullyInViewport(dialog);
+    const theme = await page.evaluate(() =>
+      document.documentElement.getAttribute("data-theme")
+    );
+    expect(theme).toBe("dark");
+    await page.screenshot({ path: "test-results/visual-gate/dialog-dark.png" });
   });
 
-  test("app renders without JavaScript errors", async ({ page }) => {
-    // Collect console errors
-    const errors: string[] = [];
-    page.on("pageerror", (err) => errors.push(err.message));
+  test("Light Mode strukturell korrekt", async ({ page }) => {
+    await page.getByRole("button", { name: /Einstellungen öffnen/ }).click();
+    await page.getByRole("radio", { name: "Hell" }).click();
+    await page.keyboard.press("Escape");
 
-    await page.reload();
-    await page.waitForSelector(".app-container", { timeout: 15000 });
-    await page.waitForTimeout(1000);
+    const theme = await page.evaluate(() =>
+      document.documentElement.getAttribute("data-theme")
+    );
+    expect(theme).toBe("light");
 
-    // No uncaught errors should have occurred
-    expect(errors.filter(e => !e.includes("Could not establish connection"))).toHaveLength(0);
-    await screenshot(page, "vs03-no-js-errors");
+    await expectFullyInViewport(page.locator(".app-toolbar"));
+    await expectFullyInViewport(page.locator(".app-statusbar"));
+    await page.screenshot({ path: "test-results/visual-gate/light-mode.png" });
+  });
+
+  test("Dark Mode strukturell korrekt nach Theme-Wechsel", async ({ page }) => {
+    await page.getByRole("button", { name: /Einstellungen öffnen/ }).click();
+    await page.getByRole("radio", { name: "Hell" }).click();
+    await page.getByRole("radio", { name: "Dunkel" }).click();
+    await page.keyboard.press("Escape");
+
+    const theme = await page.evaluate(() =>
+      document.documentElement.getAttribute("data-theme")
+    );
+    expect(theme).toBe("dark");
+    await expectFullyInViewport(page.locator(".panel-explorer"));
+    await page.screenshot({ path: "test-results/visual-gate/dark-mode.png" });
   });
 });

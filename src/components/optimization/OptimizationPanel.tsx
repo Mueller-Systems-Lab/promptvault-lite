@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { optimizePrompt } from "@/lib/promptOptimizer";
 import type { OptimizationMode, OptimizationDiff } from "@/types";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 // =============================================================================
 // Optimization Panel — Modal overlay for prompt optimization
@@ -116,11 +117,12 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="modal-dialog optimizer-dialog"
+        role="dialog"
+        aria-label="Prompt-Optimierung"
         onClick={(e) => {
           e.stopPropagation();
         }}
-        role="dialog"
-        aria-label="Prompt-Optimierung"
+        ref={useFocusTrap(true)}
       >
         {/* Header */}
         <div className="modal-header">

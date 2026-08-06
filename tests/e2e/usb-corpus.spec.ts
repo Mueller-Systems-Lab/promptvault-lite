@@ -415,20 +415,17 @@ usbDescribe("PromptVault Lite — USB Corpus Flow", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Skip-When-Absent Test (always runs, verifies clean skip)
+// USB Corpus availability — honest skip, never a fake PASS
 // ---------------------------------------------------------------------------
 
-test.describe("PromptVault Lite — Skip Behavior", () => {
-  test("usb corpus test gracefully skips when env var absent", () => {
-    if (!USB_CORPUS_AVAILABLE) {
-      console.log(
-        "[E2E] PROMPTVAULT_USB_CORPUS not set — USB corpus test skipped.",
-      );
-      console.log(
-        "[E2E] To enable: export PROMPTVAULT_USB_CORPUS=/path/to/corpus",
-      );
-    }
-    // This test always passes — it documents the skip behavior
-    expect(true).toBe(true);
+test.describe("PromptVault Lite — USB Corpus", () => {
+  test("usb corpus tests are skipped explicitly when env var absent", () => {
+    test.skip(
+      !USB_CORPUS_AVAILABLE,
+      "PROMPTVAULT_USB_CORPUS not set — USB corpus test skipped. Export PROMPTVAULT_USB_CORPUS=/path/to/corpus to enable."
+    );
+    // When the env var IS set, the corpus must exist on disk
+    const fs = require("node:fs");
+    expect(fs.existsSync(USB_CORPUS_AVAILABLE)).toBe(true);
   });
 });
