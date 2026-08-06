@@ -67,10 +67,15 @@ if (check.status !== 0) {
 const preHash = sha256File(binary);
 console.log(`E19-Gate: pre-test SHA-256: ${preHash}`);
 
-// (4) Native wdio-Journey unter xvfb (echter GTK-Dialog via XTEST).
+// (4) Native wdio-Journey unter xvfb — NUR native-journey.spec.js (E19).
+// E21 (native-dialog-smoke) läuft als separater Job mit eigenem Gate-Script.
 const wdioStatus = run(
   "xvfb-run",
-  ["--auto-servernum", "pnpm", "exec", "wdio", "run", "e2e-tests/wdio.conf.mjs"],
+  [
+    "--auto-servernum", "pnpm", "exec", "wdio", "run",
+    "e2e-tests/wdio.conf.mjs",
+    "--spec", "e2e-tests/specs/native-journey.spec.js",
+  ],
   { timeout: 900000 },
 );
 

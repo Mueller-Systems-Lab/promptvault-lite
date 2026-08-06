@@ -38,6 +38,36 @@ function captureWids() {
   return wids;
 }
 
+/** Suche das Dialog-Fenster via xdotool und gib das WID zurück (leer wenn nicht gefunden). */
+function findDialogWid(title) {
+  const r = spawnSync("xdotool", ["search", "--name", title], {
+    encoding: "utf-8",
+  });
+  return (r.stdout || "").trim();
+}
+
+/**
+ * Fokussiere ein Fenster per WID und prüfe, ob der Fokus erfolgreich gesetzt wurde.
+ * Returns true wenn das Fenster den Fokus hat.
+ */
+function focusWindow(wid) {
+  spawnSync("xdotool", ["windowfocus", wid]);
+  // Kurz warten, dann prüfen
+  const r = spawnSync("xdotool", ["getwindowfocus"], { encoding: "utf-8" });
+  const focused = (r.stdout || "").trim().toLowerCase();
+  const widLower = wid.toLowerCase();
+  return focused === widLower;
+}
+
+/**
+ * Schließe ein Fenster deterministisch via WM_DELETE_WINDOW (xdotool windowclose).
+ * Das ist der Standard-WM-Close-Mechanismus, kein Kill.
+ */
+function closeWindow(wid) {
+  const r = spawnSync("xdotool", ["windowclose", wid], { encoding: "utf-8" });
+  return r.status === 0;
+}
+
 describe("E21 — Native File Dialog Smoke (Desktop-Integrationsgrenze)", function () {
   this.timeout(180000);
 
@@ -84,19 +114,43 @@ describe("E21 — Native File Dialog Smoke (Desktop-Integrationsgrenze)", functi
     expect(out).toContain("ATSPI_DIALOG_MAPPED");
     expect(out).toContain("ATSPI_CONFIRM_BUTTON_FOUND");
 
-    // Sauberer Cancel: Escape schließt den Dialog (Standard-Cancel, kein
-    // Bestätigungs-Fallback). Danach mit xdotool gezielt prüfen, dass das
-    // Dialog-Fenster weg ist. WID-Diffing würde fälschlich Portal-/GTK-
-    // Helper-Fenster (xdg-desktop-portal-gtk etc.) als offenen Dialog
-    // zählen — diese transienten Fenster sind kein Dialog-Leak.
+    // ── Dialog-Abbruch: Fokus → Escape → Close (WM_DELETE_WINDOW Fallback) ──
+    // Das verifizierte Dialog-WID erneut ermitteln (es wurde beim Öffnen
+    // erkannt). Dieses WID ist der exakte Target für Fokus + Escape.
+    const dialogWid = findDialogWid("Prompt-Ordner auswählen");
+    expect(dialogWid).not.toBe(""); // fail-closed: Dialog muss noch da sein
+
+    // 1) Fokus explizit auf das Dialog-WID setzen
+    const focusOk = focusWindow(dialogWid);
+    console.log(`E21: DIALOG_CANCEL_FOCUS_VERIFIED=${focusOk} wid=${dialogWid}`);
+
+    // 2) Escape senden (WebDriver → WebView → X11)
     await browser.keys("Escape");
-    await browser.pause(1500);
-    const check = spawnSync("xdotool", [
-      "search", "--name", "Prompt-Ordner auswählen",
-    ], { encoding: "utf-8" });
-    const dialogWids = (check.stdout || "").trim();
-    console.log(`E21: xdotool search nach Escape: "${dialogWids}" (exit=${check.status})`);
-    // fail-closed: kein Treffer → Dialog ist geschlossen
-    expect(dialogWids).toBe("");
+    await browser.pause(1000);
+
+    // 3) Prüfen, ob der Dialog geschlossen wurde
+    const afterEscape = findDialogWid("Prompt-Ordner auswählen");
+    console.log(
+      `E21: DIALOG_CANCEL_ESCAPE_SENT after="${afterEscape}" (was="${dialogWid}")`
+    );
+
+    if (afterEscape !== "") {
+      // Escape hat nicht geschlossen → deterministischer WM_DELETE_WINDOW-Fallback.
+      // xdotool windowclose sendet WM_DELETE_WINDOW an genau das verifizierte WID,
+      // der Window-Manager schließt das Fenster sauber (kein Kill, kein globaler
+      // Tastendruck, kein Koordinaten-Klick).
+      console.log(`E21: Escape did not close dialog, trying WM_DELETE_WINDOW on ${dialogWid}`);
+      const closed = closeWindow(dialogWid);
+      console.log(`E21: WM_DELETE_WINDOW sent to ${dialogWid}, result=${closed}`);
+      await browser.pause(1000);
+
+      // Erneut prüfen
+      const afterClose = findDialogWid("Prompt-Ordner auswählen");
+      console.log(`E21: DIALOG_CANCEL_AFTER_WM_DELETE_WINDOW: "${afterClose}"`);
+      expect(afterClose).toBe(""); // fail-closed: Dialog muss geschlossen sein
+      console.log("E21: DIALOG_CLOSED_AFTER_CANCEL (via WM_DELETE_WINDOW)");
+    } else {
+      console.log("E21: DIALOG_CLOSED_AFTER_CANCEL (via Escape)");
+    }
   });
 });

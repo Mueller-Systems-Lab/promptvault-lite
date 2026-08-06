@@ -171,6 +171,51 @@ class TestSelectConfirmButtonFailClosed(unittest.TestCase):
         ok = btn("Öffnen...")
         self.assertEqual(select_confirm_button_candidate([ok]), ok)
 
+    # ── allow_disabled regression (Run Card §10 / verify-only vs action mode) ──
+
+    def test_disabled_allowed_in_verify_only_mode(self):
+        """verify-only: disabled default button is accepted (empty folder chooser)."""
+        disabled_default = btn("Open", enabled=False, is_default=True)
+        self.assertEqual(
+            select_confirm_button_candidate([disabled_default], allow_disabled=True),
+            disabled_default,
+        )
+
+    def test_disabled_still_excluded_in_action_mode(self):
+        """Action mode (default): disabled button is still excluded."""
+        self.assertIsNone(
+            select_confirm_button_candidate(
+                [btn("Open", enabled=False, is_default=True)],
+                allow_disabled=False,
+            )
+        )
+
+    def test_allow_disabled_default_false(self):
+        """Default parameter is False — disabled excluded without explicit flag."""
+        self.assertIsNone(
+            select_confirm_button_candidate([btn("Open", enabled=False, is_default=True)])
+        )
+
+    def test_disabled_default_preferred_over_enabled_cancel_in_verify_only(self):
+        """verify-only: disabled default button wins over enabled cancel button."""
+        disabled_default = btn("Open", enabled=False, is_default=True)
+        cancel = btn("Cancel", enabled=True)
+        result = select_confirm_button_candidate(
+            [cancel, disabled_default], allow_disabled=True
+        )
+        self.assertEqual(result, disabled_default)
+
+    def test_disabled_without_default_still_excluded_in_verify_only(self):
+        """verify-only: disabled non-default NON-AFFIRMATIVE button is still excluded."""
+        # "Create" is not in the affirmative names list — it's neither
+        # a cancel nor an affirmative, so it's excluded regardless of allow_disabled.
+        self.assertIsNone(
+            select_confirm_button_candidate(
+                [btn("Create", enabled=False, is_default=False)],
+                allow_disabled=True,
+            )
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
