@@ -1,7 +1,7 @@
 ---
 title: Projektstruktur
 description: Vollständige Referenz der Verzeichnis- und Dateistruktur von PromptVault Lite.
-version: 1.7.0
+version: 1.8.0
 ---
 
 # Projektstruktur
@@ -37,6 +37,7 @@ version: 1.7.0
 | `stores/appStore.ts`            | **AppStore (Zustand):** UI-State, Filterlogik, FileTree-Konstruktion, Tauri-API-Aufrufe                                      |
 | `stores/blueprintStore.ts`      | Blueprint-Store (in Entwicklung)                                                                                             |
 | `stores/__tests__/`             | Store-Unit-Tests (appStore.test.ts)                                                                                          |
+| `observability/`                | Admin Observability: Contracts, Trace, Events, Diagnostics, Invariants, Redaction, Store                                     |
 | `types/index.ts`                | Zentrale Typdefinitionen: `PromptItem`, `PromptEvaluation`, `PromptHygiene`, `FileTreeNode`, `PromptFilters`, Artifact-Typen |
 | `lib/tauri.ts`                  | Typisierte Tauri-API-Wrapper: `scanDirectory`, `evaluatePrompt`, `analyzeHygiene`, `export*`, `toggleFavorite`, FileWatcher  |
 | `hooks/useExport.ts`            | Export-Logik (Formatwahl, Fortschritt, Fehlerbehandlung)                                                                     |
@@ -92,6 +93,7 @@ version: 1.7.0
 | `export.rs`            | —           | `export_json`, `export_markdown`, `export_zip`          |
 | `persistence.rs`       | —           | Persistenz-Commands                                     |
 | `blueprint.rs`         | —           | **In Entwicklung:** Blueprint-Commands                  |
+| **observability/**     | `observability/` | Backend-Trace-Kontext (`TraceContext`/`BackendSpan`) für Frontend↔Backend-Korrelation |
 | **database/**          | `database/` | Datenbank-Layer                                         |
 | `mod.rs`               | —           | Modul-Wurzel                                            |
 | `sqlite.rs`            | —           | SQLite-Implementierung (Tabelle, CRUD, Mutex)           |
@@ -127,6 +129,8 @@ docs/
 ├── index.md                # MkDocs-Landing-Page (Diátaxis)
 ├── INSTALL.md              # Installationsanleitung
 ├── ARCHITECTURE.md         # Detail-Architektur
+├── OBSERVABILITY.md        # Admin Observability
+├── CLI.md                  # promptvault CLI / uv tool
 ├── USER_GUIDE.md           # Benutzerhandbuch
 ├── TESTING.md              # Test-Anleitung
 ├── CHANGELOG.md            # Versionshistorie

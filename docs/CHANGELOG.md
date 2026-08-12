@@ -6,6 +6,29 @@ version: 1.8.0
 
 # Changelog
 
+## Unreleased — Admin Observability & CLI (on `master`, not yet released)
+
+> Integriert auf `master` nach v1.8.0. **Nicht veröffentlicht** — kein GitHub Release, kein `v1.9.0`-Tag, kein PyPI-Publish.
+
+### Added
+
+- **Admin Observability Mode** — read-only Laufzeit-Diagnose mit Trace/Span-Korrelation, Reason Codes, Pipeline-Stages, Status und Laufzeiten. Getrennt vom Developer Mode (Action-Gate). Kein Netzwerk, keine Telemetrie.
+- **Runtime Tracing** — `src/observability/` (Contracts, Trace, Events, Diagnostics, Invariants, Redaction, Store) mit session-only Ring Buffer (`100` Traces / `2000` Events).
+- **Diagnostics Panel** — `src/components/settings/AdminDiagnosticsPanel.tsx`: Übersicht, Trace-Timeline, Detailansicht, Filter, Export und „Copy for Debugging".
+- **Privacy Redaction** — Secret-/Pfad-Redaction vor jedem Diagnose-Export; kein Promptvolltext, keine Secrets, keine privaten absoluten Pfade.
+- **Backend-Korrelation** — `src-tauri/src/observability/mod.rs` (`TraceContext`/`BackendSpan`) trägt den Trace-Kontext über die Tauri-IPC-Grenze.
+- **Windows Native E2E** — WebdriverIO/WebView2 beweist den realen nativen Observability-Pfad (`e2e-tests/specs/admin-observability.native.spec.js`).
+- **promptvault CLI** — `tools/promptvault-cli/`: `doctor`, `install`, `launch`, `update`, `diagnostics`, `uninstall`.
+- **uv install lifecycle** — hatchling-Wheel, `uv tool install` aus lokalem Wheel (PyPI-Publish ausstehend).
+- **Installer integrity verification** — SHA-256 + Größen-Verifikation, fail-closed.
+
+### Publication Status
+
+- `promptvault-cli`: `READY_FOR_PUBLICATION` (nicht auf PyPI).
+- `v1.9.0`: `NOT RELEASED`.
+
+---
+
 ## v1.8.0 — Direction Profiles, Missing-Info Gate and Optimizer Hardening
 
 Released: 2026-08-03

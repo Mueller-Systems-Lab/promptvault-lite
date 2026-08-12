@@ -1,90 +1,79 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-08-05
-**Current version:** v1.8.0 (stable release)
-**Next target:** v1.8.x patch — test harness hardening completed (PR #294), pending merge review
+**Last updated:** 2026-08-12
+**Current version:** v1.8.0 (stable release, published 2026-08-03)
+**Next target:** kein benannter Release — Veröffentlichung der integrierten Arbeit (Admin Observability + CLI) steht als separate Owner-Entscheidung aus
 
 ---
 
-## Completed
+## Recently Completed (on `master`, unreleased)
 
-| Priority | Task                                   | Issue/PR | Status                          |
-| -------- | -------------------------------------- | -------- | ------------------------------- |
-| P0       | Optimizer Placeholder Hardening        | PR #147  | ✅ Merged (2026-06-20)          |
-| P0       | Replace placeholder release icons      | #82      | ✅ Closed (2026-06-12)          |
-| P0       | NAS-mounted markdown folder support    | PR #145  | ✅ Merged (2026-06-20)          |
-| P0       | Blueprint Detection & Analysis         | PR #148  | ✅ Merged (2026-06-19)          |
-| P0       | .txt prompt ingestion support          | PR #168  | ✅ Merged (2026-06-21)          |
-| P0       | Scanner extension consolidation        | PR #170  | ✅ Merged (2026-06-21)          |
-| P0       | Shared file size limit (1 MiB)         | PR #172  | ✅ Merged (2026-06-21)          |
-| P0       | MkDocs Docs-as-Code                    | PR #162  | ✅ Merged (2026-06-21)          |
-| P0       | Historical evidence archive            | PR #163  | ✅ Merged (2026-06-21)          |
-| P0       | AGENTS.md agent rules                  | PR #160  | ✅ Merged (2026-06-20)          |
-| P0       | UI/Optimizer/Classification/Layout     | PR #185  | ✅ Merged (2026-06-24)          |
-| P1       | Settings Modal                         | #63      | ✅ Merged (PR #186, 2026-07-02) |
-| P1       | Audio Summary (TTS via Web Speech API) | #200     | ✅ Merged (PR #202, 2026-07-03) |
-| P1       | Paste Prompt Analyzer                  | #204     | ✅ Merged (PR #205, 2026-07-05) |
-| P1       | Embeddings Phase 1 (Mock Provider)     | #199     | ✅ Merged (PR #206, 2026-07-06) |
+| Task | Status |
+| --- | --- |
+| Admin Observability (Trace/Span, Reason Codes, Redaction, Diagnostics Panel) | ✅ DONE / INTEGRATED |
+| Frontend↔Backend Trace-Korrelation | ✅ DONE / INTEGRATED |
+| Windows Native Runtime Proof (WebdriverIO/WebView2) | ✅ DONE |
+| promptvault CLI (`doctor`/`install`/`launch`/`update`/`diagnostics`/`uninstall`) | ✅ IMPLEMENTED / VERIFIED |
+| uv package (`promptvault-cli`) | ✅ READY_FOR_PUBLICATION |
 
 ---
 
-## In Progress
+## Completed (v1.8.0 and earlier)
 
-| Priority | Task                                    | Issue | Status                                                     |
-| -------- | --------------------------------------- | ----- | ---------------------------------------------------------- |
-| P0       | Missing-Info-Gate                       | #216     | ✅ Implemented (ADR-002 accepted) — master, behind feature flag  |
-| P0       | Direction Profiles & Variants           | #215     | ✅ Implemented — master, behind feature flag                    |
-| P0       | Epic: Optimierung mit Varianten         | #214     | ✅ Closed (2026-07-11) — sub-issues #215, #216 complete         |
-| P0       | Optimizer Gate Session Guard            | #289     | ✅ Closed (2026-07-13) — null-safe session access               |
-| P0       | Sensitive Content Optimizer Blocking    | #291     | ✅ Closed (2026-07-14) — normal optimizer blocked for sensitive  |
-| P0       | Autonomous Test Harness Trust           | #294     | ✅ Implemented — E19 13/13, E21 smoke, E2E Bridge Gate (ADR-005), cross-browser matrix, E1-E21 inventory. Pending merge review. |
+| Priority | Task | Status |
+| -------- | --- | --- |
+| P0 | Blueprint Detection & Analysis | ✅ Merged |
+| P0 | NAS-mounted markdown folder support | ✅ Merged |
+| P0 | Settings Modal | ✅ Merged |
+| P1 | Audio Summary (TTS via Web Speech API) | ✅ Merged |
+| P1 | Paste Prompt Analyzer | ✅ Merged |
+| P1 | Embeddings Phase 1 (Mock Provider) | ✅ Merged |
+| P0 | Missing-Info-Gate (#216) | ✅ Implemented — master, feature flag |
+| P0 | Direction Profiles & Variants (#215) | ✅ Implemented — master, feature flag |
+| P0 | Optimizer Gate Session Guard (#289) | ✅ Closed |
+| P0 | Sensitive Content Optimizer Blocking (#291) | ✅ Closed |
+| P0 | Autonomous Test Harness Trust (#294) | ✅ Merged |
+| P0 | v1.8.0 Release | ✅ Published (2026-08-03) |
 
 ---
 
-## Short-Term (Next Sprints)
+## Publication (NOT YET)
 
-| Priority | Task                                   | Issue | Status                                                                                   |
-| -------- | -------------------------------------- | ----- | ---------------------------------------------------------------------------------------- |
-| P2       | Embeddings Phase 2: DB schema/storage  | #199  | Planned (no real provider)                                                               |
-| P2       | Architecture Contract Audit            | —     | Planned                                                                                  |
-| P2       | Security Posture Review                | —     | Planned                                                                                  |
-| P2       | Tool-Gap Closure (mkdocs, secret scan) | —     | Planned                                                                                  |
-| P1       | v1.8.0 Release Preparation              | —     | ✅ Completed — Direction Profiles, Missing-Info-Gate, Optimizer Hardening, Visual Gate |
-| P2       | Agentic Browser Repair Kit             | #71   | Planned                                                                                  |
-| P2       | Prompt suggestions workflow            | #45   | Planned                                                                                  |
+| Item | Status |
+| --- | --- |
+| PyPI publish (`promptvault-cli`) | ❌ NOT YET (Owner-Freigabe nötig) |
+| GitHub Release für neuen master-Stand | ❌ NOT YET |
+| `v1.9.0` Tag | ❌ NOT YET |
+
+---
+
+## Short-Term (Planned)
+
+| Priority | Task | Issue |
+| -------- | --- | --- |
+| P2 | Windows x64 Installer-Artefakt veröffentlichen (CLI-Install-Pfad end-to-end) | — |
+| P2 | Embeddings Phase 2: DB schema/storage | #199 |
+| P2 | Architecture Contract Audit | — |
+| P2 | Security Posture Review | — |
+| P2 | Code signing for Windows installer | — |
 
 ---
 
 ## Medium-Term
 
-| Priority | Feature Area                       | Issues    | Status                                       |
-| -------- | ---------------------------------- | --------- | -------------------------------------------- |
-| P1       | Docker/LXC Web Backend Adapter MVP | #97–#142  | Deferred — large epic, no implementation yet |
-| P2       | Docker Deployment                  | #126–#128 | Deferred (part of Web/LAN MVP)               |
-| P2       | Web-specific UI adjustments        | #124–#125 | Deferred (part of Web/LAN MVP)               |
-| P2       | Code signing for Windows installer | —         | Planned                                      |
+| Priority | Feature Area | Status |
+| -------- | --- | --- |
+| P1 | Docker/LXC Web Backend Adapter MVP | Deferred — large epic |
+| P2 | Docker Deployment | Deferred |
 
 ---
 
 ## Long-Term / Deferred
 
-- **Proxmox/NAS Integration** (#129–#131, #141–#142)
-- **Security Red Tests** (#132–#136)
-- **LAN Accessibility** (#137–#138)
-- **Agentic Baseline Prompt** (#146)
+- **Proxmox/NAS Integration**
+- **Security Red Tests**
 - **Real embedding provider** (ONNX/Ollama — deferred per ADR-004 Decision C)
 - **macOS/Linux native installers**
-
----
-
-## Documentation Debt
-
-| Priority | Task                         | Issue | Status                 |
-| -------- | ---------------------------- | ----- | ---------------------- |
-| P3       | Platform-specific INSTALL.md | #43   | Backlog                |
-| P3       | Legacy docs cleanup          | #42   | Backlog                |
-| P3       | Screenshots                  | #40   | Backlog                |
-| P0       | Docs Baseline Sync           | #207  | ✅ Completed (PR #208) |
 
 ---
 
@@ -93,7 +82,7 @@
 - Cloud backend or SaaS offering
 - API-based prompt optimization (stays local/deterministic)
 - User accounts or authentication
-- Telemetry or analytics collection
+- Telemetry or analytics collection (including from Admin Observability)
 - Mobile apps
 - Real-time collaboration
 - Real semantic search / ML embeddings in production (Phase 1 is mock-only)

@@ -1,7 +1,7 @@
 ---
 title: Benutzerhandbuch
 description: Bedienung der Oberfläche, Suche, Analyse und Exportstatus.
-version: 1.7.0
+version: 1.8.0
 ---
 
 # Benutzerhandbuch
@@ -124,3 +124,37 @@ Die Direktanalyse erlaubt es, einen Prompt-Text einzufügen und sofort zu analys
 - Die Zwischenablage wird ausschließlich nach expliziter Nutzeraktion gelesen (Button-Klick).
 - Keine Cloud-API, kein Remote-LLM, keine Telemetrie.
 - Zurück zum Dateimodus: Auf **📁 Dateien** klicken.
+
+## Admin Observability — Verarbeitung nachvollziehen
+
+Admin Observability ist ein **lesender Diagnosemodus**. Er zeigt Schritt für Schritt, was PromptVault bei der Verarbeitung eines Prompts tatsächlich tut — welcher Schritt erfolgreich war, welcher übersprungen oder blockiert wurde und warum.
+
+### Wann benutze ich es?
+
+Zum Beispiel, wenn **eine Analyse falsch aussieht** — ein Schritt fehlt, ein Score wirkt unerklärlich, eine Optimierung liefert „nichts“.
+
+### So gehst du vor
+
+1. **Einstellungen** öffnen (⚙️).
+2. Unter **Entwickler-Werkzeuge** den Schalter **Admin Observability** aktivieren.
+3. In der Toolbar erscheint ein 🔍-Button → **Diagnostics Panel** öffnen.
+4. Die Verarbeitung erneut ausführen (z. B. Prompt analysieren).
+5. Im Panel den **fehlgeschlagenen oder übersprungenen Schritt** ansehen (Status + Reason Code).
+6. Bei Bedarf die Diagnose **kopieren** oder als **redigiertes JSON exportieren** und weitergeben.
+
+Es sind **keine Entwicklerkenntnisse nötig**. Standardmäßig enthält die Diagnose weder vollständige Prompttexte noch Secrets — nur Metadaten, Status, Reason Codes und Laufzeiten. Es gibt keine Cloud-Übertragung; alles bleibt lokal.
+
+Mehr Details: `docs/OBSERVABILITY.md`.
+
+## PromptVault CLI (optional)
+
+Die App lässt sich zusätzlich über die Kommandozeile verwalten (`promptvault`). Hinweis: Das CLI-Paket ist **noch nicht veröffentlicht** und wird bis dahin aus einem lokal gebauten Wheel installiert (siehe `docs/CLI.md`):
+
+```text
+promptvault doctor       # Status prüfen
+promptvault install      # native App installieren
+promptvault launch       # App starten
+promptvault update       # auf Updates prüfen
+promptvault diagnostics  # Diagnose-/Observability-Hinweis
+promptvault uninstall    # App entfernen (Vault-Daten bleiben erhalten)
+```

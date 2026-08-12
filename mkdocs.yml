@@ -143,6 +143,8 @@ exclude_docs: |
   USER_GUIDE.md
   TESTING.md
   ARCHITECTURE.md
+  OBSERVABILITY.md
+  CLI.md
   SECURITY_GATES.md
   AI_HANDBUCH.md
   AI_WORKFLOW.md

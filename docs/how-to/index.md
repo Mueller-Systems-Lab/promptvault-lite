@@ -1,7 +1,7 @@
 ---
 title: How-to-Index
 description: Übersicht über typische Aufgaben in PromptVault Lite mit Verweisen auf die passenden Anleitungen.
-version: 1.7.0
+version: 1.8.0
 ---
 
 # How-to-Index
@@ -55,6 +55,28 @@ version: 1.7.0
 - ★-Symbol im FileTree zeigt favorisierte Prompts an
 
 → Detail: Benutzerhandbuch `../USER_GUIDE.md#drei-spalten-layout` _(noch nicht migriert)_
+
+### Wie diagnostiziere ich eine Analyse mit Admin Observability?
+
+1. **Einstellungen** → **Entwickler-Werkzeuge** → **Admin Observability** aktivieren.
+2. In der Toolbar den 🔍-Button (Diagnostics Panel) öffnen.
+3. Die Verarbeitung erneut ausführen (Prompt analysieren).
+4. Im Panel den fehlgeschlagenen/übersprungenen Schritt samt Reason Code ansehen.
+5. Bei Bedarf Diagnose kopieren oder als redigiertes JSON exportieren.
+
+→ Detail: `../OBSERVABILITY.md` _(noch nicht migriert)_
+
+### Wie verwalte ich die App über die CLI?
+
+```text
+promptvault doctor       # Status prüfen
+promptvault install      # native App installieren
+promptvault launch       # App starten
+promptvault update       # auf Updates prüfen
+promptvault uninstall    # App entfernen (Vault-Daten bleiben)
+```
+
+→ Detail: `../CLI.md` _(noch nicht migriert)_ — CLI-Paket noch nicht auf PyPI (`READY_FOR_PUBLICATION`).
 
 ### Welche Tastaturkürzel gibt es?
 

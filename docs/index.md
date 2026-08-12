@@ -1,7 +1,7 @@
 ---
 title: PromptVault Lite Dokumentation
 description: Zentrale Dokumentations-Landing-Page für PromptVault Lite.
-version: 1.7.0
+version: 1.8.0
 ---
 
 # PromptVault Lite Dokumentation
@@ -38,6 +38,8 @@ pnpm tauri dev
 
 - [Projektstruktur](reference/project-structure.md) — Vollständige Datei- und Verzeichnisreferenz
 - Architektur: `ARCHITECTURE.md` _(noch nicht migriert)_
+- Admin Observability: `OBSERVABILITY.md` _(noch nicht migriert)_
+- CLI / uv tool: `CLI.md` _(noch nicht migriert)_
 - [Glossar](glossary.md) — Fachbegriffe von A bis Z
 - Sicherheitsregeln: `SECURITY_GATES.md` _(noch nicht migriert)_
 - Changelog: `CHANGELOG.md` _(noch nicht migriert)_
@@ -79,4 +81,4 @@ pnpm tauri dev
 
 ---
 
-_Zuletzt aktualisiert: 2026-06-22 · Version 1.7.0_
+_Zuletzt aktualisiert: 2026-08-12 · Version 1.8.0_

@@ -1,7 +1,7 @@
 ---
 title: PromptVault Lite
 description: Projektübersicht, Schnellstart und Verweise auf die restliche Dokumentation.
-version: 1.7.0
+version: 1.8.0
 ---
 
 # PromptVault Lite
@@ -10,13 +10,17 @@ PromptVault Lite ist ein lokales Desktop-Tool zum Einlesen, Durchsuchen und Bewe
 
 ## Features
 
-- Rekursiver Scan von `.md`-Dateien
+- Rekursiver Scan von `.md`/`.markdown`/`.txt`-Dateien (1 MiB-Limit)
 - Drei-Spalten-UI: Explorer, Details, Analyse
 - Frontmatter-Parsing mit Fallbacks für fehlende Felder
 - Volltextsuche und Filter im Explorer
 - Qualitätsanalyse mit Score 0–100
 - Hygieneanalyse mit Score 0–100 und Artefakterkennung
-- Kopieren und Datei-Öffnen aus der Detailansicht
+- Blueprint-Erkennung und -Optimierung
+- Prompt-Optimierung (conservative/balanced/aggressive)
+- Missing-Info-Gate und Direction Profiles (opt-in)
+- Admin Observability (Trace/Span-Diagnose, read-only)
+- promptvault CLI (install/launch/update/uninstall)
 - Lokale Persistenz-Module für SQLite und JSON-Cache
 
 ## Quick Start
@@ -48,6 +52,8 @@ pnpm start
 
 - [Installation](INSTALL.md)
 - [Architektur](ARCHITECTURE.md)
+- [Admin Observability](OBSERVABILITY.md)
+- [CLI / uv tool](CLI.md)
 - [Benutzerhandbuch](USER_GUIDE.md)
 - [Tests](TESTING.md)
 - [Changelog](CHANGELOG.md)

@@ -2,7 +2,7 @@
 title: Testing
 description: Tests ausführen, Struktur verstehen und neue Tests ergänzen.
 version: 1.8.0
-last_updated: 2026-07-06
+last_updated: 2026-08-12
 ---
 
 # Testing
@@ -67,6 +67,24 @@ Die meisten Tests liegen direkt in den Modulen als `#[cfg(test)]`-Einheiten:
 - Übliche Pfade sind `src/**/__tests__/*.test.ts` oder `*.test.tsx`
 - Store-/Hook-Logik separat testen
 - Tauri-Aufrufe mocken, wenn das Verhalten isoliert geprüft werden soll
+
+### Admin Observability
+
+- `src/observability/__tests__/trace.test.ts` — Trace/Span-Lifecycle
+- `src/observability/__tests__/events.test.ts` — Ring-Buffer-Limits und Event-Bus
+- `src/observability/__tests__/diagnostics.test.ts` — Reason-Code-Katalog/-Klassifikation
+- `src/observability/__tests__/invariants.test.ts` — Integritätsprüfungen
+- `src/observability/__tests__/redaction.test.ts` — Secret-/Pfad-Redaction
+- `src/observability/__tests__/privacy.test.ts` — kein Promptvolltext/Secrets im Export
+- `src/observability/__tests__/privacySentinel.test.ts` — Sentinel-Secret darf nicht exportiert werden
+- `src/observability/__tests__/offOnEquivalence.test.ts` — Observability ON/OFF liefert identische Resultate
+- Rust: `src-tauri/tests/observability_correlation.rs` — Frontend↔Backend-Korrelation
+
+### Native E2E (Windows, WebdriverIO)
+
+- `e2e-tests/specs/admin-observability.native.spec.js` — realer nativer Pfad: UI → Tauri IPC → Rust → Verarbeitung → Observability-Korrelation → UI-Diagnostics
+- `e2e-tests/wdio.conf.windows.mjs` — WebdriverIO-Konfiguration für Windows (WebView2)
+- Beweist Observability auf dem **echten nativen Pfad** (nicht nur Vite/JSdom/Mock-Bridge)
 
 ## Optional: Playwright E2E
 

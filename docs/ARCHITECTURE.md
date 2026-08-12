@@ -2,7 +2,7 @@
 title: Architektur
 description: Systemübersicht, Module und Datenfluss von PromptVault Lite.
 version: 1.8.0
-last_updated: 2026-07-06
+last_updated: 2026-08-12
 ---
 
 # Architektur
@@ -18,6 +18,7 @@ last_updated: 2026-07-06
                       │  - Audio Summary             │      │  - favorites / persist   │
                       │  - Settings                  │      │  - actions               │
                       │  - Optimization Panels       │      └──────────┬───────────────┘
+                      │  - Admin Diagnostics Panel   │                │
                       └──────────┬──────────────────┘                │
                                  │                                    ▼
                                  ▼                         ┌──────────────────────────┐
@@ -25,13 +26,27 @@ last_updated: 2026-07-06
                       │ Zustand Store            │         │ scanner / parser /        │
                       │ UI-State / Filter /      │         │ analysis / database /     │
                       │ Settings                 │         │ watcher / actions         │
-                      └─────────────────────────┘         └──────────┬───────────────┘
-                                                                     │
-                                                                     ▼
+                      └──────────┬──────────────┘         └──────────┬───────────────┘
+                                 │                                    │
+                                 ▼                                    ▼
+                      ┌──────────────────────────────────────────────────────────┐
+                      │  Observability (querliegende Diagnoseinfrastruktur)        │
+                      │  Trace / Span / Reason Codes / Redaction / Ring Buffer     │
+                      │  frontend: src/observability · rust: src-tauri/src/observability │
+                      └──────────────────────────────────────────────────────────┘
+                                                                    │
+                                                                    ▼
                                                           ┌──────────────────────────┐
                                                           │ Dateisystem / SQLite /   │
                                                           │ JSON-Cache / In-Memory   │
                                                           └──────────────────────────┘
+
+   promptvault-cli (uv tool)
+         ↓
+   Native Installer Manager
+   (install / launch / update / uninstall, SHA-256 fail-closed)
+         ↓
+   PromptVault Desktop App
 ```
 
 ## Datenfluss
@@ -126,7 +141,30 @@ flowchart LR
 
 - `src/components/settings/SettingsPanel.tsx`
 - Theme (Light/Dark/Auto), Export-Format, Developer Mode, Reset
+- Entwickler-Werkzeuge: Developer Mode (Action-Gate) und Admin Observability (Diagnose-Gate)
 - Persistenz via localStorage
+
+### Admin Observability (querliegende Diagnoseinfrastruktur)
+
+- `src/observability/contracts.ts` — versionierter Typ-/Reason-Code-Vertrag
+- `src/observability/trace.ts` — Trace/Span-Lifecycle (injizierbare ID-/Clock-Factories)
+- `src/observability/events.ts` — session-only Ring Buffer (`MAX_TRACES=100`, `MAX_EVENTS=2000`)
+- `src/observability/diagnostics.ts` — Reason-Code-Katalog + Fehlerklassifikation
+- `src/observability/invariants.ts` — Integritätsprüfungen
+- `src/observability/redaction.ts` — Secret-/Pfad-Redaction, Diagnose-Export
+- `src/observability/observabilityStore.ts` — separater Zustand-Store (nicht im appStore)
+- `src/components/settings/AdminDiagnosticsPanel.tsx` — Diagnose-UI
+- `src-tauri/src/observability/mod.rs` — `TraceContext`/`BackendSpan` für Frontend↔Backend-Korrelation
+- Observability ist **kein** eigener Verarbeitungspfad — sie instrumentiert den kanonischen Pfad (OFF/ON-Äquivalenz)
+- Kein Netzwerk, kein Cloud-Export, keine Telemetrie
+
+### promptvault CLI
+
+- `tools/promptvault-cli/` — Python-CLI-Paket (`promptvault`, Einstiegspunkt `promptvault`)
+- `doctor` / `install` / `launch` / `update` / `diagnostics` / `uninstall`
+- `promptvault_cli/releases.py` — Release-Manifest-Auflösung + SHA-256/Größen-Verifikation (fail-closed)
+- `promptvault_cli/install_cmd.py` — NSIS-/MSI-Installer-Invokation
+- `uv tool` verwaltet die CLI; die CLI verwaltet die native Desktop-App
 
 ### Database / Persistenz
 
@@ -196,6 +234,7 @@ flowchart LR
 - **Regex/Heuristiken**: deterministische lokale Analyse
 - **Web Speech API**: lokale TTS für Audio Summary (keine externen Dienste)
 - **Mock Embedding Provider**: Phase 1 — deterministisch, synthetisch, kein ML-Modell
+- **In-Process Observability**: Trace/Span-Instrumentierung des kanonischen Pfads, kein Cloud-Exporter
 
 ## Sicherheitsgrenzen
 
@@ -203,6 +242,8 @@ flowchart LR
 - **Export:** Zielverzeichnis canonicalized, ZIP-Pfade bereinigt
 - **Action Layer:** Developer Mode Gate, Approval für Write-Actions, Fixture Path Sanitization
 - **UI:** Blockierte Anzeige bei sensiblen Blueprint-Inhalten, Audioausgabe deaktivierbar
+- **Observability:** Redaction vor Export, session-only Ring Buffer, keine Netzwerk-/Telemetrie-Übertragung, Developer Mode strikt getrennt
+- **CLI:** SHA-256-/Größen-Verifikation (fail-closed), kein Shell-Interpolation
 - **Privacy:** Keine Netzwerkaufrufe, keine Cloud/API, keine Telemetrie, Local-first
 
 ## Dateistruktur (Auszug)
@@ -222,6 +263,14 @@ PromptVault_Lite/
 │   │   ├── promptAudioSummary.ts
 │   │   ├── localTts.ts
 │   │   └── embeddings/
+│   ├── observability/
+│   │   ├── contracts.ts
+│   │   ├── trace.ts
+│   │   ├── events.ts
+│   │   ├── diagnostics.ts
+│   │   ├── invariants.ts
+│   │   ├── redaction.ts
+│   │   └── observabilityStore.ts
 │   ├── stores/appStore.ts
 │   ├── types/index.ts
 │   ├── actions/
@@ -241,11 +290,16 @@ PromptVault_Lite/
 │       ├── commands/
 │       ├── database/
 │       ├── models/
+│       ├── observability/
 │       ├── parser/
 │       └── scanner/
+├── tools/
+│   └── promptvault-cli/
 └── docs/
     ├── README.md
     ├── ARCHITECTURE.md
+    ├── OBSERVABILITY.md
+    ├── CLI.md
     ├── ROADMAP.md
     ├── PROJECT_STATUS.md
     ├── INSTALL.md

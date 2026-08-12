@@ -3,7 +3,7 @@
 > Living Software Portfolio. Updated with every significant agent run.
 > No marketing claims — only evidence-backed facts.
 
-**Last evidence run:** 2026-07-06 (Docs Baseline Sync, OpenCode 1.15.0)
+**Last evidence run:** 2026-08-12 (Final Reconciliation — Admin Observability + CLI documentation)
 
 ---
 
@@ -31,6 +31,10 @@
 | Audio Summary — Text + TTS via Web Speech API (local)              | 11 frontend tests PASS                 | 2026-07-06    |
 | Paste Prompt Analyzer — Clipboard & direct text (no file, no save) | 26 frontend tests PASS                 | 2026-07-06    |
 | Embeddings Phase 1 — Mock Provider + feature flag (no real model)  | 49 frontend tests PASS                 | 2026-07-06    |
+| Admin Observability — Trace/Span, Reason Codes, Redaction, Store    | 8 frontend suites + Rust correlation tests PASS | 2026-08-12 |
+| Frontend↔Backend trace correlation                                  | `observability_correlation.rs` PASS     | 2026-08-12    |
+| Native observability proof on Windows (WebdriverIO/WebView2)        | `admin-observability.native.spec.js`    | 2026-08-12    |
+| promptvault CLI (doctor/install/launch/update/diagnostics/uninstall)| `tests/test_releases.py` PASS           | 2026-08-12    |
 
 ---
 
@@ -89,6 +93,7 @@
 
 | Version     | Date       | Type        |
 | ----------- | ---------- | ----------- |
+| v1.8.0      | 2026-08-03 | Stable      |
 | v1.7.1      | 2026-07-01 | Stable      |
 | v1.7.0      | 2026-06-22 | Pre-release |
 | v1.6.0      | 2026-06-15 | Stable      |
@@ -119,7 +124,7 @@
 
 ## Next Step
 
-- **Completed:** Docs Baseline Sync (#207 / PR #208) — RED_HOLD resolved.
-- **Current:** v1.8.0 released — Direction Profiles, Missing-Info-Gate, Optimizer Hardening, Visual Gate.
-- **Planned:** Embeddings Phase 2 (#199) — DB schema/storage, still mock-only.
-- **Planned:** Architecture Contract Audit, Security Posture Review.
+- **Completed:** v1.8.0 released — Direction Profiles, Missing-Info-Gate, Optimizer Hardening, Visual Gate.
+- **Integrated (unreleased):** Admin Observability + promptvault CLI on `master`.
+- **Pending (owner-gated):** PyPI publish, GitHub Release, `v1.9.0` tag.
+- **Planned:** Embeddings Phase 2 (#199), Architecture Contract Audit, Security Posture Review.
