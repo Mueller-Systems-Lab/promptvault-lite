@@ -1,14 +1,36 @@
 use crate::analysis::{hygiene, quality};
 use crate::models::{PromptEvaluation, PromptHygiene};
+use crate::observability::TraceContext;
+use std::time::Instant;
 
 #[tauri::command]
-pub fn evaluate_prompt(prompt_id: String, content: String) -> Result<PromptEvaluation, String> {
-    Ok(quality::evaluate_prompt(&content, &prompt_id))
+pub fn evaluate_prompt(
+    prompt_id: String,
+    content: String,
+    trace: Option<TraceContext>,
+) -> Result<PromptEvaluation, String> {
+    let start = Instant::now();
+    let mut evaluation = quality::evaluate_prompt(&content, &prompt_id);
+    if let Some(ctx) = trace {
+        evaluation.backend_span =
+            Some(ctx.to_backend_span(Some(start.elapsed().as_secs_f64() * 1000.0)));
+    }
+    Ok(evaluation)
 }
 
 #[tauri::command]
-pub fn analyze_hygiene(prompt_id: String, content: String) -> Result<PromptHygiene, String> {
-    Ok(hygiene::analyze_hygiene(&content, &prompt_id))
+pub fn analyze_hygiene(
+    prompt_id: String,
+    content: String,
+    trace: Option<TraceContext>,
+) -> Result<PromptHygiene, String> {
+    let start = Instant::now();
+    let mut hygiene = hygiene::analyze_hygiene(&content, &prompt_id);
+    if let Some(ctx) = trace {
+        hygiene.backend_span =
+            Some(ctx.to_backend_span(Some(start.elapsed().as_secs_f64() * 1000.0)));
+    }
+    Ok(hygiene)
 }
 
 #[derive(serde::Serialize)]

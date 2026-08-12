@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::observability::BackendSpan;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PromptEvaluation {
     pub id: String,
@@ -9,6 +11,11 @@ pub struct PromptEvaluation {
     pub missing_sections: Vec<String>,
     pub recommendations: Vec<String>,
     pub evaluated_at: String,
+    /// Optional backend-origin trace span. Only present when the caller
+    /// passed a TraceContext into the command. The frontend MUST NOT treat
+    /// the absence/presence of this field as a product result difference.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub backend_span: Option<BackendSpan>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -30,6 +37,7 @@ impl PromptEvaluation {
             missing_sections: Vec::new(),
             recommendations: Vec::new(),
             evaluated_at: chrono::Utc::now().to_rfc3339(),
+            backend_span: None,
         }
     }
 }

@@ -131,6 +131,7 @@ mod tests {
             missing_sections: vec![],
             recommendations: vec![],
             evaluated_at: "2026-06-03T00:00:00Z".to_string(),
+            backend_span: None,
         };
 
         let hygiene = PromptHygiene {
@@ -140,6 +141,7 @@ mod tests {
             status: crate::models::HygieneStatus::Clean,
             artifacts: vec![],
             analyzed_at: "2026-06-03T00:00:00Z".to_string(),
+            backend_span: None,
         };
 
         (vec![prompt], vec![evaluation], vec![hygiene])

@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::artifact::DetectedArtifact;
+use crate::observability::BackendSpan;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "lowercase")]
@@ -28,6 +29,9 @@ pub struct PromptHygiene {
     pub status: HygieneStatus,
     pub artifacts: Vec<DetectedArtifact>,
     pub analyzed_at: String,
+    /// Optional backend-origin trace span (see PromptEvaluation).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub backend_span: Option<BackendSpan>,
 }
 
 impl PromptHygiene {
@@ -39,6 +43,7 @@ impl PromptHygiene {
             status: HygieneStatus::Clean,
             artifacts: Vec::new(),
             analyzed_at: chrono::Utc::now().to_rfc3339(),
+            backend_span: None,
         }
     }
 

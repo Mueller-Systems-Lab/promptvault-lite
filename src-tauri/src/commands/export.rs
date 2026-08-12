@@ -558,6 +558,7 @@ mod tests {
             missing_sections: vec![],
             recommendations: vec![],
             evaluated_at: "2026-06-01T00:00:00Z".to_string(),
+            backend_span: None,
         }
     }
 
@@ -569,6 +570,7 @@ mod tests {
             status: HygieneStatus::Clean,
             artifacts: vec![],
             analyzed_at: "2026-06-01T00:00:00Z".to_string(),
+            backend_span: None,
         }
     }
 

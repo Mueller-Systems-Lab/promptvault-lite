@@ -16,6 +16,7 @@ import type {
   DirectionProfileSelection,
   VariantGenerationResult,
   PromptVariant,
+  AnalysisReport,
 } from "@/types";
 import {
   scanDirectory,
@@ -43,6 +44,21 @@ import { mergeAnswers } from "@/lib/gateContentMerger";
 import { isMissingInfoGateEnabled } from "@/lib/missingInfoFeatureFlag";
 import { generateVariants as generateDirectionVariants } from "@/lib/variantGenerator";
 import { getDefaultSelection } from "@/lib/directionProfiles";
+import {
+  createTrace,
+  openSpan,
+  completeTrace,
+} from "@/observability/trace";
+import {
+  isObservabilityEnabled,
+  recordCompletedTrace,
+  emitDiagnosticEvent,
+} from "@/observability/events";
+import {
+  checkLengthMismatch,
+} from "@/observability/invariants";
+import { contentFingerprint } from "@/observability/redaction";
+import type { Trace } from "@/observability/contracts";
 
 // --- Theme Types ---
 
@@ -605,6 +621,11 @@ export const useAppStore = create<AppState>((set, get) => ({
     } catch {
       // silent fail
     }
+    try {
+      localStorage.removeItem("promptvault.observability");
+    } catch {
+      // silent fail
+    }
     set({
       theme: "dark",
       exportFormat: "json",
@@ -673,6 +694,23 @@ export const useAppStore = create<AppState>((set, get) => ({
           | undefined,
       )
     ) {
+      if (isObservabilityEnabled()) {
+        emitDiagnosticEvent({
+          schemaVersion: 1,
+          traceId: `gate-${promptId}`,
+          spanId: `gate-ff-${promptId}-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          layer: "store",
+          operation: "open-missing-info-gate",
+          stage: "feature-flag-check",
+          status: "skipped",
+          reasonCode: "FEATURE_DISABLED",
+          category: "EXPECTED_SKIP",
+          attributes: {
+            "promptvault.gate.prompt_id": promptId,
+          },
+        });
+      }
       return;
     }
 
@@ -685,7 +723,6 @@ export const useAppStore = create<AppState>((set, get) => ({
       set({
         isGateOpen: true,
         activeGatePromptId: promptId,
-        // Reset status to ACTIVE if it was CANCELLED or completed
         missingInfoSessions: {
           ...state.missingInfoSessions,
           [promptId]: {
@@ -705,6 +742,23 @@ export const useAppStore = create<AppState>((set, get) => ({
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard: Record<T> may not have key
     if (!contextEval) {
+      if (isObservabilityEnabled()) {
+        emitDiagnosticEvent({
+          schemaVersion: 1,
+          traceId: `gate-${promptId}`,
+          spanId: `gate-no-analysis-${promptId}-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          layer: "store",
+          operation: "open-missing-info-gate",
+          stage: "analysis-prerequisite",
+          status: "blocked",
+          reasonCode: "ANALYSIS_DATA_MISSING",
+          category: "EXPECTED_BLOCK",
+          attributes: {
+            "promptvault.gate.prompt_id": promptId,
+          },
+        });
+      }
       set({
         error: "Keine Analyse-Daten vorhanden. Bitte zuerst analysieren.",
       });
@@ -719,6 +773,23 @@ export const useAppStore = create<AppState>((set, get) => ({
       blueprintEval?.contamination_status === "BLOCKING_SENSITIVE_CONTENT"
     ) {
       /* eslint-enable @typescript-eslint/no-unnecessary-condition */
+      if (isObservabilityEnabled()) {
+        emitDiagnosticEvent({
+          schemaVersion: 1,
+          traceId: `gate-${promptId}`,
+          spanId: `gate-blocked-${promptId}-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          layer: "store",
+          operation: "open-missing-info-gate",
+          stage: "sensitive-content-check",
+          status: "blocked",
+          reasonCode: "BLOCKING_SENSITIVE_CONTENT",
+          category: "SECURITY_BLOCK",
+          attributes: {
+            "promptvault.gate.prompt_id": promptId,
+          },
+        });
+      }
       return; // Gate never opens
     }
 
@@ -1239,7 +1310,7 @@ export const useAppStore = create<AppState>((set, get) => ({
    * The original prompt is NEVER modified — a new file is created.
    * BLOCKING conflicts are enforced at the UI level (buttons disabled).
    */
-  saveVariantAsPrompt: async (variant: PromptVariant) => {
+   saveVariantAsPrompt: async (variant: PromptVariant) => {
     const state = get();
     const folderPath = state.currentFolderPath;
 
@@ -1251,19 +1322,16 @@ export const useAppStore = create<AppState>((set, get) => ({
       return;
     }
 
-    // Determine the prompt that was the source of this variant
     const activePromptId = state.activeVariantPromptId;
     const sourcePrompt = activePromptId
       ? state.prompts.find((p) => p.id === activePromptId)
       : undefined;
 
-    // Build tags: default variant tag + profile ID + source info
     const tags = ["variant", variant.profileId];
     if (sourcePrompt) {
       tags.push(`source:${sourcePrompt.title.slice(0, 30)}`);
     }
 
-    // Build a description that captures variant metadata
     const metaDescription = [
       `Variante des Profils "${variant.label}"`,
       `Richtung: ${variant.directionExplanation}`,
@@ -1277,6 +1345,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       .filter(Boolean)
       .join(". ");
 
+    const obsEnabled = isObservabilityEnabled();
+
     try {
       await tauriCreatePrompt({
         title: variant.label,
@@ -1286,13 +1356,35 @@ export const useAppStore = create<AppState>((set, get) => ({
         description: metaDescription,
       });
 
-      // Re-scan the vault folder to pick up the new file
-      await get().scanFolder(folderPath);
+      try {
+        await get().scanFolder(folderPath);
+      } catch (rescanErr) {
+        if (obsEnabled) {
+          emitDiagnosticEvent({
+            schemaVersion: 1,
+            traceId: "save-variant",
+            spanId: `partial-${Date.now()}`,
+            timestamp: new Date().toISOString(),
+            layer: "store",
+            operation: "save-variant-as-prompt",
+            stage: "rescan-after-save",
+            status: "partial_failure",
+            category: "PARTIAL_FAILURE",
+            reasonCode: "PARTIAL_SAVE_FAILURE",
+            error: {
+              message: String(rescanErr),
+              category: "PARTIAL_FAILURE",
+              reasonCode: "PARTIAL_SAVE_FAILURE",
+            },
+            attributes: {
+              "promptvault.save.create_succeeded": true,
+              "promptvault.save.rescan_succeeded": false,
+            },
+          });
+        }
+      }
 
-      // Close the variant panel
       get().closeVariantPanel();
-
-      // Set success state (error cleared)
       set({ error: null });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
@@ -1487,15 +1579,64 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
 
     set({ isLoading: true, error: null });
+
+    const obsEnabled = isObservabilityEnabled();
+    const trace = obsEnabled
+      ? createTrace("scan-folder")
+      : (null as Trace | null);
+
     try {
-      const prompts = await scanDirectory(path);
+      let prompts: PromptItem[];
 
-      // Start the file watcher
-      await startFileWatcher(path);
+      if (trace) {
+        const { endSpan: endScan } = openSpan(trace, {
+          operation: "scan-directory",
+          layer: "tauri-ipc",
+          stage: "scan_directory",
+        });
+        try {
+          prompts = await scanDirectory(path);
+          endScan("succeeded", {
+            attributes: {
+              "promptvault.scan.prompt_count": prompts.length,
+            },
+          });
+        } catch (scanErr) {
+          endScan("failed", {
+            reasonCode: "SCAN_FAILED",
+            error: {
+              message: String(scanErr),
+              category: "IO_ERROR",
+              reasonCode: "SCAN_FAILED",
+            },
+          });
+          throw scanErr;
+        }
 
-      // Set up event listener for watcher:changed
-      // Capture the folder path at registration time (defense-in-depth:
-      // avoid race where currentFolderPath changes before the event fires)
+        const { endSpan: endWatcher } = openSpan(trace, {
+          operation: "start-watcher",
+          layer: "tauri-ipc",
+          parentSpanId: trace.spans[trace.spans.length - 1]?.spanId,
+          stage: "start_file_watcher",
+        });
+        try {
+          await startFileWatcher(path);
+          endWatcher("succeeded");
+        } catch (watchErr) {
+          endWatcher("failed", {
+            reasonCode: "RUST_COMMAND_FAILED",
+            error: {
+              message: String(watchErr),
+              category: "IO_ERROR",
+              reasonCode: "RUST_COMMAND_FAILED",
+            },
+          });
+        }
+      } else {
+        prompts = await scanDirectory(path);
+        await startFileWatcher(path);
+      }
+
       const watchedPath = path;
       const unlisten = await listen<ChangedPayload>(
         "watcher:changed",
@@ -1507,12 +1648,10 @@ export const useAppStore = create<AppState>((set, get) => ({
               watcherNotification: `Dateisystem-Änderung erkannt (${count} Datei(en)) – aktualisiere...`,
             });
 
-            // Auto-clear notification after 3 seconds
             setTimeout(() => {
               set({ watcherNotification: null });
             }, 3000);
 
-            // Re-scan the folder (use captured path for safety)
             if (watchedPath) {
               scanDirectory(watchedPath)
                 .then((updatedPrompts) => {
@@ -1520,6 +1659,25 @@ export const useAppStore = create<AppState>((set, get) => ({
                 })
                 .catch((err) => {
                   console.error("Re-scan fehlgeschlagen:", err);
+                  if (isObservabilityEnabled()) {
+                    emitDiagnosticEvent({
+                      schemaVersion: 1,
+                      traceId: "watcher-rescan",
+                      spanId: `watcher-rescan-${Date.now()}`,
+                      timestamp: new Date().toISOString(),
+                      layer: "store",
+                      operation: "watcher-rescan",
+                      stage: "watcher:changed-rescan",
+                      status: "failed",
+                      category: "IO_ERROR",
+                      reasonCode: "WATCHER_RESCAN_FAILED",
+                      error: {
+                        message: String(err),
+                        category: "IO_ERROR",
+                        reasonCode: "WATCHER_RESCAN_FAILED",
+                      },
+                    });
+                  }
                 });
             }
           }
@@ -1532,37 +1690,165 @@ export const useAppStore = create<AppState>((set, get) => ({
         currentFolderPath: path,
         _watcherUnlisten: unlisten,
       });
+
+      if (trace) {
+        const { endSpan: endState } = openSpan(trace, {
+          operation: "state-update",
+          layer: "store",
+          stage: "prompts-stored",
+        });
+        endState("succeeded", {
+          attributes: {
+            "promptvault.scan.total_prompts": prompts.length,
+          },
+        });
+        completeTrace(trace, "succeeded");
+        recordCompletedTrace(trace, "succeeded");
+      }
     } catch (err) {
-      set({ error: String(err), isLoading: false });
+      const errorMsg = String(err);
+      set({ error: errorMsg, isLoading: false });
+      if (trace) {
+        completeTrace(trace, "failed");
+        recordCompletedTrace(trace, "failed");
+      }
     }
   },
 
   analyzeSelected: async () => {
     const prompt = get().selectedPrompt();
-    if (!prompt) return;
+    if (!prompt) {
+      if (isObservabilityEnabled()) {
+        emitDiagnosticEvent({
+          schemaVersion: 1,
+          traceId: "analyze-selected",
+          spanId: `no-prompt-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          layer: "store",
+          operation: "analyze-selected",
+          stage: "prompt-resolve",
+          status: "skipped",
+          reasonCode: "PROMPT_NOT_FOUND",
+          category: "EXPECTED_SKIP",
+        });
+      }
+      return;
+    }
 
     set({ isAnalyzing: true });
-    try {
-      const [evaluation, hygiene] = await Promise.all([
-        evaluatePrompt(prompt.id, prompt.content),
-        analyzeHygiene(prompt.id, prompt.content),
-      ]);
-      // Context evaluation runs synchronously (pure TypeScript, no network)
-      const contextEval = evaluatePromptContext(prompt.content);
-      set((state) => ({
-        evaluations: { ...state.evaluations, [prompt.id]: evaluation },
-        hygiene: { ...state.hygiene, [prompt.id]: hygiene },
-        contextEvaluations: {
-          ...state.contextEvaluations,
-          [prompt.id]: contextEval,
-        },
-        isAnalyzing: false,
-      }));
 
-      // Invalidate stale gate session (new analysis = new gaps)
+    const obsEnabled = isObservabilityEnabled();
+    const trace = obsEnabled
+      ? createTrace("analyze-selected")
+      : (null as Trace | null);
+    const contentFp = obsEnabled
+      ? contentFingerprint(prompt.content)
+      : undefined;
+
+    try {
+      let resolveSpanId: string | undefined;
+      if (trace) {
+        const { span: resolveSpan, endSpan: endResolve } = openSpan(trace, {
+          operation: "resolve-prompt",
+          layer: "store",
+          stage: "prompt-resolved",
+          attributes: { "promptvault.prompt_id": prompt.id },
+        });
+        resolveSpanId = resolveSpan.spanId;
+        endResolve("succeeded", {
+          inputFingerprint: contentFp,
+        });
+      }
+
+      let evaluation: PromptEvaluation;
+      let hygiene: PromptHygiene;
+
+      if (trace) {
+        // Pass the trace context through the IPC boundary. invokeObserved
+        // creates the "tauri-ipc" span; the Rust command returns a real
+        // backend_span which recordBackendSpan emits as "rust-analysis".
+        const [evalResult, hygResult] = await Promise.all([
+          evaluatePrompt(prompt.id, prompt.content, {
+            trace,
+            parentSpanId: resolveSpanId,
+          }),
+          analyzeHygiene(prompt.id, prompt.content, {
+            trace,
+            parentSpanId: resolveSpanId,
+          }),
+        ]);
+        evaluation = evalResult;
+        hygiene = hygResult;
+      } else {
+        [evaluation, hygiene] = await Promise.all([
+          evaluatePrompt(prompt.id, prompt.content),
+          analyzeHygiene(prompt.id, prompt.content),
+        ]);
+      }
+
+      if (trace) {
+        const { endSpan: endContext } = openSpan(trace, {
+          operation: "evaluate-context",
+          layer: "typescript",
+          stage: "context-evaluation",
+        });
+        const contextEval = evaluatePromptContext(prompt.content);
+        endContext("succeeded", {
+          attributes: {
+            "promptvault.prompt_type": contextEval.detected_prompt_type,
+            "promptvault.context_profile": contextEval.detected_context_profile,
+            "promptvault.overall_score": contextEval.overall_score,
+          },
+        });
+
+        set((state) => ({
+          evaluations: { ...state.evaluations, [prompt.id]: evaluation },
+          hygiene: { ...state.hygiene, [prompt.id]: hygiene },
+          contextEvaluations: {
+            ...state.contextEvaluations,
+            [prompt.id]: contextEval,
+          },
+          isAnalyzing: false,
+        }));
+
+        const { endSpan: endState } = openSpan(trace, {
+          operation: "state-commit",
+          layer: "store",
+          stage: "results-stored",
+        });
+        endState("succeeded");
+      } else {
+        const contextEval = evaluatePromptContext(prompt.content);
+        set((state) => ({
+          evaluations: { ...state.evaluations, [prompt.id]: evaluation },
+          hygiene: { ...state.hygiene, [prompt.id]: hygiene },
+          contextEvaluations: {
+            ...state.contextEvaluations,
+            [prompt.id]: contextEval,
+          },
+          isAnalyzing: false,
+        }));
+      }
+
       get().resetGateSession(prompt.id);
+
+      if (trace) {
+        const { endSpan: endInvalidate } = openSpan(trace, {
+          operation: "gate-invalidation",
+          layer: "store",
+          stage: "stale-gate-reset",
+        });
+        endInvalidate("succeeded");
+        completeTrace(trace, "succeeded");
+        recordCompletedTrace(trace, "succeeded");
+      }
     } catch (err) {
-      set({ error: String(err), isAnalyzing: false });
+      const errorMsg = String(err);
+      set({ error: errorMsg, isAnalyzing: false });
+      if (trace) {
+        completeTrace(trace, "failed");
+        recordCompletedTrace(trace, "failed");
+      }
     }
   },
 
@@ -1571,27 +1857,109 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (prompts.length === 0) return;
 
     set({ isAnalyzing: true });
-    try {
-      const report = await tauriAnalyzeAll(prompts);
 
-      set((state) => {
-        const evals = { ...state.evaluations };
-        const hyg = { ...state.hygiene };
-        const ctxEvals = { ...state.contextEvaluations };
-        for (let i = 0; i < prompts.length; i++) {
-          evals[prompts[i].id] = report.evaluations[i];
-          hyg[prompts[i].id] = report.hygiene[i];
-          ctxEvals[prompts[i].id] = evaluatePromptContext(prompts[i].content);
+    const obsEnabled = isObservabilityEnabled();
+    const trace = obsEnabled
+      ? createTrace("analyze-all")
+      : (null as Trace | null);
+
+    try {
+      if (trace) {
+        const { endSpan: endBatch } = openSpan(trace, {
+          operation: "analyze-all-batch",
+          layer: "tauri-ipc",
+          stage: "analyze_all",
+          attributes: { "promptvault.batch.prompt_count": prompts.length },
+        });
+
+        let report: AnalysisReport;
+        try {
+          report = await tauriAnalyzeAll(prompts);
+          endBatch("succeeded");
+        } catch (err) {
+          endBatch("failed", {
+            reasonCode: "TAURI_INVOKE_FAILED",
+            error: {
+              message: String(err),
+              category: "IPC_ERROR",
+              reasonCode: "TAURI_INVOKE_FAILED",
+            },
+          });
+          throw err;
         }
-        return {
-          evaluations: evals,
-          hygiene: hyg,
-          contextEvaluations: ctxEvals,
-          isAnalyzing: false,
-        };
-      });
+
+        const violation = checkLengthMismatch(
+          prompts.length,
+          report.evaluations.length,
+          report.hygiene.length,
+        );
+        if (violation) {
+          emitDiagnosticEvent({
+            schemaVersion: 1,
+            traceId: trace.traceId,
+            spanId: `invariant-${Date.now()}`,
+            timestamp: new Date().toISOString(),
+            layer: "store",
+            operation: "analyze-all",
+            stage: "integrity-check",
+            status: "failed",
+            category: "INVARIANT_VIOLATION",
+            reasonCode: "ANALYZE_ALL_RESULT_LENGTH_MISMATCH",
+            invariantViolations: [violation],
+          });
+        }
+
+        set((state) => {
+          const evals = { ...state.evaluations };
+          const hyg = { ...state.hygiene };
+          const ctxEvals = { ...state.contextEvaluations };
+          for (let i = 0; i < prompts.length; i++) {
+            evals[prompts[i].id] = report.evaluations[i];
+            hyg[prompts[i].id] = report.hygiene[i];
+            ctxEvals[prompts[i].id] = evaluatePromptContext(prompts[i].content);
+          }
+          return {
+            evaluations: evals,
+            hygiene: hyg,
+            contextEvaluations: ctxEvals,
+            isAnalyzing: false,
+          };
+        });
+
+        const { endSpan: endState } = openSpan(trace, {
+          operation: "state-commit",
+          layer: "store",
+          stage: "batch-results-stored",
+        });
+        endState("succeeded");
+        completeTrace(trace, "succeeded");
+        recordCompletedTrace(trace, "succeeded");
+      } else {
+        const report = await tauriAnalyzeAll(prompts);
+
+        set((state) => {
+          const evals = { ...state.evaluations };
+          const hyg = { ...state.hygiene };
+          const ctxEvals = { ...state.contextEvaluations };
+          for (let i = 0; i < prompts.length; i++) {
+            evals[prompts[i].id] = report.evaluations[i];
+            hyg[prompts[i].id] = report.hygiene[i];
+            ctxEvals[prompts[i].id] = evaluatePromptContext(prompts[i].content);
+          }
+          return {
+            evaluations: evals,
+            hygiene: hyg,
+            contextEvaluations: ctxEvals,
+            isAnalyzing: false,
+          };
+        });
+      }
     } catch (err) {
       set({ error: String(err), isAnalyzing: false });
+      if (trace) {
+        completeTrace(trace, "failed");
+        recordCompletedTrace(trace, "failed");
+      }
     }
   },
 
@@ -1605,24 +1973,42 @@ export const useAppStore = create<AppState>((set, get) => ({
     const CHUNK_SIZE = 25;
     const prompts = get().prompts;
 
+    const obsEnabled = isObservabilityEnabled();
+
     for (let i = 0; i < prompts.length; i += CHUNK_SIZE) {
       const chunk = prompts.slice(i, i + CHUNK_SIZE);
       const newDetections: Record<string, BlueprintDetectOutput> = {};
 
       for (const item of chunk) {
-        // Skip items without content or whitespace-only content
         if (!item.content || item.content.trim().length === 0) continue;
 
         try {
           newDetections[item.id] = classifyContent(item.content);
         } catch (_err) {
-          // Error-safe: don't crash the batch, don't log content or secrets
-          console.error("Batch classification failed for item");
+          if (obsEnabled) {
+            emitDiagnosticEvent({
+              schemaVersion: 1,
+              traceId: "blueprint-batch",
+              spanId: `classify-${item.id}`,
+              timestamp: new Date().toISOString(),
+              layer: "typescript",
+              operation: "classify-content",
+              stage: "batch-classification",
+              status: "failed",
+              category: "PROCESSING_ERROR",
+              reasonCode: "CLASSIFICATION_FAILED",
+              error: {
+                message: String(_err),
+                category: "PROCESSING_ERROR",
+                reasonCode: "CLASSIFICATION_FAILED",
+              },
+            });
+          } else {
+            console.error("Batch classification failed for item");
+          }
         }
       }
 
-      // Update all detections for this chunk in a single set call to
-      // minimize React re-renders and Zustand subscriber notifications.
       if (Object.keys(newDetections).length > 0) {
         set((state) => ({
           blueprintDetections: {
@@ -1632,9 +2018,6 @@ export const useAppStore = create<AppState>((set, get) => ({
         }));
       }
 
-      // Yield to the event loop between chunks to keep UI responsive.
-      // setTimeout(0) places the callback on the macrotask queue, allowing
-      // the WebView to process pending renders and user interactions.
       if (i + CHUNK_SIZE < prompts.length) {
         await new Promise((resolve) => setTimeout(resolve, 0));
       }

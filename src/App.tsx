@@ -9,6 +9,8 @@ import { PastePromptAnalyzer } from "./components/paste/PastePromptAnalyzer";
 import { ExportDialog } from "./components/common/ExportDialog";
 import { ThemeToggle } from "./components/common/ThemeToggle";
 import { SettingsPanel } from "./components/settings/SettingsPanel";
+import { AdminDiagnosticsPanel } from "./components/settings/AdminDiagnosticsPanel";
+import { useObservabilityStore } from "./observability/observabilityStore";
 import { ApprovalDialog } from "./components/settings/ApprovalDialog";
 import { setApprovalProvider } from "./actions";
 import type { ApprovalRequest } from "./actions";
@@ -36,6 +38,8 @@ function App() {
   const [showExportDialog, setShowExportDialog] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showPasteAnalyzer, setShowPasteAnalyzer] = useState(false);
+  const [showDiagnostics, setShowDiagnostics] = useState(false);
+  const obsEnabled = useObservabilityStore((s) => s.isEnabled);
   const [pendingApproval, setPendingApproval] = useState<{
     request: ApprovalRequest;
     resolve: (approved: boolean) => void;
@@ -262,6 +266,19 @@ function App() {
           >
             ⚙️
           </button>
+          {obsEnabled && (
+            <button
+              className="btn"
+              onClick={() => {
+                setShowDiagnostics(true);
+              }}
+              title="Admin Diagnostics"
+              aria-label="Admin Diagnostics öffnen"
+              style={{ color: "#4caf50" }}
+            >
+              🔍
+            </button>
+          )}
           <button
             className="btn btn-primary"
             onClick={() => {
@@ -354,6 +371,15 @@ function App() {
         <SettingsPanel
           onClose={() => {
             setShowSettings(false);
+          }}
+        />
+      )}
+
+      {/* Admin Diagnostics Panel */}
+      {showDiagnostics && (
+        <AdminDiagnosticsPanel
+          onClose={() => {
+            setShowDiagnostics(false);
           }}
         />
       )}

@@ -94,6 +94,7 @@ fn test_evaluate_prompt_always_succeeds() {
     let result = analyze::evaluate_prompt(
         "unbekannte-id-12345".to_string(),
         "# Test Content".to_string(),
+        None,
     );
     assert!(
         result.is_ok(),
@@ -110,6 +111,7 @@ fn test_analyze_hygiene_always_succeeds() {
     let result = analyze::analyze_hygiene(
         "unbekannte-id-12345".to_string(),
         "# Test Content".to_string(),
+        None,
     );
     assert!(
         result.is_ok(),

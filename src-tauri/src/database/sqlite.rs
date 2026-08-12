@@ -354,6 +354,7 @@ impl Database {
                     missing_sections,
                     recommendations,
                     evaluated_at: row.get(6)?,
+                    backend_span: None,
                 })
             })
             .map_err(|e| format!("Query error: {}", e))?;
@@ -418,6 +419,7 @@ impl Database {
                     status,
                     artifacts,
                     analyzed_at: row.get(5)?,
+                    backend_span: None,
                 })
             })
             .map_err(|e| format!("Query error: {}", e))?;
@@ -635,6 +637,7 @@ mod tests {
             missing_sections: vec![],
             recommendations: vec!["Add more context".to_string()],
             evaluated_at: "2026-06-03T00:00:00Z".to_string(),
+            backend_span: None,
         };
 
         db.save_evaluation(&eval).unwrap();
@@ -657,6 +660,7 @@ mod tests {
             status: crate::models::HygieneStatus::Clean,
             artifacts: vec![],
             analyzed_at: "2026-06-03T00:00:00Z".to_string(),
+            backend_span: None,
         };
 
         db.save_hygiene(&hygiene).unwrap();

@@ -2,6 +2,7 @@ pub mod analysis;
 pub mod commands;
 pub mod database;
 pub mod models;
+pub mod observability;
 pub mod parser;
 pub mod scanner;
 

@@ -7,6 +7,7 @@
 import { useEffect } from "react";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useAppStore } from "@/stores/appStore";
+import { useObservabilityStore } from "@/observability/observabilityStore";
 import type { Theme, ExportFormat } from "@/stores/appStore";
 
 interface SettingsPanelProps {
@@ -39,6 +40,10 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
   const devMode = useAppStore((s) => s.devMode);
   const toggleDevMode = useAppStore((s) => s.toggleDevMode);
   const resetSettings = useAppStore((s) => s.resetSettings);
+  const obsEnabled = useObservabilityStore((s) => s.isEnabled);
+  const obsDeepEnabled = useObservabilityStore((s) => s.isDeepEnabled);
+  const toggleObservability = useObservabilityStore((s) => s.toggleObservability);
+  const toggleDeepDiagnostics = useObservabilityStore((s) => s.toggleDeepDiagnostics);
 
   // Escape key closes the modal (Issue #63 AC)
   useEffect(() => {
@@ -244,6 +249,72 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
             {!devMode && (
               <div className="settings-note settings-note--inactive">
                 Developer Mode ist deaktiviert. Keine Aktionen verfügbar.
+              </div>
+            )}
+
+            <div className="settings-row" style={{ marginTop: "1em" }}>
+              <div className="settings-row-label">
+                <span className="settings-label-text">Admin Observability</span>
+                <span className="settings-label-hint">
+                  Echtzeit-Diagnose und Verarbeitungstransparenz. Erfasst
+                  Trace-Daten, Spans und Reason Codes. Keine Prompt-Inhalte.
+                  Lokal, kein Netzwerk.
+                </span>
+              </div>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={obsEnabled}
+                  onChange={() => {
+                    toggleObservability();
+                  }}
+                  aria-label="Admin Observability umschalten"
+                />
+                <span className="toggle-slider" />
+              </label>
+            </div>
+
+            {obsEnabled && (
+              <>
+                <div className="settings-note settings-note--active">
+                  <strong>ADMIN DIAGNOSTICS ● ACTIVE</strong> — Verarbeitung
+                  wird überwacht. Keine Prompt-Volltexte, keine Secrets.
+                </div>
+
+                <div className="settings-row" style={{ marginTop: "0.5em" }}>
+                  <div className="settings-row-label">
+                    <span className="settings-label-text">Deep Diagnostics</span>
+                    <span className="settings-label-hint">
+                      Erweiterte Diagnose mit Rohdaten. Session-only. Wird bei
+                      App-Neustart zurückgesetzt.
+                    </span>
+                  </div>
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      checked={obsDeepEnabled}
+                      onChange={() => {
+                        toggleDeepDiagnostics();
+                      }}
+                      aria-label="Deep Diagnostics umschalten"
+                    />
+                    <span className="toggle-slider" />
+                  </label>
+                </div>
+
+                {obsDeepEnabled && (
+                  <div className="settings-note settings-note--active">
+                    <strong>DEEP DIAGNOSTICS ● ACTIVE</strong> — Rohdaten
+                    werden erfasst. Sichtbar nur in dieser Session.
+                  </div>
+                )}
+              </>
+            )}
+
+            {!obsEnabled && (
+              <div className="settings-note settings-note--inactive">
+                Admin Observability ist deaktiviert. Keine Trace-Daten werden
+                erfasst.
               </div>
             )}
           </section>
