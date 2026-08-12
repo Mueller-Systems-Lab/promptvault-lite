@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "version": "1.8.0",
+  "platform": "windows",
+  "architecture": "x86_64",
+  "artifacts": {
+    "windows-x86_64": {
+      "filename": "PromptVault Lite_1.8.0_x64-setup.exe",
+      "sha256": "462516F0954D2E2E19B54BFF98614336A6BA1BC543B0272BD79801CB5B0F42A5",
+      "size": 2716082,
+      "type": "nsis"
+    }
+  }
+}

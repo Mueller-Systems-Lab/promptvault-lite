@@ -1,0 +1,8 @@
+# PromptVault CLI — build/test artifacts (never committed)
+dist/
+.pytest_cache/
+.venv/
+__pycache__/
+*.pyc
+*.whl
+*.tar.gz
