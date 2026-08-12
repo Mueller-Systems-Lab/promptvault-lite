@@ -5,15 +5,14 @@
 This is the Python CLI installer for [PromptVault Lite](https://github.com/xxammaxx/promptvault-lite),
 a local prompt-management system with quality and hygiene analysis.
 
-### Installation
+> **Publication status:** `READY_FOR_PUBLICATION`. This package is **not yet published**
+> to PyPI or any package index. The command `uv tool install promptvault-cli` is **not
+> available yet** — it becomes valid only after a real package-index publication.
+
+### Installation (from a locally built wheel)
 
 ```bash
-uv tool install promptvault-cli
-```
-
-Or from a local wheel:
-
-```bash
+uv build
 uv tool install ./dist/promptvault_cli-1.9.0-py3-none-any.whl
 ```
 
@@ -44,3 +43,8 @@ uv tool uninstall promptvault-cli
 
 - Python >= 3.11
 - [uv](https://docs.astral.sh/uv/) for package management
+
+### Documentation
+
+See [`docs/CLI.md`](../../docs/CLI.md) for the full CLI reference, the uv-tool vs.
+native-app distinction, and the current publication status.

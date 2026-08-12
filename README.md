@@ -2,13 +2,12 @@
 
 **Local-first desktop app for managing, analyzing and improving prompt collections.**
 
-PromptVault Lite helps you turn messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls.
+PromptVault Lite turns messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
 ![Release](https://img.shields.io/badge/release-v1.8.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
-![CI](https://img.shields.io/badge/CI-green-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 ---
@@ -21,113 +20,161 @@ It is built for people who collect, write and refine many prompts — especially
 
 ---
 
-## Key Features
+## Highlights
 
-- **Local Prompt Archive**
-  Recursively scan local folders with `.md`, `.markdown` and `.txt` prompt files (1 MiB limit).
-
-- **Prompt Explorer**
-  Browse prompt folders in a clean desktop file tree with search, filters and favorites.
-
-- **Quality Analysis**
-  Score prompts across clarity, role definition, goal structure, context quality, output format and reusability.
-
-- **Hygiene Detection**
-  Find prompt contamination such as secrets, private paths, logs, OCR residue, foreign project context and evidence clutter.
-
-- **Blueprint Intelligence**
-  Detect prompt blueprints, hybrid prompt/spec files and architecture-like agent instructions. Evaluate and optimize blueprint quality across 10 dimensions.
-
-- **Paste Prompt Analyzer**
-  Analyze pasted or typed prompt text directly — no file needed, no persistence, fully local.
-
-- **Audio Summary**
-  Get an AI-readable text summary of any prompt with optional text-to-speech playback via local Web Speech API.
-
-- **Settings**
-  Configure theme (light/dark/auto), export format preferences, developer mode, and keyboard shortcuts via the settings modal.
-
-- **Local Prompt Optimizer**
-  Improve prompts in conservative, balanced or aggressive mode — fully local and deterministic.
-
-- **Export Tools**
-  Export prompt data and analysis results as JSON, Markdown or ZIP.
-
-- **Direction Profiles & Variants** (opt-in)
-  Generate multiple optimization variants in different directions (concise, elaborate, creative, structured, technical). Compare variants side-by-side and save the best result as a new version. Retains original constraints during generation. Enabled via `PROMPTVAULT_DIRECTION_PROFILES=1`.
-
-- **Missing-Info-Gate** (opt-in)
-  Dynamic pre-optimization questionnaire that identifies missing information before generating variants. Structured tiered questions (REQUIRED/RECOMMENDED/OPTIONAL) with sanitized answer merging. Enabled via `PROMPTVAULT_MISSING_INFO_GATE=1`.
-
-- **Embeddings (Phase 1 — Mock)**
-  Embedding feature flag and mock provider for future semantic search. Disabled by default. No real ML model.
-
-- **Privacy-first Desktop App**
-  No cloud backend. No API calls. No telemetry. No account. No prompt upload.
+- **Local Prompt Archive** — recursively scan local folders (`.md`, `.markdown`, `.txt`, 1 MiB limit)
+- **Quality & Hygiene Analysis** — score prompts across clarity, role, goal, context, output format and reusability; detect contamination such as secrets, private paths and evidence clutter
+- **Prompt Context Evaluation** — measure how well a prompt carries its own context
+- **Blueprint Detection** — detect prompt blueprints, hybrids and architecture-like agent instructions (10-dimension quality evaluation)
+- **Missing Info Gate** — dynamic pre-optimization questionnaire (opt-in, `PROMPTVAULT_MISSING_INFO_GATE=1`)
+- **Direction Profiles** — generate optimization variants in different directions (opt-in, `PROMPTVAULT_DIRECTION_PROFILES=1`)
+- **Prompt Optimization** — deterministic local optimization (conservative/balanced/aggressive)
+- **Admin Observability** — read-only runtime diagnostics with trace/span correlation and reason codes
+- **Native Tauri Desktop App** — React + TypeScript frontend, Rust backend
+- **Local Privacy Architecture** — no cloud, no telemetry, no prompt upload
+- **PromptVault CLI** — `promptvault` command-line installer and manager (`doctor`, `install`, `launch`, `update`, `diagnostics`, `uninstall`)
 
 ---
 
-## Current Release
+## Current Release & Publication Status
 
-**v1.8.0** is the current stable release.
+**v1.8.0** is the current stable release (published 2026-08-03).
 
-Linux packages (`.deb` and `.rpm`) are available as GitHub Release assets for v1.8.0:
+Linux packages are available as GitHub Release assets for v1.8.0:
 
 | Platform | Asset |
 |---|---|
-| Linux (Debian/Ubuntu) | `PromptVault Lite_1.8.0_amd64.deb` |
-| Linux (Fedora/RHEL) | `PromptVault Lite-1.8.0-1.x86_64.rpm` |
+| Linux (Debian/Ubuntu) | `PromptVault.Lite_1.8.0_amd64.deb` |
+| Linux (Fedora/RHEL) | `PromptVault.Lite-1.8.0-1.x86_64.rpm` |
+| Checksums | `SHA256SUMS.txt` |
 
-Windows is supported as a build target but no pre-built v1.8.0 installer is available for this release. Build from source or use a previous release. macOS is not pre-built.
+Windows is supported as a build target; no pre-built v1.8.0 Windows installer is published in this release. macOS is not pre-built.
 
-Since v1.7.2, the `master` branch has received these v1.8.0 improvements:
+The `master` branch additionally contains work that has **not yet been released**:
 
-- **Missing-Info-Gate** (#216) — dynamic pre-optimization questionnaire (opt-in, `PROMPTVAULT_MISSING_INFO_GATE=1`)
-- **Direction Profiles & Variants** (#215) — multi-direction variant generation and comparison (opt-in, `PROMPTVAULT_DIRECTION_PROFILES=1`)
-- **Optimizer fixes** (#289, #291) — gate session guard and sensitive-content optimizer blocking
-- **Visual Release Gate** (#152) — Playwright E2E test coverage for layout and theming
-- **Autonomous Test Harness Trust** (#294) — E19 (13 native Tauri E2E tests), E21 (native file dialog smoke), E2E Bridge Gate (ADR-005), cross-browser Playwright matrix (Chromium/Firefox/WebKit)
+- **Admin Observability** — runtime diagnostics with trace/span correlation (integrated)
+- **PromptVault CLI** — `promptvault` management CLI, implemented and verified
+- **Native observability proof on Windows** — WebdriverIO native E2E
+
+> **`promptvault-cli` is technically READY_FOR_PUBLICATION, but is not yet available on a package index.** It is not on PyPI, and no `v1.9.0` release or tag exists. Package version (`1.9.0`) is not a release status.
 
 ---
 
 ## Install
 
-### Recommended for Linux users (v1.8.0)
+### Native App
 
-Download and install the `.deb` or `.rpm` package from the latest GitHub Release:
+**Linux (v1.8.0):** download and install the `.deb` or `.rpm` from the latest GitHub Release.
 
 ```text
 # Debian/Ubuntu
-sudo dpkg -i PromptVault Lite_1.8.0_amd64.deb
+sudo dpkg -i PromptVault.Lite_1.8.0_amd64.deb
 
 # Fedora/RHEL
-sudo rpm -i PromptVault Lite-1.8.0-1.x86_64.rpm
+sudo rpm -i PromptVault.Lite-1.8.0-1.x86_64.rpm
 ```
 
-Windows and macOS users: build from source (see below) or use a previous release.
+**Windows:** build from source (see below). No pre-built v1.8.0 Windows installer is published.
 
-### Developer / source install
+### Developer / source build
 
 ```bash
 git clone https://github.com/xxammaxx/promptvault-lite.git
 cd promptvault-lite
 pnpm install
-pnpm start
+pnpm start          # development mode
+pnpm tauri build    # production build
+```
+
+### CLI / uv tool
+
+`promptvault-cli` is a Python CLI that installs and manages the **native** PromptVault Desktop App. It is implemented and verified, but **not yet published** to a package index. Until publication, install it from a locally built wheel:
+
+```bash
+# Build the wheel from source
+cd tools/promptvault-cli
+uv build
+
+# Install the CLI as a uv tool from the local wheel
+uv tool install ./dist/promptvault_cli-1.9.0-py3-none-any.whl
+
+# Then manage the native app
+promptvault doctor
+promptvault install
+promptvault launch
+```
+
+The command `uv tool install promptvault-cli` is **not available yet** — it will become valid only after a real package-index publication.
+
+See [`docs/CLI.md`](docs/CLI.md) for the full CLI reference.
+
+---
+
+## Quick Start
+
+1. Start PromptVault Lite
+2. Choose a prompt folder (**Ordner öffnen**)
+3. Analyze a prompt (**Analysieren**)
+4. Review quality, hygiene and context results
+5. Optional: optimize the prompt
+6. Optional: enable **Admin Observability** (Settings → Entwickler-Werkzeuge) to inspect the processing pipeline
+
+CLI quick start (once the CLI is installed):
+
+```text
+promptvault doctor
+promptvault install
+promptvault launch
 ```
 
 ---
 
-## Privacy Model
+## Admin Observability
 
-PromptVault Lite is designed as a local-first tool:
+Admin Observability is a **read-only** runtime diagnostics mode. It records the real processing of a prompt as a correlated trace of spans (pipeline stages), each with a status, reason code and duration — without exposing prompt content.
 
-- no cloud storage
-- no remote LLM calls
-- no API-based optimizer
-- no telemetry
-- no accounts
-- no automatic publishing
+It is **separate from Developer Mode**: Developer Mode is a capability/action gate; Admin Observability is a diagnostics gate and never unlocks write actions.
+
+Example pipeline:
+
+```text
+Analyze Prompt
+  ✓ Prompt resolved
+  ✓ Quality
+  ✓ Hygiene
+  ✓ Context
+  ✓ Tauri IPC
+  ✓ Rust Analysis
+  ⊘ Missing Info Gate
+      FEATURE_DISABLED
+```
+
+Enable it via **Settings → Entwickler-Werkzeuge → Admin Observability**, then open the **Diagnostics Panel** (🔍). You can export a redacted JSON bundle or copy a sanitized debug summary.
+
+See [`docs/OBSERVABILITY.md`](docs/OBSERVABILITY.md) for the full documentation.
+
+---
+
+## Privacy & Security
+
+PromptVault Lite is local-first:
+
+- no cloud storage, no remote LLM calls, no API-based optimizer
+- no telemetry — including from Admin Observability (local, in-process, no network)
+- default diagnostic export contains no full prompt text, secrets, tokens or private absolute paths (redaction before export)
+- content/result correlation via non-secret fingerprints
+- installer integrity: SHA-256 verification, fail-closed
 - prompt files stay on your machine
+
+No exaggerated security guarantees are made; see `docs/ARCHITECTURE.md` for the documented security boundaries.
+
+---
+
+## Testing & Quality
+
+Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E2E (Playwright, WebdriverIO on Windows) suites are verified locally. Remote-CI (GitHub Actions) is currently infrastructure-blocked (Issue #154); local CI gates are authoritative. See `docs/TESTING.md`.
+
+> Exact test counts change frequently and are intentionally not hard-coded here. Run the local gates to reproduce current numbers.
 
 ---
 
@@ -141,35 +188,29 @@ PromptVault Lite is designed as a local-first tool:
 - SQLite
 - Vite
 - Vitest
-- MkDocs
+- Playwright / WebdriverIO (E2E)
+- MkDocs (documentation)
+
+---
+
+## Documentation
+
+- [Admin Observability](docs/OBSERVABILITY.md)
+- [CLI / uv tool](docs/CLI.md)
+- [Installation](docs/INSTALL.md)
+- [User Guide](docs/USER_GUIDE.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Testing](docs/TESTING.md)
+- [Project Status](docs/PROJECT_STATUS.md)
+- [Roadmap](docs/ROADMAP.md)
+- [Changelog](docs/CHANGELOG.md)
 
 ---
 
 ## Project Status
 
-PromptVault Lite is in a stable public release state (v1.8.0).
+Stable public release (v1.8.0). Admin Observability and the PromptVault CLI are integrated on `master` but not yet released. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
-Master branch contains v1.8.0 release with Missing-Info-Gate (#216), Direction Profiles (#215), optimizer fixes (#289, #291), visual release gate (#152), and autonomous test harness trust (#294).
+## License
 
-Local CI gates: 1581 Vitest (59 files), 62 Python, 156 Rust — all PASS.
-Remote CI: fully green (13/13 jobs) on branch `fix/autonomous-test-harness-trust`.
-
-Known limitations:
-
-- unsigned Windows installer (no code signing certificate)
-- no auto-updater
-- no macOS or Windows pre-built installer for v1.8.0
-- Remote-CI is infra-blocked (Issue #154); local CI is authoritative
-- Embeddings Phase 1 is mock-only (no real semantic search)
-- Direction Profiles and Missing-Info-Gate are opt-in via feature flags (default disabled)
-- Docker/Web/LAN deployment is deferred
-
----
-
-## Best next improvements
-
-- Decide on Direction Profiles default (opt-in vs. standard feature) for v1.8.0
-- Create v1.8.0 release with #214/#215/#216/#289/#291
-- Embeddings Phase 2: DB schema planning (#199)
-- Code signing for Windows installer
-- macOS `.dmg` build
+MIT
