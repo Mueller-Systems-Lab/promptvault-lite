@@ -1,8 +1,8 @@
 ---
 title: Installation
 description: Installationsanleitung für PromptVault Lite.
-version: 1.9.0
-last_updated: 2026-08-12
+version: 1.9.1
+last_updated: 2026-08-13
 ---
 
 # Installation
@@ -10,7 +10,7 @@ last_updated: 2026-08-12
 ## Unterstützte Nutzung
 
 - **Entwicklung:** Linux, Windows (getestet auf Linux Mint 22.1 und Windows 10)
-- **Pre-built Installer (v1.9.0):** Windows x64 NSIS-Installer als GitHub-Release-Asset
+- **Pre-built Installer (v1.9.1):** Windows x64 NSIS-Installer als GitHub-Release-Asset
 - **Pre-built Installer (v1.8.0):** Linux `.deb` und `.rpm` als GitHub-Release-Assets
 - macOS: Nur Quellbau — kein pre-built Installer verfügbar
 - Docker: Nicht als Produktions-Deployment implementiert
@@ -41,9 +41,9 @@ pnpm tauri build
 
 ## Native App (pre-built)
 
-### Windows (v1.9.0)
+### Windows (v1.9.1)
 
-Lade `PromptVault.Lite_1.9.0_x64-setup.exe` aus dem [v1.9.0 GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.0) herunter und führe es aus. Der Installer ist derzeit **unsigned** — Windows SmartScreen zeigt eine Warnung an.
+Lade `PromptVault.Lite_1.9.1_x64-setup.exe` aus dem [v1.9.1 GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.1) herunter und führe es aus. Der Installer ist derzeit **unsigned** — Windows SmartScreen zeigt eine Warnung an.
 
 Checksummen liegen im Release als `SHA256SUMS.txt` bei.
 
@@ -61,7 +61,7 @@ Checksummen liegen im Release als `SHA256SUMS.txt` bei.
 
 ## CLI / uv tool
 
-`promptvault-lite-manager` (Einstiegspunkt `promptvault`) installiert und verwaltet die native Desktop-App. **PyPI-publiziert** (v1.9.0):
+`promptvault-lite-manager` (Einstiegspunkt `promptvault`) installiert und verwaltet die native Desktop-App. **PyPI-publiziert** (v1.9.1):
 
 ```bash
 uv tool install promptvault-lite-manager
@@ -81,7 +81,7 @@ Voraussetzungen: Python >= 3.11 und [uv](https://docs.astral.sh/uv/). Vollständ
 4. Führe `pnpm install` aus.
 5. Starte mit `pnpm start`.
 
-**Pre-built Installer:** Ein Windows x64 NSIS-Installer (`PromptVault.Lite_1.9.0_x64-setup.exe`) ist als v1.9.0-Release-Asset veröffentlicht. Der Installer ist derzeit unsigned — Windows SmartScreen zeigt eine Warnung an. Kein Code-Signing-Zertifikat vorhanden.
+**Pre-built Installer:** Ein Windows x64 NSIS-Installer (`PromptVault.Lite_1.9.1_x64-setup.exe`) ist als v1.9.1-Release-Asset veröffentlicht. Der Installer ist derzeit unsigned — Windows SmartScreen zeigt eine Warnung an. Kein Code-Signing-Zertifikat vorhanden.
 
 ## Linux
 

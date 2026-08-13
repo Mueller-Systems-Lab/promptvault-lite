@@ -1,10 +1,35 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.9.0
+version: 1.9.1
 ---
 
 # Changelog
+
+## v1.9.1 — Patch: Fail-Closed Release Manifest Integrity & PyPI Description Fix
+
+Released: 2026-08-13 (patch release)
+
+### Fixed
+
+- CLI now rejects release artifacts whose manifest omits SHA-256, size, version,
+  type or other required installation metadata (strictly fail-closed).
+- Manifest/release version mismatch now fails closed (a `1.9.0` manifest is never
+  silently accepted as `1.9.1`).
+- Installer type is required (no implicit default) and explicit artifact URLs must
+  be valid HTTPS; unsafe filenames are rejected.
+- `verify_artifact` is defense-in-depth hardened to reject absent/invalid integrity
+  metadata even when called directly.
+- The installer is never invoked after any integrity/validation failure.
+- PyPI package description no longer contains stale pre-publication wording and
+  documents the public `uv tool install promptvault-lite-manager` flow.
+
+### Security
+
+- Release-contract hardening: missing integrity metadata, version mismatch, wrong
+  hash/size and unsupported platforms all abort before installer execution.
+
+---
 
 ## v1.9.0 — Admin Observability, CLI & Local Neural TTS
 

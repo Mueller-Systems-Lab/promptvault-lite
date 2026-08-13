@@ -4,7 +4,7 @@
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.9.0-blue)
+![Release](https://img.shields.io/badge/release-v1.9.1-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
@@ -39,17 +39,17 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release & Publication Status
 
-**v1.9.0** is the current release (tagged and published as a GitHub Release on 2026-08-13).
+**v1.9.1** is the current release (tagged and published as a GitHub Release).
 
 | Platform | Asset |
 |---|---|
-| Windows x64 | `PromptVault.Lite_1.9.0_x64-setup.exe` (NSIS installer) |
+| Windows x64 | `PromptVault.Lite_1.9.1_x64-setup.exe` (NSIS installer) |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
 
 The Windows installer is **unsigned** — Windows SmartScreen may show an "Unknown publisher" warning. Linux `.deb`/`.rpm` remain available for v1.8.0; macOS is not pre-built.
 
-The `promptvault` CLI (v1.9.0) installs and manages the native app. Its Python distribution `promptvault-lite-manager` is **published on PyPI** and installable with `uv tool install promptvault-lite-manager`.
+The `promptvault` CLI (v1.9.1) installs and manages the native app. Its Python distribution `promptvault-lite-manager` is **published on PyPI** and installable with `uv tool install promptvault-lite-manager`.
 
 ---
 
@@ -57,7 +57,7 @@ The `promptvault` CLI (v1.9.0) installs and manages the native app. Its Python d
 
 ### Native App
 
-**Windows (v1.9.0):** download `PromptVault.Lite_1.9.0_x64-setup.exe` from the [latest GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.0) and run it. The installer is unsigned — Windows SmartScreen may show an "Unknown publisher" warning.
+**Windows (v1.9.1):** download `PromptVault.Lite_1.9.1_x64-setup.exe` from the [latest GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.1) and run it. The installer is unsigned — Windows SmartScreen may show an "Unknown publisher" warning.
 
 **Linux (v1.8.0):** download and install the `.deb` or `.rpm` from the v1.8.0 GitHub Release.
 
@@ -224,7 +224,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Stable public release (v1.9.0, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager`. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Stable public release (v1.9.1, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager`. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

@@ -1,9 +1,9 @@
 # Project Status — PromptVault Lite
 
 **Last updated:** 2026-08-13
-**Current stable release:** v1.9.0 (GitHub Release published 2026-08-13)
+**Current stable release:** v1.9.1 (patch release — stricter release-manifest validation, fail-closed integrity contract, corrected PyPI description)
 **Branch:** master
-**Master HEAD:** tagged `v1.9.0` — v1.9.0 release state
+**Master HEAD:** tagged `v1.9.1` — v1.9.1 release state
 
 ---
 
@@ -11,12 +11,12 @@
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
-**Release:** v1.9.0 published as a GitHub Release (Windows x64 NSIS installer + release manifest + checksums).
-**Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.9.0, via OIDC Trusted Publishing).
+**Release:** v1.9.1 published as a GitHub Release (Windows x64 NSIS installer + release manifest + checksums).
+**Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.9.1, via OIDC Trusted Publishing).
 
 ---
 
-## Integrated (v1.9.0)
+## Integrated (v1.9.0 → v1.9.1)
 
 | Feature | Status | Evidence |
 | --- | --- | --- |
@@ -24,6 +24,7 @@
 | Frontend↔Backend Trace-Korrelation | ✅ DONE | `src-tauri/tests/observability_correlation.rs` |
 | Native observability proof on Windows | ✅ DONE | `e2e-tests/specs/admin-observability.native.spec.js` + `wdio.conf.windows.mjs` |
 | promptvault CLI (`doctor`/`install`/`launch`/`update`/`diagnostics`/`uninstall`) | ✅ IMPLEMENTED / VERIFIED | `tools/promptvault-cli/*` + `tests/test_releases.py` |
+| Fail-closed release-manifest integrity contract | ✅ DONE (v1.9.1) | `tools/promptvault-cli/src/promptvault_cli/releases.py` + `tests/test_releases.py` + `tests/test_install_integrity.py` |
 | uv package (`promptvault-lite-manager`) | ✅ PUBLISHED (PyPI) | `pyproject.toml` (hatchling wheel) |
 | Local TTS Adapter (native Rust commands) | ✅ DONE / RUNTIME VERIFIED | `src-tauri/src/commands/tts.rs` + `src/lib/localTts.ts`; `docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md` |
 
@@ -54,8 +55,10 @@
 | --- | --- |
 | v1.8.0 GitHub Release | ✅ Published (Linux `.deb`/`.rpm` + `SHA256SUMS.txt`) |
 | v1.9.0 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
+| v1.9.1 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
 | PyPI (`promptvault-lite-manager==1.9.0`) | ✅ Published (OIDC Trusted Publishing) |
-| Windows v1.9.0 installer asset | ✅ Published (`PromptVault.Lite_1.9.0_x64-setup.exe`) |
+| PyPI (`promptvault-lite-manager==1.9.1`) | ✅ Published (OIDC Trusted Publishing) |
+| Windows v1.9.1 installer asset | ✅ Published (`PromptVault.Lite_1.9.1_x64-setup.exe`) |
 
 ---
 
@@ -103,6 +106,6 @@
 
 ## Next Steps (Recommended)
 
-1. **PyPI publication (done):** `promptvault-lite-manager==1.9.0` is published via OIDC Trusted Publishing; public `uv tool install promptvault-lite-manager` verified.
+1. **PyPI publication (done):** `promptvault-lite-manager==1.9.1` is published via OIDC Trusted Publishing; public `uv tool install promptvault-lite-manager` verified.
 2. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
 3. **Architecture Contract Audit / Security Posture Review.**
