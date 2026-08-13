@@ -13,9 +13,11 @@ into a controlled cache directory and verified (size + SHA-256) before use.
 import json
 import hashlib
 import os
+import re
 import shutil
 import urllib.request
 from pathlib import Path
+from urllib.parse import urlparse
 
 from promptvault_cli.platform import platform_tag, os_name, arch
 
@@ -29,6 +31,13 @@ RELEASE_BASE_URL = (
 )
 
 SUPPORTED_INSTALLER_TYPES = {"nsis", "msi"}
+
+_SEMVER_RE = re.compile(
+    r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)"
+    r"(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?"
+    r"(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
+)
+_SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 MANIFEST_ENV_VAR = "PROMPTVAULT_MANIFEST"
 ARTIFACT_DIR_ENV_VAR = "PROMPTVAULT_ARTIFACT_DIR"
@@ -48,26 +57,119 @@ def sha256_of(path: Path) -> str:
     return sha.hexdigest()
 
 
+def _parse_version(value: str) -> tuple:
+    """Parse a ``vX.Y.Z`` (optional leading ``v``) version into comparable parts.
+
+    Raises :class:`ArtifactIntegrityError` when the value is not a valid
+    SemVer-style version.
+    """
+    if not isinstance(value, str):
+        raise ArtifactIntegrityError(f"Invalid manifest version: {value!r}")
+    value = value.strip()
+    if value.startswith("v"):
+        value = value[1:]
+    match = _SEMVER_RE.match(value)
+    if not match:
+        raise ArtifactIntegrityError(f"Invalid manifest version: {value!r}")
+    return (int(match.group(1)), int(match.group(2)), int(match.group(3)),
+            match.group(4) or "", match.group(5) or "")
+
+
+def _validate_filename(value, tag: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ArtifactIntegrityError(f"Artifact '{tag}' missing 'filename'")
+    filename = value.strip()
+    if filename in (".", "..") or Path(filename).name != filename:
+        raise ArtifactIntegrityError(
+            f"Artifact '{tag}' has unsafe 'filename' (must be a plain name, "
+            f"no path separators): {filename!r}"
+        )
+    return filename
+
+
+def _validate_sha256(value, tag: str) -> str:
+    if not isinstance(value, str) or not _SHA256_RE.match(value):
+        raise ArtifactIntegrityError(
+            f"Artifact '{tag}' missing or invalid 'sha256'"
+        )
+    return value.lower()
+
+
+def _validate_size(value, tag: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        raise ArtifactIntegrityError(
+            f"Artifact '{tag}' missing or invalid 'size'"
+        )
+    return value
+
+
+def _validate_url(value, tag: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ArtifactIntegrityError(f"Artifact '{tag}' has empty 'url'")
+    parsed = urlparse(value)
+    if parsed.scheme != "https" or not parsed.netloc:
+        raise ArtifactIntegrityError(
+            f"Artifact '{tag}' has unsupported or malformed 'url' "
+            f"(HTTPS required)"
+        )
+    return value
+
+
 def load_manifest(data: str) -> dict:
-    manifest = json.loads(data)
+    try:
+        manifest = json.loads(data)
+    except json.JSONDecodeError as e:
+        raise ArtifactIntegrityError(f"Manifest is not valid JSON: {e}") from e
+    if not isinstance(manifest, dict):
+        raise ArtifactIntegrityError("Manifest must be a JSON object")
     if manifest.get("schema_version") != RELEASE_MANIFEST_VERSION:
         raise ArtifactIntegrityError(
             f"Unsupported manifest schema version: {manifest.get('schema_version')}"
         )
     if "version" not in manifest:
         raise ArtifactIntegrityError("Manifest missing 'version'")
+    _parse_version(manifest["version"])
     if "artifacts" not in manifest or not isinstance(manifest["artifacts"], dict):
         raise ArtifactIntegrityError("Manifest missing 'artifacts'")
+    if not manifest["artifacts"]:
+        raise ArtifactIntegrityError("Manifest 'artifacts' is empty")
 
     for tag, entry in manifest["artifacts"].items():
-        if not isinstance(entry, dict) or not entry.get("filename"):
-            raise ArtifactIntegrityError(f"Artifact '{tag}' missing 'filename'")
-        installer_type = entry.get("type", "nsis")
+        if not isinstance(entry, dict):
+            raise ArtifactIntegrityError(f"Artifact '{tag}' must be an object")
+        _validate_filename(entry.get("filename"), tag)
+        installer_type = entry.get("type")
+        if installer_type is None:
+            raise ArtifactIntegrityError(f"Artifact '{tag}' missing installer 'type'")
+        if not isinstance(installer_type, str):
+            raise ArtifactIntegrityError(
+                f"Artifact '{tag}' has invalid installer 'type'"
+            )
         if installer_type not in SUPPORTED_INSTALLER_TYPES:
             raise ArtifactIntegrityError(
                 f"Artifact '{tag}' has unsupported installer type '{installer_type}'"
             )
+        _validate_sha256(entry.get("sha256"), tag)
+        _validate_size(entry.get("size"), tag)
+        if entry.get("url") is not None:
+            _validate_url(entry.get("url"), tag)
     return manifest
+
+
+def validate_manifest_version(manifest: dict, expected_version: str) -> None:
+    """Fail closed when the manifest version differs from the requested release.
+
+    Ensures a manifest for one release (e.g. ``1.9.0``) is never silently
+    accepted as another (e.g. ``1.9.1``).
+    """
+    manifest_version = manifest.get("version")
+    if manifest_version is None:
+        raise ArtifactIntegrityError("Manifest missing 'version'")
+    if _parse_version(manifest_version) != _parse_version(expected_version):
+        raise ArtifactIntegrityError(
+            f"Manifest version {manifest_version!r} does not match requested "
+            f"release version {expected_version!r}"
+        )
 
 
 def release_manifest_url(version: str) -> str:
@@ -183,23 +285,30 @@ def resolve_artifact(manifest: dict) -> tuple[Path, dict]:
 
 def verify_artifact(artifact_path: Path, entry: dict) -> bool:
     if not artifact_path.exists():
-        raise ArtifactIntegrityError(f"Artifact not found: {artifact_path}")
+        raise ArtifactIntegrityError(f"Artifact not found: {artifact_path.name}")
 
     expected_sha256 = entry.get("sha256")
-    if expected_sha256:
-        actual = sha256_of(artifact_path)
-        if actual.lower() != expected_sha256.lower():
-            raise ArtifactIntegrityError(
-                f"Artifact integrity check FAILED.\n"
-                f"  expected sha256: {expected_sha256}\n"
-                f"  actual   sha256: {actual}"
-            )
+    if not isinstance(expected_sha256, str) or not _SHA256_RE.match(expected_sha256):
+        raise ArtifactIntegrityError(
+            "Artifact integrity check FAILED: missing or invalid expected sha256"
+        )
+    actual = sha256_of(artifact_path)
+    if actual.lower() != expected_sha256.lower():
+        raise ArtifactIntegrityError(
+            f"Artifact integrity check FAILED.\n"
+            f"  expected sha256: {expected_sha256}\n"
+            f"  actual   sha256: {actual}"
+        )
 
     expected_size = entry.get("size")
-    if expected_size and artifact_path.stat().st_size != expected_size:
+    if isinstance(expected_size, bool) or not isinstance(expected_size, int) or expected_size <= 0:
         raise ArtifactIntegrityError(
-            f"Artifact size mismatch: expected {expected_size}, "
-            f"got {artifact_path.stat().st_size}"
+            "Artifact size mismatch: missing or invalid expected size"
+        )
+    actual_size = artifact_path.stat().st_size
+    if actual_size != expected_size:
+        raise ArtifactIntegrityError(
+            f"Artifact size mismatch: expected {expected_size}, got {actual_size}"
         )
 
     return True

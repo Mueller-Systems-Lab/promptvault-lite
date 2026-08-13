@@ -10,6 +10,7 @@ from promptvault_cli.releases import (
     find_manifest,
     find_artifact_dir,
     load_manifest,
+    validate_manifest_version,
     resolve_artifact,
     verify_artifact,
     fetch_remote_manifest,
@@ -46,6 +47,12 @@ def run_install(force: bool = False) -> None:
         manifest = load_manifest(manifest_path.read_text())
     except ArtifactIntegrityError as e:
         print(f"[FAIL] {e}")
+        sys.exit(1)
+
+    try:
+        validate_manifest_version(manifest, APP_VERSION)
+    except ArtifactIntegrityError as e:
+        print(f"[STOP_ARTIFACT_INTEGRITY_FAILED] {e}")
         sys.exit(1)
 
     version = manifest["version"]

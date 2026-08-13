@@ -13,6 +13,7 @@ from promptvault_cli import __version__ as APP_VERSION
 from promptvault_cli.releases import (
     find_manifest,
     load_manifest,
+    validate_manifest_version,
     fetch_remote_manifest,
     ArtifactIntegrityError,
 )
@@ -67,6 +68,12 @@ def run_update() -> None:
 
     try:
         manifest = load_manifest(manifest_path.read_text())
+    except ArtifactIntegrityError as e:
+        print(f"[FAIL] Invalid manifest: {e}")
+        sys.exit(1)
+
+    try:
+        validate_manifest_version(manifest, APP_VERSION)
     except ArtifactIntegrityError as e:
         print(f"[FAIL] Invalid manifest: {e}")
         sys.exit(1)
