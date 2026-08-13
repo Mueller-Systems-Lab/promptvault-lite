@@ -56,6 +56,10 @@ TRACE analyze-selected
 
 ## Datenschutz
 
+Der Diagnostic Export ist eine **shareable Security-/Privacy-Boundary** und arbeitet
+**fail-closed**: Unbekannte oder nicht freigegebene Daten werden **weggelassen** — nie
+"best-effort redacted und behalten".
+
 Standardmäßig werden **keine** dieser Inhalte erfasst oder exportiert:
 
 - vollständiger Prompttext
@@ -66,8 +70,10 @@ Standardmäßig werden **keine** dieser Inhalte erfasst oder exportiert:
 
 Statt Rohinhalten werden `content_length`, `content_fingerprint`, `prompt_id`, `basename`, Klassifikation, Scores, Zähler und Reason Codes verwendet.
 
+- **Safe-Metadata-Allowlist:** Nur ausdrücklich freigegebene, begrenzte Diagnose-Metadaten dürfen den Export verlassen. Unbekannte Attribute, beliebige Strings, verschachtelte/untypisierte Werte und prompt-/user-content-förmige Felder werden entfernt (`omitted_attribute_count` dokumentiert, wie viel weggelassen wurde).
+- **Kein Raw Error String:** Rohe Fehlermeldungen und Stacktraces werden nicht exportiert — nur `category` und `reasonCode` (bounded Enums) bleiben erhalten.
 - **Kein Netzwerk:** Admin Observability ist `LOCAL ONLY`, `IN PROCESS`, `NO TELEMETRY EXPORT`, `NO NETWORK`. Es gibt keinen Sentry/Datadog/OTel-Collector oder ähnlichen Cloud-Export.
-- **Redaction:** Vor jedem Export und jeder „Copy for Debugging“ läuft eine Redaction-Pipeline (Secret-Patterns, Pfad-Redaction).
+- **Redaction als Defense-in-Depth:** Secret-/Path-Redaction läuft zusätzlich für freigegebene Text-Metadaten, ersetzt aber **nicht** die Allowlist.
 
 ---
 
@@ -89,13 +95,13 @@ Statt Rohinhalten werden `content_length`, `content_fingerprint`, `prompt_id`, `
 5. Eine Verarbeitung erneut ausführen (z. B. Prompt analysieren).
 6. Im Panel den fehlgeschlagenen/übersprungenen Schritt ansehen (Status, Reason Code, Dauer).
 
-Das Panel bietet: Übersicht (aktive Traces, Fehler, Warnungen, Invariant Violations, Blocked, Partial Failures), Trace-Timeline, Detailansicht eines Spans sowie Filter nach Status, Layer, Operation und Reason Code.
+Das Panel bietet: Übersicht (aktive Traces, Fehler, Warnungen, Invariant Violations, Blocked, Partial Failures), Trace-Timeline, Detailansicht eines Spans sowie einen Status-Filter.
 
 ---
 
 ## Export
 
-- **Export Diagnostics** — erzeugt ein redigiertes JSON-Bundle (`schema_version`, `app_version`, `platform`, `feature_flags`, `traces`, `events`, `invariant_violations`). Enthält **keine** Secrets, Tokens, vollständige Promptinhalte oder private absolute Pfade.
+- **Export Diagnostics** — erzeugt ein redigiertes JSON-Bundle (`schema_version`, `diagnostic_export_policy`, `export_policy_version`, `app_version`, `platform`, `feature_flags`, `traces`, `events`, `invariant_violations`, `omitted_attribute_count`, `omitted_event_attribute_count`). Der Export folgt dem **fail-closed Safe-Metadata-Modell** (`safe-metadata-v1`): unbekannte Attribute, beliebige/nested Strings, Prompt-/User-Content, Secrets, private absolute Pfade und rohe Fehlermeldungen werden entfernt. `app_version` stammt aus der kanonischen Build-Version (nie hartcodiert).
 - **Copy for Debugging** — kompakte, KI-/Issue-lesbare Zusammenfassung: Operation, Trace, Status, fehlgeschlagener Schritt, Reason, letzter erfolgreicher Schritt, Invariant Violations, relevante Laufzeiten, Fehlerkategorie — plus die Bestätigung `Sensitive data exposed: NO`.
 
 ---
@@ -103,7 +109,7 @@ Das Panel bietet: Übersicht (aktive Traces, Fehler, Warnungen, Invariant Violat
 ## Grenzen
 
 - **Level 1 (Admin Observability)** ist release-sicher und zeigt Metadaten, Scores, Klassifikationen, Status und Reason Codes — aber **keinen vollständigen Prompttext**.
-- **Level 2 (Deep Diagnostics)** ist ein separater, explizit zu aktivierender, **session-only**-Modus für erweiterte Rohdaten. Er ist standardmäßig aus und wird nie heimlich persistiert.
+- **Level 2 (Deep Diagnostics)** ist ein separater, explizit zu aktivierender, **session-only**-Modus für umfangreichere diagnostische Metadaten. Er bleibt **privacy-safe und export-sicher**: kein Prompt-Body, kein raw Clipboard, keine raw Answers, keine arbitrary Instrumentation-Attribute, keine Secrets, keine privaten Pfade, keine untypisierten nested Inhalte. Es gibt **keinen** "dangerous raw mode". Er ist standardmäßig aus und wird nie heimlich persistiert.
 - Die **Privacy Boundary** des Projekts (local-first, keine Telemetrie) wird durch Admin Observability **nicht** erweitert.
 
 ---
@@ -146,9 +152,11 @@ Der kanonische Verarbeitungspfad wird beobachtet, nicht dupliziert. `emitDiagnos
 
 `src/observability/redaction.ts`:
 
+- **Fail-closed Export Policy** (`safe-metadata-v1`): `SAFE_ATTRIBUTE_KEYS`-Allowlist — unbekannte Attribute und untypisierte/nested Werte werden entfernt (nie "redact and keep"). Secret-/Path-Redaction ist Defense-in-Depth für freigegebene Text-Metadaten.
 - `stripSecrets` — Regex für API-Keys, Tokens, Passwörter, PEM-Private-Keys, GitHub/Slack/OpenAI/JWT-Token-Muster.
 - `redactPath` — absolute Pfade werden zu `vault:`-relativen Pfaden oder `.../basename`.
 - `contentFingerprint` — nicht-kryptografischer `length:hash`-Fingerprint (Deduplizierung, **keine** Sicherheitsgarantie).
+- **Rohe Fehlermeldungen/Stacks** werden beim Export entfernt; nur `category` + `reasonCode` bleiben erhalten.
 
 ### Ring Buffer
 
@@ -168,9 +176,10 @@ Der reale native Pfad (UI → Tauri IPC → Rust → Verarbeitung → Observabil
 
 ### Privacy Tests
 
-- `redaction.test.ts` — Secret-/Pfad-Redaction
-- `privacy.test.ts` — kein Promptvolltext/Secrets im Bundle
-- `privacySentinel.test.ts` — Sentinel-Secret darf im Export nicht auftauchen
+- `redaction.test.ts` — Secret-/Pfad-Redaction + Fail-Closed-Attribut/Error-Handling
+- `privacy.test.ts` — kein Promptvolltext/Secrets/pfade im Bundle; unbekannte/nested Attribute weggelassen
+- `privacySentinel.test.ts` — Sentinel-Secret darf im Export nicht auftauchen; Deep Diagnostics bleibt fail-closed
+- `exportPolicy.test.ts` — realer Exportpfad (Event → Store → Builder → JSON) bleibt fail-closed
 - `offOnEquivalence.test.ts` — Observability ON/OFF liefert identische Resultate
 
 Künftige Features dürfen die Observability **nicht umgehen**: neue Verarbeitungspfade sollen instrumentiert und ihre stille No-Ops als explizite Entscheidung (Status + Reason Code) sichtbar werden.

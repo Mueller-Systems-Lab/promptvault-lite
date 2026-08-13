@@ -1,10 +1,41 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.9.1
+version: 1.9.2
 ---
 
 # Changelog
+
+## v1.9.2 — Patch: Fail-Closed Diagnostic Export Privacy Boundary
+
+Status: prepared (patch release) — pending public release
+
+### Fixed
+
+- Diagnostic exports now use an explicit fail-closed safe-metadata policy
+  (`safe-metadata-v1`): unknown or unapproved attributes are omitted, never
+  "redacted and kept".
+- Arbitrary string values, nested/untyped structures and prompt-shaped content
+  can no longer cross the diagnostic export boundary.
+- Raw error messages and stack traces are removed from exported diagnostics;
+  only bounded `category` and `reasonCode` are retained.
+- Span attributes nested inside `traces[]` are now sanitized the same way as
+  flattened events (previously only events were sanitized).
+- Deep Diagnostics no longer permits raw/untyped payloads to cross the export
+  boundary — it remains local, no-telemetry and export-safe.
+- Diagnostic exports now report the actual built application version (no longer
+  a hardcoded `1.9.0` literal); the version comes from the canonical build.
+- Exports carry `diagnostic_export_policy`, `export_policy_version`,
+  `omitted_attribute_count` and `omitted_event_attribute_count` for
+  diagnosability.
+
+### Security
+
+- Diagnostic export is treated as a shareable security/privacy boundary:
+  unknown data fails closed, secrets/private paths/prompt content cannot appear,
+  and future instrumentation attributes are safe by default.
+
+---
 
 ## v1.9.1 — Patch: Fail-Closed Release Manifest Integrity & PyPI Description Fix
 

@@ -2,6 +2,7 @@
 
 **Last updated:** 2026-08-13
 **Current stable release:** v1.9.1 (patch release — stricter release-manifest validation, fail-closed integrity contract, corrected PyPI description)
+**In development:** v1.9.2 (patch — fail-closed diagnostic export privacy boundary) — implemented, local gates green, pending public release
 **Branch:** master
 **Master HEAD:** tagged `v1.9.1` — v1.9.1 release state
 
