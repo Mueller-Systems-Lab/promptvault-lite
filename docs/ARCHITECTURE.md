@@ -41,7 +41,7 @@ last_updated: 2026-08-12
                                                           │ JSON-Cache / In-Memory   │
                                                           └──────────────────────────┘
 
-   promptvault-cli (uv tool)
+   promptvault-lite-manager (uv tool)
          ↓
    Native Installer Manager
    (install / launch / update / uninstall, SHA-256 fail-closed)

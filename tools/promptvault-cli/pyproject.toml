@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "promptvault-cli"
+name = "promptvault-lite-manager"
 version = "1.9.0"
 description = "PromptVault Lite — Local Prompt Management CLI Installer & Manager"
 readme = "README.md"

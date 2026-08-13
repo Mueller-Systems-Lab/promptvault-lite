@@ -6,13 +6,13 @@
 
 ## Überblick
 
-`promptvault-cli` ist ein Python-CLI-Paket, das die **native PromptVault Lite Desktop-App** installiert, startet, aktualisiert und entfernt. Es ist als `uv`-Tool installierbar.
+`promptvault-lite-manager` ist ein Python-CLI-Paket (Executable `promptvault`), das die **native PromptVault Lite Desktop-App** installiert, startet, aktualisiert und entfernt. Es ist als `uv`-Tool installierbar.
 
 Zwei Ebenen sind strikt zu trennen:
 
 | Werkzeug | Verwaltet |
 |---|---|
-| **uv tool** | die `promptvault-cli` selbst (Installation/Upgrade/Deinstallation des CLI-Pakets) |
+| **uv tool** | das `promptvault-lite-manager`-Paket selbst (Installation/Upgrade/Deinstallation des CLI-Pakets) |
 | **PromptVault CLI** (`promptvault`) | die **native PromptVault Desktop-App** |
 
 ---
@@ -20,14 +20,14 @@ Zwei Ebenen sind strikt zu trennen:
 ## Publikationsstatus
 
 - **GitHub Release / Tag `v1.9.0`:** `PUBLISHED` — Windows-x64-NSIS-Installer, Release-Manifest und `SHA256SUMS.txt`.
-- **PyPI:** `NOT PUBLISHED` — `uv tool install promptvault-cli` funktioniert **noch nicht** aus einem Package Index (Secure-Publish-Auth ausstehend).
+- **PyPI:** `NOT PUBLISHED` — `uv tool install promptvault-lite-manager` funktioniert **noch nicht** aus einem Package Index (Secure-Publish-Auth ausstehend).
 
 Bis zur PyPI-Veröffentlichung wird das CLI-Paket aus einem **lokal gebauten Wheel** installiert (real verfügbarer und getesteter Weg):
 
 ```bash
 cd tools/promptvault-cli
 uv build
-uv tool install ./dist/promptvault_cli-1.9.0-py3-none-any.whl
+uv tool install ./dist/promptvault_lite_manager-1.9.0-py3-none-any.whl
 ```
 
 Voraussetzungen: Python >= 3.11 und [uv](https://docs.astral.sh/uv/).
@@ -77,9 +77,9 @@ Entfernt die native App über ihren Uninstaller (oder das Installationsverzeichn
 
 | Aktion | Befehl |
 |---|---|
-| CLI-Paket upgraden | `uv tool upgrade promptvault-cli` |
+| CLI-Paket upgraden | `uv tool upgrade promptvault-lite-manager` |
 | Native App aktualisieren | `promptvault update` |
-| CLI-Paket entfernen | `uv tool uninstall promptvault-cli` |
+| CLI-Paket entfernen | `uv tool uninstall promptvault-lite-manager` |
 | Native App entfernen (Daten bleiben) | `promptvault uninstall` |
 
 Beispiel für vollständige Deinstallation:
@@ -89,7 +89,7 @@ Beispiel für vollständige Deinstallation:
 promptvault uninstall
 
 # 2. CLI-Paket entfernen
-uv tool uninstall promptvault-cli
+uv tool uninstall promptvault-lite-manager
 ```
 
 ---

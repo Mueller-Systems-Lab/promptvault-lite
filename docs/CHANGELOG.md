@@ -10,7 +10,7 @@ version: 1.9.0
 
 Released: 2026-08-13 (GitHub Release with Windows x64 NSIS installer, release manifest and SHA-256 checksums)
 
-> Integriert auf `master`. `promptvault-cli` PyPI-Publikation ausstehend (Secure-Publish-Auth erforderlich).
+> Integriert auf `master`. `promptvault-lite-manager` PyPI-Publikation ausstehend (Secure-Publish-Auth erforderlich).
 
 ### Added
 
@@ -28,7 +28,7 @@ Released: 2026-08-13 (GitHub Release with Windows x64 NSIS installer, release ma
 
 ### Publication Status
 
-- `promptvault-cli`: implementiert und lokal verifiziert; PyPI-Publikation ausstehend (Secure-Publish-Auth erforderlich).
+- `promptvault-lite-manager`: implementiert und lokal verifiziert; PyPI-Publikation ausstehend (Secure-Publish-Auth erforderlich).
 - `v1.9.0`: GitHub Release + Tag veröffentlicht (Windows-x64-NSIS-Installer, Release-Manifest, `SHA256SUMS.txt`).
 
 ---

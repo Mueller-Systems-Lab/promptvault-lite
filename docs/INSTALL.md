@@ -61,12 +61,12 @@ Checksummen liegen im Release als `SHA256SUMS.txt` bei.
 
 ## CLI / uv tool
 
-`promptvault-cli` (Einstiegspunkt `promptvault`) installiert und verwaltet die native Desktop-App. **PyPI-Publikation noch ausstehend** (Secure-Publish-Auth erforderlich); bis dahin aus lokalem Wheel installieren:
+`promptvault-lite-manager` (Einstiegspunkt `promptvault`) installiert und verwaltet die native Desktop-App. **PyPI-Publikation noch ausstehend** (Secure-Publish-Auth erforderlich); bis dahin aus lokalem Wheel installieren:
 
 ```bash
 cd tools/promptvault-cli
 uv build
-uv tool install ./dist/promptvault_cli-1.9.0-py3-none-any.whl
+uv tool install ./dist/promptvault_lite_manager-1.9.0-py3-none-any.whl
 
 promptvault doctor
 promptvault install

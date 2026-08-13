@@ -56,7 +56,7 @@ def run_uninstall() -> None:
         print(f"[OK] Removed: {install_path}")
 
     print("[INFO] The CLI itself was not removed.")
-    print("       To remove the CLI: uv tool uninstall promptvault-cli")
+    print("       To remove the CLI: uv tool uninstall promptvault-lite-manager")
 
 
 if __name__ == "__main__":

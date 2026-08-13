@@ -3,6 +3,6 @@ revision = 3
 requires-python = ">=3.11"
 
 [[package]]
-name = "promptvault-cli"
+name = "promptvault-lite-manager"
 version = "1.9.0"
 source = { editable = "." }

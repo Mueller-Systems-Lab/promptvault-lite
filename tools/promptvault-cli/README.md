@@ -7,7 +7,7 @@ a local prompt-management system with quality and hygiene analysis.
 
 > **Publication status:** The `v1.9.0` GitHub Release (Windows installer + release
 > manifest + checksums) is published. This Python package is **not yet published**
-> to PyPI — `uv tool install promptvault-cli` is pending a package-index
+> to PyPI — `uv tool install promptvault-lite-manager` is pending a package-index
 > publication (secure publish auth required). Until then, install from a locally
 > built wheel.
 
@@ -15,7 +15,7 @@ a local prompt-management system with quality and hygiene analysis.
 
 ```bash
 uv build
-uv tool install ./dist/promptvault_cli-1.9.0-py3-none-any.whl
+uv tool install ./dist/promptvault_lite_manager-1.9.0-py3-none-any.whl
 ```
 
 ### Usage
@@ -38,7 +38,7 @@ promptvault uninstall        # Remove native app (keeps vault data)
 promptvault uninstall
 
 # Then remove the CLI
-uv tool uninstall promptvault-cli
+uv tool uninstall promptvault-lite-manager
 ```
 
 ### Requirements
