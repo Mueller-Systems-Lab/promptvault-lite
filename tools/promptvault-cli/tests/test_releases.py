@@ -9,6 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from promptvault_cli import releases  # noqa: E402
+from promptvault_cli.platform import platform_tag  # noqa: E402
 
 
 def test_verify_artifact_hash_match(tmp_path: Path) -> None:
@@ -71,7 +72,7 @@ def test_resolve_artifact_for_platform() -> None:
         "schema_version": 1,
         "version": "1.9.0",
         "artifacts": {
-            "windows-x86_64": {
+            platform_tag(): {
                 "filename": "setup.exe",
                 "sha256": "abc",
                 "size": 1,
