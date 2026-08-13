@@ -101,12 +101,12 @@ Die Sprachausgabe ist **vollständig lokal** und benötigt **keine Internetverbi
 
 PromptVault Lite erkennt automatisch verfügbare lokale TTS-Provider in dieser Reihenfolge:
 
-1. **Piper** — lokale neuronale Stimme (erfordert separat installiertes Piper-Binary und deutsches Modell)
+1. **Piper** — lokale neuronale Stimme (erfordert separat installiertes Piper-Binary und deutsches Modell; auf Windows mit `de_DE-thorsten-high` verifiziert)
 2. **spd-say** (Speech Dispatcher) — `sudo apt install speech-dispatcher`
 3. **espeak-ng** — `sudo apt install espeak-ng`
 4. **Web Speech API** — im Browser/WebView integriert (Fallback)
 
-Fehlt ein nativer Provider, wird die Web-Speech-API genutzt. Die Kurzbeschreibung bleibt auch ohne TTS-Provider sichtbar — nur die Audioausgabe ist dann deaktiviert. Es wird **kein** Modell automatisch heruntergeladen.
+Fehlt ein nativer Provider, wird die Web-Speech-API genutzt. Die Kurzbeschreibung bleibt auch ohne TTS-Provider sichtbar — nur die Audioausgabe ist dann deaktiviert. Es wird **kein** Modell automatisch heruntergeladen. Piper ist eine **externe lokale Runtime** (nicht mit PromptVault ausgeliefert); Details unter `docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md`.
 
 ## Direktanalyse — Prompt ohne Datei analysieren
 

@@ -53,6 +53,7 @@ const MAX_TTS_TEXT_LENGTH = 600;
 
 let activeAudio: HTMLAudioElement | null = null;
 let activeAudioUrl: string | null = null;
+let activePlaybackReject: ((reason?: unknown) => void) | null = null;
 let isCurrentlySpeaking = false;
 
 // ---------------------------------------------------------------------------
@@ -91,6 +92,11 @@ async function invokeNativeStop(): Promise<void> {
 // ---------------------------------------------------------------------------
 
 function releaseActiveAudio(): void {
+  if (activePlaybackReject) {
+    const reject = activePlaybackReject;
+    activePlaybackReject = null;
+    reject(new Error("Sprachausgabe wurde gestoppt."));
+  }
   if (activeAudio) {
     activeAudio.pause();
     activeAudio.currentTime = 0;
@@ -120,20 +126,38 @@ function playPiperAudio(bytes: number[]): Promise<void> {
   audio.src = url;
 
   return new Promise<void>((resolve, reject) => {
-    audio.onended = () => {
-      releaseActiveAudio();
+    let settled = false;
+    const finish = (done: () => void) => {
+      if (settled) return;
+      settled = true;
+      activePlaybackReject = null;
+      audio.onended = null;
+      audio.onerror = null;
       isCurrentlySpeaking = false;
-      resolve();
+      done();
+    };
+    activePlaybackReject = (reason: unknown) => {
+      finish(() => {
+        reject(reason instanceof Error ? reason : new Error(String(reason)));
+      });
+    };
+    audio.onended = () => {
+      finish(() => {
+        releaseActiveAudio();
+        resolve();
+      });
     };
     audio.onerror = () => {
-      releaseActiveAudio();
-      isCurrentlySpeaking = false;
-      reject(new Error("Die lokale Audiodatei konnte nicht abgespielt werden."));
+      finish(() => {
+        releaseActiveAudio();
+        reject(new Error("Die lokale Audiodatei konnte nicht abgespielt werden."));
+      });
     };
     void audio.play().catch((error: unknown) => {
-      releaseActiveAudio();
-      isCurrentlySpeaking = false;
-      reject(error instanceof Error ? error : new Error(String(error)));
+      finish(() => {
+        releaseActiveAudio();
+        reject(error instanceof Error ? error : new Error(String(error)));
+      });
     });
   });
 }

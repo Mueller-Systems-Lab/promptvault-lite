@@ -22,7 +22,7 @@ version: 1.8.0
 - **uv install lifecycle** — hatchling-Wheel, `uv tool install` aus lokalem Wheel (PyPI-Publish ausstehend).
 - **Installer integrity verification** — SHA-256 + Größen-Verifikation, fail-closed.
 
-- **Local TTS Adapter** — `src-tauri/src/commands/tts.rs`: native Rust-TTS-Commands (`detect_local_tts`, `synthesize_piper`, `speak_system_tts`, `stop_local_tts`) mit festen Executables und getrennten Args/stdin (kein Shell-Interpolation). Frontend-Orchestrierung in `src/lib/localTts.ts` mit Sanitizer an der Speech-Grenze und Observability-Instrumentierung (`tts.*`-Spans + Reason Codes). Provider-Reihenfolge: Piper (neural) → spd-say → espeak-ng → Web Speech. **Status:** implementiert; echter neuronaler Runtime-Proof ausstehend (Engine/Modell nicht installiert).
+- **Local TTS Adapter** — `src-tauri/src/commands/tts.rs`: native Rust-TTS-Commands (`detect_local_tts`, `synthesize_piper`, `speak_system_tts`, `stop_local_tts`) mit festen Executables und getrennten Args/stdin (kein Shell-Interpolation). Frontend-Orchestrierung in `src/lib/localTts.ts` mit Sanitizer an der Speech-Grenze und Observability-Instrumentierung (`tts.*`-Spans + Reason Codes). Provider-Reihenfolge: Piper (neural) → spd-say → espeak-ng → Web Speech. **Status:** implementiert und end-to-end verifiziert — echter neuronaler Runtime-Proof gegen lokale Piper-Runtime + deutsches Modell (`de_DE-thorsten-high`) auf Windows (Piper als externe lokale Runtime, nicht gebündelt).
 
 ### Publication Status
 

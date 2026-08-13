@@ -99,7 +99,7 @@ command string.
 | Provider       | Detection Method                         | Risk                               |
 | -------------- | ---------------------------------------- | ---------------------------------- |
 | Web Speech API | `window.speechSynthesis.getVoices()`     | None (browser built-in)            |
-| piper          | Rust `detect_local_tts` (executable + local model presence) | Low (existence check only) |
+| piper          | Rust `detect_local_tts` (executable `--help` + local model presence) | Low (existence check only) |
 | spd-say        | Rust `detect_local_tts` (executable `--version`)            | Low (existence check only) |
 | espeak-ng      | Rust `detect_local_tts` (executable `--version`)            | Low (existence check only) |
 

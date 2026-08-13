@@ -48,6 +48,10 @@ export const PromptAudioSummary: React.FC = () => {
   // Track if component is still mounted (for async state updates)
   const mountedRef = useRef(true);
 
+  // Sequence guard: only the latest speak/stop operation may update isPlaying,
+  // preventing a stale speak's finally from clobbering a newer speak.
+  const speakSeqRef = useRef(0);
+
   // -----------------------------------------------------------------------
   // Detect TTS availability on mount
   // -----------------------------------------------------------------------
@@ -128,23 +132,27 @@ export const PromptAudioSummary: React.FC = () => {
   const handleSpeak = useCallback(async () => {
     if (!summary?.text || !summary.canSpeak) return;
 
+    const seq = ++speakSeqRef.current;
     setTtsError(null);
     setIsPlaying(true);
 
     try {
       await speakLocalText(summary.text, { language: "de-DE" });
     } catch (err) {
-      setTtsError(
-        err instanceof Error ? err.message : "Fehler bei der Sprachausgabe.",
-      );
+      if (seq === speakSeqRef.current) {
+        setTtsError(
+          err instanceof Error ? err.message : "Fehler bei der Sprachausgabe.",
+        );
+      }
     } finally {
-      if (mountedRef.current) {
+      if (seq === speakSeqRef.current && mountedRef.current) {
         setIsPlaying(false);
       }
     }
   }, [summary]);
 
   const handleStop = useCallback(async () => {
+    speakSeqRef.current += 1;
     await stopLocalSpeech();
     if (mountedRef.current) {
       setIsPlaying(false);

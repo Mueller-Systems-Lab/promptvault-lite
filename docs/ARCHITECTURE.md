@@ -127,8 +127,8 @@ flowchart LR
 - `src-tauri/src/commands/tts.rs` — lokaler Rust-TTS-Adapter (`detect_local_tts`, `synthesize_piper`, `speak_system_tts`, `stop_local_tts`)
 - Zeigt Textzusammenfassung immer an, optionale Audioausgabe
 - Blockiert Audioausgabe bei PII/Secret-Inhalten
-- Provider-Reihenfolge: Piper (neural, manuell installiertes Modell) → spd-say → espeak-ng → Web Speech API
-- Kein Cloud-TTS, kein Shell-Interpolation, kein automatischer Modell-Download
+- Provider-Reihenfolge: Piper (neural, manuell installiertes Modell, auf Windows mit `de_DE-thorsten-high` verifiziert) → spd-say → espeak-ng → Web Speech API
+- Piper als **externe lokale Runtime/Modell** (nicht gebündelt), kein Cloud-TTS, kein Shell-Interpolation, kein automatischer Modell-Download
 
 ### Embeddings (Phase 1)
 

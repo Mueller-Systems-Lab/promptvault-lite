@@ -44,9 +44,9 @@ fn piper_model_path(app: &AppHandle) -> Result<PathBuf, String> {
         .join(PIPER_MODEL_RELATIVE_PATH))
 }
 
-fn executable_available(executable: &str) -> bool {
+fn executable_available(executable: &str, probe: &str) -> bool {
     Command::new(executable)
-        .arg("--version")
+        .arg(probe)
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .status()
@@ -152,7 +152,7 @@ pub fn detect_local_tts(app: AppHandle) -> NativeTtsStatus {
         .map(|path| path.is_file())
         .unwrap_or(false);
 
-    if model_installed && executable_available("piper") {
+    if model_installed && executable_available("piper", "--help") {
         return NativeTtsStatus {
             available: true,
             provider: "piper".to_string(),
@@ -162,7 +162,7 @@ pub fn detect_local_tts(app: AppHandle) -> NativeTtsStatus {
         };
     }
 
-    if executable_available("spd-say") {
+    if executable_available("spd-say", "--version") {
         return NativeTtsStatus {
             available: true,
             provider: "speech_dispatcher".to_string(),
@@ -172,7 +172,7 @@ pub fn detect_local_tts(app: AppHandle) -> NativeTtsStatus {
         };
     }
 
-    if executable_available("espeak-ng") {
+    if executable_available("espeak-ng", "--version") {
         return NativeTtsStatus {
             available: true,
             provider: "espeak_ng".to_string(),
@@ -205,7 +205,7 @@ pub fn synthesize_piper(
             model.display()
         ));
     }
-    if !executable_available("piper") {
+    if !executable_available("piper", "--help") {
         return Err("Piper ist nicht verfügbar.".to_string());
     }
 

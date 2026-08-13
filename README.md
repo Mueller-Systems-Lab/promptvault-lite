@@ -56,7 +56,7 @@ The `master` branch additionally contains work that has **not yet been released*
 - **Admin Observability** — runtime diagnostics with trace/span correlation (integrated)
 - **PromptVault CLI** — `promptvault` management CLI, implemented and verified
 - **Native observability proof on Windows** — WebdriverIO native E2E
-- **Local TTS adapter** — native Rust TTS commands (Piper/spd-say/espeak-ng) ported; real neural runtime proof pending engine install
+- **Local TTS adapter** — native Rust TTS commands (Piper/spd-say/espeak-ng) ported; real neural runtime proof verified against a local Piper runtime + German model (Windows)
 
 > **`promptvault-cli` is technically READY_FOR_PUBLICATION, but is not yet available on a package index.** It is not on PyPI, and no `v1.9.0` release or tag exists. Package version (`1.9.0`) is not a release status.
 
@@ -170,9 +170,10 @@ locally, without cloud TTS.
   the full prompt content; secrets, keys, paths and code blocks are masked.
 - **Stop/Cancel** — a "Stoppen" button cancels playback and any active native
   engine process.
-- **Known limitation** — the neural path requires a locally installed Piper
-  engine and model (no automatic download). On hosts without a native engine,
-  the Web Speech fallback is used. See
+- **Neural path** — Piper-backed, local-only, German voice (`de_DE-thorsten-high`)
+  verified end-to-end on Windows. Piper is used as an **external local
+  runtime/model** (manually installed, not bundled with PromptVault) and is
+  required for the neural path; otherwise the Web Speech fallback is used. See
   [`docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md`](docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md).
 
 ---
