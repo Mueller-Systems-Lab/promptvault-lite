@@ -115,7 +115,7 @@ export function AdminDiagnosticsPanel({ onClose }: AdminDiagnosticsPanelProps) {
   }, [allEvents]);
 
   const handleExport = () => {
-    const data = exportDiagnostics("1.9.0");
+    const data = exportDiagnostics(__APP_VERSION__);
     if (!data) return;
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",

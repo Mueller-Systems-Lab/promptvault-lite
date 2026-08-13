@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 // =============================================================================
-// Admin Observability — Unit Tests: Redaction & Privacy
+// Admin Observability — Unit Tests: Redaction & Export Policy
 // =============================================================================
 
 import { describe, it, expect } from "vitest";
@@ -10,6 +10,9 @@ import {
   stripSecrets,
   sanitizeEventForExport,
   buildDiagnosticCopy,
+  buildDiagnosticExport,
+  DIAGNOSTIC_EXPORT_POLICY,
+  EXPORT_POLICY_VERSION,
 } from "../redaction";
 
 describe("redactPath", () => {
@@ -92,12 +95,6 @@ describe("stripSecrets", () => {
     expect(stripSecrets(input)).toBe(input);
   });
 
-  it("does not redact TEST_SECRET_DO_NOT_EXPORT_123", () => {
-    expect(stripSecrets("TEST_SECRET_DO_NOT_EXPORT_123")).toBe(
-      "TEST_SECRET_DO_NOT_EXPORT_123",
-    );
-  });
-
   it("redacts password: 'secret' patterns", () => {
     const input = "password: 'my-secret-password-123' config";
     const result = stripSecrets(input);
@@ -105,8 +102,8 @@ describe("stripSecrets", () => {
   });
 });
 
-describe("sanitizeEventForExport", () => {
-  it("redacts path attributes", () => {
+describe("sanitizeEventForExport (fail-closed)", () => {
+  it("omits unknown path-like attributes (not merely redacts)", () => {
     const event = {
       schemaVersion: 1,
       traceId: "t-1",
@@ -121,11 +118,28 @@ describe("sanitizeEventForExport", () => {
       },
     };
     const sanitized = sanitizeEventForExport(event, "C:\\Users\\test\\vault");
-    const attrs = sanitized.attributes!;
-    expect(attrs.file_path).toBe("vault:/secret/key.md");
+    expect(sanitized.attributes).toBeUndefined();
   });
 
-  it("handles null vault root", () => {
+  it("keeps allowlisted scalar metadata attributes", () => {
+    const event = {
+      schemaVersion: 1,
+      traceId: "t-1",
+      spanId: "s-1",
+      timestamp: "2026-01-01",
+      layer: "store" as const,
+      operation: "scan",
+      stage: "scan",
+      status: "succeeded" as const,
+      attributes: {
+        "promptvault.scan.prompt_count": 42,
+      },
+    };
+    const sanitized = sanitizeEventForExport(event);
+    expect(sanitized.attributes!["promptvault.scan.prompt_count"]).toBe(42);
+  });
+
+  it("omits nested objects from allowlisted keys (type fail-closed)", () => {
     const event = {
       schemaVersion: 1,
       traceId: "t-1",
@@ -135,10 +149,68 @@ describe("sanitizeEventForExport", () => {
       operation: "test",
       stage: "test",
       status: "succeeded" as const,
-      attributes: { path: "/home/user/data.txt" },
+      attributes: {
+        "promptvault.overall_score": { nested: "unsafe" },
+      },
     };
     const sanitized = sanitizeEventForExport(event);
-    expect(sanitized.attributes!.path).toMatch(/^\.\.\.\//);
+    expect(sanitized.attributes).toBeUndefined();
+  });
+
+  it("omits raw error message but keeps category and reason code", () => {
+    const event = {
+      schemaVersion: 1,
+      traceId: "t-1",
+      spanId: "s-1",
+      timestamp: "2026-01-01",
+      layer: "tauri-ipc" as const,
+      operation: "invoke",
+      stage: "invoke",
+      status: "failed" as const,
+      error: {
+        message: "path C:\\Users\\secret\\file.md failed",
+        category: "IPC_ERROR" as const,
+        reasonCode: "TAURI_INVOKE_FAILED" as const,
+      },
+    };
+    const sanitized = sanitizeEventForExport(event);
+    expect(sanitized.error).toBeDefined();
+    expect(sanitized.error!.message).toBeUndefined();
+    expect(sanitized.error!.category).toBe("IPC_ERROR");
+    expect(sanitized.error!.reasonCode).toBe("TAURI_INVOKE_FAILED");
+  });
+});
+
+describe("buildDiagnosticExport (spans within traces are sanitized)", () => {
+  it("omits unsafe span attributes nested inside traces", () => {
+    const trace = {
+      traceId: "t-1",
+      operation: "analyze-selected",
+      startedAt: "2026-01-01T00:00:00Z",
+      status: "succeeded" as const,
+      spans: [
+        {
+          spanId: "s-1",
+          operation: "quality",
+          layer: "tauri-ipc" as const,
+          stage: "evaluate_prompt",
+          status: "succeeded" as const,
+          startedAt: "2026-01-01T00:00:00Z",
+          durationMs: 15,
+          attributes: { full_content: "PVL_PRIVACY_SENTINEL_9F3C7A42" },
+        },
+      ],
+    };
+    const data = buildDiagnosticExport("1.9.2", "Win32", {}, [trace], [], []);
+    expect(JSON.stringify(data)).not.toContain("PVL_PRIVACY_SENTINEL_9F3C7A42");
+    expect(data.traces[0].spans[0].attributes).toBeUndefined();
+  });
+
+  it("includes policy and version metadata", () => {
+    const data = buildDiagnosticExport("1.9.2", "Win32", {}, [], [], []);
+    expect(data.diagnostic_export_policy).toBe(DIAGNOSTIC_EXPORT_POLICY);
+    expect(data.export_policy_version).toBe(EXPORT_POLICY_VERSION);
+    expect(data.app_version).toBe("1.9.2");
   });
 });
 

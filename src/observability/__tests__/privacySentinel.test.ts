@@ -1,24 +1,17 @@
 // =============================================================================
-// Admin Observability — Privacy Sentinel Test
+// Admin Observability — Privacy Sentinel Test (fail-closed)
 // =============================================================================
-// Verifies the sentinel value TEST_SECRET_DO_NOT_EXPORT_123 is NEVER
-// present in any diagnostic output, export, or copy format.
-// =============================================================================
+// A single unambiguous sentinel is placed in every leak-prone position and the
+// resulting diagnostic export JSON must contain ZERO occurrences of it.
 
 import { describe, it, expect } from "vitest";
 import {
-  sanitizeEventForExport,
   buildDiagnosticExport,
   buildDiagnosticCopy,
-  stripSecrets,
 } from "../redaction";
-import type {
-  DiagnosticEvent,
-  Trace,
-  DiagnosticExport,
-} from "../contracts";
+import type { DiagnosticEvent, Trace } from "../contracts";
 
-const SENTINEL = "TEST_SECRET_DO_NOT_EXPORT_123";
+const SENTINEL = "PVL_PRIVACY_SENTINEL_9F3C7A42";
 
 function makeEvent(
   overrides: Partial<DiagnosticEvent> = {},
@@ -36,84 +29,98 @@ function makeEvent(
   };
 }
 
-describe("Privacy Sentinel — Must NOT appear in any output", () => {
-  it("sentinels in attribute values are stripped by stripSecrets", () => {
-    // stripSecrets strips known pattern types. The sentinel itself
-    // is NOT a secret pattern, so it survives stripSecrets.
-    // But it should never appear in attributes because we never
-    // log full prompt content as attributes.
-    const result = stripSecrets(`some text ${SENTINEL} more text`);
-    // stripSecrets only removes known patterns, not arbitrary strings.
-    // This assertion documents: the sentinel is NOT classified as a secret pattern.
-    expect(result).toContain(SENTINEL);
-  });
+function buildExport(events: DiagnosticEvent[], traces: Trace[] = []) {
+  return buildDiagnosticExport("1.9.2", "Win32", {}, traces, events, []);
+}
 
-  it("sentinels in event attributes ARE retained (not automatically redacted)", () => {
-    // If someone manually puts the sentinel in event attributes,
-    // it would survive. This test documents the contract.
+describe("Privacy Sentinel — zero occurrences in diagnostic export", () => {
+  it("sentinel in arbitrary attribute values never crosses the export boundary", () => {
     const event = makeEvent({
-      attributes: { data: SENTINEL },
+      attributes: { arbitrary_user_text: SENTINEL },
     });
-    const sanitized = sanitizeEventForExport(event);
-    expect(sanitized.attributes?.data).toContain(SENTINEL);
+    const data = buildExport([event]);
+    expect(JSON.stringify(data)).not.toContain(SENTINEL);
   });
 
-  it("event export JSON must NOT contain sentinel in real instrumented data", () => {
-    // Real instrumentation never puts full prompt content in events.
-    // This test verifies: if we build an export bundle without
-    // the sentinel, it's not there.
-    const events: DiagnosticEvent[] = [
-      makeEvent({
-        operation: "classify-content",
-        attributes: {
-          "promptvault.content_class": "PROMPT",
-          "promptvault.confidence": 0.85,
-          "promptvault.content_length": 42,
-        },
-      }),
-      makeEvent({
-        operation: "evaluate-context",
-        attributes: {
-          "promptvault.prompt_type": "structured_prompt",
-          "promptvault.context_profile": "moderate",
-          "promptvault.overall_score": 78,
-        },
-      }),
-    ];
+  it("sentinel in nested user data never crosses the export boundary", () => {
+    const event = makeEvent({
+      attributes: {
+        custom: { text: SENTINEL, answer: SENTINEL, data: [SENTINEL] },
+      },
+    });
+    const data = buildExport([event]);
+    expect(JSON.stringify(data)).not.toContain(SENTINEL);
+  });
 
-    const exportData: DiagnosticExport = buildDiagnosticExport(
-      "1.9.0",
+  it("sentinel in a user-answer-shaped value never crosses the export boundary", () => {
+    const event = makeEvent({
+      attributes: { user_answer: SENTINEL },
+    });
+    const data = buildExport([event]);
+    expect(JSON.stringify(data)).not.toContain(SENTINEL);
+  });
+
+  it("sentinel in an error message never crosses the export boundary", () => {
+    const event = makeEvent({
+      status: "failed",
+      error: {
+        message: `api_key='${SENTINEL}' was rejected`,
+        category: "PROCESSING_ERROR",
+        reasonCode: "INTERNAL_OBSERVABILITY_ERROR",
+      },
+    });
+    const data = buildExport([event]);
+    expect(JSON.stringify(data)).not.toContain(SENTINEL);
+  });
+
+  it("sentinel in a raw-content-shaped attribute never crosses the export boundary", () => {
+    const event = makeEvent({
+      attributes: { full_content: SENTINEL },
+    });
+    const data = buildExport([event]);
+    expect(JSON.stringify(data)).not.toContain(SENTINEL);
+  });
+
+  it("future instrumentation field is fail-closed without export-code changes", () => {
+    const event = makeEvent({
+      attributes: { future_instrumentation_field: SENTINEL },
+    });
+    const data = buildExport([event]);
+    expect(JSON.stringify(data)).not.toContain(SENTINEL);
+  });
+});
+
+describe("Deep Diagnostics does not bypass the privacy boundary", () => {
+  it("deep-enabled export still omits sentinel and prompt content", () => {
+    const event = makeEvent({
+      attributes: {
+        full_content: SENTINEL,
+        raw_input: SENTINEL,
+        clipboard: SENTINEL,
+      },
+    });
+    const data = buildDiagnosticExport(
+      "1.9.2",
       "Win32",
-      {},
+      { observability: true, deepDiagnostics: true },
       [],
-      events,
+      [event],
       [],
     );
-    const json = JSON.stringify(exportData);
-
-    expect(json).not.toContain(SENTINEL);
-    expect(json).toContain("PROMPT");
-    expect(json).toContain("structured_prompt");
+    expect(JSON.stringify(data)).not.toContain(SENTINEL);
   });
+});
 
-  it("copy-for-debugging must NOT contain sentinel", () => {
+describe("Copy-for-debugging summary", () => {
+  it("never includes sentinel and reports no sensitive data", () => {
     const trace: Trace = {
-      traceId: "sentinel-t",
+      traceId: "trace-1",
       operation: "analyze-selected",
       startedAt: "2026-01-01T00:00:00Z",
       status: "failed",
       spans: [
         {
           spanId: "s-1",
-          operation: "quality",
-          layer: "tauri-ipc",
-          stage: "evaluate_prompt",
-          status: "succeeded",
-          startedAt: "2026-01-01T00:00:00Z",
-          durationMs: 15,
-        },
-        {
-          spanId: "s-2",
           operation: "context",
           layer: "typescript",
           stage: "context-evaluation",
@@ -125,40 +132,8 @@ describe("Privacy Sentinel — Must NOT appear in any output", () => {
         },
       ],
     };
-    const copyText = buildDiagnosticCopy(trace, []);
-    expect(copyText).not.toContain(SENTINEL);
-    expect(copyText).toContain("analyze-selected");
-  });
-
-  it("diagnostic export event attributes NEVER contain full prompt content", () => {
-    // Real instrumentation stores metadata, not content.
-    // contentFingerprint returns "len:hash" — not the text itself.
-    const events: DiagnosticEvent[] = [
-      makeEvent({
-        operation: "resolve-prompt",
-        attributes: {
-          "promptvault.prompt_id": "some-uuid",
-          "promptvault.content_fingerprint": "42:de7d1b72",
-        },
-      }),
-    ];
-    const exportData = buildDiagnosticExport("1.9.0", "Win32", {}, [], events, [],);
-    const json = JSON.stringify(exportData);
-    expect(json).not.toContain(SENTINEL);
-  });
-
-  it("observability error messages are stripped of secrets", () => {
-    const event = makeEvent({
-      status: "failed",
-      error: {
-        message: `Error: api_key='${SENTINEL}' was rejected by auth layer`,
-        category: "PROCESSING_ERROR",
-        reasonCode: "INTERNAL_OBSERVABILITY_ERROR",
-      },
-    });
-    const sanitized = sanitizeEventForExport(event);
-    // The sentinel is embedded in api_key='...' pattern which matches our secret regex
-    expect(sanitized.error?.message).toContain("[REDACTED]");
-    expect(sanitized.error?.message).not.toContain(SENTINEL);
+    const text = buildDiagnosticCopy(trace, []);
+    expect(text).not.toContain(SENTINEL);
+    expect(text).toContain("Sensitive data exposed: NO");
   });
 });

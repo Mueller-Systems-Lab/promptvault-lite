@@ -100,7 +100,8 @@ export type ReasonCode =
   | "TTS_CANCELLED";
 
 export interface DiagnosticError {
-  message: string;
+  /** Raw error message. Omited from diagnostic exports (may contain user content/paths/secrets). */
+  message?: string;
   category: ErrorClass;
   reasonCode: ReasonCode;
   stack?: string;
@@ -173,6 +174,8 @@ export interface Span {
 
 export interface DiagnosticExport {
   schema_version: number;
+  diagnostic_export_policy: string;
+  export_policy_version: number;
   app_version: string;
   generated_at: string;
   platform: string;
@@ -180,6 +183,8 @@ export interface DiagnosticExport {
   traces: Trace[];
   events: DiagnosticEvent[];
   invariant_violations: InvariantViolation[];
+  omitted_attribute_count: number;
+  omitted_event_attribute_count: number;
 }
 
 export function isReasonCode(value: string): value is ReasonCode {
