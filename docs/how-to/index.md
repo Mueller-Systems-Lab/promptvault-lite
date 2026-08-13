@@ -76,7 +76,7 @@ promptvault update       # auf Updates prüfen
 promptvault uninstall    # App entfernen (Vault-Daten bleiben)
 ```
 
-→ Detail: `../CLI.md` _(noch nicht migriert)_ — CLI-Paket implementiert und lokal verifiziert; PyPI-Publikation noch ausstehend.
+→ Detail: `../CLI.md` _(noch nicht migriert)_ — CLI-Paket `promptvault-lite-manager` auf PyPI veröffentlicht.
 
 ### Welche Tastaturkürzel gibt es?
 

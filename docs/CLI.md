@@ -20,14 +20,10 @@ Zwei Ebenen sind strikt zu trennen:
 ## Publikationsstatus
 
 - **GitHub Release / Tag `v1.9.0`:** `PUBLISHED` — Windows-x64-NSIS-Installer, Release-Manifest und `SHA256SUMS.txt`.
-- **PyPI:** `NOT PUBLISHED` — `uv tool install promptvault-lite-manager` funktioniert **noch nicht** aus einem Package Index (Secure-Publish-Auth ausstehend).
-
-Bis zur PyPI-Veröffentlichung wird das CLI-Paket aus einem **lokal gebauten Wheel** installiert (real verfügbarer und getesteter Weg):
+- **PyPI:** `PUBLISHED` — `promptvault-lite-manager==1.9.0` ist öffentlich installierbar:
 
 ```bash
-cd tools/promptvault-cli
-uv build
-uv tool install ./dist/promptvault_lite_manager-1.9.0-py3-none-any.whl
+uv tool install promptvault-lite-manager
 ```
 
 Voraussetzungen: Python >= 3.11 und [uv](https://docs.astral.sh/uv/).

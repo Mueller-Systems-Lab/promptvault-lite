@@ -49,7 +49,7 @@ It is built for people who collect, write and refine many prompts — especially
 
 The Windows installer is **unsigned** — Windows SmartScreen may show an "Unknown publisher" warning. Linux `.deb`/`.rpm` remain available for v1.8.0; macOS is not pre-built.
 
-The `promptvault` CLI (v1.9.0) installs and manages the native app and is implemented and verified locally. Its **PyPI publication is still pending** secure publish authorization — `uv tool install promptvault-lite-manager` is not yet available from a package index. Until then, install the CLI from a locally built wheel (see below).
+The `promptvault` CLI (v1.9.0) installs and manages the native app. Its Python distribution `promptvault-lite-manager` is **published on PyPI** and installable with `uv tool install promptvault-lite-manager`.
 
 ---
 
@@ -81,15 +81,11 @@ pnpm tauri build    # production build
 
 ### CLI / uv tool
 
-`promptvault-lite-manager` (executable `promptvault`) is a Python CLI that installs and manages the **native** PromptVault Desktop App. It resolves the public release manifest from the GitHub Release, verifies installer SHA-256 and size (fail-closed), and installs silently. It is implemented and verified, but **PyPI publication is still pending** — until then, install it from a locally built wheel:
+`promptvault-lite-manager` (executable `promptvault`) is a Python CLI that installs and manages the **native** PromptVault Desktop App. It resolves the public release manifest from the GitHub Release, verifies installer SHA-256 and size (fail-closed), and installs silently.
 
 ```bash
-# Build the wheel from source
-cd tools/promptvault-cli
-uv build
-
-# Install the CLI as a uv tool from the local wheel
-uv tool install ./dist/promptvault_lite_manager-1.9.0-py3-none-any.whl
+# Install the CLI as a uv tool from PyPI
+uv tool install promptvault-lite-manager
 
 # Then manage the native app
 promptvault doctor
@@ -97,7 +93,7 @@ promptvault install
 promptvault launch
 ```
 
-The command `uv tool install promptvault-lite-manager` will become valid after a real package-index publication.
+> Python distribution: `promptvault-lite-manager` · executable: `promptvault` · native product: **PromptVault Lite**.
 
 See [`docs/CLI.md`](docs/CLI.md) for the full CLI reference.
 
@@ -228,7 +224,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Stable public release (v1.9.0, GitHub Release with a Windows x64 installer). The `promptvault` CLI is implemented and verified but its PyPI publication is still pending. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Stable public release (v1.9.0, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager`. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

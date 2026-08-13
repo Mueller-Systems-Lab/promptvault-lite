@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-08-13
 **Current version:** v1.9.0 (GitHub Release published 2026-08-13, Windows x64 installer)
-**Next target:** PyPI-Publikation von `promptvault-lite-manager` (Secure-Publish-Auth ausstehend)
+**Next target:** PyPI-Publikation von `promptvault-lite-manager` — **erledigt** (v1.9.0 public)
 
 ---
 
@@ -14,7 +14,7 @@
 | Frontend↔Backend Trace-Korrelation | ✅ DONE / INTEGRATED |
 | Windows Native Runtime Proof (WebdriverIO/WebView2) | ✅ DONE |
 | promptvault CLI (`doctor`/`install`/`launch`/`update`/`diagnostics`/`uninstall`) | ✅ IMPLEMENTED / VERIFIED |
-| uv package (`promptvault-lite-manager`) | ✅ WHEEL VERIFIED (PyPI pending) |
+| uv package (`promptvault-lite-manager`) | ✅ PUBLISHED (PyPI) |
 | Local Neural TTS (Piper external runtime, `de_DE-thorsten-high`) | ✅ DONE / RUNTIME VERIFIED |
 | Windows x64 NSIS installer | ✅ PUBLISHED (v1.9.0 GitHub Release) |
 
@@ -45,7 +45,7 @@
 | --- | --- |
 | `v1.9.0` Tag | ✅ Published |
 | GitHub Release v1.9.0 (Windows installer + manifest + checksums) | ✅ Published |
-| PyPI publish (`promptvault-lite-manager`) | ⏳ PENDING (Secure-Publish-Auth nötig) |
+| PyPI publish (`promptvault-lite-manager==1.9.0`) | ✅ Published (OIDC Trusted Publishing) |
 
 ---
 
@@ -53,7 +53,7 @@
 
 | Priority | Task | Issue |
 | -------- | --- | --- |
-| P1 | PyPI-Publikation `promptvault-lite-manager` + public `uv tool install` verifizieren | — |
+| P1 | ~~PyPI-Publikation `promptvault-lite-manager` + public `uv tool install` verifizieren~~ ✅ Done | — |
 | P2 | Embeddings Phase 2: DB schema/storage | #199 |
 | P2 | Architecture Contract Audit | — |
 | P2 | Security Posture Review | — |

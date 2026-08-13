@@ -126,5 +126,5 @@
 
 - **Completed:** v1.8.0 released — Direction Profiles, Missing-Info-Gate, Optimizer Hardening, Visual Gate.
 - **Completed (v1.9.0):** GitHub Release + Tag published — Admin Observability, promptvault CLI, Local Neural TTS, Windows x64 NSIS installer.
-- **Pending:** PyPI publish (`promptvault-lite-manager`) — secure publish auth required.
+- **Completed (v1.9.0):** PyPI publish (`promptvault-lite-manager==1.9.0`) — OIDC Trusted Publishing, public install verified.
 - **Planned:** Embeddings Phase 2 (#199), Architecture Contract Audit, Security Posture Review.

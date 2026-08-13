@@ -10,7 +10,7 @@ version: 1.9.0
 
 Released: 2026-08-13 (GitHub Release with Windows x64 NSIS installer, release manifest and SHA-256 checksums)
 
-> Integriert auf `master`. `promptvault-lite-manager` PyPI-Publikation ausstehend (Secure-Publish-Auth erforderlich).
+> Integriert auf `master`. `promptvault-lite-manager` ist auf PyPI veröffentlicht (OIDC Trusted Publishing).
 
 ### Added
 
@@ -21,14 +21,14 @@ Released: 2026-08-13 (GitHub Release with Windows x64 NSIS installer, release ma
 - **Backend-Korrelation** — `src-tauri/src/observability/mod.rs` (`TraceContext`/`BackendSpan`) trägt den Trace-Kontext über die Tauri-IPC-Grenze.
 - **Windows Native E2E** — WebdriverIO/WebView2 beweist den realen nativen Observability-Pfad (`e2e-tests/specs/admin-observability.native.spec.js`).
 - **promptvault CLI** — `tools/promptvault-cli/`: `doctor`, `install`, `launch`, `update`, `diagnostics`, `uninstall`.
-- **uv install lifecycle** — hatchling-Wheel, `uv tool install` aus lokalem Wheel (PyPI-Publish ausstehend).
+- **uv install lifecycle** — hatchling-Wheel, `uv tool install promptvault-lite-manager` (PyPI-publiziert).
 - **Installer integrity verification** — SHA-256 + Größen-Verifikation, fail-closed.
 
 - **Local TTS Adapter** — `src-tauri/src/commands/tts.rs`: native Rust-TTS-Commands (`detect_local_tts`, `synthesize_piper`, `speak_system_tts`, `stop_local_tts`) mit festen Executables und getrennten Args/stdin (kein Shell-Interpolation). Frontend-Orchestrierung in `src/lib/localTts.ts` mit Sanitizer an der Speech-Grenze und Observability-Instrumentierung (`tts.*`-Spans + Reason Codes). Provider-Reihenfolge: Piper (neural) → spd-say → espeak-ng → Web Speech. **Status:** implementiert und end-to-end verifiziert — echter neuronaler Runtime-Proof gegen lokale Piper-Runtime + deutsches Modell (`de_DE-thorsten-high`) auf Windows (Piper als externe lokale Runtime, nicht gebündelt).
 
 ### Publication Status
 
-- `promptvault-lite-manager`: implementiert und lokal verifiziert; PyPI-Publikation ausstehend (Secure-Publish-Auth erforderlich).
+- `promptvault-lite-manager`: implementiert, lokal verifiziert und auf PyPI veröffentlicht (OIDC Trusted Publishing).
 - `v1.9.0`: GitHub Release + Tag veröffentlicht (Windows-x64-NSIS-Installer, Release-Manifest, `SHA256SUMS.txt`).
 
 ---

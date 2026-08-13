@@ -12,7 +12,7 @@
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
 **Release:** v1.9.0 published as a GitHub Release (Windows x64 NSIS installer + release manifest + checksums).
-**Publication:** `promptvault-lite-manager` PyPI publication = `PENDING` (secure publish auth required).
+**Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.9.0, via OIDC Trusted Publishing).
 
 ---
 
@@ -24,7 +24,7 @@
 | Frontend↔Backend Trace-Korrelation | ✅ DONE | `src-tauri/tests/observability_correlation.rs` |
 | Native observability proof on Windows | ✅ DONE | `e2e-tests/specs/admin-observability.native.spec.js` + `wdio.conf.windows.mjs` |
 | promptvault CLI (`doctor`/`install`/`launch`/`update`/`diagnostics`/`uninstall`) | ✅ IMPLEMENTED / VERIFIED | `tools/promptvault-cli/*` + `tests/test_releases.py` |
-| uv package (`promptvault-lite-manager`) | ✅ WHEEL VERIFIED (PyPI pending) | `pyproject.toml` (hatchling wheel) |
+| uv package (`promptvault-lite-manager`) | ✅ PUBLISHED (PyPI) | `pyproject.toml` (hatchling wheel) |
 | Local TTS Adapter (native Rust commands) | ✅ DONE / RUNTIME VERIFIED | `src-tauri/src/commands/tts.rs` + `src/lib/localTts.ts`; `docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md` |
 
 ---
@@ -54,7 +54,7 @@
 | --- | --- |
 | v1.8.0 GitHub Release | ✅ Published (Linux `.deb`/`.rpm` + `SHA256SUMS.txt`) |
 | v1.9.0 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
-| PyPI (`promptvault-lite-manager`) | ⏳ PENDING (secure publish auth required) |
+| PyPI (`promptvault-lite-manager==1.9.0`) | ✅ Published (OIDC Trusted Publishing) |
 | Windows v1.9.0 installer asset | ✅ Published (`PromptVault.Lite_1.9.0_x64-setup.exe`) |
 
 ---
@@ -79,7 +79,7 @@
 - **Embeddings Phase 1 mock-only** — no real semantic search
 - **Local TTS neural path** — adapter implemented and verified end-to-end on Windows against a real local Piper runtime + German model (`de_DE-thorsten-high`); Piper/model are external local runtime requirements (not bundled); Web Speech remains the fallback
 - **SQLite not fully wired** as primary persistence for scanned prompts
-- **CLI not published** — install from local wheel until package-index publication
+- **CLI published on PyPI** — `uv tool install promptvault-lite-manager` (verified public install)
 
 ---
 
@@ -103,6 +103,6 @@
 
 ## Next Steps (Recommended)
 
-1. **PyPI publication:** publish `promptvault-lite-manager==1.9.0` once secure publish auth (Trusted Publishing or an owner-provided token) is available, then verify public `uv tool install promptvault-lite-manager`.
+1. **PyPI publication (done):** `promptvault-lite-manager==1.9.0` is published via OIDC Trusted Publishing; public `uv tool install promptvault-lite-manager` verified.
 2. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
 3. **Architecture Contract Audit / Security Posture Review.**

@@ -148,7 +148,7 @@ Mehr Details: `docs/OBSERVABILITY.md`.
 
 ## PromptVault CLI (optional)
 
-Die App lässt sich zusätzlich über die Kommandozeile verwalten (`promptvault`). Hinweis: Das CLI-Paket ist **noch nicht veröffentlicht** und wird bis dahin aus einem lokal gebauten Wheel installiert (siehe `docs/CLI.md`):
+Die App lässt sich zusätzlich über die Kommandozeile verwalten (`promptvault`). Installation über PyPI: `uv tool install promptvault-lite-manager` (siehe `docs/CLI.md`):
 
 ```text
 promptvault doctor       # Status prüfen

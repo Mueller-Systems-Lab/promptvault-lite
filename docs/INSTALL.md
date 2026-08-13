@@ -61,12 +61,10 @@ Checksummen liegen im Release als `SHA256SUMS.txt` bei.
 
 ## CLI / uv tool
 
-`promptvault-lite-manager` (Einstiegspunkt `promptvault`) installiert und verwaltet die native Desktop-App. **PyPI-Publikation noch ausstehend** (Secure-Publish-Auth erforderlich); bis dahin aus lokalem Wheel installieren:
+`promptvault-lite-manager` (Einstiegspunkt `promptvault`) installiert und verwaltet die native Desktop-App. **PyPI-publiziert** (v1.9.0):
 
 ```bash
-cd tools/promptvault-cli
-uv build
-uv tool install ./dist/promptvault_lite_manager-1.9.0-py3-none-any.whl
+uv tool install promptvault-lite-manager
 
 promptvault doctor
 promptvault install
@@ -110,4 +108,4 @@ Quellbau möglich, aber nicht aktiv getestet. Kein pre-built macOS-Installer ver
 - **Scan findet keine Dateien**: Der Scanner verarbeitet `.md`, `.markdown` und `.txt`-Dateien bis 1 MiB.
 - **Export/Favoriten scheinen zu hängen**: Der Vorgang läuft lokal im Rust-Backend; bei großen Prompt-Mengen kann der erste Aufruf mehrere Sekunden dauern.
 - **Build-Probleme**: Prüfe die plattformspezifischen Native-Build-Voraussetzungen für Rust/Tauri.
-- **`promptvault` nicht gefunden**: CLI-Paket ist noch nicht veröffentlicht — aus lokalem Wheel installieren (siehe oben).
+- **`promptvault` nicht gefunden**: CLI-Paket noch nicht installiert — `uv tool install promptvault-lite-manager` (siehe oben).
