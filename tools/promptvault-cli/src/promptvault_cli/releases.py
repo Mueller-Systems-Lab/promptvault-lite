@@ -79,7 +79,13 @@ def _validate_filename(value, tag: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ArtifactIntegrityError(f"Artifact '{tag}' missing 'filename'")
     filename = value.strip()
-    if filename in (".", "..") or Path(filename).name != filename:
+    if (
+        filename in (".", "..")
+        or "/" in filename
+        or "\\" in filename
+        or ":" in filename
+        or Path(filename).name != filename
+    ):
         raise ArtifactIntegrityError(
             f"Artifact '{tag}' has unsafe 'filename' (must be a plain name, "
             f"no path separators): {filename!r}"
