@@ -203,6 +203,36 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
     description: "Content fingerprint does not match expected value",
     defaultCategory: "STATE_ERROR",
   },
+  TTS_ENGINE_NOT_FOUND: {
+    code: "TTS_ENGINE_NOT_FOUND",
+    description: "No local TTS engine is installed or available",
+    defaultCategory: "EXPECTED_SKIP",
+  },
+  TTS_PLATFORM_UNSUPPORTED: {
+    code: "TTS_PLATFORM_UNSUPPORTED",
+    description: "Local TTS is not supported on this platform",
+    defaultCategory: "EXPECTED_SKIP",
+  },
+  TTS_ENGINE_START_FAILED: {
+    code: "TTS_ENGINE_START_FAILED",
+    description: "Local TTS engine process failed to start",
+    defaultCategory: "PROCESSING_ERROR",
+  },
+  TTS_SYNTHESIS_FAILED: {
+    code: "TTS_SYNTHESIS_FAILED",
+    description: "Local TTS synthesis or playback failed",
+    defaultCategory: "PROCESSING_ERROR",
+  },
+  TTS_INPUT_REJECTED: {
+    code: "TTS_INPUT_REJECTED",
+    description: "TTS input was rejected (empty or oversized)",
+    defaultCategory: "USER_INPUT_ERROR",
+  },
+  TTS_CANCELLED: {
+    code: "TTS_CANCELLED",
+    description: "Local TTS playback was cancelled",
+    defaultCategory: "EXPECTED_SKIP",
+  },
 };
 
 export function getReasonCodeDescription(code: ReasonCode): string {

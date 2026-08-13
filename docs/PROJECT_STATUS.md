@@ -25,6 +25,7 @@
 | Native observability proof on Windows | ✅ DONE | `e2e-tests/specs/admin-observability.native.spec.js` + `wdio.conf.windows.mjs` |
 | promptvault CLI (`doctor`/`install`/`launch`/`update`/`diagnostics`/`uninstall`) | ✅ IMPLEMENTED / VERIFIED | `tools/promptvault-cli/*` + `tests/test_releases.py` |
 | uv package (`promptvault-cli`) | ✅ READY_FOR_PUBLICATION | `pyproject.toml` (hatchling wheel) |
+| Local TTS Adapter (native Rust commands) | 🟡 IMPLEMENTED / RUNTIME PROOF PENDING | `src-tauri/src/commands/tts.rs` + `src/lib/localTts.ts`; `docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md` |
 
 ---
 
@@ -77,6 +78,7 @@
 - **No auto-updater:** manual update for each release
 - **Remote-CI infra-blocked** (Issue #154); local CI authoritative
 - **Embeddings Phase 1 mock-only** — no real semantic search
+- **Local TTS neural path** — adapter implemented; real neural runtime proof pending (Piper engine/model not installed; Web Speech fallback only)
 - **SQLite not fully wired** as primary persistence for scanned prompts
 - **CLI not published** — install from local wheel until package-index publication
 

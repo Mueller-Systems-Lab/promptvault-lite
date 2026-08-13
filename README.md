@@ -30,6 +30,7 @@ It is built for people who collect, write and refine many prompts — especially
 - **Direction Profiles** — generate optimization variants in different directions (opt-in, `PROMPTVAULT_DIRECTION_PROFILES=1`)
 - **Prompt Optimization** — deterministic local optimization (conservative/balanced/aggressive)
 - **Admin Observability** — read-only runtime diagnostics with trace/span correlation and reason codes
+- **Local TTS** — local speech output for prompt summaries (Piper neural / spd-say / espeak-ng / Web Speech fallback), no cloud TTS
 - **Native Tauri Desktop App** — React + TypeScript frontend, Rust backend
 - **Local Privacy Architecture** — no cloud, no telemetry, no prompt upload
 - **PromptVault CLI** — `promptvault` command-line installer and manager (`doctor`, `install`, `launch`, `update`, `diagnostics`, `uninstall`)
@@ -55,6 +56,7 @@ The `master` branch additionally contains work that has **not yet been released*
 - **Admin Observability** — runtime diagnostics with trace/span correlation (integrated)
 - **PromptVault CLI** — `promptvault` management CLI, implemented and verified
 - **Native observability proof on Windows** — WebdriverIO native E2E
+- **Local TTS adapter** — native Rust TTS commands (Piper/spd-say/espeak-ng) ported; real neural runtime proof pending engine install
 
 > **`promptvault-cli` is technically READY_FOR_PUBLICATION, but is not yet available on a package index.** It is not on PyPI, and no `v1.9.0` release or tag exists. Package version (`1.9.0`) is not a release status.
 
@@ -152,6 +154,26 @@ Analyze Prompt
 Enable it via **Settings → Entwickler-Werkzeuge → Admin Observability**, then open the **Diagnostics Panel** (🔍). You can export a redacted JSON bundle or copy a sanitized debug summary.
 
 See [`docs/OBSERVABILITY.md`](docs/OBSERVABILITY.md) for the full documentation.
+
+---
+
+## Local TTS
+
+PromptVault Lite can read a short summary of the selected prompt aloud — fully
+locally, without cloud TTS.
+
+- **Local-only** — no cloud TTS, no external speech API, no network.
+- **Providers** (in order): Piper (neural, with a manually installed German
+  model), Speech Dispatcher (`spd-say`), eSpeak NG, then the browser Web Speech
+  API as fallback.
+- **What is spoken** — only a short, sanitized summary (max ~500 chars), never
+  the full prompt content; secrets, keys, paths and code blocks are masked.
+- **Stop/Cancel** — a "Stoppen" button cancels playback and any active native
+  engine process.
+- **Known limitation** — the neural path requires a locally installed Piper
+  engine and model (no automatic download). On hosts without a native engine,
+  the Web Speech fallback is used. See
+  [`docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md`](docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md).
 
 ---
 

@@ -4,9 +4,18 @@
 
 Issue [#200](https://github.com/xxammaxx/promptvault-lite/issues/200) — Audio-Kurzbeschreibung
 
+## Superseding implementation note
+
+The follow-up native adapter is implemented in `src-tauri/src/commands/tts.rs`.
+Native playback uses fixed executable names and separate argument arrays / stdin
+through Tauri IPC; the frontend does **not** invoke the shell plugin with prompt
+data. Piper is selected only when both the executable and the manually installed
+local model are present. See `LOCAL_NEURAL_TTS_RUN_REPORT.md` for current runtime
+evidence and gaps.
+
 ## Audit Date
 
-2026-07-05
+2026-07-05 (native adapter note added 2026-08-13)
 
 ---
 
@@ -77,7 +86,11 @@ Content is completely blocked from audio when:
 
 ### Shell Injection
 
-No shell commands are executed for TTS. The Web Speech API runs entirely in the browser sandbox. Native TTS provider detection uses `@tauri-apps/plugin-shell` only for `which` command checks — no user input is passed.
+No shell commands are executed for TTS. The Web Speech API runs entirely in the
+browser sandbox. Native provider detection and synthesis run through the Rust
+adapter using `std::process::Command` with fixed executable names and separate
+arguments / stdin — no shell, no `which`, no user input interpolated into a
+command string.
 
 ---
 
@@ -86,9 +99,9 @@ No shell commands are executed for TTS. The Web Speech API runs entirely in the 
 | Provider       | Detection Method                         | Risk                               |
 | -------------- | ---------------------------------------- | ---------------------------------- |
 | Web Speech API | `window.speechSynthesis.getVoices()`     | None (browser built-in)            |
-| piper          | `which piper` via Tauri shell plugin     | Low (command existence check only) |
-| spd-say        | `which spd-say` via Tauri shell plugin   | Low (command existence check only) |
-| espeak-ng      | `which espeak-ng` via Tauri shell plugin | Low (command existence check only) |
+| piper          | Rust `detect_local_tts` (executable + local model presence) | Low (existence check only) |
+| spd-say        | Rust `detect_local_tts` (executable `--version`)            | Low (existence check only) |
+| espeak-ng      | Rust `detect_local_tts` (executable `--version`)            | Low (existence check only) |
 
 ---
 

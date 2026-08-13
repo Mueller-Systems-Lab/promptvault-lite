@@ -7,6 +7,7 @@ pub mod parser;
 pub mod scanner;
 
 use crate::database::Database;
+use commands::tts::TtsState;
 use commands::AppState;
 use tauri::Manager;
 
@@ -32,6 +33,7 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_fs::init())
         .manage(AppState::new())
+        .manage(TtsState::default())
         .setup(|app| {
             log::info!("PromptVault Lite gestartet");
 
@@ -86,6 +88,11 @@ pub fn run() {
             commands::actions::detect_artifacts_action,
             commands::actions::create_prompt,
             commands::actions::update_prompt,
+            // Local-only TTS: fixed provider executables, no shell interpolation.
+            commands::tts::detect_local_tts,
+            commands::tts::synthesize_piper,
+            commands::tts::speak_system_tts,
+            commands::tts::stop_local_tts,
             // E2E-Bridge-Gate (ADR-005): existiert NUR im Debug-Build.
             // Produktions-Build: Command nicht registriert → invoke wirft →
             // Frontend exponiert window.__pvlLoadArchive NICHT (fail-closed).

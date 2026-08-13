@@ -90,23 +90,23 @@ PromptVault Lite kann eine kurze deutsche Zusammenfassung des ausgewählten Prom
 
 ### Lokale TTS (Text-to-Speech)
 
-Die Sprachausgabe nutzt die **Web Speech API** des Browsers und benötigt **keine Internetverbindung, keine Cloud-TTS-Dienste und keine API-Keys**.
+Die Sprachausgabe ist **vollständig lokal** und benötigt **keine Internetverbindung, keine Cloud-TTS-Dienste und keine API-Keys**.
 
 - **Keine Cloud-Abhängigkeit:** Alle Verarbeitung erfolgt lokal.
 - **Keine vollständigen Prompt-Inhalte:** Es wird nur eine kurze Zusammenfassung vorgelesen (maximal ca. 500 Zeichen).
 - **Sensible Inhalte werden maskiert:** API-Keys, Tokens, E-Mail-Adressen, Pfade und Code-Blöcke werden automatisch erkannt und nicht vorgelesen.
 - **Sicherheitsblockierung:** Inhalte mit kritischen Hygiene-Warnungen werden nicht vorgelesen.
 
-### TTS-Provider unter Linux
+### TTS-Provider
 
-PromptVault Lite erkennt automatisch verfügbare TTS-Provider:
+PromptVault Lite erkennt automatisch verfügbare lokale TTS-Provider in dieser Reihenfolge:
 
-1. **Web Speech API** (bevorzugt) — im Browser/WebView integriert
-2. **Piper** — lokaler ONNX-basierter TTS (separate Installation erforderlich)
-3. **spd-say** (Speech Dispatcher) — `sudo apt install speech-dispatcher`
-4. **espeak-ng** — `sudo apt install espeak-ng`
+1. **Piper** — lokale neuronale Stimme (erfordert separat installiertes Piper-Binary und deutsches Modell)
+2. **spd-say** (Speech Dispatcher) — `sudo apt install speech-dispatcher`
+3. **espeak-ng** — `sudo apt install espeak-ng`
+4. **Web Speech API** — im Browser/WebView integriert (Fallback)
 
-Die Kurzbeschreibung bleibt auch ohne TTS-Provider sichtbar — nur die Audioausgabe ist dann deaktiviert.
+Fehlt ein nativer Provider, wird die Web-Speech-API genutzt. Die Kurzbeschreibung bleibt auch ohne TTS-Provider sichtbar — nur die Audioausgabe ist dann deaktiviert. Es wird **kein** Modell automatisch heruntergeladen.
 
 ## Direktanalyse — Prompt ohne Datei analysieren
 

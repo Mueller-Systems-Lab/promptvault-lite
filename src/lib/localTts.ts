@@ -1,15 +1,21 @@
 // =============================================================================
 // PromptVault Lite — Lokale TTS-Erkennung und Sprachausgabe (Issue #200)
 // =============================================================================
+// Native providers (piper, spd-say, espeak-ng) are called only through
+// controlled Tauri commands. Prompt text is passed as data, never
+// interpolated into a shell command.
 //
-// Locale-only text-to-speech for Linux desktop environments.
-// No cloud TTS. No HTTP calls. No external audio APIs.
-// Uses Web Speech API as the primary in-browser TTS layer.
-//
-// For native Linux TTS (piper, spd-say, espeak-ng), this module provides
-// a detection layer. Native execution would require a Tauri command;
-// that is marked as a follow-up (issue #200-native-tts).
+// Local-only: no cloud TTS, no HTTP calls, no external audio APIs, no
+// automatic model download. Web Speech API remains the final fallback.
 // =============================================================================
+
+import { createTrace, openSpan } from "@/observability/trace";
+import type { Trace } from "@/observability/contracts";
+import {
+  isObservabilityEnabled,
+  recordCompletedTrace,
+} from "@/observability/events";
+import { contentFingerprint } from "@/observability/redaction";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -26,6 +32,7 @@ export interface LocalTtsStatus {
   available: boolean;
   provider: LocalTtsProvider;
   message?: string;
+  neural?: boolean;
 }
 
 export interface SpeakOptions {
@@ -34,115 +41,180 @@ export interface SpeakOptions {
   rate?: number;
 }
 
-// Maximum text length for TTS to prevent resource exhaustion
+interface NativeTtsStatus {
+  available: boolean;
+  provider: LocalTtsProvider;
+  neural: boolean;
+  model_installed: boolean;
+  message: string;
+}
+
 const MAX_TTS_TEXT_LENGTH = 600;
+
+let activeAudio: HTMLAudioElement | null = null;
+let activeAudioUrl: string | null = null;
+let isCurrentlySpeaking = false;
+
+// ---------------------------------------------------------------------------
+// Tauri context & native command helpers
+// ---------------------------------------------------------------------------
+
+function isTauriContext(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    ("__TAURI_INTERNALS__" in window || "__TAURI__" in window)
+  );
+}
+
+async function detectNativeTts(): Promise<NativeTtsStatus | null> {
+  if (!isTauriContext()) return null;
+  try {
+    const { invoke } = await import("@tauri-apps/api/core");
+    return await invoke<NativeTtsStatus>("detect_local_tts");
+  } catch {
+    return null;
+  }
+}
+
+async function invokeNativeStop(): Promise<void> {
+  if (!isTauriContext()) return;
+  try {
+    const { invoke } = await import("@tauri-apps/api/core");
+    await invoke("stop_local_tts");
+  } catch {
+    // Older Tauri builds remain usable with Web Speech.
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Audio playback (Piper WAV)
+// ---------------------------------------------------------------------------
+
+function releaseActiveAudio(): void {
+  if (activeAudio) {
+    activeAudio.pause();
+    activeAudio.currentTime = 0;
+    activeAudio.onended = null;
+    activeAudio.onerror = null;
+    activeAudio = null;
+  }
+  if (activeAudioUrl) {
+    URL.revokeObjectURL(activeAudioUrl);
+    activeAudioUrl = null;
+  }
+}
+
+function playPiperAudio(bytes: number[]): Promise<void> {
+  if (typeof Audio === "undefined" || typeof URL === "undefined") {
+    return Promise.reject(
+      new Error("Lokale Audiowiedergabe ist nicht verfügbar."),
+    );
+  }
+
+  releaseActiveAudio();
+  const audio = new Audio();
+  const blob = new Blob([Uint8Array.from(bytes)], { type: "audio/wav" });
+  const url = URL.createObjectURL(blob);
+  activeAudio = audio;
+  activeAudioUrl = url;
+  audio.src = url;
+
+  return new Promise<void>((resolve, reject) => {
+    audio.onended = () => {
+      releaseActiveAudio();
+      isCurrentlySpeaking = false;
+      resolve();
+    };
+    audio.onerror = () => {
+      releaseActiveAudio();
+      isCurrentlySpeaking = false;
+      reject(new Error("Die lokale Audiodatei konnte nicht abgespielt werden."));
+    };
+    void audio.play().catch((error: unknown) => {
+      releaseActiveAudio();
+      isCurrentlySpeaking = false;
+      reject(error instanceof Error ? error : new Error(String(error)));
+    });
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Web Speech helpers
+// ---------------------------------------------------------------------------
+
+function isWebSpeechAvailable(): boolean {
+  if (typeof window === "undefined") return false;
+  const synth = window.speechSynthesis;
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!synth) return false;
+  try {
+    return synth
+      .getVoices()
+      .some((voice) => voice.lang.startsWith("de") || voice.lang.startsWith("en"));
+  } catch {
+    return false;
+  }
+}
+
+function hasWebSpeechActive(): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (typeof window === "undefined" || !window.speechSynthesis) return false;
+  return window.speechSynthesis.speaking || window.speechSynthesis.pending;
+}
+
+// ---------------------------------------------------------------------------
+// Observability helpers (metadata-only; never the spoken text)
+// ---------------------------------------------------------------------------
+
+function ttsAttributes(provider: string, textLength: number): Record<string, unknown> {
+  return {
+    "tts.provider": provider,
+    "tts.text_length": textLength,
+  };
+}
+
+function newTrace(): Trace | null {
+  return isObservabilityEnabled() ? createTrace("tts-speak") : null;
+}
 
 // ---------------------------------------------------------------------------
 // Provider Detection
 // ---------------------------------------------------------------------------
 
 /**
- * Check if a Linux command is available on the system.
- * Only works in Tauri context with shell access.
- * Returns false if running in browser-only context.
- */
-async function isCommandAvailable(command: string): Promise<boolean> {
-  // In browser-only context (e.g., dev mode without Tauri), we cannot
-  // check for native commands. We return false gracefully.
-  if (typeof window === "undefined") return false;
-
-  // Check for Tauri shell plugin availability
-  const isTauri = "__TAURI_INTERNALS__" in window || "__TAURI__" in window;
-
-  if (!isTauri) return false;
-
-  try {
-    const { Command } = await import("@tauri-apps/plugin-shell");
-    const result = await Command.create("which", [command]).execute();
-    return result.code === 0;
-  } catch {
-    // Command plugin not available or command not found
-    return false;
-  }
-}
-
-/**
- * Check if the Web Speech API is available and has at least one
- * German voice installed.
- */
-function isWebSpeechAvailable(): boolean {
-  if (typeof window === "undefined") return false;
-  const synth = window.speechSynthesis;
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!synth) return false;
-
-  try {
-    const voices = synth.getVoices();
-    return voices.some(
-      (v) => v.lang.startsWith("de") || v.lang.startsWith("en"),
-    );
-  } catch {
-    return false;
-  }
-}
-
-/**
- * Detect available local TTS providers.
+ * Detects the best available local provider without downloading anything.
  *
  * Priority order:
- * 1. Web Speech API (browser-based, always available if voices installed)
- * 2. piper (native Linux TTS)
- * 3. spd-say (speech-dispatcher)
- * 4. espeak-ng (fallback)
+ * 1. Native providers via the Rust TTS adapter (Piper, spd-say, espeak-ng)
+ * 2. Web Speech API (browser-based, local voices)
  */
 export async function detectLocalTts(): Promise<LocalTtsStatus> {
-  // --- Check Web Speech API (primary for browser context) ---
+  const nativeStatus = await detectNativeTts();
+  if (nativeStatus?.available) {
+    return {
+      available: true,
+      provider: nativeStatus.provider,
+      neural: nativeStatus.neural,
+      message: nativeStatus.message,
+    };
+  }
+
   if (isWebSpeechAvailable()) {
     return {
       available: true,
       provider: "web_speech",
+      neural: false,
       message: "Web Speech API verfügbar.",
     };
   }
 
-  // --- Check native providers (Tauri context only) ---
-  const [piperAvailable, spdSayAvailable, espeakNgAvailable] =
-    await Promise.all([
-      isCommandAvailable("piper"),
-      isCommandAvailable("spd-say"),
-      isCommandAvailable("espeak-ng"),
-    ]);
-
-  if (piperAvailable) {
-    return {
-      available: true,
-      provider: "piper",
-      message: "Piper TTS verfügbar (native).",
-    };
-  }
-
-  if (spdSayAvailable) {
-    return {
-      available: true,
-      provider: "speech_dispatcher",
-      message: "Speech Dispatcher (spd-say) verfügbar.",
-    };
-  }
-
-  if (espeakNgAvailable) {
-    return {
-      available: true,
-      provider: "espeak_ng",
-      message: "eSpeak NG verfügbar (Fallback).",
-    };
-  }
-
-  // --- No provider found ---
   return {
     available: false,
     provider: "none",
+    neural: false,
     message:
-      "Kein TTS-Provider verfügbar. Installieren Sie spd-say (sudo apt install speech-dispatcher) für lokale Sprachausgabe.",
+      nativeStatus?.message ??
+      "Kein lokaler TTS-Provider verfügbar. Die Kurzbeschreibung bleibt sichtbar.",
   };
 }
 
@@ -158,112 +230,217 @@ export function isSpeechSupported(): boolean {
 // Speech Control
 // ---------------------------------------------------------------------------
 
-let isCurrentlySpeaking = false;
-
 /**
- * Speak text using the Web Speech API.
- * Stops any currently playing speech before starting.
+ * Speak sanitized short text through the selected local provider.
  *
- * @param text - The text to speak (already sanitized)
- * @param options - Optional speech options
- * @returns Promise that resolves when speech is complete or rejects on error
+ * The text is sanitized again at this boundary before it reaches any native
+ * provider or the browser speech engine.
  */
 export async function speakLocalText(
   text: string,
   options?: SpeakOptions,
 ): Promise<void> {
-  // Stop any current speech first
   await stopLocalSpeech();
 
-  // Safety: truncate long text
+  const { sanitizeForAudio } = await import("@/lib/promptAudioSummary");
+  const sanitized = sanitizeForAudio(text);
   const safeText =
-    text.length > MAX_TTS_TEXT_LENGTH
-      ? text.slice(0, MAX_TTS_TEXT_LENGTH - 3) + "..."
-      : text;
+    sanitized.length > MAX_TTS_TEXT_LENGTH || text.length > MAX_TTS_TEXT_LENGTH
+      ? sanitized.slice(0, MAX_TTS_TEXT_LENGTH - 3) + "..."
+      : sanitized;
+  if (!safeText.trim()) return;
 
-  if (safeText.trim().length === 0) {
-    return;
+  const trace = newTrace();
+
+  // Native detection
+  const nativeStatus = await detectNativeTts();
+  if (trace) {
+    const { endSpan } = openSpan(trace, {
+      operation: "tts-engine-detection",
+      layer: "typescript",
+      stage: "tts.engine-detection",
+      attributes: ttsAttributes(nativeStatus?.provider ?? "none", safeText.length),
+    });
+    endSpan("succeeded");
   }
 
-  // Check Web Speech API availability
+  if (nativeStatus?.available && isTauriContext()) {
+    try {
+      const { invoke } = await import("@tauri-apps/api/core");
+      isCurrentlySpeaking = true;
+
+      const synthSpan = trace
+        ? openSpan(trace, {
+            operation: "tts-synthesis",
+            layer: "typescript",
+            stage: "tts.synthesis",
+            attributes: ttsAttributes(nativeStatus.provider, safeText.length),
+          })
+        : null;
+      if (synthSpan) synthSpan.span.inputFingerprint = contentFingerprint(safeText);
+
+      if (nativeStatus.provider === "piper") {
+        const bytes = await invoke<number[]>("synthesize_piper", {
+          text: safeText,
+        });
+        await playPiperAudio(bytes);
+        synthSpan?.endSpan("succeeded");
+        if (trace) recordCompletedTrace(trace, "succeeded");
+        return;
+      }
+
+      if (
+        nativeStatus.provider === "speech_dispatcher" ||
+        nativeStatus.provider === "espeak_ng"
+      ) {
+        await invoke("speak_system_tts", {
+          provider: nativeStatus.provider,
+          text: safeText,
+        });
+        isCurrentlySpeaking = false;
+        synthSpan?.endSpan("succeeded");
+        if (trace) recordCompletedTrace(trace, "succeeded");
+        return;
+      }
+    } catch (error) {
+      isCurrentlySpeaking = false;
+      if (error instanceof Error && error.message.includes("gestoppt")) {
+        if (trace) {
+          const { endSpan } = openSpan(trace, {
+            operation: "tts-cancel",
+            layer: "typescript",
+            stage: "tts.cancel",
+          });
+          endSpan("succeeded", { reasonCode: "TTS_CANCELLED" });
+          recordCompletedTrace(trace, "succeeded");
+        }
+        return;
+      }
+      if (nativeStatus.provider === "piper") {
+        const { invoke: invokeFallback } = await import("@tauri-apps/api/core");
+        for (const fallbackProvider of ["speech_dispatcher", "espeak_ng"] as const) {
+          try {
+            await invokeFallback("speak_system_tts", {
+              provider: fallbackProvider,
+              text: safeText,
+            });
+            return;
+          } catch {
+            // Try the next local provider before falling back to Web Speech.
+          }
+        }
+      }
+      // A native provider failure must not remove the browser fallback.
+      if (!isWebSpeechAvailable()) {
+        if (trace) {
+          const { endSpan } = openSpan(trace, {
+            operation: "tts-synthesis",
+            layer: "typescript",
+            stage: "tts.synthesis",
+          });
+          endSpan("failed", { reasonCode: "TTS_SYNTHESIS_FAILED" });
+          recordCompletedTrace(trace, "failed");
+        }
+        throw error instanceof Error ? error : new Error(String(error));
+      }
+    }
+  }
+
+  // Web Speech remains the browser and native-runtime fallback.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (typeof window === "undefined" || !window.speechSynthesis) {
-    console.warn("Web Speech API nicht verfügbar.");
+    if (trace) {
+      const { endSpan } = openSpan(trace, {
+        operation: "tts-synthesis",
+        layer: "typescript",
+        stage: "tts.synthesis",
+      });
+      endSpan("failed", { reasonCode: "TTS_ENGINE_NOT_FOUND" });
+      recordCompletedTrace(trace, "failed");
+    }
     return;
   }
 
-  return new Promise<void>((resolve, reject) => {
+  const webSpan = trace
+    ? openSpan(trace, {
+        operation: "tts-playback",
+        layer: "typescript",
+        stage: "tts.playback",
+        attributes: ttsAttributes("web_speech", safeText.length),
+      })
+    : null;
+  if (webSpan) webSpan.span.inputFingerprint = contentFingerprint(safeText);
+
+  await new Promise<void>((resolve, reject) => {
     try {
       const synth = window.speechSynthesis;
       const utterance = new SpeechSynthesisUtterance(safeText);
       utterance.lang = options?.language ?? "de-DE";
       utterance.rate = options?.rate ?? 0.9;
-
-      // Try to find a German voice
       const voices = synth.getVoices();
-      const germanVoice = voices.find((v) => v.lang.startsWith("de"));
-      if (germanVoice) {
-        utterance.voice = germanVoice;
-      } else {
-        // Fallback: any English voice is better than the default
-        const englishVoice = voices.find((v) => v.lang.startsWith("en"));
-        if (englishVoice) {
-          utterance.voice = englishVoice;
-        }
-      }
-
+      utterance.voice =
+        voices.find((voice) => voice.lang.startsWith("de")) ??
+        voices.find((voice) => voice.lang.startsWith("en")) ??
+        null;
       utterance.onstart = () => {
         isCurrentlySpeaking = true;
       };
-
       utterance.onend = () => {
         isCurrentlySpeaking = false;
+        webSpan?.endSpan("succeeded");
+        if (trace) recordCompletedTrace(trace, "succeeded");
         resolve();
       };
-
       utterance.onerror = (event) => {
         isCurrentlySpeaking = false;
-        // "canceled" is not a real error — it's from stop()
         if (event.error === "canceled" || event.error === "interrupted") {
+          webSpan?.endSpan("succeeded", { reasonCode: "TTS_CANCELLED" });
+          if (trace) recordCompletedTrace(trace, "succeeded");
           resolve();
         } else {
-          console.error("TTS-Fehler:", event.error);
+          webSpan?.endSpan("failed", { reasonCode: "TTS_SYNTHESIS_FAILED" });
+          if (trace) recordCompletedTrace(trace, "failed");
           reject(new Error(event.error));
         }
       };
-
       synth.speak(utterance);
-    } catch (err) {
+    } catch (error) {
       isCurrentlySpeaking = false;
-      reject(err instanceof Error ? err : new Error(String(err)));
+      webSpan?.endSpan("failed", { reasonCode: "TTS_SYNTHESIS_FAILED" });
+      if (trace) recordCompletedTrace(trace, "failed");
+      reject(error instanceof Error ? error : new Error(String(error)));
     }
   });
 }
 
 /**
- * Stop any currently playing speech immediately.
- * Safe to call even if nothing is playing.
+ * Stop browser audio and any active native TTS process.
  */
 export async function stopLocalSpeech(): Promise<void> {
+  const hadActive = activeAudio !== null || hasWebSpeechActive();
+
+  releaseActiveAudio();
+  await invokeNativeStop();
+
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (typeof window === "undefined" || !window.speechSynthesis) {
-    return;
+  if (typeof window !== "undefined" && window.speechSynthesis) {
+    const synth = window.speechSynthesis;
+    if (synth.speaking || synth.pending) synth.cancel();
   }
-
-  const synth = window.speechSynthesis;
-
-  if (synth.speaking || synth.pending) {
-    synth.cancel();
-  }
-
   isCurrentlySpeaking = false;
 
-  // Wait briefly for the cancel to take effect
-  // speechSynthesis.cancel() is synchronous but the browser
-  // needs a tick to process the cancel event
-  await new Promise<void>((resolve) => {
-    setTimeout(resolve, 50);
-  });
+  if (hadActive && isObservabilityEnabled()) {
+    const trace = createTrace("tts-stop");
+    const { endSpan } = openSpan(trace, {
+      operation: "tts-cancel",
+      layer: "typescript",
+      stage: "tts.cancel",
+    });
+    endSpan("succeeded", { reasonCode: "TTS_CANCELLED" });
+    recordCompletedTrace(trace, "succeeded");
+  }
+
+  await new Promise<void>((resolve) => setTimeout(resolve, 50));
 }
 
 /**

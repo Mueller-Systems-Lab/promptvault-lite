@@ -122,10 +122,13 @@ flowchart LR
 ### Audio Summary
 
 - `src/components/details/PromptAudioSummary.tsx`
-- `src/lib/promptAudioSummary.ts` — KI-lesbare Textzusammenfassung
-- `src/lib/localTts.ts` — lokale TTS via Web Speech API
+- `src/lib/promptAudioSummary.ts` — KI-lesbare Textzusammenfassung + Sanitizer (`sanitizeForAudio`)
+- `src/lib/localTts.ts` — lokale TTS-Orchestrierung (native Commands + Web-Speech-Fallback)
+- `src-tauri/src/commands/tts.rs` — lokaler Rust-TTS-Adapter (`detect_local_tts`, `synthesize_piper`, `speak_system_tts`, `stop_local_tts`)
 - Zeigt Textzusammenfassung immer an, optionale Audioausgabe
 - Blockiert Audioausgabe bei PII/Secret-Inhalten
+- Provider-Reihenfolge: Piper (neural, manuell installiertes Modell) → spd-say → espeak-ng → Web Speech API
+- Kein Cloud-TTS, kein Shell-Interpolation, kein automatischer Modell-Download
 
 ### Embeddings (Phase 1)
 
@@ -232,7 +235,8 @@ flowchart LR
 - **SQLite**: lokaler, indexierbarer Speicher für bestimmte Funktionen (Favorites)
 - **JSON-Cache**: vorhandenes Modul für portable Persistenz
 - **Regex/Heuristiken**: deterministische lokale Analyse
-- **Web Speech API**: lokale TTS für Audio Summary (keine externen Dienste)
+- **Web Speech API**: lokale TTS-Fallback für Audio Summary (keine externen Dienste)
+- **Lokaler TTS-Adapter**: Rust-`Command`-Aufrufe mit festen Executables und getrennten Args/stdin (Piper/spd-say/espeak-ng), kein Shell-Interpolation
 - **Mock Embedding Provider**: Phase 1 — deterministisch, synthetisch, kein ML-Modell
 - **In-Process Observability**: Trace/Span-Instrumentierung des kanonischen Pfads, kein Cloud-Exporter
 
@@ -242,6 +246,7 @@ flowchart LR
 - **Export:** Zielverzeichnis canonicalized, ZIP-Pfade bereinigt
 - **Action Layer:** Developer Mode Gate, Approval für Write-Actions, Fixture Path Sanitization
 - **UI:** Blockierte Anzeige bei sensiblen Blueprint-Inhalten, Audioausgabe deaktivierbar
+- **TTS:** local-only, Prompt-Text als Prozess-Daten (stdin/args) statt Shell-Interpolation, feste Executable-Allowlist, 600-Zeichen-Limit, Cancel tötet Child-Prozess
 - **Observability:** Redaction vor Export, session-only Ring Buffer, keine Netzwerk-/Telemetrie-Übertragung, Developer Mode strikt getrennt
 - **CLI:** SHA-256-/Größen-Verifikation (fail-closed), kein Shell-Interpolation
 - **Privacy:** Keine Netzwerkaufrufe, keine Cloud/API, keine Telemetrie, Local-first

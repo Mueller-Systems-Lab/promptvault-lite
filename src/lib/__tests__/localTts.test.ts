@@ -197,6 +197,16 @@ describe("speakLocalText", () => {
     expect(utterance.text.endsWith("...")).toBe(true);
   });
 
+  it("sanitizes path-like input before speech", async () => {
+    const { mockSynth } = mockSpeechSynthesis([makeGermanVoice()]);
+
+    await speakLocalText("hello; touch /tmp/pwned");
+
+    const utterance = mockSynth.speak.mock.calls[0][0];
+    expect(utterance.text).not.toContain("/tmp/pwned");
+    expect(utterance.text).toContain("[Pfad]");
+  });
+
   it("should handle sequential speech calls without errors", async () => {
     const { mockSynth } = mockSpeechSynthesis([makeGermanVoice()]);
 
