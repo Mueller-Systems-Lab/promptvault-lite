@@ -4,16 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       release_ref:
-        description: "Release tag for provenance check (must be v1.9.0)"
+        description: "Release tag to build and publish (must be an existing vX.Y.Z tag)"
         required: true
-        default: "v1.9.0"
+        default: "v1.9.1"
         type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: pypi-publish-v1.9.0
+  group: pypi-publish-${{ github.event.inputs.release_ref }}
   cancel-in-progress: false
 
 jobs:
@@ -23,65 +23,52 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Fail-closed on unsupported release ref
-        if: github.event.inputs.release_ref != 'v1.9.0'
+      - name: Fail-closed on unsupported release ref format
         run: |
-          echo "::error::release_ref must be 'v1.9.0' (got '${{ github.event.inputs.release_ref }}')"
-          exit 1
+          REF="${{ github.event.inputs.release_ref }}"
+          case "$REF" in
+            v[0-9]*.[0-9]*.[0-9]*) ;;
+            *)
+              echo "::error::release_ref must match vX.Y.Z (got '$REF')"
+              exit 1
+              ;;
+          esac
+          echo "VERSION=${REF#v}" >> "$GITHUB_ENV"
 
-      - name: Enforce master branch
+      - name: Checkout the exact release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.release_ref }}
+          fetch-depth: 0
+
+      - name: Verify the release ref is an existing tag
         run: |
-          test "$GITHUB_REF_NAME" = "master" || {
-            echo "::error::STOP: publish must run from the master branch (got '$GITHUB_REF_NAME')"
+          REF="${{ github.event.inputs.release_ref }}"
+          git rev-parse --verify "refs/tags/${REF}" >/dev/null || {
+            echo "::error::STOP: '${REF}' is not an existing tag"
+            exit 1
+          }
+          HEAD_SHA="$(git rev-parse HEAD)"
+          TAG_SHA="$(git rev-parse "refs/tags/${REF}^{commit}")"
+          test "$HEAD_SHA" = "$TAG_SHA" || {
+            echo "::error::STOP: checked out commit does not match tag '${REF}'"
             exit 1
           }
 
-      - name: Checkout current packaging commit
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Verify runtime source is equivalent to v1.9.0
+      - name: Verify package version matches the release tag
         run: |
-          python - <<'PY'
-          import subprocess
-          import sys
-
-          # Only package-name assertions are permitted to differ from v1.9.0.
-          ALLOWED = {"tools/promptvault-cli/src/promptvault_cli/uninstall_cmd.py"}
-
-          changed = subprocess.check_output(
-              ["git", "diff", "--name-only", "v1.9.0", "HEAD", "--",
-               "tools/promptvault-cli/src/promptvault_cli/"],
-              text=True,
-          ).split()
-
-          unexpected = [f for f in changed if f not in ALLOWED]
-          if unexpected:
-              sys.exit(
-                  "STOP_PYPI_RELEASE_PROVENANCE_MISMATCH: runtime source changed vs v1.9.0: "
-                  + ", ".join(unexpected)
-              )
-
-          for f in changed:
-              diff = subprocess.check_output(
-                  ["git", "diff", "v1.9.0", "HEAD", "--", f], text=True
-              )
-              for line in diff.splitlines():
-                  if line.startswith(("+++", "---", "@@", "diff ", "index ", "\\")):
-                      continue
-                  if not (line.startswith("+") or line.startswith("-")):
-                      continue
-                  content = line[1:]
-                  if "promptvault-cli" in content or "promptvault-lite-manager" in content:
-                      continue
-                  sys.exit(
-                      "STOP_PYPI_RELEASE_PROVENANCE_MISMATCH: non-name change in "
-                      f"{f}: {line!r}"
-                  )
-
-          print("CLI_RUNTIME_SOURCE_EQUIVALENT_TO_V1_9_0: PASS")
+          PKG_VERSION="$(python - <<'PY'
+          import tomllib
+          from pathlib import Path
+          data = tomllib.loads(Path("tools/promptvault-cli/pyproject.toml").read_text())
+          print(data["project"]["version"])
           PY
+          )"
+          test "$PKG_VERSION" = "$VERSION" || {
+            echo "::error::STOP: package version '${PKG_VERSION}' != tag version '${VERSION}'"
+            exit 1
+          }
+          echo "PKG_VERSION=${PKG_VERSION}" >> "$GITHUB_ENV"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -102,19 +89,21 @@ jobs:
       - name: Verify metadata, entry point and content
         run: |
           python - <<'PY'
+          import os
           import sys
           import zipfile
           import tarfile
           from pathlib import Path
 
+          version = os.environ["VERSION"]
           dist = Path("tools/promptvault-cli/dist")
-          wheels = sorted(dist.glob("promptvault_lite_manager-1.9.0-*.whl"))
-          sdists = sorted(dist.glob("promptvault_lite_manager-1.9.0.tar.gz"))
+          wheels = sorted(dist.glob(f"promptvault_lite_manager-{version}-*.whl"))
+          sdists = sorted(dist.glob(f"promptvault_lite_manager-{version}.tar.gz"))
 
           if not wheels:
-              sys.exit("STOP: expected wheel promptvault_lite_manager-1.9.0-py3-none-any.whl not found")
+              sys.exit(f"STOP: expected wheel promptvault_lite_manager-{version}-py3-none-any.whl not found")
           if not sdists:
-              sys.exit("STOP: expected sdist promptvault_lite_manager-1.9.0.tar.gz not found")
+              sys.exit(f"STOP: expected sdist promptvault_lite_manager-{version}.tar.gz not found")
 
           wheel = wheels[0]
           sdist = sdists[0]
@@ -127,7 +116,7 @@ jobs:
               entry_points = zf.read(entry_member).decode("utf-8", "replace")
 
           assert "Name: promptvault-lite-manager" in metadata, "STOP: distribution name mismatch"
-          assert "Version: 1.9.0" in metadata, "STOP: distribution version mismatch"
+          assert f"Version: {version}" in metadata, "STOP: distribution version mismatch"
           assert "promptvault = promptvault_cli.cli:main" in entry_points, "STOP: entry point mismatch"
 
           with tarfile.open(sdist) as tf:
@@ -136,7 +125,7 @@ jobs:
               )
               pkg_info = tf.extractfile(pkg_info_member).read().decode("utf-8", "replace")
           assert "Name: promptvault-lite-manager" in pkg_info, "STOP: sdist name mismatch"
-          assert "Version: 1.9.0" in pkg_info, "STOP: sdist version mismatch"
+          assert f"Version: {version}" in pkg_info, "STOP: sdist version mismatch"
 
           forbidden_members = (".exe", ".onnx", ".env", ".pem", ".key")
           forbidden_content = (
@@ -186,10 +175,10 @@ jobs:
         run: |
           set -euo pipefail
           export PATH="$HOME/.local/bin:$PATH"
-          wheel="$(ls dist/promptvault_lite_manager-1.9.0-py3-none-any.whl)"
+          wheel="$(ls dist/promptvault_lite_manager-${VERSION}-py3-none-any.whl)"
           uv tool install "$wheel"
           promptvault --version | tee /tmp/version.txt
-          grep -q "1.9.0" /tmp/version.txt
+          grep -q "${VERSION}" /tmp/version.txt
           promptvault --help > /dev/null
           promptvault doctor
           uv tool uninstall promptvault-lite-manager
@@ -230,11 +219,13 @@ jobs:
       - name: Verify expected distributions and remove hash manifest
         run: |
           set -euo pipefail
-          test -f "dist/promptvault_lite_manager-1.9.0-py3-none-any.whl" || {
+          REF="${{ github.event.inputs.release_ref }}"
+          VERSION="${REF#v}"
+          test -f "dist/promptvault_lite_manager-${VERSION}-py3-none-any.whl" || {
             echo "::error::STOP: wheel missing after download"
             exit 1
           }
-          test -f "dist/promptvault_lite_manager-1.9.0.tar.gz" || {
+          test -f "dist/promptvault_lite_manager-${VERSION}.tar.gz" || {
             echo "::error::STOP: sdist missing after download"
             exit 1
           }

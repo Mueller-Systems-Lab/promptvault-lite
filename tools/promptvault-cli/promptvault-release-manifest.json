@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "version": "1.9.0",
+  "version": "1.9.1",
   "platform": "windows",
   "architecture": "x86_64",
   "artifacts": {
     "windows-x86_64": {
-      "filename": "PromptVault.Lite_1.9.0_x64-setup.exe",
-      "url": "https://github.com/xxammaxx/promptvault-lite/releases/download/v1.9.0/PromptVault.Lite_1.9.0_x64-setup.exe",
-      "sha256": "0B417F0A0B02A1D59A4AA806F2326A36C0B085811F9C7DBFE115C6759C01622C",
-      "size": 2727330,
+      "filename": "PromptVault.Lite_1.9.1_x64-setup.exe",
+      "url": "https://github.com/xxammaxx/promptvault-lite/releases/download/v1.9.1/PromptVault.Lite_1.9.1_x64-setup.exe",
+      "sha256": "a55ccc9f49004eaa928dbff66b93e77dddd14fbe7aad1e7a49ca2f9ff9ac87c8",
+      "size": 2728598,
       "type": "nsis"
     }
   }

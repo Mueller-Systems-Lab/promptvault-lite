@@ -14,9 +14,9 @@ def test_distribution_name_is_promptvault_lite_manager() -> None:
     assert 'name = "promptvault-lite-manager"' in pyproject
 
 
-def test_version_is_1_9_0() -> None:
+def test_version_is_1_9_1() -> None:
     pyproject = (PROJECT_ROOT / "pyproject.toml").read_text()
-    assert 'version = "1.9.0"' in pyproject
+    assert 'version = "1.9.1"' in pyproject
 
 
 def test_executable_entry_point_unchanged() -> None:
@@ -26,4 +26,20 @@ def test_executable_entry_point_unchanged() -> None:
 
 def test_import_package_name_unchanged() -> None:
     init = (PROJECT_ROOT / "src" / "promptvault_cli" / "__init__.py").read_text()
-    assert "__version__ = \"1.9.0\"" in init
+    assert "__version__ = \"1.9.1\"" in init
+
+
+def test_readme_has_public_install_command() -> None:
+    readme = (PROJECT_ROOT / "README.md").read_text()
+    assert "uv tool install promptvault-lite-manager" in readme
+    for command in ("promptvault --version", "promptvault doctor",
+                    "promptvault install", "promptvault launch"):
+        assert command in readme
+
+
+def test_readme_has_no_stale_publication_wording() -> None:
+    readme = (PROJECT_ROOT / "README.md").read_text()
+    stale = ("not yet published", "pending a package-index", "pending publication",
+             "uv install unavailable", "locally built wheel")
+    for phrase in stale:
+        assert phrase.lower() not in readme.lower()

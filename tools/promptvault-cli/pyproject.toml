@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "promptvault-lite-manager"
-version = "1.9.0"
+version = "1.9.1"
 description = "PromptVault Lite — Local Prompt Management CLI Installer & Manager"
 readme = "README.md"
 license = {text = "MIT"}
