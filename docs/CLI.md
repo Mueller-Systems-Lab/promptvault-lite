@@ -105,4 +105,4 @@ uv tool uninstall promptvault-cli
 
 ## Hinweis zum Windows-Artefakt
 
-Das `v1.9.0`-GitHub-Release enthält den Windows-x64-NSIS-Installer (`PromptVault Lite_1.9.0_x64-setup.exe`), das Release-Manifest und `SHA256SUMS.txt`. Der CLI-Install-Pfad (`promptvault install`) lädt dieses Manifest und Artefakt deterministisch und installiert nach erfolgreicher SHA-256-Verifikation.
+Das `v1.9.0`-GitHub-Release enthält den Windows-x64-NSIS-Installer (`PromptVault.Lite_1.9.0_x64-setup.exe`), das Release-Manifest und `SHA256SUMS.txt`. Der CLI-Install-Pfad (`promptvault install`) lädt dieses Manifest und Artefakt deterministisch und installiert nach erfolgreicher SHA-256-Verifikation.

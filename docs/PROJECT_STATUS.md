@@ -55,7 +55,7 @@
 | v1.8.0 GitHub Release | ✅ Published (Linux `.deb`/`.rpm` + `SHA256SUMS.txt`) |
 | v1.9.0 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
 | PyPI (`promptvault-cli`) | ⏳ PENDING (secure publish auth required) |
-| Windows v1.9.0 installer asset | ✅ Published (`PromptVault Lite_1.9.0_x64-setup.exe`) |
+| Windows v1.9.0 installer asset | ✅ Published (`PromptVault.Lite_1.9.0_x64-setup.exe`) |
 
 ---
 

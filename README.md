@@ -43,7 +43,7 @@ It is built for people who collect, write and refine many prompts — especially
 
 | Platform | Asset |
 |---|---|
-| Windows x64 | `PromptVault Lite_1.9.0_x64-setup.exe` (NSIS installer) |
+| Windows x64 | `PromptVault.Lite_1.9.0_x64-setup.exe` (NSIS installer) |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
 
@@ -57,7 +57,7 @@ The `promptvault` CLI (v1.9.0) installs and manages the native app and is implem
 
 ### Native App
 
-**Windows (v1.9.0):** download `PromptVault Lite_1.9.0_x64-setup.exe` from the [latest GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.0) and run it. The installer is unsigned — Windows SmartScreen may show an "Unknown publisher" warning.
+**Windows (v1.9.0):** download `PromptVault.Lite_1.9.0_x64-setup.exe` from the [latest GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.0) and run it. The installer is unsigned — Windows SmartScreen may show an "Unknown publisher" warning.
 
 **Linux (v1.8.0):** download and install the `.deb` or `.rpm` from the v1.8.0 GitHub Release.
 

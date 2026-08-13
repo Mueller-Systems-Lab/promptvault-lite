@@ -43,7 +43,7 @@ pnpm tauri build
 
 ### Windows (v1.9.0)
 
-Lade `PromptVault Lite_1.9.0_x64-setup.exe` aus dem [v1.9.0 GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.0) herunter und führe es aus. Der Installer ist derzeit **unsigned** — Windows SmartScreen zeigt eine Warnung an.
+Lade `PromptVault.Lite_1.9.0_x64-setup.exe` aus dem [v1.9.0 GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.0) herunter und führe es aus. Der Installer ist derzeit **unsigned** — Windows SmartScreen zeigt eine Warnung an.
 
 Checksummen liegen im Release als `SHA256SUMS.txt` bei.
 
@@ -83,7 +83,7 @@ Voraussetzungen: Python >= 3.11 und [uv](https://docs.astral.sh/uv/). Vollständ
 4. Führe `pnpm install` aus.
 5. Starte mit `pnpm start`.
 
-**Pre-built Installer:** Ein Windows x64 NSIS-Installer (`PromptVault Lite_1.9.0_x64-setup.exe`) ist als v1.9.0-Release-Asset veröffentlicht. Der Installer ist derzeit unsigned — Windows SmartScreen zeigt eine Warnung an. Kein Code-Signing-Zertifikat vorhanden.
+**Pre-built Installer:** Ein Windows x64 NSIS-Installer (`PromptVault.Lite_1.9.0_x64-setup.exe`) ist als v1.9.0-Release-Asset veröffentlicht. Der Installer ist derzeit unsigned — Windows SmartScreen zeigt eine Warnung an. Kein Code-Signing-Zertifikat vorhanden.
 
 ## Linux
 
