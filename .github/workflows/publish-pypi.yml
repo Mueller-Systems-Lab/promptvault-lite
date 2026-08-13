@@ -1,0 +1,184 @@
+name: Publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_ref:
+        description: "Release tag to build and publish (must be v1.9.0)"
+        required: true
+        default: "v1.9.0"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  release-build:
+    name: Build and validate distributions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Fail-closed on unsupported release ref
+        if: github.event.inputs.release_ref != 'v1.9.0'
+        run: |
+          echo "::error::release_ref must be 'v1.9.0' (got '${{ github.event.inputs.release_ref }}')"
+          exit 1
+
+      - name: Checkout immutable release tag
+        uses: actions/checkout@v4
+        with:
+          ref: v1.9.0
+          fetch-depth: 0
+
+      - name: Verify checkout is exactly tag v1.9.0
+        run: |
+          expected="$(git rev-parse 'refs/tags/v1.9.0^{}')"
+          actual="$(git rev-parse HEAD)"
+          echo "expected_tag_commit=$expected"
+          echo "actual_checkout_commit=$actual"
+          test "$expected" = "$actual" || {
+            echo "::error::STOP_PYPI_RELEASE_PROVENANCE_MISMATCH: checkout is not tag v1.9.0"
+            exit 1
+          }
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build/test tooling
+        run: python -m pip install --upgrade uv pytest twine
+
+      - name: Run package tests
+        working-directory: tools/promptvault-cli
+        run: python -m pytest tests -q
+
+      - name: Build wheel and sdist
+        working-directory: tools/promptvault-cli
+        run: uv build
+
+      - name: Verify metadata, entry point and content
+        run: |
+          python - <<'PY'
+          import sys
+          import zipfile
+          import tarfile
+          from pathlib import Path
+
+          dist = Path("tools/promptvault-cli/dist")
+          wheels = sorted(dist.glob("promptvault_cli-1.9.0-py3-none-any.whl"))
+          sdists = sorted(dist.glob("promptvault_cli-1.9.0.tar.gz"))
+
+          if not wheels:
+              sys.exit("STOP: expected wheel promptvault_cli-1.9.0-py3-none-any.whl not found")
+          if not sdists:
+              sys.exit("STOP: expected sdist promptvault_cli-1.9.0.tar.gz not found")
+
+          wheel = wheels[0]
+          sdist = sdists[0]
+
+          def read_zip_text(path: str) -> str:
+              with zipfile.ZipFile(wheel) as zf:
+                  return zf.read(path).decode("utf-8", "replace")
+
+          metadata = read_zip_text("promptvault_cli-1.9.0.dist-info/METADATA")
+          entry_points = read_zip_text("promptvault_cli-1.9.0.dist-info/entry_points.txt")
+
+          assert "Name: promptvault-cli" in metadata, "STOP: distribution name mismatch"
+          assert "Version: 1.9.0" in metadata, "STOP: distribution version mismatch"
+          assert "promptvault = promptvault_cli.cli:main" in entry_points, "STOP: entry point mismatch"
+
+          with tarfile.open(sdist) as tf:
+              pkg_info = tf.extractfile("promptvault_cli-1.9.0/PKG-INFO").read().decode("utf-8", "replace")
+          assert "Name: promptvault-cli" in pkg_info, "STOP: sdist name mismatch"
+          assert "Version: 1.9.0" in pkg_info, "STOP: sdist version mismatch"
+
+          forbidden_names = (".exe", ".onnx", ".env", ".pem", ".key", "piper")
+          forbidden_content = (
+              "-----BEGIN",
+              "PRIVATE KEY",
+              r"C:\\Users",
+              "C:/Users",
+              "/home/",
+              "/Users/",
+              "piper",
+              ".onnx",
+          )
+
+          def scan_members(names):
+              for name in names:
+                  low = name.lower()
+                  for f in forbidden_names:
+                      if f in low:
+                          sys.exit(f"STOP: forbidden content in archive member: {name}")
+
+          def scan_text(text, where):
+              low = text.lower()
+              for f in forbidden_content:
+                  if f.lower() in low:
+                      sys.exit(f"STOP: forbidden content '{f}' found in {where}")
+
+          with zipfile.ZipFile(wheel) as zf:
+              scan_members(zf.namelist())
+              for name in zf.namelist():
+                  if name.endswith(".py") or name.endswith("METADATA") or name.endswith("entry_points.txt"):
+                      scan_text(zf.read(name).decode("utf-8", "replace"), f"wheel:{name}")
+
+          with tarfile.open(sdist) as tf:
+              scan_members(tf.getnames())
+              for m in tf.getmembers():
+                  if m.isfile():
+                      scan_text(tf.extractfile(m).read().decode("utf-8", "replace"), f"sdist:{m.name}")
+
+          print("DISTRIBUTION_VALIDATION: PASS")
+          print(f"  wheel: {wheel.name}")
+          print(f"  sdist: {sdist.name}")
+          PY
+
+      - name: twine check
+        working-directory: tools/promptvault-cli
+        run: twine check dist/*
+
+      - name: Smoke test built wheel in isolation
+        working-directory: tools/promptvault-cli
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/.local/bin:$PATH"
+          wheel="$(ls dist/promptvault_cli-1.9.0-py3-none-any.whl)"
+          uv tool install "$wheel"
+          promptvault --version | tee /tmp/version.txt
+          grep -q "1.9.0" /tmp/version.txt
+          promptvault --help > /dev/null
+          promptvault doctor
+          uv tool uninstall promptvault-cli
+          echo "WHEEL_SMOKE_TEST: PASS"
+
+      - name: Upload verified distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: promptvault-cli-dist
+          path: tools/promptvault-cli/dist/
+          if-no-files-found: error
+
+  pypi-publish:
+    name: Publish to PyPI (Trusted Publishing)
+    runs-on: ubuntu-latest
+    needs: release-build
+    environment:
+      name: pypi
+      url: https://pypi.org/p/promptvault-cli
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download verified distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: promptvault-cli-dist
+          path: dist/
+
+      - name: Publish to PyPI via OIDC Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          print-hash: true
