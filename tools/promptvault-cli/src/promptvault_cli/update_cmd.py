@@ -7,21 +7,19 @@ it invokes the same verified install path.
 """
 
 import sys
-import os
-import json
 from pathlib import Path
 
+from promptvault_cli import __version__ as APP_VERSION
 from promptvault_cli.releases import (
     find_manifest,
     load_manifest,
+    fetch_remote_manifest,
     ArtifactIntegrityError,
 )
 from promptvault_cli.doctor import find_install_path, find_executable
 
-APP_VERSION = "1.9.0"
 STATE_DIR = Path.home() / ".promptvault"
 INSTALLED_VERSION_FILE = STATE_DIR / "installed-version.txt"
-RELEASES_API = "https://api.github.com/repos/xxammaxx/promptvault-lite/releases/latest"
 
 
 def read_installed_version() -> str | None:
@@ -60,26 +58,12 @@ def run_update() -> None:
     manifest_path = find_manifest()
     if not manifest_path:
         print("[INFO] No local release manifest found.")
-        print("[INFO] Checking GitHub releases (read-only)...")
+        print("[INFO] Fetching release manifest from GitHub releases...")
         try:
-            from urllib.request import urlopen, Request
-
-            req = Request(
-                RELEASES_API,
-                headers={"User-Agent": "promptvault-cli", "Accept": "application/json"},
-            )
-            with urlopen(req, timeout=15) as resp:
-                data = json.loads(resp.read().decode())
-            latest = data.get("tag_name", "").lstrip("v")
-            print(f"[INFO] Latest GitHub release: {latest if latest else 'unknown'}")
-            if latest and installed_version and latest != installed_version:
-                print(f"[INFO] Update available: {installed_version} -> {latest}")
-                print(f"[INFO] Download from: {data.get('html_url')}")
-            elif latest:
-                print("[OK] No newer release detected.")
-        except Exception as e:
-            print(f"[WARN] Could not reach GitHub: {e}")
-        return
+            manifest_path = fetch_remote_manifest(APP_VERSION)
+        except ArtifactIntegrityError as e:
+            print(f"[WARN] Could not fetch release manifest: {e}")
+            return
 
     try:
         manifest = load_manifest(manifest_path.read_text())

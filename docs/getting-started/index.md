@@ -1,7 +1,7 @@
 ---
 title: Erste Schritte
 description: Schnelleinstieg in PromptVault Lite — Installation, erster Scan, Navigation.
-version: 1.8.0
+version: 1.9.0
 ---
 
 # Erste Schritte

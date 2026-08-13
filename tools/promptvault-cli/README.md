@@ -5,9 +5,11 @@
 This is the Python CLI installer for [PromptVault Lite](https://github.com/xxammaxx/promptvault-lite),
 a local prompt-management system with quality and hygiene analysis.
 
-> **Publication status:** `READY_FOR_PUBLICATION`. This package is **not yet published**
-> to PyPI or any package index. The command `uv tool install promptvault-cli` is **not
-> available yet** — it becomes valid only after a real package-index publication.
+> **Publication status:** The `v1.9.0` GitHub Release (Windows installer + release
+> manifest + checksums) is published. This Python package is **not yet published**
+> to PyPI — `uv tool install promptvault-cli` is pending a package-index
+> publication (secure publish auth required). Until then, install from a locally
+> built wheel.
 
 ### Installation (from a locally built wheel)
 

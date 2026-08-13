@@ -3,14 +3,13 @@
 import sys
 import argparse
 
+from promptvault_cli import __version__ as APP_VERSION
 from promptvault_cli.doctor import run_doctor
 from promptvault_cli.install_cmd import run_install
 from promptvault_cli.launch import run_launch
 from promptvault_cli.update_cmd import run_update
 from promptvault_cli.uninstall_cmd import run_uninstall
 from promptvault_cli.diagnostics import run_diagnostics
-
-APP_VERSION = "1.9.0"
 
 
 def main() -> None:

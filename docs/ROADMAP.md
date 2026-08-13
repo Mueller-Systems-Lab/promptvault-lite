@@ -1,12 +1,12 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-08-12
-**Current version:** v1.8.0 (stable release, published 2026-08-03)
-**Next target:** kein benannter Release — Veröffentlichung der integrierten Arbeit (Admin Observability + CLI) steht als separate Owner-Entscheidung aus
+**Last updated:** 2026-08-13
+**Current version:** v1.9.0 (GitHub Release published 2026-08-13, Windows x64 installer)
+**Next target:** PyPI-Publikation von `promptvault-cli` (Secure-Publish-Auth ausstehend)
 
 ---
 
-## Recently Completed (on `master`, unreleased)
+## Recently Completed (v1.9.0)
 
 | Task | Status |
 | --- | --- |
@@ -14,7 +14,9 @@
 | Frontend↔Backend Trace-Korrelation | ✅ DONE / INTEGRATED |
 | Windows Native Runtime Proof (WebdriverIO/WebView2) | ✅ DONE |
 | promptvault CLI (`doctor`/`install`/`launch`/`update`/`diagnostics`/`uninstall`) | ✅ IMPLEMENTED / VERIFIED |
-| uv package (`promptvault-cli`) | ✅ READY_FOR_PUBLICATION |
+| uv package (`promptvault-cli`) | ✅ WHEEL VERIFIED (PyPI pending) |
+| Local Neural TTS (Piper external runtime, `de_DE-thorsten-high`) | ✅ DONE / RUNTIME VERIFIED |
+| Windows x64 NSIS installer | ✅ PUBLISHED (v1.9.0 GitHub Release) |
 
 ---
 
@@ -37,13 +39,13 @@
 
 ---
 
-## Publication (NOT YET)
+## Publication
 
 | Item | Status |
 | --- | --- |
-| PyPI publish (`promptvault-cli`) | ❌ NOT YET (Owner-Freigabe nötig) |
-| GitHub Release für neuen master-Stand | ❌ NOT YET |
-| `v1.9.0` Tag | ❌ NOT YET |
+| `v1.9.0` Tag | ✅ Published |
+| GitHub Release v1.9.0 (Windows installer + manifest + checksums) | ✅ Published |
+| PyPI publish (`promptvault-cli`) | ⏳ PENDING (Secure-Publish-Auth nötig) |
 
 ---
 
@@ -51,7 +53,7 @@
 
 | Priority | Task | Issue |
 | -------- | --- | --- |
-| P2 | Windows x64 Installer-Artefakt veröffentlichen (CLI-Install-Pfad end-to-end) | — |
+| P1 | PyPI-Publikation `promptvault-cli` + public `uv tool install` verifizieren | — |
 | P2 | Embeddings Phase 2: DB schema/storage | #199 |
 | P2 | Architecture Contract Audit | — |
 | P2 | Security Posture Review | — |

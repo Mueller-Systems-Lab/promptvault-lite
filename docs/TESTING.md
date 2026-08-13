@@ -1,7 +1,7 @@
 ---
 title: Testing
 description: Tests ausführen, Struktur verstehen und neue Tests ergänzen.
-version: 1.8.0
+version: 1.9.0
 last_updated: 2026-08-12
 ---
 

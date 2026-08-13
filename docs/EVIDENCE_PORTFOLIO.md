@@ -125,6 +125,6 @@
 ## Next Step
 
 - **Completed:** v1.8.0 released — Direction Profiles, Missing-Info-Gate, Optimizer Hardening, Visual Gate.
-- **Integrated (unreleased):** Admin Observability + promptvault CLI on `master`.
-- **Pending (owner-gated):** PyPI publish, GitHub Release, `v1.9.0` tag.
+- **Completed (v1.9.0):** GitHub Release + Tag published — Admin Observability, promptvault CLI, Local Neural TTS, Windows x64 NSIS installer.
+- **Pending:** PyPI publish (`promptvault-cli`) — secure publish auth required.
 - **Planned:** Embeddings Phase 2 (#199), Architecture Contract Audit, Security Posture Review.

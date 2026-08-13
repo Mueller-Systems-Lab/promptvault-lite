@@ -1,7 +1,7 @@
 ---
 title: PromptVault Lite
 description: Projektübersicht, Schnellstart und Verweise auf die restliche Dokumentation.
-version: 1.8.0
+version: 1.9.0
 ---
 
 # PromptVault Lite

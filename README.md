@@ -4,7 +4,7 @@
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.8.0-blue)
+![Release](https://img.shields.io/badge/release-v1.9.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
@@ -39,26 +39,17 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release & Publication Status
 
-**v1.8.0** is the current stable release (published 2026-08-03).
-
-Linux packages are available as GitHub Release assets for v1.8.0:
+**v1.9.0** is the current release (tagged and published as a GitHub Release on 2026-08-13).
 
 | Platform | Asset |
 |---|---|
-| Linux (Debian/Ubuntu) | `PromptVault.Lite_1.8.0_amd64.deb` |
-| Linux (Fedora/RHEL) | `PromptVault.Lite-1.8.0-1.x86_64.rpm` |
+| Windows x64 | `PromptVault Lite_1.9.0_x64-setup.exe` (NSIS installer) |
 | Checksums | `SHA256SUMS.txt` |
+| Release manifest | `promptvault-release-manifest.json` |
 
-Windows is supported as a build target; no pre-built v1.8.0 Windows installer is published in this release. macOS is not pre-built.
+The Windows installer is **unsigned** — Windows SmartScreen may show an "Unknown publisher" warning. Linux `.deb`/`.rpm` remain available for v1.8.0; macOS is not pre-built.
 
-The `master` branch additionally contains work that has **not yet been released**:
-
-- **Admin Observability** — runtime diagnostics with trace/span correlation (integrated)
-- **PromptVault CLI** — `promptvault` management CLI, implemented and verified
-- **Native observability proof on Windows** — WebdriverIO native E2E
-- **Local TTS adapter** — native Rust TTS commands (Piper/spd-say/espeak-ng) ported; real neural runtime proof verified against a local Piper runtime + German model (Windows)
-
-> **`promptvault-cli` is technically READY_FOR_PUBLICATION, but is not yet available on a package index.** It is not on PyPI, and no `v1.9.0` release or tag exists. Package version (`1.9.0`) is not a release status.
+The `promptvault` CLI (v1.9.0) installs and manages the native app and is implemented and verified locally. Its **PyPI publication is still pending** secure publish authorization — `uv tool install promptvault-cli` is not yet available from a package index. Until then, install the CLI from a locally built wheel (see below).
 
 ---
 
@@ -66,7 +57,9 @@ The `master` branch additionally contains work that has **not yet been released*
 
 ### Native App
 
-**Linux (v1.8.0):** download and install the `.deb` or `.rpm` from the latest GitHub Release.
+**Windows (v1.9.0):** download `PromptVault Lite_1.9.0_x64-setup.exe` from the [latest GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.0) and run it. The installer is unsigned — Windows SmartScreen may show an "Unknown publisher" warning.
+
+**Linux (v1.8.0):** download and install the `.deb` or `.rpm` from the v1.8.0 GitHub Release.
 
 ```text
 # Debian/Ubuntu
@@ -75,8 +68,6 @@ sudo dpkg -i PromptVault.Lite_1.8.0_amd64.deb
 # Fedora/RHEL
 sudo rpm -i PromptVault.Lite-1.8.0-1.x86_64.rpm
 ```
-
-**Windows:** build from source (see below). No pre-built v1.8.0 Windows installer is published.
 
 ### Developer / source build
 
@@ -90,7 +81,7 @@ pnpm tauri build    # production build
 
 ### CLI / uv tool
 
-`promptvault-cli` is a Python CLI that installs and manages the **native** PromptVault Desktop App. It is implemented and verified, but **not yet published** to a package index. Until publication, install it from a locally built wheel:
+`promptvault-cli` is a Python CLI that installs and manages the **native** PromptVault Desktop App. It resolves the public release manifest from the GitHub Release, verifies installer SHA-256 and size (fail-closed), and installs silently. It is implemented and verified, but **PyPI publication is still pending** — until then, install it from a locally built wheel:
 
 ```bash
 # Build the wheel from source
@@ -106,7 +97,7 @@ promptvault install
 promptvault launch
 ```
 
-The command `uv tool install promptvault-cli` is **not available yet** — it will become valid only after a real package-index publication.
+The command `uv tool install promptvault-cli` will become valid after a real package-index publication.
 
 See [`docs/CLI.md`](docs/CLI.md) for the full CLI reference.
 
@@ -176,6 +167,11 @@ locally, without cloud TTS.
   required for the neural path; otherwise the Web Speech fallback is used. See
   [`docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md`](docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md).
 
+**TTS distribution contract:** PromptVault does **not** bundle or redistribute
+Piper (GPL-3.0 engine), voice models, or ONNX payloads. No model or runtime is
+downloaded automatically. When Piper is absent, PromptVault reports the TTS
+engine as unavailable and falls back to the browser Web Speech API.
+
 ---
 
 ## Privacy & Security
@@ -232,7 +228,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Stable public release (v1.8.0). Admin Observability and the PromptVault CLI are integrated on `master` but not yet released. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Stable public release (v1.9.0, GitHub Release with a Windows x64 installer). The `promptvault` CLI is implemented and verified but its PyPI publication is still pending. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

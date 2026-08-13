@@ -3,19 +3,37 @@
 The installer uses a machine-readable manifest to resolve the correct
 native artifact for the current platform and verify its integrity.
 Fail-closed: any hash/version/platform mismatch aborts installation.
+
+The manifest may be resolved locally (``PROMPTVAULT_MANIFEST`` or a manifest
+file in the CWD / ``~/.promptvault``) or fetched from the canonical public
+GitHub Release (``fetch_remote_manifest``). Remote artifacts are downloaded
+into a controlled cache directory and verified (size + SHA-256) before use.
 """
 
 import json
 import hashlib
 import os
+import shutil
+import urllib.request
 from pathlib import Path
 
 from promptvault_cli.platform import platform_tag, os_name, arch
 
 RELEASE_MANIFEST_VERSION = 1
 
+RELEASE_OWNER = "xxammaxx"
+RELEASE_REPO = "promptvault-lite"
+RELEASE_MANIFEST_FILENAME = "promptvault-release-manifest.json"
+RELEASE_BASE_URL = (
+    f"https://github.com/{RELEASE_OWNER}/{RELEASE_REPO}/releases/download"
+)
+
+SUPPORTED_INSTALLER_TYPES = {"nsis", "msi"}
+
 MANIFEST_ENV_VAR = "PROMPTVAULT_MANIFEST"
 ARTIFACT_DIR_ENV_VAR = "PROMPTVAULT_ARTIFACT_DIR"
+
+CACHE_DIR = Path.home() / ".promptvault" / "downloads"
 
 
 class ArtifactIntegrityError(RuntimeError):
@@ -38,9 +56,88 @@ def load_manifest(data: str) -> dict:
         )
     if "version" not in manifest:
         raise ArtifactIntegrityError("Manifest missing 'version'")
-    if "artifacts" not in manifest:
+    if "artifacts" not in manifest or not isinstance(manifest["artifacts"], dict):
         raise ArtifactIntegrityError("Manifest missing 'artifacts'")
+
+    for tag, entry in manifest["artifacts"].items():
+        if not isinstance(entry, dict) or not entry.get("filename"):
+            raise ArtifactIntegrityError(f"Artifact '{tag}' missing 'filename'")
+        installer_type = entry.get("type", "nsis")
+        if installer_type not in SUPPORTED_INSTALLER_TYPES:
+            raise ArtifactIntegrityError(
+                f"Artifact '{tag}' has unsupported installer type '{installer_type}'"
+            )
     return manifest
+
+
+def release_manifest_url(version: str) -> str:
+    """Deterministic public URL of the release manifest for a version."""
+    version = version.lstrip("v")
+    return f"{RELEASE_BASE_URL}/v{version}/{RELEASE_MANIFEST_FILENAME}"
+
+
+def artifact_download_url(version: str, entry: dict) -> str:
+    """Resolve the public download URL for a manifest artifact.
+
+    Prefers an explicit ``url`` in the entry; otherwise derives the
+    deterministic GitHub Release asset URL from the release version and the
+    asset filename (documented convention, not a heuristic).
+    """
+    if entry.get("url"):
+        return entry["url"]
+    version = version.lstrip("v")
+    filename = entry["filename"]
+    return f"{RELEASE_BASE_URL}/v{version}/{filename}"
+
+
+def _download(url: str, dest: Path, timeout: int = 60) -> None:
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "promptvault-cli",
+            "Accept": "application/octet-stream",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with open(dest, "wb") as out:
+            shutil.copyfileobj(resp, out)
+
+
+def fetch_remote_manifest(version: str) -> Path:
+    """Download the public release manifest for a version into the cache.
+
+    Raises :class:`ArtifactIntegrityError` when the download fails.
+    """
+    url = release_manifest_url(version)
+    cache = CACHE_DIR / version.lstrip("v")
+    cache.mkdir(parents=True, exist_ok=True)
+    dest = cache / RELEASE_MANIFEST_FILENAME
+    try:
+        _download(url, dest)
+    except Exception as e:
+        raise ArtifactIntegrityError(
+            f"Could not download release manifest from {url}: {e}"
+        ) from e
+    return dest
+
+
+def download_artifact(version: str, entry: dict, dest_dir: Path) -> Path:
+    """Download the manifest-selected artifact into ``dest_dir``.
+
+    The caller is responsible for verifying size and SHA-256 afterwards.
+    Raises :class:`ArtifactIntegrityError` when the download fails.
+    """
+    filename = entry["filename"]
+    url = artifact_download_url(version, entry)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / filename
+    try:
+        _download(url, dest)
+    except Exception as e:
+        raise ArtifactIntegrityError(
+            f"Could not download artifact from {url}: {e}"
+        ) from e
+    return dest
 
 
 def find_manifest() -> Path | None:

@@ -1,7 +1,7 @@
 ---
 title: How-to-Index
 description: Übersicht über typische Aufgaben in PromptVault Lite mit Verweisen auf die passenden Anleitungen.
-version: 1.8.0
+version: 1.9.0
 ---
 
 # How-to-Index
@@ -76,7 +76,7 @@ promptvault update       # auf Updates prüfen
 promptvault uninstall    # App entfernen (Vault-Daten bleiben)
 ```
 
-→ Detail: `../CLI.md` _(noch nicht migriert)_ — CLI-Paket noch nicht auf PyPI (`READY_FOR_PUBLICATION`).
+→ Detail: `../CLI.md` _(noch nicht migriert)_ — CLI-Paket implementiert und lokal verifiziert; PyPI-Publikation noch ausstehend.
 
 ### Welche Tastaturkürzel gibt es?
 

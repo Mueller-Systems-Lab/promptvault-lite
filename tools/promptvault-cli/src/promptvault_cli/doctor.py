@@ -5,9 +5,8 @@ import sys
 import platform as _platform
 from pathlib import Path
 
+from promptvault_cli import __version__ as APP_VERSION
 from promptvault_cli.platform import os_name, arch, platform_tag
-
-APP_VERSION = "1.9.0"
 
 
 def find_install_path() -> Path | None:

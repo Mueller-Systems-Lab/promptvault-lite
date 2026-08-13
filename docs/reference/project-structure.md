@@ -1,7 +1,7 @@
 ---
 title: Projektstruktur
 description: Vollständige Referenz der Verzeichnis- und Dateistruktur von PromptVault Lite.
-version: 1.8.0
+version: 1.9.0
 ---
 
 # Projektstruktur

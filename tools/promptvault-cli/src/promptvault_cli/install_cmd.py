@@ -4,12 +4,16 @@ import subprocess
 import sys
 from pathlib import Path
 
+from promptvault_cli import __version__ as APP_VERSION
 from promptvault_cli.releases import (
+    CACHE_DIR,
     find_manifest,
     find_artifact_dir,
     load_manifest,
     resolve_artifact,
     verify_artifact,
+    fetch_remote_manifest,
+    download_artifact,
     ArtifactIntegrityError,
 )
 from promptvault_cli.doctor import find_install_path, find_executable
@@ -25,12 +29,17 @@ def run_install(force: bool = False) -> None:
         print("[FAIL] Native app installation is only supported on Windows.")
         sys.exit(1)
 
-    manifest_path = find_manifest()
-    if not manifest_path:
-        print("[FAIL] No release manifest found.")
-        print("       Set PROMPTVAULT_MANIFEST to the manifest path, or")
-        print("       place promptvault-release-manifest.json in the current dir.")
-        sys.exit(1)
+    local_manifest_path = find_manifest()
+    manifest_path: Path | None = local_manifest_path
+
+    if manifest_path is None:
+        print("[INFO] No local release manifest found.")
+        print("[INFO] Fetching release manifest from GitHub releases...")
+        try:
+            manifest_path = fetch_remote_manifest(APP_VERSION)
+        except ArtifactIntegrityError as e:
+            print(f"[FAIL] {e}")
+            sys.exit(1)
 
     print(f"[INFO] Manifest: {manifest_path}")
     try:
@@ -48,8 +57,24 @@ def run_install(force: bool = False) -> None:
         print(f"[FAIL] {e}")
         sys.exit(1)
 
-    artifact_dir = find_artifact_dir(manifest_path)
-    artifact_path = artifact_dir / artifact_filename
+    artifact_path: Path
+    if local_manifest_path is not None:
+        artifact_path = find_artifact_dir(local_manifest_path) / artifact_filename
+    else:
+        artifact_path = CACHE_DIR / version.lstrip("v") / artifact_filename
+
+    if not artifact_path.exists():
+        if local_manifest_path is not None:
+            print(f"[INFO] Local artifact missing: {artifact_path}")
+            print("[INFO] Downloading from GitHub releases...")
+        else:
+            print(f"[INFO] Downloading artifact from GitHub releases...")
+        try:
+            artifact_path = download_artifact(version, entry, artifact_path.parent)
+        except ArtifactIntegrityError as e:
+            print(f"[FAIL] {e}")
+            sys.exit(1)
+
     print(f"[INFO] Artifact: {artifact_path}")
 
     try:
@@ -58,7 +83,7 @@ def run_install(force: bool = False) -> None:
         print(f"[STOP_ARTIFACT_INTEGRITY_FAILED] {e}")
         sys.exit(1)
 
-    print("[OK] Artifact integrity verified (SHA-256).")
+    print("[OK] Artifact integrity verified (SHA-256 + size).")
 
     # Detect existing installation
     existing = find_install_path()
@@ -87,7 +112,7 @@ def run_install(force: bool = False) -> None:
         if result.returncode != 0:
             print(f"[FAIL] Installer exited with code {result.returncode}")
             sys.exit(1)
-    else:
+    elif installer_type == "msi":
         # MSI: /qn silent install
         try:
             result = subprocess.run(
@@ -100,6 +125,10 @@ def run_install(force: bool = False) -> None:
         if result.returncode != 0:
             print(f"[FAIL] Installer exited with code {result.returncode}")
             sys.exit(1)
+    else:
+        # load_manifest already rejects unknown types; fail closed just in case.
+        print(f"[STOP_ARTIFACT_INTEGRITY_FAILED] Unsupported installer type: {installer_type}")
+        sys.exit(1)
 
     # Verify installation
     install_path = find_install_path()

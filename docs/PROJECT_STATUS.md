@@ -1,9 +1,9 @@
 # Project Status — PromptVault Lite
 
-**Last updated:** 2026-08-12
-**Current stable release:** v1.8.0 (published 2026-08-03)
+**Last updated:** 2026-08-13
+**Current stable release:** v1.9.0 (GitHub Release published 2026-08-13)
 **Branch:** master
-**Master HEAD:** `c0e6da8` — Admin Observability + promptvault CLI + native observability proof integrated
+**Master HEAD:** tagged `v1.9.0` — v1.9.0 release state
 
 ---
 
@@ -11,12 +11,12 @@
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
-**Release:** v1.8.0 published; Admin Observability and CLI are on `master` but **not yet released**.
-**Publication:** PyPI/GitHub-Release/`v1.9.0`-Tag = `NOT PUBLISHED`.
+**Release:** v1.9.0 published as a GitHub Release (Windows x64 NSIS installer + release manifest + checksums).
+**Publication:** `promptvault-cli` PyPI publication = `PENDING` (secure publish auth required).
 
 ---
 
-## Integrated (beyond v1.8.0)
+## Integrated (v1.9.0)
 
 | Feature | Status | Evidence |
 | --- | --- | --- |
@@ -24,7 +24,7 @@
 | Frontend↔Backend Trace-Korrelation | ✅ DONE | `src-tauri/tests/observability_correlation.rs` |
 | Native observability proof on Windows | ✅ DONE | `e2e-tests/specs/admin-observability.native.spec.js` + `wdio.conf.windows.mjs` |
 | promptvault CLI (`doctor`/`install`/`launch`/`update`/`diagnostics`/`uninstall`) | ✅ IMPLEMENTED / VERIFIED | `tools/promptvault-cli/*` + `tests/test_releases.py` |
-| uv package (`promptvault-cli`) | ✅ READY_FOR_PUBLICATION | `pyproject.toml` (hatchling wheel) |
+| uv package (`promptvault-cli`) | ✅ WHEEL VERIFIED (PyPI pending) | `pyproject.toml` (hatchling wheel) |
 | Local TTS Adapter (native Rust commands) | ✅ DONE / RUNTIME VERIFIED | `src-tauri/src/commands/tts.rs` + `src/lib/localTts.ts`; `docs/audits/LOCAL_NEURAL_TTS_RUN_REPORT.md` |
 
 ---
@@ -53,10 +53,9 @@
 | Item | Status |
 | --- | --- |
 | v1.8.0 GitHub Release | ✅ Published (Linux `.deb`/`.rpm` + `SHA256SUMS.txt`) |
-| PyPI (`promptvault-cli`) | ❌ NOT PUBLISHED |
-| GitHub Release / Tag for new master state | ❌ NOT PUBLISHED |
-| `v1.9.0` release/tag | ❌ NOT RELEASED (package version ≠ release status) |
-| Windows v1.8.0 installer asset | ❌ Not published (Linux-only release assets) |
+| v1.9.0 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
+| PyPI (`promptvault-cli`) | ⏳ PENDING (secure publish auth required) |
+| Windows v1.9.0 installer asset | ✅ Published (`PromptVault Lite_1.9.0_x64-setup.exe`) |
 
 ---
 
@@ -104,7 +103,6 @@
 
 ## Next Steps (Recommended)
 
-1. **Owner decision on publication:** PyPI publish, GitHub Release and `v1.9.0` tag remain separate owner-gated steps.
-2. **Windows installer publication:** publish a Windows x64 NSIS artifact so the CLI install path is usable end-to-end.
-3. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
-4. **Architecture Contract Audit / Security Posture Review.**
+1. **PyPI publication:** publish `promptvault-cli==1.9.0` once secure publish auth (Trusted Publishing or an owner-provided token) is available, then verify public `uv tool install promptvault-cli`.
+2. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
+3. **Architecture Contract Audit / Security Posture Review.**

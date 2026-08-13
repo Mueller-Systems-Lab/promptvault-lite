@@ -19,13 +19,10 @@ Zwei Ebenen sind strikt zu trennen:
 
 ## Publikationsstatus
 
-- **Status:** `READY_FOR_PUBLICATION`
-- **PyPI:** `NOT PUBLISHED` — der Befehl `uv tool install promptvault-cli` funktioniert **noch nicht** aus einem Package Index.
-- **GitHub Release / Tag:** `NOT PUBLISHED` — es existiert kein `v1.9.0`-Release oder -Tag.
+- **GitHub Release / Tag `v1.9.0`:** `PUBLISHED` — Windows-x64-NSIS-Installer, Release-Manifest und `SHA256SUMS.txt`.
+- **PyPI:** `NOT PUBLISHED` — `uv tool install promptvault-cli` funktioniert **noch nicht** aus einem Package Index (Secure-Publish-Auth ausstehend).
 
-> Die interne Paketversion `1.9.0` ist **kein** Release-Status. `1.9.0` wurde nicht veröffentlicht.
-
-Bis zur Veröffentlichung wird das CLI-Paket aus einem **lokal gebauten Wheel** installiert (real verfügbarer und getesteter Weg):
+Bis zur PyPI-Veröffentlichung wird das CLI-Paket aus einem **lokal gebauten Wheel** installiert (real verfügbarer und getesteter Weg):
 
 ```bash
 cd tools/promptvault-cli
@@ -56,7 +53,7 @@ Prüft CLI-Version, Python-Version, OS, Architektur, Plattform-Tag, Installation
 
 ### `install`
 
-Nur Windows. Löst das native Artefakt über ein Release-Manifest auf (`promptvault-release-manifest.json`, per `PROMPTVAULT_MANIFEST` oder CWD/`~/.promptvault/`), verifiziert **SHA-256 und Größe fail-closed** und führt den NSIS-Installer still (`/S`) aus. Bei Integritätsfehlern wird der Installer mit `STOP_ARTIFACT_INTEGRITY_FAILED` abgebrochen.
+Nur Windows. Löst das native Artefakt über das Release-Manifest auf. Das Manifest wird zuerst lokal gesucht (`PROMPTVAULT_MANIFEST` oder CWD/`~/.promptvault/`); fehlt es, wird es deterministisch vom GitHub-Release `v1.9.0` geladen (`promptvault-release-manifest.json`). Das Artefakt wird in einen kontrollierten Cache (`~/.promptvault/downloads/`) heruntergeladen, **SHA-256 und Größe fail-closed** verifiziert und dann still (`/S`) als NSIS-Installer ausgeführt. Bei Integritätsfehlern wird mit `STOP_ARTIFACT_INTEGRITY_FAILED` abgebrochen.
 
 ### `launch`
 
@@ -64,7 +61,7 @@ Startet das installierte native Executable und erkennt einen sofortigen Crash (f
 
 ### `update`
 
-Vergleicht die installierte native App-Version (`~/.promptvault/installed-version.txt`) mit dem Release-Manifest; ohne lokales Manifest wird die GitHub-Releases-API **read-only** abgefragt. Bei verfügbarem Update läuft derselbe verifizierte Install-Pfad.
+Vergleicht die installierte native App-Version (`~/.promptvault/installed-version.txt`) mit dem Release-Manifest (lokal oder vom GitHub-Release geladen). Bei verfügbarem Update läuft derselbe verifizierte Install-Pfad.
 
 ### `diagnostics`
 
@@ -100,11 +97,12 @@ uv tool uninstall promptvault-cli
 ## Integrität & Sicherheit
 
 - **SHA-256 + Größen-Verifikation** vor jeder Installation, fail-closed.
+- Installer-Typ ist eine strikte Allowlist (`nsis`/`msi`); unbekannte Typen werden abgelehnt.
 - Keine Shell-Interpolation, kein `sh -c`/`bash -c` — das Artefakt wird als fester Dateipfad ausgeführt.
-- `update` greift nur **read-only** auf die GitHub-Releases-API zu (kein automatischer Download im CLI-Pfad ohne lokales Manifest).
+- Remote-Manifest und -Artefakt werden deterministisch vom GitHub-Release geladen und lokal verifiziert.
 
 ---
 
 ## Hinweis zum Windows-Artefakt
 
-Das Repository liefert ein Beispiel-Release-Manifest (`tools/promptvault-cli/promptvault-release-manifest.json`), das auf einen Windows-x64-NSIS-Installer (`PromptVault Lite_1.8.0_x64-setup.exe`) verweist. Das **v1.8.0-GitHub-Release enthält derzeit nur Linux-Artefakte** (`.deb`, `.rpm`, `SHA256SUMS.txt`) — ein öffentliches Windows-Installer-Artefakt für den CLI-Install-Pfad ist noch nicht veröffentlicht. Die Install-Logik ist implementiert und fail-closed; die end-to-end-Veröffentlichung eines Windows-Artefakts bleibt ein separater Release-Schritt.
+Das `v1.9.0`-GitHub-Release enthält den Windows-x64-NSIS-Installer (`PromptVault Lite_1.9.0_x64-setup.exe`), das Release-Manifest und `SHA256SUMS.txt`. Der CLI-Install-Pfad (`promptvault install`) lädt dieses Manifest und Artefakt deterministisch und installiert nach erfolgreicher SHA-256-Verifikation.

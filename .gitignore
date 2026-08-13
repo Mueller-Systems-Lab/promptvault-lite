@@ -52,6 +52,7 @@ coverage/
 scripts/*
 !scripts/verify-all.mjs
 !scripts/e19-gate.mjs
+!scripts/check_version_consistency.py
 !scripts/lib/
 !scripts/__tests__/
 site/
