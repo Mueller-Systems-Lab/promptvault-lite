@@ -27,7 +27,7 @@ def _valid_manifest(data: bytes = b"payload", **entry_overrides) -> dict:
     entry.update(entry_overrides)
     return {
         "schema_version": 1,
-        "version": "1.9.1",
+        "version": "1.9.2",
         "artifacts": {platform_tag(): entry},
     }
 
