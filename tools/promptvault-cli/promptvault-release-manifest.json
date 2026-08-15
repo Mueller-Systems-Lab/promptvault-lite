@@ -7,8 +7,8 @@
     "windows-x86_64": {
       "filename": "PromptVault.Lite_1.9.2_x64-setup.exe",
       "url": "https://github.com/xxammaxx/promptvault-lite/releases/download/v1.9.2/PromptVault.Lite_1.9.2_x64-setup.exe",
-      "sha256": "d653c6c116f6eeb4929dfce2d8c86100e905a108483b1ba296903bd29fbee43a",
-      "size": 2729921,
+      "sha256": "6e3afed7cc70d07e653919f4bffb06eb7b0556458cb2073e25918249720ac6ca",
+      "size": 2728026,
       "type": "nsis"
     }
   }
