@@ -8,7 +8,7 @@ version: 1.9.2
 
 ## v1.9.2 — Patch: Fail-Closed Diagnostic Export Privacy Boundary
 
-Status: prepared (patch release) — pending public release
+Released: 2026-08-15 (patch release)
 
 ### Fixed
 

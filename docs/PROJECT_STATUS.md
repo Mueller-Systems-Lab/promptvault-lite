@@ -1,19 +1,30 @@
 # Project Status — PromptVault Lite
 
-**Last updated:** 2026-08-13
-**Current stable release:** v1.9.1 (patch release — stricter release-manifest validation, fail-closed integrity contract, corrected PyPI description)
-**In development:** v1.9.2 (patch — fail-closed diagnostic export privacy boundary) — implemented, local gates green, pending public release
+**Last updated:** 2026-08-15
+**Current stable release:** v1.9.2 (patch release — fail-closed diagnostic export privacy boundary, canonical app version in diagnostics)
+**In development:** none — v1.9.2 released and frozen
 **Branch:** master
-**Master HEAD:** tagged `v1.9.1` — v1.9.1 release state
+**Master HEAD:** tagged `v1.9.2` — v1.9.2 release state
 
 ---
 
-## Current Status: GREEN_INTEGRATED 🟢
+## Current Status: GREEN_RELEASED 🟢
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
-**Release:** v1.9.1 published as a GitHub Release (Windows x64 NSIS installer + release manifest + checksums).
-**Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.9.1, via OIDC Trusted Publishing).
+**Release:** v1.9.2 published as a GitHub Release (Windows x64 NSIS installer + release manifest + checksums).
+**Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.9.2, via OIDC Trusted Publishing).
+
+---
+
+## Integrated (v1.9.2)
+
+| Feature | Status | Evidence |
+| --- | --- | --- |
+| Fail-closed diagnostic export privacy boundary (`safe-metadata-v1`) | ✅ DONE / RELEASED (v1.9.2) | `src/observability/redaction.ts` + `e2e-tests/specs/privacy-export.native.spec.js` + public native proof (sentinel 0, raw 0, secret 0, private path 0) |
+| Unknown/nested diagnostic attributes omitted (never "redact and keep") | ✅ DONE (v1.9.2) | `src/observability/redaction.ts` (SAFE_ATTRIBUTE_KEYS allowlist, fail-closed) |
+| Deep Diagnostics within the same export privacy boundary | ✅ DONE (v1.9.2) | `src/observability/redaction.ts` sanitizeSpan (nested traces) |
+| Dynamic/canonical app version in diagnostics (`app_version`) | ✅ DONE (v1.9.2) | `AdminDiagnosticsPanel.handleExport` uses `__APP_VERSION__`; export policy v1 |
 
 ---
 
@@ -57,9 +68,12 @@
 | v1.8.0 GitHub Release | ✅ Published (Linux `.deb`/`.rpm` + `SHA256SUMS.txt`) |
 | v1.9.0 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
 | v1.9.1 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
+| v1.9.2 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
 | PyPI (`promptvault-lite-manager==1.9.0`) | ✅ Published (OIDC Trusted Publishing) |
 | PyPI (`promptvault-lite-manager==1.9.1`) | ✅ Published (OIDC Trusted Publishing) |
+| PyPI (`promptvault-lite-manager==1.9.2`) | ✅ Published (OIDC Trusted Publishing) |
 | Windows v1.9.1 installer asset | ✅ Published (`PromptVault.Lite_1.9.1_x64-setup.exe`) |
+| Windows v1.9.2 installer asset | ✅ Published (`PromptVault.Lite_1.9.2_x64-setup.exe`) |
 
 ---
 
@@ -107,6 +121,6 @@
 
 ## Next Steps (Recommended)
 
-1. **PyPI publication (done):** `promptvault-lite-manager==1.9.1` is published via OIDC Trusted Publishing; public `uv tool install promptvault-lite-manager` verified.
+1. **PyPI publication (done):** `promptvault-lite-manager==1.9.2` is published via OIDC Trusted Publishing; public `uv tool install promptvault-lite-manager` verified.
 2. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
 3. **Architecture Contract Audit / Security Posture Review.**
