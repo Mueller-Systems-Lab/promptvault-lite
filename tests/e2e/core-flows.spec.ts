@@ -80,10 +80,11 @@ test.describe("R1 — App Start", () => {
     ).toBeVisible();
   });
 
-  test("status bar shows version 1.8.0", async ({ page }) => {
+  test("status bar shows version", async ({ page }) => {
     const statusbar = page.getByRole("contentinfo");
     await expect(statusbar).toBeVisible();
-    await expect(statusbar).toContainText("1.8.0");
+    // Version-agnostic: never rot again when the app version bumps.
+    await expect(statusbar).toContainText(/PromptVault Lite v\d+\.\d+\.\d+/);
   });
 
   test("no JavaScript errors on load", async ({ page }) => {

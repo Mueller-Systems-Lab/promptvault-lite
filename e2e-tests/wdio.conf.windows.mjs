@@ -43,7 +43,10 @@ export const config = {
   hostname: "127.0.0.1",
   port: 4444,
   webSocketUrl: false,
-  specs: ["./specs/admin-observability.native.spec.js"],
+  specs: [
+    "./specs/admin-observability.native.spec.js",
+    "./specs/authoring-lifecycle.native.spec.js",
+  ],
   capabilities: [
     {
       browserName: "wry",

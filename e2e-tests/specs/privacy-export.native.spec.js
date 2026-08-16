@@ -1,6 +1,6 @@
 // e2e-tests/specs/privacy-export.native.spec.js
 //
-// v1.9.2 DIAGNOSTIC EXPORT PRIVACY — NATIVE WINDOWS RUNTIME PROOF
+// v1.10.0 DIAGNOSTIC EXPORT PRIVACY — NATIVE WINDOWS RUNTIME PROOF
 // ---------------------------------------------------------------------------
 // REAL native app (real WebView2, real Tauri IPC, real Rust, real frontend).
 // No mocks, no browser fallback. The export blob is captured from the REAL
@@ -17,7 +17,7 @@
 //   - private absolute path occurrences: 0
 //   - safe diagnostic metadata: PRESENT
 //   - diagnostic_export_policy: PRESENT
-//   - app_version: 1.9.2
+//   - app_version: 1.10.0
 
 import * as fs from "node:fs";
 import * as os from "node:os";
@@ -204,7 +204,7 @@ function countOccurrences(haystack, needle) {
 // Tests
 // ---------------------------------------------------------------------------
 
-describe("v1.9.2 Diagnostic Export Privacy — Native Windows Runtime Proof", function () {
+describe("v1.10.0 Diagnostic Export Privacy — Native Windows Runtime Proof", function () {
   this.timeout(600000);
   let archive;
   let archiveLoaded = false;
@@ -227,7 +227,7 @@ describe("v1.9.2 Diagnostic Export Privacy — Native Windows Runtime Proof", fu
     }
   }
 
-  it("1. REAL_NATIVE_BINARY: echtes Fenster 'PromptVault Lite' v1.9.2", async () => {
+  it("1. REAL_NATIVE_BINARY: echtes Fenster 'PromptVault Lite' v1.10.0", async () => {
     const heading = await $("h1");
     await heading.waitForExist({ timeout: 90000 });
     const title = await heading.getText();
@@ -237,8 +237,8 @@ describe("v1.9.2 Diagnostic Export Privacy — Native Windows Runtime Proof", fu
     await statusbar.waitForExist({ timeout: 10000 });
     const statusText = await statusbar.getText();
     expect(statusText).toMatch(/PromptVault Lite v\d+\.\d+\.\d+/);
-    // The real binary must report 1.9.2
-    expect(statusText).toContain("v1.9.2");
+    // The real binary must report 1.10.0
+    expect(statusText).toContain("v1.10.0");
   });
 
   it("2. Observability + Deep Diagnostics aktivieren (real UI)", async () => {
@@ -296,7 +296,7 @@ describe("v1.9.2 Diagnostic Export Privacy — Native Windows Runtime Proof", fu
     expect(data.schema_version).toBe(1);
     expect(data.diagnostic_export_policy).toBeDefined();
     expect(data.export_policy_version).toBeDefined();
-    expect(data.app_version).toBe("1.9.2");
+    expect(data.app_version).toBe("1.10.0");
     expect(data.generated_at).toBeDefined();
     expect(data.feature_flags).toBeDefined();
     expect(Array.isArray(data.traces)).toBe(true);
