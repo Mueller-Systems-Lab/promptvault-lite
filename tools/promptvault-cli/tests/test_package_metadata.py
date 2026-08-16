@@ -14,9 +14,9 @@ def test_distribution_name_is_promptvault_lite_manager() -> None:
     assert 'name = "promptvault-lite-manager"' in pyproject
 
 
-def test_version_is_1_9_2() -> None:
+def test_version_is_1_10_0() -> None:
     pyproject = (PROJECT_ROOT / "pyproject.toml").read_text()
-    assert 'version = "1.9.2"' in pyproject
+    assert 'version = "1.10.0"' in pyproject
 
 
 def test_executable_entry_point_unchanged() -> None:
@@ -26,7 +26,7 @@ def test_executable_entry_point_unchanged() -> None:
 
 def test_import_package_name_unchanged() -> None:
     init = (PROJECT_ROOT / "src" / "promptvault_cli" / "__init__.py").read_text()
-    assert "__version__ = \"1.9.2\"" in init
+    assert "__version__ = \"1.10.0\"" in init
 
 
 def test_readme_has_public_install_command() -> None:

@@ -63,7 +63,7 @@ def read_version(path: Path) -> str:
 
 
 def main() -> int:
-    expected = sys.argv[1] if len(sys.argv) > 1 else "1.9.2"
+    expected = sys.argv[1] if len(sys.argv) > 1 else "1.10.0"
     failures: list[str] = []
     versions: dict[str, str] = {}
     for label, path in SOURCES.items():
