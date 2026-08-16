@@ -58,7 +58,12 @@ import {
   checkLengthMismatch,
 } from "@/observability/invariants";
 import { contentFingerprint } from "@/observability/redaction";
-import type { Trace } from "@/observability/contracts";
+import type {
+  Trace,
+  DiagnosticStatus,
+  DiagnosticCategory,
+  ReasonCode,
+} from "@/observability/contracts";
 
 // --- Theme Types ---
 
@@ -284,6 +289,17 @@ interface AppState {
   watcherNotification: string | null;
   _watcherUnlisten: UnlistenFn | null;
 
+  // Authoring editor state (v1.10.0 — AUTHORING_LIFECYCLE)
+  promptEditor: {
+    mode: "create" | "edit";
+    promptId?: string;
+    title: string;
+    content: string;
+    isDirty: boolean;
+    isSaving: boolean;
+    saveError: string | null;
+  } | null;
+
   // Actions
   setPrompts: (prompts: PromptItem[]) => void;
   selectPrompt: (id: string | null) => void;
@@ -373,6 +389,14 @@ interface AppState {
   // Save-as-New-Version (Batch 7)
   saveVariantAsPrompt: (variant: PromptVariant) => Promise<void>;
 
+  // Authoring lifecycle actions (v1.10.0 — AUTHORING_LIFECYCLE)
+  openCreatePrompt: () => void;
+  openEditPrompt: (promptId: string) => void;
+  updateEditorField: (field: "title" | "content", value: string) => void;
+  closePromptEditor: () => void;
+  savePromptEditor: () => Promise<void>;
+  invalidateAnalysisForPrompt: (promptId: string) => void;
+
   // Async actions
   scanFolder: (path: string) => Promise<void>;
   analyzeSelected: () => Promise<void>;
@@ -389,6 +413,72 @@ const defaultFilters: PromptFilters = {
   tags: [],
   favoritesOnly: false,
 };
+
+// ---------------------------------------------------------------------------
+// Authoring helpers (v1.10.0 — AUTHORING_LIFECYCLE)
+// ---------------------------------------------------------------------------
+
+/**
+ * The Rust `create_prompt`/`update_prompt` commands return a wrapper object
+ * (`{ prompt, created }` / `{ prompt, updated, changed_fields }`) while the
+ * `tauri.ts` wrappers are typed as `PromptItem`. Normalize both shapes so the
+ * store always receives the persisted PromptItem.
+ */
+function extractSavedPrompt(raw: unknown): PromptItem {
+  const maybeWrapped = raw as { prompt?: PromptItem } | null;
+  if (
+    maybeWrapped !== null &&
+    typeof maybeWrapped === "object" &&
+    maybeWrapped.prompt !== undefined
+  ) {
+    return maybeWrapped.prompt;
+  }
+  return raw as PromptItem;
+}
+
+interface AuthoringEventOptions {
+  mode?: string;
+  promptId?: string;
+  durationMs?: number;
+  reasonCode?: ReasonCode;
+  category?: DiagnosticCategory;
+}
+
+/**
+ * Emit an authoring observability event with SAFE metadata only.
+ * NEVER carries prompt content, title text, or clipboard data.
+ */
+function emitAuthoringEvent(
+  operation: string,
+  status: DiagnosticStatus,
+  options: AuthoringEventOptions = {},
+): void {
+  if (!isObservabilityEnabled()) return;
+  const attributes: Record<string, unknown> = {};
+  if (options.mode !== undefined) {
+    attributes["promptvault.authoring.mode"] = options.mode;
+  }
+  if (options.promptId !== undefined) {
+    attributes["promptvault.authoring.prompt_id"] = options.promptId;
+  }
+  if (options.durationMs !== undefined) {
+    attributes["promptvault.authoring.duration_ms"] = options.durationMs;
+  }
+  emitDiagnosticEvent({
+    schemaVersion: 1,
+    traceId: `authoring-${operation}`,
+    spanId: `authoring-${operation}-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+    timestamp: new Date().toISOString(),
+    layer: "store",
+    operation,
+    stage: operation,
+    status,
+    category: options.category,
+    reasonCode: options.reasonCode,
+    durationMs: options.durationMs,
+    attributes: Object.keys(attributes).length > 0 ? attributes : undefined,
+  });
+}
 
 export const useAppStore = create<AppState>((set, get) => ({
   // Initial state
@@ -444,6 +534,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   currentFolderPath: null,
   watcherNotification: null,
   _watcherUnlisten: null,
+
+  // Authoring editor state — closed by default
+  promptEditor: null,
 
   // Actions
   setPrompts: (prompts) => {
@@ -1394,6 +1487,215 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
   },
 
+  // ==========================================================================
+  // Authoring Lifecycle Actions (v1.10.0 — AUTHORING_LIFECYCLE)
+  // ==========================================================================
+
+  /**
+   * Opens the prompt editor in create mode with empty fields (clean state).
+   * No observability event — the lifecycle event fires on save.
+   */
+  openCreatePrompt: () => {
+    set({
+      promptEditor: {
+        mode: "create",
+        title: "",
+        content: "",
+        isDirty: false,
+        isSaving: false,
+        saveError: null,
+      },
+    });
+  },
+
+  /**
+   * Opens the prompt editor in edit mode, pre-filled from the prompt
+   * (clean state). Emits `prompt.edit` with safe metadata.
+   */
+  openEditPrompt: (promptId: string) => {
+    const prompt = get().prompts.find((p) => p.id === promptId);
+    set({
+      promptEditor: {
+        mode: "edit",
+        promptId,
+        title: prompt?.title ?? "",
+        content: prompt?.content ?? "",
+        isDirty: false,
+        isSaving: false,
+        saveError: null,
+      },
+    });
+    emitAuthoringEvent("prompt.edit", "succeeded", {
+      mode: "edit",
+      promptId,
+    });
+  },
+
+  /** Updates a single editor field and marks the editor dirty. */
+  updateEditorField: (field, value) => {
+    set((state) => {
+      if (!state.promptEditor || state.promptEditor.isSaving) return {};
+      return {
+        promptEditor: {
+          ...state.promptEditor,
+          [field]: value,
+          isDirty: true,
+          saveError: null,
+        },
+      };
+    });
+  },
+
+  /**
+   * Closes/discards the editor. Emits `prompt.cancel` ONLY when the editor
+   * was dirty (unsaved changes were discarded). Never touches tauri.
+   */
+  closePromptEditor: () => {
+    const editor = get().promptEditor;
+    if (editor?.isDirty) {
+      emitAuthoringEvent("prompt.cancel", "succeeded", {
+        mode: editor.mode,
+        promptId: editor.promptId,
+      });
+    }
+    set({ promptEditor: null });
+  },
+
+  /**
+   * Persists the editor through the canonical storage layer
+   * (`create_prompt` / `update_prompt` via the tauri.ts wrappers — never the
+   * Developer-Mode-gated action layer).
+   *
+   * On success: updates the store, selects the saved prompt, invalidates stale
+   * analysis, closes the editor and emits `prompt.create` / `prompt.save`.
+   * On failure: keeps the editor open, sets saveError and emits
+   * `prompt.save_failed` with reasonCode AUTHORING_SAVE_FAILED.
+   */
+  savePromptEditor: async () => {
+    const editor = get().promptEditor;
+    if (!editor || editor.isSaving) return;
+
+    const title = editor.title.trim();
+    const content = editor.content.trim();
+
+    if (!title || !content) {
+      const message = "Titel und Inhalt dürfen nicht leer sein.";
+      set({
+        promptEditor: { ...editor, isSaving: false, saveError: message },
+      });
+      emitAuthoringEvent("prompt.save_failed", "failed", {
+        mode: editor.mode,
+        promptId: editor.promptId,
+        reasonCode: "AUTHORING_SAVE_FAILED",
+        category: "USER_INPUT_ERROR",
+      });
+      return;
+    }
+
+    set({
+      promptEditor: { ...editor, isSaving: true, saveError: null },
+    });
+
+    const startMs = performance.now();
+
+    try {
+      let saved: PromptItem;
+
+      if (editor.mode === "create") {
+        const raw = await tauriCreatePrompt({ title, content });
+        saved = extractSavedPrompt(raw);
+        emitAuthoringEvent("prompt.create", "succeeded", {
+          mode: "create",
+          promptId: saved.id,
+          durationMs: Math.round(performance.now() - startMs),
+        });
+      } else {
+        const promptId = editor.promptId as string;
+        const existing = get().prompts.find((p) => p.id === promptId);
+        const input: UpdatePromptInput = { prompt_id: promptId };
+        // Send only changed fields to update_prompt
+        if (content !== existing?.content) input.content = content;
+        if (title !== existing?.title) input.title = title;
+        const raw = await tauriUpdatePrompt(input);
+        saved = extractSavedPrompt(raw);
+        emitAuthoringEvent("prompt.save", "succeeded", {
+          mode: "edit",
+          promptId: saved.id,
+          durationMs: Math.round(performance.now() - startMs),
+        });
+      }
+
+      set((state) => {
+        const prompts =
+          editor.mode === "create"
+            ? [...state.prompts, saved]
+            : state.prompts.map((p) => (p.id === saved.id ? saved : p));
+        return { prompts, promptEditor: null };
+      });
+      get().selectPrompt(saved.id);
+      get().invalidateAnalysisForPrompt(saved.id);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      const current = get().promptEditor;
+      if (current) {
+        set({
+          promptEditor: { ...current, isSaving: false, saveError: message },
+        });
+      }
+      emitAuthoringEvent("prompt.save_failed", "failed", {
+        mode: editor.mode,
+        promptId: editor.promptId,
+        durationMs: Math.round(performance.now() - startMs),
+        reasonCode: "AUTHORING_SAVE_FAILED",
+        category: "PROCESSING_ERROR",
+      });
+    }
+  },
+
+  /**
+   * Removes all stale analysis results for a prompt (evaluations, hygiene,
+   * context evaluations, blueprint detections, blueprint evaluations).
+   * Called after a content change + save so stale analysis is never shown
+   * as current. The T8 auto-detection effect re-runs because the content
+   * fingerprint changed.
+   */
+  invalidateAnalysisForPrompt: (promptId: string) => {
+    set((state) => {
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedEvaluation,
+        ...evaluations
+      } = state.evaluations;
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedHygiene,
+        ...hygiene
+      } = state.hygiene;
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedContext,
+        ...contextEvaluations
+      } = state.contextEvaluations;
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedDetection,
+        ...blueprintDetections
+      } = state.blueprintDetections;
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedBlueprintEval,
+        ...blueprintEvaluations
+      } = state.blueprintEvaluations;
+      return {
+        evaluations,
+        hygiene,
+        contextEvaluations,
+        blueprintDetections,
+        blueprintEvaluations,
+      };
+    });
+  },
+
   // Derived data
   filteredPrompts: () => {
     const { prompts, filters, evaluations } = get();
@@ -1690,6 +1992,14 @@ export const useAppStore = create<AppState>((set, get) => ({
         currentFolderPath: path,
         _watcherUnlisten: unlisten,
       });
+
+      // Restart persistence (v1.10.0 — AUTHORING_LIFECYCLE): remember the
+      // last vault folder so the app can auto-restore it on startup.
+      try {
+        localStorage.setItem("promptvault.lastFolder", path);
+      } catch {
+        // localStorage not available
+      }
 
       if (trace) {
         const { endSpan: endState } = openSpan(trace, {

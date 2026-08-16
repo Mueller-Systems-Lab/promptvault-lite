@@ -195,6 +195,7 @@ export const ActionBar: React.FC<{
   const detection = useAppStore((s) => s.selectedBlueprintDetection)();
   const toggleFavorite = useAppStore((s) => s.toggleFavorite);
   const analyzeSelected = useAppStore((s) => s.analyzeSelected);
+  const openEditPrompt = useAppStore((s) => s.openEditPrompt);
   const isAnalyzing = useAppStore((s) => s.isAnalyzing);
 
   const handleCopy = useCallback(async () => {
@@ -293,6 +294,21 @@ export const ActionBar: React.FC<{
         title="Datei öffnen"
       >
         📂 Öffnen
+      </button>
+      <button
+        className="btn"
+        onClick={() => {
+          openEditPrompt(prompt.id);
+        }}
+        disabled={optimizerBlocked}
+        title={
+          optimizerBlocked
+            ? "Bearbeitung für blockierte Inhalte nicht verfügbar"
+            : "Prompt bearbeiten"
+        }
+        aria-label="Prompt bearbeiten"
+      >
+        ✏️ Bearbeiten
       </button>
       <button
         className="btn"

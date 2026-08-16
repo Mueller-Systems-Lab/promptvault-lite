@@ -1065,6 +1065,66 @@ body {
   flex-shrink: 0;
 }
 
+/* ---- Prompt Editor (v1.10.0 — AUTHORING_LIFECYCLE) ---- */
+.prompt-editor {
+  min-width: 480px;
+  max-width: 640px;
+}
+.editor-dirty-indicator {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f0a020;
+  margin-bottom: 10px;
+}
+.editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.editor-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+.editor-field input[type="text"],
+.editor-field textarea {
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.editor-field textarea {
+  resize: vertical;
+  min-height: 160px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.editor-field input[type="text"]:focus,
+.editor-field textarea:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -1px;
+}
+.editor-field input:disabled,
+.editor-field textarea:disabled {
+  opacity: 0.6;
+}
+.editor-save-error {
+  font-size: 12px;
+  color: #e57373;
+  background: rgba(229, 115, 115, 0.12);
+  border: 1px solid rgba(229, 115, 115, 0.4);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
 /* ---- Export Dialog ---- */
 .export-format-group {
   border: none;

@@ -5,6 +5,7 @@ import { useResizablePanel } from "./hooks/useResizablePanel";
 import { ExplorerPanel } from "./components/explorer/ExplorerPanel";
 import { DetailsPanel } from "./components/details/DetailsPanel";
 import { AnalysisPanel } from "./components/analysis/AnalysisPanel";
+import { PromptEditor } from "./components/editor/PromptEditor";
 import { PastePromptAnalyzer } from "./components/paste/PastePromptAnalyzer";
 import { ExportDialog } from "./components/common/ExportDialog";
 import { ThemeToggle } from "./components/common/ThemeToggle";
@@ -46,12 +47,18 @@ function App() {
   } | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const approvalPendingRef = useRef(false);
+  const restoreAttemptedRef = useRef(false);
 
   const isTauri =
     typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
 
   const isMac = navigator.platform.toUpperCase().includes("MAC");
   const modLabel = isMac ? "Cmd" : "Strg";
+
+  // Authoring (v1.10.0 — AUTHORING_LIFECYCLE)
+  const currentFolderPath = useAppStore((s) => s.currentFolderPath);
+  const openCreatePrompt = useAppStore((s) => s.openCreatePrompt);
+  const promptEditor = useAppStore((s) => s.promptEditor);
 
   // E2E-Test-Einstieg (ADR-005, Variante B — Owner-Freigabe 2026-08-05):
   // Erlaubt dem nativen E2E-Test (E19), den Archivpfad über den ECHTEN
@@ -69,6 +76,33 @@ function App() {
   useEffect(() => {
     void installE2EBridgeIfAuthorized(scanFolder);
   }, [scanFolder]);
+
+  // Restart persistence (v1.10.0 — AUTHORING_LIFECYCLE): on startup, restore
+  // the last opened vault folder (stored by scanFolder under
+  // "promptvault.lastFolder") and rescan it so saved prompts reappear.
+  // Guarded by an "already restoring" flag; failures are non-fatal.
+  useEffect(() => {
+    if (restoreAttemptedRef.current) return;
+    restoreAttemptedRef.current = true;
+    if (!isTauri) return;
+
+    let lastFolder: string | null = null;
+    try {
+      lastFolder = localStorage.getItem("promptvault.lastFolder");
+    } catch {
+      lastFolder = null;
+    }
+    if (!lastFolder) return;
+
+    void scanFolder(lastFolder)
+      .then(() => {
+        // Issue #150: batch classify after restore so badges appear immediately.
+        void batchClassifyBlueprints();
+      })
+      .catch(() => {
+        // Restore failure is non-fatal — the user can open a folder manually.
+      });
+  }, [isTauri, scanFolder, batchClassifyBlueprints]);
 
   // Cleanup watcher on component unmount
   useEffect(() => {
@@ -289,6 +323,18 @@ function App() {
           >
             {isLoading ? "⏳ Scanne..." : "📁 Ordner öffnen"}
           </button>
+          {(currentFolderPath || prompts.length > 0) && (
+            <button
+              className="btn"
+              onClick={() => {
+                openCreatePrompt();
+              }}
+              title="Neuen Prompt erstellen"
+              aria-label="Neuen Prompt erstellen"
+            >
+              ✏️ Neuer Prompt
+            </button>
+          )}
           {prompts.length > 0 && (
             <>
               <button
@@ -383,6 +429,9 @@ function App() {
           }}
         />
       )}
+
+      {/* Prompt Editor (v1.10.0 — AUTHORING_LIFECYCLE) */}
+      {promptEditor && <PromptEditor />}
 
       {/* Approval Dialog for write actions */}
       {pendingApproval && (

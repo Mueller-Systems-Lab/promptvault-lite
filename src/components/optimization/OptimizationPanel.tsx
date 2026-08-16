@@ -2,6 +2,8 @@ import { useState, useCallback, useMemo } from "react";
 import { optimizePrompt } from "@/lib/promptOptimizer";
 import type { OptimizationMode, OptimizationDiff } from "@/types";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
+import { useAppStore } from "@/stores/appStore";
+import { isObservabilityEnabled, emitDiagnosticEvent } from "@/observability/events";
 
 // =============================================================================
 // Optimization Panel — Modal overlay for prompt optimization
@@ -110,6 +112,42 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
     setSelectedMode(mode);
     setCopied(false);
   }, []);
+
+  /**
+   * Apply (v1.10.0 — AUTHORING_LIFECYCLE): takes the optimized result into the
+   * prompt editor by EXPLICIT user action — never auto-overwrite.
+   * Opens the editor in edit mode for the current prompt and sets the content
+   * to the optimized result. Emits `optimizer.apply` with safe metadata only.
+   */
+  const handleApply = useCallback(() => {
+    if (!result) return;
+    const store = useAppStore.getState();
+    const prompt = store.selectedPrompt();
+    if (!prompt) return;
+
+    store.openEditPrompt(prompt.id);
+    store.updateEditorField("content", result.optimized);
+
+    if (isObservabilityEnabled()) {
+      emitDiagnosticEvent({
+        schemaVersion: 1,
+        traceId: "optimizer-apply",
+        spanId: `optimizer-apply-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+        timestamp: new Date().toISOString(),
+        layer: "ui",
+        operation: "optimizer.apply",
+        stage: "optimizer.apply",
+        status: "succeeded",
+        attributes: {
+          "promptvault.authoring.mode": "edit",
+          "promptvault.authoring.prompt_id": prompt.id,
+        },
+      });
+    }
+
+    // Close the optimizer modal so the editor is the only open modal.
+    onClose();
+  }, [result, onClose]);
 
   const isEmpty = promptContent.trim().length === 0;
 
@@ -281,6 +319,16 @@ export const OptimizationPanel: React.FC<OptimizationPanelProps> = ({
           >
             {copied ? "✅ Kopiert!" : "📋 Ergebnis kopieren"}
           </button>
+          {result && !isEmpty && (
+            <button
+              className="btn btn-primary"
+              onClick={handleApply}
+              title="Optimiertes Ergebnis in den Editor übernehmen"
+              aria-label="Optimiertes Ergebnis übernehmen"
+            >
+              ✏️ Übernehmen
+            </button>
+          )}
         </div>
       </div>
     </div>

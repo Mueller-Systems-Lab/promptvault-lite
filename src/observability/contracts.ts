@@ -97,7 +97,8 @@ export type ReasonCode =
   | "TTS_ENGINE_START_FAILED"
   | "TTS_SYNTHESIS_FAILED"
   | "TTS_INPUT_REJECTED"
-  | "TTS_CANCELLED";
+  | "TTS_CANCELLED"
+  | "AUTHORING_SAVE_FAILED";
 
 export interface DiagnosticError {
   /** Raw error message. Omited from diagnostic exports (may contain user content/paths/secrets). */
@@ -236,4 +237,5 @@ export const ALL_REASON_CODES: ReadonlySet<ReasonCode> = new Set<ReasonCode>([
   "TTS_SYNTHESIS_FAILED",
   "TTS_INPUT_REJECTED",
   "TTS_CANCELLED",
+  "AUTHORING_SAVE_FAILED",
 ]);

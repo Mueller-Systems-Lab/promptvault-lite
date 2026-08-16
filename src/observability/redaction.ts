@@ -67,6 +67,9 @@ const SAFE_ATTRIBUTE_KEYS: ReadonlySet<string> = new Set([
   "promptvault.batch.prompt_count",
   "promptvault.save.create_succeeded",
   "promptvault.save.rescan_succeeded",
+  "promptvault.authoring.mode",
+  "promptvault.authoring.prompt_id",
+  "promptvault.authoring.duration_ms",
 ]);
 
 /** Bounded, code-owned invariant violation types (not user content). */

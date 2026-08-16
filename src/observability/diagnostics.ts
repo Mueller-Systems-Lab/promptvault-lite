@@ -233,6 +233,11 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
     description: "Local TTS playback was cancelled",
     defaultCategory: "EXPECTED_SKIP",
   },
+  AUTHORING_SAVE_FAILED: {
+    code: "AUTHORING_SAVE_FAILED",
+    description: "Prompt authoring save (create/update) failed",
+    defaultCategory: "PROCESSING_ERROR",
+  },
 };
 
 export function getReasonCodeDescription(code: ReasonCode): string {
