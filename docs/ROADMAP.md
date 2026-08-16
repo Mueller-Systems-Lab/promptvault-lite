@@ -1,10 +1,22 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-08-15
-**Current version:** v1.9.2 (GitHub Release published 2026-08-15, Windows x64 installer)
-**Next target:** v1.10.0 In-App Prompt Authoring Lifecycle — **implemented & verified locally** (awaiting final integration approval)
+**Last updated:** 2026-08-16
+**Current version:** v1.10.0 (GitHub Release published 2026-08-15 — Windows x64 installer `PromptVault.Lite_1.10.0_x64-setup.exe`; PyPI `promptvault-lite-manager==1.10.0` published via OIDC)
+**Next target:** v1.11.0 planning — candidate scope: Advanced Workflows GA (Missing Info / Direction), Embeddings Phase 2 (#199), code signing
 
 ---
+
+## Recently Completed (v1.10.0)
+
+| Task | Status |
+| --- | --- |
+| In-App Prompt Authoring Lifecycle (create/edit/save/cancel, dirty state) | ✅ DONE / RELEASED (v1.10.0) |
+| Persistent save via canonical filesystem (`create_prompt`/`update_prompt`) + restart persistence (`promptvault.lastFolder`) | ✅ DONE / RELEASED (v1.10.0) |
+| Optimizer "Übernehmen" (apply) + stale-analysis invalidation | ✅ DONE / RELEASED (v1.10.0) |
+| Authoring observability (safe metadata only, `AUTHORING_SAVE_FAILED` ReasonCode) | ✅ DONE / RELEASED (v1.10.0) |
+| Native + public E2E on the installed release binary (authoring lifecycle 6/6; public install/update proofs) | ✅ PASS (v1.10.0) |
+| Windows x64 NSIS installer + release manifest + checksums | ✅ PUBLISHED (v1.10.0 GitHub Release) |
+| PyPI `promptvault-lite-manager==1.10.0` | ✅ PUBLISHED (OIDC Trusted Publishing) |
 
 ## Recently Completed (v1.9.0)
 
@@ -46,6 +58,9 @@
 | `v1.9.0` Tag | ✅ Published |
 | GitHub Release v1.9.0 (Windows installer + manifest + checksums) | ✅ Published |
 | PyPI publish (`promptvault-lite-manager==1.9.0`) | ✅ Published (OIDC Trusted Publishing) |
+| `v1.10.0` Tag | ✅ Published |
+| GitHub Release v1.10.0 (Windows installer + manifest + checksums) | ✅ Published |
+| PyPI publish (`promptvault-lite-manager==1.10.0`) | ✅ Published (OIDC Trusted Publishing) |
 
 ---
 
@@ -54,6 +69,7 @@
 | Priority | Task | Issue |
 | -------- | --- | --- |
 | P1 | ~~PyPI-Publikation `promptvault-lite-manager` + public `uv tool install` verifizieren~~ ✅ Done | — |
+| P1 | Advanced Workflows GA (Missing Info / Direction) — candidate for v1.11.0 (not yet done) | — |
 | P2 | Embeddings Phase 2: DB schema/storage | #199 |
 | P2 | Architecture Contract Audit | — |
 | P2 | Security Posture Review | — |

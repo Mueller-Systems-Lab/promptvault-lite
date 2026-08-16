@@ -4,7 +4,7 @@
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.9.2-blue)
+![Release](https://img.shields.io/badge/release-v1.10.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
@@ -22,7 +22,7 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Highlights
 
-- **In-App Prompt Authoring** — create, edit, save and persist prompts directly in the app (v1.10.0, current dev milestone)
+- **In-App Prompt Authoring** — create, edit, save and persist prompts directly in the app (v1.10.0, released)
 - **Local Prompt Archive** — recursively scan local folders (`.md`, `.markdown`, `.txt`, 1 MiB limit)
 - **Quality & Hygiene Analysis** — score prompts across clarity, role, goal, context, output format and reusability; detect contamination such as secrets, private paths and evidence clutter
 - **Prompt Context Evaluation** — measure how well a prompt carries its own context
@@ -40,17 +40,17 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release & Publication Status
 
-**v1.9.2** is the current released version (tagged and published as a GitHub Release). **v1.10.0** (in-app prompt authoring lifecycle) is implemented and verified locally, awaiting final integration approval.
+**v1.10.0** is the current released version (tagged and published as a GitHub Release; MINOR — Integrated Prompt Authoring Lifecycle). The in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability) is released: public native + CLI install/update proofs PASS, authoring lifecycle E2E 6/6 PASS on the installed release binary.
 
 | Platform | Asset |
 |---|---|
-| Windows x64 | `PromptVault.Lite_1.9.2_x64-setup.exe` (NSIS installer) |
+| Windows x64 | `PromptVault.Lite_1.10.0_x64-setup.exe` (NSIS installer) |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
 
 The Windows installer is **unsigned** — Windows SmartScreen may show an "Unknown publisher" warning. Linux `.deb`/`.rpm` remain available for v1.8.0; macOS is not pre-built.
 
-The `promptvault` CLI (v1.9.2) installs and manages the native app. Its Python distribution `promptvault-lite-manager` is **published on PyPI** and installable with `uv tool install promptvault-lite-manager`.
+The `promptvault` CLI (v1.10.0) installs and manages the native app. Its Python distribution `promptvault-lite-manager` (1.10.0) is **published on PyPI** and installable with `uv tool install promptvault-lite-manager`.
 
 ---
 
@@ -58,7 +58,7 @@ The `promptvault` CLI (v1.9.2) installs and manages the native app. Its Python d
 
 ### Native App
 
-**Windows (v1.9.2):** download `PromptVault.Lite_1.9.2_x64-setup.exe` from the [latest GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.2) and run it. The installer is unsigned — Windows SmartScreen may show an "Unknown publisher" warning.
+**Windows (v1.10.0):** download `PromptVault.Lite_1.10.0_x64-setup.exe` from the [latest GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.10.0) and run it. The installer is unsigned — Windows SmartScreen may show an "Unknown publisher" warning.
 
 **Linux (v1.8.0):** download and install the `.deb` or `.rpm` from the v1.8.0 GitHub Release.
 
@@ -226,7 +226,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Stable public release (v1.9.2, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager`. In development locally: v1.10.0 in-app prompt authoring (implemented and verified, awaiting final integration approval). See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Stable public release (v1.10.0, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager` (1.10.0). In-app prompt authoring is released. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

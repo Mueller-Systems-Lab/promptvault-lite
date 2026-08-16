@@ -8,7 +8,7 @@ version: 1.10.0
 
 ## v1.10.0 — In-App Prompt Authoring Lifecycle (MINOR / feature wave)
 
-Released: 2026-08-15 (feature wave, implemented & verified locally — awaiting final integration approval)
+Released: 2026-08-15 — **RELEASED**: GitHub Release v1.10.0 published (Windows x64 NSIS installer `PromptVault.Lite_1.10.0_x64-setup.exe` + release manifest + `SHA256SUMS.txt`); `promptvault-lite-manager==1.10.0` published on PyPI (OIDC Trusted Publishing); tag `v1.10.0` pushed.
 
 ### Added
 

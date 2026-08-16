@@ -1,10 +1,9 @@
 # Project Status — PromptVault Lite
 
-**Last updated:** 2026-08-15
-**Current stable release:** v1.9.2 (patch release — fail-closed diagnostic export privacy boundary, canonical app version in diagnostics)
-**In development:** v1.10.0 authoring lifecycle — **implemented and verified locally** (awaiting final integration approval)
+**Last updated:** 2026-08-16
+**Current stable release:** v1.10.0 (MINOR — Integrated Prompt Authoring Lifecycle)
 **Branch:** master
-**Master HEAD:** tagged `v1.9.2` — v1.9.2 release state (v1.10.0 changes implemented locally, not yet committed/merged)
+**Master HEAD:** tagged `v1.10.0` — v1.10.0 release state (GitHub Release + PyPI `promptvault-lite-manager==1.10.0` published)
 
 ---
 
@@ -12,20 +11,21 @@
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
-**Release:** v1.9.2 published as a GitHub Release (Windows x64 NSIS installer + release manifest + checksums).
-**Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.9.2, via OIDC Trusted Publishing).
-**In development (local):** v1.10.0 — in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Frontend suites + all local gates green; awaiting final integration approval.
+**Release:** v1.10.0 published as a GitHub Release (Windows x64 NSIS installer `PromptVault.Lite_1.10.0_x64-setup.exe` + release manifest + `SHA256SUMS.txt`); tag `v1.10.0` pushed.
+**Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
+**v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
 
 ---
 
-## Integrated (v1.10.0 — in development, implemented & verified locally)
+## Integrated (v1.10.0 — RELEASED)
 
 | Feature | Status | Evidence |
 | --- | --- | --- |
-| In-App Prompt Authoring Lifecycle (create/edit/save/cancel, dirty state) | ✅ IMPLEMENTED / VERIFIED LOCALLY (v1.10.0, awaiting final integration) | `docs/audits/PVL-v1.10.0-AUTHORING-LIFECYCLE-SPEC-VERIFICATION-CONTRACT-20260815.md` + `src/stores/appStore.ts` + `src/components/editor/PromptEditor.tsx` + authoring test suites |
-| Persistent save via canonical filesystem (`create_prompt`/`update_prompt`) + restart persistence (`promptvault.lastFolder` auto-restore) | ✅ IMPLEMENTED / VERIFIED LOCALLY (v1.10.0) | `src/lib/tauri.ts` + `src/App.tsx` (startup restore) + `appStore.authoring.test.ts` |
-| Optimizer "Übernehmen" (apply to editor, explicit user action) + stale-analysis invalidation on content change | ✅ IMPLEMENTED / VERIFIED LOCALLY (v1.10.0) | `src/components/optimization/OptimizationPanel.tsx` + `invalidateAnalysisForPrompt` + test suites |
-| Authoring observability (prompt.create/edit/save/save_failed/cancel, optimizer.apply — safe metadata only) | ✅ IMPLEMENTED / VERIFIED LOCALLY (v1.10.0) | `src/observability/__tests__/authoringObservability.test.tsx` + `AUTHORING_SAVE_FAILED` ReasonCode |
+| In-App Prompt Authoring Lifecycle (create/edit/save/cancel, dirty state) | ✅ DONE / RELEASED (v1.10.0) | `docs/audits/PVL-v1.10.0-AUTHORING-LIFECYCLE-DECISION-RECORD-20260815.md` + `docs/audits/PVL-v1.10.0-AUTHORING-LIFECYCLE-RUN-REPORT-20260815.md` + `src/stores/appStore.ts` + `src/components/editor/PromptEditor.tsx` + authoring test suites |
+| Persistent save via canonical filesystem (`create_prompt`/`update_prompt`) + restart persistence (`promptvault.lastFolder` auto-restore) | ✅ DONE / RELEASED (v1.10.0) | `src/lib/tauri.ts` + `src/App.tsx` (startup restore) + `appStore.authoring.test.ts` + native/public E2E |
+| Optimizer "Übernehmen" (apply to editor, explicit user action) + stale-analysis invalidation on content change | ✅ DONE / RELEASED (v1.10.0) | `src/components/optimization/OptimizationPanel.tsx` + `invalidateAnalysisForPrompt` + test suites + public E2E test 5 |
+| Authoring observability (prompt.create/edit/save/save_failed/cancel, optimizer.apply — safe metadata only) | ✅ DONE / RELEASED (v1.10.0) | `src/observability/__tests__/authoringObservability.test.tsx` + `AUTHORING_SAVE_FAILED` ReasonCode + public privacy sentinel 0 |
+| Native + public E2E on the installed release binary | ✅ PASS / RELEASED (v1.10.0) | `e2e-tests/specs/authoring-lifecycle.native.spec.js` + `e2e-tests/specs/authoring-lifecycle.public.spec.js` (6/6 each, app_version 1.10.0) |
 
 ---
 
@@ -81,11 +81,14 @@
 | v1.9.0 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
 | v1.9.1 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
 | v1.9.2 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer + release manifest + `SHA256SUMS.txt`) |
+| v1.10.0 GitHub Release / Tag | ✅ Published (Windows x64 NSIS installer `PromptVault.Lite_1.10.0_x64-setup.exe` + release manifest + `SHA256SUMS.txt`) |
 | PyPI (`promptvault-lite-manager==1.9.0`) | ✅ Published (OIDC Trusted Publishing) |
 | PyPI (`promptvault-lite-manager==1.9.1`) | ✅ Published (OIDC Trusted Publishing) |
 | PyPI (`promptvault-lite-manager==1.9.2`) | ✅ Published (OIDC Trusted Publishing) |
+| PyPI (`promptvault-lite-manager==1.10.0`) | ✅ Published (OIDC Trusted Publishing) |
 | Windows v1.9.1 installer asset | ✅ Published (`PromptVault.Lite_1.9.1_x64-setup.exe`) |
 | Windows v1.9.2 installer asset | ✅ Published (`PromptVault.Lite_1.9.2_x64-setup.exe`) |
+| Windows v1.10.0 installer asset | ✅ Published (`PromptVault.Lite_1.10.0_x64-setup.exe`) |
 
 ---
 
@@ -124,7 +127,7 @@
 | `cargo fmt --check --all` | PASS |
 | `cargo clippy --workspace --all-targets -- -D warnings` | PASS |
 | Build (`pnpm build`) | PASS |
-| Native E2E (WebdriverIO, Windows) | PASS — `e2e-tests/specs/admin-observability.native.spec.js` |
+| Native E2E (WebdriverIO, Windows) | PASS — `e2e-tests/specs/admin-observability.native.spec.js` + `e2e-tests/specs/authoring-lifecycle.native.spec.js` + `authoring-lifecycle.public.spec.js` (public release binary) |
 | Playwright E2E | PASS — `pnpm exec playwright test` |
 
 > Exact test counts are intentionally not hard-coded here — they change frequently. Run the local gates to reproduce current numbers. See `docs/TESTING.md`.
@@ -133,6 +136,7 @@
 
 ## Next Steps (Recommended)
 
-1. **PyPI publication (done):** `promptvault-lite-manager==1.9.2` is published via OIDC Trusted Publishing; public `uv tool install promptvault-lite-manager` verified.
-2. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
-3. **Architecture Contract Audit / Security Posture Review.**
+1. **v1.10.0 released (done):** GitHub Release v1.10.0 (Windows x64 NSIS installer + release manifest + checksums) and PyPI `promptvault-lite-manager==1.10.0` (OIDC Trusted Publishing) published; tag `v1.10.0` pushed. Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
+2. **v1.11.0 planning:** next milestone — candidate scope: Advanced Workflows GA (Missing Info / Direction), Embeddings Phase 2, code signing.
+3. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
+4. **Architecture Contract Audit / Security Posture Review.**
