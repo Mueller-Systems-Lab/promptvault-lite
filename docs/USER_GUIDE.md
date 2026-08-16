@@ -27,7 +27,7 @@ version: 1.9.0
 - **Audio-Kurzbeschreibung** mit "Kurz vorlesen" Button (lokale Sprachausgabe)
 - Version, Kategorie, Tags, Pfad und Datumsangaben
 - Vollständiger Markdown-Inhalt
-- Aktionen: Favorit, Kopieren, Datei öffnen, Analysieren
+- Aktionen: Favorit, Kopieren, Datei öffnen, **Bearbeiten**, Analysieren
 
 ### Rechts: Analyse
 
@@ -62,6 +62,34 @@ version: 1.9.0
   - `critical`
 - Erkennt u. a. Projektartefakte, Repo-Referenzen, Dateipfade, Issue-Referenzen, Logzeilen, Stacktraces, Build-Output, JSON-/Code-Dumps, PII und Secrets
 
+## Prompts bearbeiten & erstellen (Authoring)
+
+PromptVault Lite kann Prompts direkt in der App **erstellen** und **bearbeiten** — ohne externe Datei-Editoren. Gespeichert wird über den kanonischen Speicherpfad: Die App schreibt die Markdown-Datei in den geöffneten Vault-Ordner (bzw. aktualisiert die bestehende Datei).
+
+### Neuen Prompt erstellen
+
+1. Klicke in der Toolbar auf **✏️ Neuer Prompt**.
+2. Trage **Titel** (Pflicht) und **Inhalt** (Pflicht) ein.
+3. Klicke auf **Speichern** — die neue `.md`-Datei erscheint im Explorer.
+
+### Prompt bearbeiten
+
+1. Wähle einen Prompt im Explorer aus.
+2. Klicke in der Detailansicht auf **✏️ Bearbeiten**.
+3. Ändere Titel und/oder Inhalt und klicke auf **Speichern** — die Datei im Vault wird aktualisiert.
+
+### Editor-Dialog
+
+- **Titel** und **Inhalt** sind Pflichtfelder; der Speichern-Button ist solange deaktiviert, wie eines der Felder leer ist (bzw. im Bearbeiten-Modus, solange nichts geändert wurde).
+- **Ungespeicherte Änderungen:** Sobald du etwas änderst, zeigt der Editor einen Hinweis **„● Ungespeicherte Änderungen"**.
+- **Abbrechen** verwirft alle Änderungen, ohne zu speichern.
+- **Tastatur:** `Esc` bricht ab, `Strg/Cmd + S` speichert.
+- Nach dem Speichern werden veraltete Analyseergebnisse des Prompts ungültig und bei der nächsten Analyse neu berechnet.
+
+### Optimierungsergebnis übernehmen
+
+Im Optimierungsdialog gibt es neben **📋 Ergebnis kopieren** den Button **✏️ Übernehmen**: Er öffnet den Editor mit dem optimierten Inhalt (explizite Nutzeraktion — es wird nie automatisch überschrieben). Danach kannst du mit **Speichern** den übernommenen Inhalt persistieren.
+
 ## Export
 
 - Export-Commands sind im Backend vollständig implementiert (`export_json`, `export_markdown`, `export_zip`).
@@ -77,7 +105,8 @@ version: 1.9.0
   - **Strg/Cmd + F** — Suchfeld fokussieren
   - **Strg/Cmd + Shift + A** — Alle Prompts analysieren
   - **Strg/Cmd + E** — Export-Dialog öffnen
-  - **Esc** — Filter zurücksetzen / Suchfeld verlassen
+  - **Strg/Cmd + S** — im Prompt-Editor speichern
+  - **Esc** — Filter zurücksetzen / Suchfeld verlassen / Editor schließen
 
 ## Audio-Kurzbeschreibung (lokal)
 

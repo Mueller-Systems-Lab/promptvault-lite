@@ -1,6 +1,6 @@
 [package]
 name = "promptvault-lite"
-version = "1.9.2"
+version = "1.10.0"
 description = "Lokales Prompt-Management-System mit Qualitäts- und Hygieneanalyse"
 authors = ["PromptVault Team"]
 license = "MIT"

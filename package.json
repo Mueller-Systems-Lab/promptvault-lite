@@ -1,7 +1,7 @@
 {
   "name": "promptvault-lite",
   "private": true,
-  "version": "1.9.2",
+  "version": "1.10.0",
   "license": "MIT",
   "description": "Lokales Prompt-Management-System mit Qualitäts- und Hygieneanalyse",
   "type": "module",

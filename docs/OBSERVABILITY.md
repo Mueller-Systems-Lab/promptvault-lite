@@ -120,6 +120,21 @@ Das Panel bietet: Übersicht (aktive Traces, Fehler, Warnungen, Invariant Violat
 
 Der Vertrag ist typisiert und versioniert: `OBSERVABILITY_SCHEMA_VERSION = 1` in `src/observability/contracts.ts`. Ein `DiagnosticEvent` trägt `schemaVersion`, `traceId`, `spanId`, `parentSpanId`, `timestamp`, `durationMs`, `layer`, `operation`, `stage`, `status`, optional `category`, `reasonCode`, `inputFingerprint`, `outputFingerprint`, `attributes`, `error` und `invariantViolations`.
 
+### Authoring-Operationen (v1.10.0)
+
+Der Prompt-Authoring-Lifecycle emittiert eigene Operationen:
+
+```text
+prompt.create       — erfolgreiches Anlegen eines neuen Prompts (Store, succeeded)
+prompt.edit         — Editor im Bearbeiten-Modus geöffnet (Store, succeeded)
+prompt.save         — erfolgreiches Speichern eines bearbeiteten Prompts (Store, succeeded)
+prompt.save_failed  — Speichern fehlgeschlagen (Store, failed, AUTHORING_SAVE_FAILED)
+prompt.cancel       — Dirty-Editor ohne Speichern verworfen (Store, succeeded)
+optimizer.apply     — Optimierungsergebnis explizit in den Editor übernommen (UI, succeeded)
+```
+
+Diese Events tragen **ausschließlich sichere Metadaten**: `promptvault.authoring.mode` (`create`/`edit`), `promptvault.authoring.prompt_id` (opaque ID) und `promptvault.authoring.duration_ms`. **Nie** Prompt-Text, Titel-Inhalt oder Clipboard-Daten. Die drei Attribute sind in der `SAFE_ATTRIBUTE_KEYS`-Allowlist (`src/observability/redaction.ts`) freigegeben.
+
 ### Reason Codes
 
 Reason Codes sind zentral in `src/observability/diagnostics.ts` katalogisiert (Code + Beschreibung + Default-Kategorie). Beispiele:
@@ -136,6 +151,7 @@ ANALYZE_ALL_RESULT_LENGTH_MISMATCH
 STALE_ANALYSIS_RESULT
 CONSTRAINT_LOST
 PARTIAL_SAVE_FAILURE
+AUTHORING_SAVE_FAILED
 ```
 
 Fehlerklassen (`ErrorClass`) trennen `EXPECTED_BLOCK`/`EXPECTED_SKIP` von echten Fehlern (`PROCESSING_ERROR`, `INVARIANT_VIOLATION`, `SECURITY_BLOCK`, …).

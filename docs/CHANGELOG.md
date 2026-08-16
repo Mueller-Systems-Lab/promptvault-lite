@@ -1,10 +1,32 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.9.2
+version: 1.10.0
 ---
 
 # Changelog
+
+## v1.10.0 — In-App Prompt Authoring Lifecycle (MINOR / feature wave)
+
+Released: 2026-08-15 (feature wave, implemented & verified locally — awaiting final integration approval)
+
+### Added
+
+- **In-app prompt authoring:** create new prompts directly in the UI ("✏️ Neuer Prompt" toolbar button) and edit existing ones ("✏️ Bearbeiten" in the details ActionBar).
+- **Editor modal** (`src/components/editor/PromptEditor.tsx`) with labeled Titel/Inhalt fields, Speichern/Abbrechen, dirty indicator ("● Ungespeicherte Änderungen") and keyboard support (Esc cancels, Strg/Cmd+S saves).
+- **Persistent save via the canonical storage layer:** create/edit persist through the existing `create_prompt`/`update_prompt` Tauri commands (filesystem is canonical; no second storage system, no action-layer changes).
+- **Restart persistence:** the last vault folder is stored (`promptvault.lastFolder`) during `scanFolder` and auto-restored + rescanned on app startup.
+- **Optimizer "Übernehmen" (apply):** take an optimized result into the editor by explicit user action (never auto-overwrite).
+- **Stale-analysis invalidation:** after a content change + save, evaluations/hygiene/context/blueprint results for that prompt are invalidated so stale analysis is never shown as current.
+- **Authoring observability events:** `prompt.create`, `prompt.edit`, `prompt.save`, `prompt.save_failed`, `prompt.cancel`, `optimizer.apply` — safe metadata only (mode, opaque prompt_id, duration_ms), never prompt content/title/clipboard.
+- **New ReasonCode:** `AUTHORING_SAVE_FAILED` (cataloged in `src/observability/diagnostics.ts`).
+- **Safe-attribute allowlist additions:** `promptvault.authoring.mode`, `promptvault.authoring.prompt_id`, `promptvault.authoring.duration_ms`.
+
+### Fixed
+
+- Playwright status-bar version test no longer hardcodes a stale version (`1.8.0` → version-agnostic regex) so it can never rot again.
+
+---
 
 ## v1.9.2 — Patch: Fail-Closed Diagnostic Export Privacy Boundary
 

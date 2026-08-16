@@ -2,9 +2,9 @@
 
 **Last updated:** 2026-08-15
 **Current stable release:** v1.9.2 (patch release — fail-closed diagnostic export privacy boundary, canonical app version in diagnostics)
-**In development:** none — v1.9.2 released and frozen
+**In development:** v1.10.0 authoring lifecycle — **implemented and verified locally** (awaiting final integration approval)
 **Branch:** master
-**Master HEAD:** tagged `v1.9.2` — v1.9.2 release state
+**Master HEAD:** tagged `v1.9.2` — v1.9.2 release state (v1.10.0 changes implemented locally, not yet committed/merged)
 
 ---
 
@@ -14,6 +14,18 @@
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
 **Release:** v1.9.2 published as a GitHub Release (Windows x64 NSIS installer + release manifest + checksums).
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.9.2, via OIDC Trusted Publishing).
+**In development (local):** v1.10.0 — in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Frontend suites + all local gates green; awaiting final integration approval.
+
+---
+
+## Integrated (v1.10.0 — in development, implemented & verified locally)
+
+| Feature | Status | Evidence |
+| --- | --- | --- |
+| In-App Prompt Authoring Lifecycle (create/edit/save/cancel, dirty state) | ✅ IMPLEMENTED / VERIFIED LOCALLY (v1.10.0, awaiting final integration) | `docs/audits/PVL-v1.10.0-AUTHORING-LIFECYCLE-SPEC-VERIFICATION-CONTRACT-20260815.md` + `src/stores/appStore.ts` + `src/components/editor/PromptEditor.tsx` + authoring test suites |
+| Persistent save via canonical filesystem (`create_prompt`/`update_prompt`) + restart persistence (`promptvault.lastFolder` auto-restore) | ✅ IMPLEMENTED / VERIFIED LOCALLY (v1.10.0) | `src/lib/tauri.ts` + `src/App.tsx` (startup restore) + `appStore.authoring.test.ts` |
+| Optimizer "Übernehmen" (apply to editor, explicit user action) + stale-analysis invalidation on content change | ✅ IMPLEMENTED / VERIFIED LOCALLY (v1.10.0) | `src/components/optimization/OptimizationPanel.tsx` + `invalidateAnalysisForPrompt` + test suites |
+| Authoring observability (prompt.create/edit/save/save_failed/cancel, optimizer.apply — safe metadata only) | ✅ IMPLEMENTED / VERIFIED LOCALLY (v1.10.0) | `src/observability/__tests__/authoringObservability.test.tsx` + `AUTHORING_SAVE_FAILED` ReasonCode |
 
 ---
 
@@ -96,7 +108,7 @@
 - **Remote-CI infra-blocked** (Issue #154); local CI authoritative
 - **Embeddings Phase 1 mock-only** — no real semantic search
 - **Local TTS neural path** — adapter implemented and verified end-to-end on Windows against a real local Piper runtime + German model (`de_DE-thorsten-high`); Piper/model are external local runtime requirements (not bundled); Web Speech remains the fallback
-- **SQLite not fully wired** as primary persistence for scanned prompts
+- **SQLite not fully wired** as primary persistence for scanned prompts (filesystem remains the canonical storage; since v1.10.0 authored prompts persist directly via the filesystem through `create_prompt`/`update_prompt`, which is the canonical storage layer — SQLite keeps its existing roles, e.g. favorites)
 - **CLI published on PyPI** — `uv tool install promptvault-lite-manager` (verified public install)
 
 ---

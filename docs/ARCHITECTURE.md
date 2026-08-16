@@ -1,8 +1,8 @@
 ---
 title: Architektur
 description: Systemübersicht, Module und Datenfluss von PromptVault Lite.
-version: 1.9.0
-last_updated: 2026-08-12
+version: 1.10.0
+last_updated: 2026-08-15
 ---
 
 # Architektur
@@ -18,6 +18,7 @@ last_updated: 2026-08-12
                       │  - Audio Summary             │      │  - favorites / persist   │
                       │  - Settings                  │      │  - actions               │
                       │  - Optimization Panels       │      └──────────┬───────────────┘
+                      │  - Prompt Editor (v1.10.0)   │                │
                       │  - Admin Diagnostics Panel   │                │
                       └──────────┬──────────────────┘                │
                                  │                                    ▼
@@ -215,16 +216,21 @@ flowchart LR
 - `src/components/details/PromptAudioSummary.tsx` — Audio-Zusammenfassung
 - `src/components/analysis/AnalysisPanel.tsx` — Qualität & Hygiene
 - `src/components/analysis/BlueprintEvaluationPanel.tsx` — Blueprint-Analyse
+- `src/components/editor/PromptEditor.tsx` — Prompt-Editor (erstellen/bearbeiten, v1.10.0)
 - `src/components/optimization/OptimizationPanel.tsx` — Prompt-Optimierung
 - `src/components/optimization/BlueprintOptimizationPanel.tsx` — Blueprint-Optimierung
 - `src/components/paste/PastePromptAnalyzer.tsx` — Direktanalyse
 - `src/components/settings/SettingsPanel.tsx` — Einstellungen
 - `src/components/common/ExportDialog.tsx` — Export-Dialog
-- `src/stores/appStore.ts` — Zustand Store
+- `src/stores/appStore.ts` — Zustand Store (inkl. Authoring-Aktionen `openCreatePrompt`/`openEditPrompt`/`updateEditorField`/`closePromptEditor`/`savePromptEditor`/`invalidateAnalysisForPrompt`, v1.10.0)
 - `src/hooks/useExport.ts`
 - `src/hooks/useKeyboardShortcuts.ts`
 - `src/hooks/useResizablePanel.ts`
 - `src/lib/tauri.ts` — Typisierte Tauri IPC API
+
+### Persistenz (v1.10.0)
+
+Das **Dateisystem bleibt der kanonische Speicher**: Authoring-Speicherungen laufen über die bestehenden Tauri-Commands `create_prompt`/`update_prompt` (via `src/lib/tauri.ts`, gleicher Pfad wie `saveVariantAsPrompt`). Es gibt **keinen** zweiten Storage, keine neuen Rust-Commands und keine Migration. Der Restart-Folder wird zusätzlich in `localStorage` (`promptvault.lastFolder`) gemerkt und beim App-Start automatisch wiederhergestellt + neu gescannt.
 
 ## Technologieentscheidungen
 

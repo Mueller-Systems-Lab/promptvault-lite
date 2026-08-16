@@ -1,8 +1,8 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-08-13
-**Current version:** v1.9.0 (GitHub Release published 2026-08-13, Windows x64 installer)
-**Next target:** PyPI-Publikation von `promptvault-lite-manager` — **erledigt** (v1.9.0 public)
+**Last updated:** 2026-08-15
+**Current version:** v1.9.2 (GitHub Release published 2026-08-15, Windows x64 installer)
+**Next target:** v1.10.0 In-App Prompt Authoring Lifecycle — **implemented & verified locally** (awaiting final integration approval)
 
 ---
 

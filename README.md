@@ -22,6 +22,7 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Highlights
 
+- **In-App Prompt Authoring** — create, edit, save and persist prompts directly in the app (v1.10.0, current dev milestone)
 - **Local Prompt Archive** — recursively scan local folders (`.md`, `.markdown`, `.txt`, 1 MiB limit)
 - **Quality & Hygiene Analysis** — score prompts across clarity, role, goal, context, output format and reusability; detect contamination such as secrets, private paths and evidence clutter
 - **Prompt Context Evaluation** — measure how well a prompt carries its own context
@@ -39,7 +40,7 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release & Publication Status
 
-**v1.9.2** is the current release (tagged and published as a GitHub Release).
+**v1.9.2** is the current released version (tagged and published as a GitHub Release). **v1.10.0** (in-app prompt authoring lifecycle) is implemented and verified locally, awaiting final integration approval.
 
 | Platform | Asset |
 |---|---|
@@ -106,7 +107,8 @@ See [`docs/CLI.md`](docs/CLI.md) for the full CLI reference.
 3. Analyze a prompt (**Analysieren**)
 4. Review quality, hygiene and context results
 5. Optional: optimize the prompt
-6. Optional: enable **Admin Observability** (Settings → Entwickler-Werkzeuge) to inspect the processing pipeline
+6. Optional: **create or edit prompts in-app** (**✏️ Neuer Prompt** / **✏️ Bearbeiten**), then **Speichern** — changes persist to the vault folder
+7. Optional: enable **Admin Observability** (Settings → Entwickler-Werkzeuge) to inspect the processing pipeline
 
 CLI quick start (once the CLI is installed):
 
@@ -224,7 +226,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Stable public release (v1.9.2, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager`. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Stable public release (v1.9.2, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager`. In development locally: v1.10.0 in-app prompt authoring (implemented and verified, awaiting final integration approval). See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 
