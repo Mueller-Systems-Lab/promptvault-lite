@@ -1,15 +1,23 @@
-// e2e-tests/wdio.conf.windows.mjs — WebdriverIO config for Native Tauri E2E (Windows)
+// e2e-tests/wdio.conf.windows.release.mjs — WebdriverIO config for the
+// PRODUCTION RELEASE binary E2E proof (Windows)
 // ---------------------------------------------------------------------------
-// Windows uses WebView2 (Microsoft Edge WebView2 runtime), not WebKitGTK.
-// This config mirrors the Linux wdio.conf.mjs (manual tauri-driver lifecycle)
-// but for Windows: it spawns cargo-installed tauri-driver and puts a matching
-// msedgedriver on PATH. No @wdio/tauri-service (its Edge driver manager has a
-// version-detection/URL bug); this keeps one canonical manual-driver pattern.
+// PRODUCTION BINARY PROOF (v1.11.0 ADVANCED_WORKFLOWS_GA): drives the freshly
+// built release executable at
+//   C:\promptvault-lite\target\release\promptvault-lite.exe
+// (FileVersion/ProductVersion 1.11.0, release profile, Debug: False).
 //
-// Reproducible driver acquisition: download msedgedriver matching the installed
-// WebView2 runtime major version from
-//   https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
-// and cache it under %USERPROFILE%\.wdio-msedgedriver\<version>\msedgedriver.exe
+// This is a clone of wdio.conf.windows.public.mjs (manual tauri-driver
+// lifecycle + cached msedgedriver on PATH, port 4444) with two differences:
+//   1. APP_PATH points at the freshly built RELEASE exe (target\release),
+//      NOT the publicly installed exe under AppData\Local.
+//   2. specs runs ONLY the advanced-workflows.public spec.
+//
+// Release-binary consequence: the debug-only E2E bridge
+// window.__pvlLoadArchive (ADR-005, cfg!(debug_assertions)) is NOT exposed
+// (is_e2e_bridge_available() -> false). The public spec therefore loads the
+// archive through the REAL product startup-restore path (App.tsx effect:
+// localStorage["promptvault.lastFolder"] -> real scanFolder() -> real Rust
+// scan_directory + real FS) — see the spec header for the empirical details.
 
 import { spawn } from "node:child_process";
 import fs from "node:fs";
@@ -18,7 +26,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const APP_PATH = path.resolve(__dirname, "..", "target", "debug", "promptvault-lite.exe");
+const APP_PATH = "C:\\promptvault-lite\\target\\release\\promptvault-lite.exe";
 const TAURI_DRIVER = path.join(os.homedir(), ".cargo", "bin", "tauri-driver.exe");
 
 let tauriDriver;
@@ -44,9 +52,7 @@ export const config = {
   port: 4444,
   webSocketUrl: false,
   specs: [
-    "./specs/admin-observability.native.spec.js",
-    "./specs/authoring-lifecycle.native.spec.js",
-    "./specs/advanced-workflows.native.spec.js",
+    "./specs/advanced-workflows.public.spec.js",
   ],
   capabilities: [
     {
@@ -70,7 +76,7 @@ export const config = {
 
   onPrepare: () => {
     if (!fs.existsSync(APP_PATH)) {
-      throw new Error(`Tauri binary not found: ${APP_PATH}`);
+      throw new Error(`Release Tauri binary not found: ${APP_PATH}`);
     }
     if (!fs.existsSync(TAURI_DRIVER)) {
       throw new Error(`tauri-driver not found: ${TAURI_DRIVER} (run: cargo install tauri-driver)`);
@@ -84,8 +90,8 @@ export const config = {
       );
     }
     process.env.PATH = `${path.dirname(msedgedriver)}${path.delimiter}${process.env.PATH || ""}`;
-    console.log(`[windows-native] app binary: ${APP_PATH}`);
-    console.log(`[windows-native] msedgedriver: ${msedgedriver}`);
+    console.log(`[windows-release] production release binary: ${APP_PATH}`);
+    console.log(`[windows-release] msedgedriver: ${msedgedriver}`);
   },
 
   beforeSession: async () => {

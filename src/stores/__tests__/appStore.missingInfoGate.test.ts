@@ -5,7 +5,7 @@
 // closeGate, resetGateSession, getSessionForPrompt, analyzeSelected invalidation.
 // =============================================================================
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { useAppStore } from "@/stores/appStore";
 import type {
   PromptItem,
@@ -16,11 +16,10 @@ import type {
 } from "@/types";
 
 // ---------------------------------------------------------------------------
-// Mock missingInfoFeatureFlag — gate is always enabled in tests
+// Note: The Missing-Info-Gate is GA since v1.11.0 — no feature-flag mock is
+// needed; openMissingInfoGate always proceeds to the analysis-prerequisite
+// check.
 // ---------------------------------------------------------------------------
-vi.mock("@/lib/missingInfoFeatureFlag", () => ({
-  isMissingInfoGateEnabled: vi.fn(() => true),
-}));
 
 // ---------------------------------------------------------------------------
 // Helpers

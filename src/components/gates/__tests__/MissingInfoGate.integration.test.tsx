@@ -2,7 +2,7 @@
 // PromptVault Lite — MissingInfoGate Integration Tests (Batch 6A)
 // =============================================================================
 // Tests for: Gate → Optimizer full flow (#254), enrichedContent passthrough,
-// gate completion outcomes, feature-flag gating, BLOCKING_SENSITIVE_CONTENT.
+// gate completion outcomes, GA availability (v1.11.0), BLOCKING_SENSITIVE_CONTENT.
 // =============================================================================
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
@@ -15,14 +15,6 @@ import type {
   MissingInfoCategory,
   EnrichedPromptContext,
 } from "@/types";
-
-// ---------------------------------------------------------------------------
-// Mock feature-flag — gate enabled by default in tests
-// ---------------------------------------------------------------------------
-const mockIsGateEnabled = vi.fn(() => true);
-vi.mock("@/lib/missingInfoFeatureFlag", () => ({
-  isMissingInfoGateEnabled: () => mockIsGateEnabled(),
-}));
 
 // ---------------------------------------------------------------------------
 // Test Helpers
@@ -121,7 +113,6 @@ describe("MissingInfoGate — Integration: Gate → Optimizer Flow (#254)", () =
 
   beforeEach(() => {
     resetStore();
-    mockIsGateEnabled.mockReturnValue(true);
   });
 
   // -------------------------------------------------------------------------
@@ -319,11 +310,10 @@ describe("MissingInfoGate — Integration: Gate → Optimizer Flow (#254)", () =
   });
 
   // -------------------------------------------------------------------------
-  // Feature-Flag Gating
+  // GA availability (v1.11.0)
   // -------------------------------------------------------------------------
 
-  it("renders nothing when feature-flag is disabled", () => {
-    mockIsGateEnabled.mockReturnValue(false);
+  it("renders the gate whenever a session exists (GA — feature always available)", () => {
     const items = [makeClassifiedItem("Q1")];
     seedSession(promptId, items);
 
@@ -336,16 +326,16 @@ describe("MissingInfoGate — Integration: Gate → Optimizer Flow (#254)", () =
       />,
     );
 
-    // Component returns null when feature flag is off
-    expect(container.innerHTML).toBe("");
+    // GA: the gate renders — the feature is always available.
+    expect(container.innerHTML).not.toBe("");
+    expect(screen.getByTestId("gate-summary")).toBeTruthy();
   });
 
-  it("existing flow unchanged when feature-flag is disabled", () => {
-    mockIsGateEnabled.mockReturnValue(false);
+  it("existing flow unchanged (GA — rendering does not mutate the session)", () => {
     const items = [makeClassifiedItem("Q1")];
     seedSession(promptId, items);
 
-    const { container } = render(
+    render(
       <MissingInfoGate
         promptId={promptId}
         originalContent="test"
@@ -353,9 +343,8 @@ describe("MissingInfoGate — Integration: Gate → Optimizer Flow (#254)", () =
       />,
     );
 
-    // No gate UI rendered, no store mutation
-    expect(container.innerHTML).toBe("");
-    // Store should still have the seeded session (not cleared by render)
+    // Gate UI rendered, store session untouched by rendering
+    expect(screen.getByTestId("gate-summary")).toBeTruthy();
     const state = useAppStore.getState();
     expect(state.missingInfoSessions[promptId]).toBeDefined();
   });

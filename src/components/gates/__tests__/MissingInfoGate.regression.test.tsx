@@ -1,7 +1,7 @@
 // =============================================================================
 // PromptVault Lite — MissingInfoGate Regression Tests (Batch 6A)
 // =============================================================================
-// Tests for: Original prompt immutability (#256), feature-flag OFF,
+// Tests for: Original prompt immutability (#256), GA availability (v1.11.0),
 // existing optimizer behavior unchanged, session-only guarantee.
 // =============================================================================
 
@@ -16,14 +16,6 @@ import type {
   MissingInfoCategory,
   EnrichedPromptContext,
 } from "@/types";
-
-// ---------------------------------------------------------------------------
-// Mock feature-flag — gate enabled by default, toggle per test
-// ---------------------------------------------------------------------------
-const mockIsGateEnabled = vi.fn(() => true);
-vi.mock("@/lib/missingInfoFeatureFlag", () => ({
-  isMissingInfoGateEnabled: () => mockIsGateEnabled(),
-}));
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -122,7 +114,6 @@ describe("MissingInfoGate — Regression (#256)", () => {
 
   beforeEach(() => {
     resetStore();
-    mockIsGateEnabled.mockReturnValue(true);
   });
 
   // -------------------------------------------------------------------------
@@ -206,11 +197,10 @@ describe("MissingInfoGate — Regression (#256)", () => {
   });
 
   // -------------------------------------------------------------------------
-  // Feature-Flag OFF — Existing Flow Unchanged
+  // GA availability — existing Flow Unchanged (v1.11.0)
   // -------------------------------------------------------------------------
 
-  it("gate renders nothing when feature-flag is disabled", () => {
-    mockIsGateEnabled.mockReturnValue(false);
+  it("gate renders whenever a session exists (GA — feature always available)", () => {
     seedSession(promptId, [makeClassifiedItem("Q1")]);
 
     const { container } = render(
@@ -221,11 +211,11 @@ describe("MissingInfoGate — Regression (#256)", () => {
       />,
     );
 
-    expect(container.innerHTML).toBe("");
+    expect(container.innerHTML).not.toBe("");
+    expect(screen.getByTestId("gate-summary")).toBeTruthy();
   });
 
-  it("no store mutation when gate is rendered with flag disabled", () => {
-    mockIsGateEnabled.mockReturnValue(false);
+  it("no store mutation when gate is rendered without user interaction", () => {
     seedSession(promptId, [makeClassifiedItem("Q1")]);
 
     const beforeSession = useAppStore.getState().missingInfoSessions[promptId];

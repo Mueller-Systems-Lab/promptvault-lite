@@ -2,22 +2,13 @@
 // PromptVault Lite — VariantCompare UI Tests (Batch 7, T-215-016)
 // =============================================================================
 // Tests for: side-by-side rendering, source/variant content, constraints table,
-// conflict banners, save button state (BLOCKING disabled), feature-flag gating.
+// conflict banners, save/apply button state (BLOCKING disabled), GA (v1.11.0).
 // =============================================================================
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { VariantCompare } from "../VariantCompare";
 import type { PromptVariant } from "@/types";
-
-// =============================================================================
-// Mocks
-// =============================================================================
-
-const mockFlagEnabled = vi.fn(() => true);
-vi.mock("@/lib/directionFeatureFlag", () => ({
-  isDirectionProfilesEnabled: () => mockFlagEnabled(),
-}));
 
 // =============================================================================
 // Helpers
@@ -57,7 +48,7 @@ function makeVariant(overrides: Partial<PromptVariant> = {}): PromptVariant {
 
 describe("VariantCompare — Side-by-Side Rendering", () => {
   beforeEach(() => {
-    mockFlagEnabled.mockReturnValue(true);
+    vi.clearAllMocks();
   });
 
   it("renders side-by-side panes with source and variant content", () => {
@@ -139,7 +130,6 @@ describe("VariantCompare — Side-by-Side Rendering", () => {
 
 describe("VariantCompare — Constraints Table", () => {
   beforeEach(() => {
-    mockFlagEnabled.mockReturnValue(true);
   });
 
   it("renders preserved constraints table", () => {
@@ -199,7 +189,6 @@ describe("VariantCompare — Constraints Table", () => {
 
 describe("VariantCompare — Conflicts", () => {
   beforeEach(() => {
-    mockFlagEnabled.mockReturnValue(true);
   });
 
   it("shows BLOCKING conflict banner and disables save", () => {
@@ -298,7 +287,6 @@ describe("VariantCompare — Conflicts", () => {
 
 describe("VariantCompare — Actions", () => {
   beforeEach(() => {
-    mockFlagEnabled.mockReturnValue(true);
   });
 
   it("save button calls onSave with the variant", () => {
@@ -373,7 +361,6 @@ describe("VariantCompare — Actions", () => {
 
 describe("VariantCompare — Direction and Recommendation", () => {
   beforeEach(() => {
-    mockFlagEnabled.mockReturnValue(true);
   });
 
   it("displays direction explanation", () => {
@@ -435,25 +422,8 @@ describe("VariantCompare — Direction and Recommendation", () => {
   });
 });
 
-describe("VariantCompare — Feature Flag", () => {
-  it("returns null when feature flag is disabled", () => {
-    mockFlagEnabled.mockReturnValue(false);
-    const variant = makeVariant();
-
-    const { container } = render(
-      <VariantCompare
-        sourceContent="Test"
-        enrichedContentUsed={false}
-        variant={variant}
-        onClose={vi.fn()}
-      />,
-    );
-
-    expect(container.firstChild).toBeNull();
-  });
-
-  it("renders when feature flag is enabled", () => {
-    mockFlagEnabled.mockReturnValue(true);
+describe("VariantCompare — GA availability (v1.11.0)", () => {
+  it("renders without any feature flag (feature is always available)", () => {
     const variant = makeVariant();
 
     render(
@@ -466,5 +436,76 @@ describe("VariantCompare — Feature Flag", () => {
     );
 
     expect(screen.getByTestId("variant-compare")).toBeTruthy();
+  });
+
+  it("shows the ✏️ Im Editor übernehmen button when onApply is provided", () => {
+    const variant = makeVariant();
+
+    render(
+      <VariantCompare
+        sourceContent="Test"
+        enrichedContentUsed={false}
+        variant={variant}
+        onApply={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    const applyBtn = screen.getByTestId("variant-compare-apply-btn");
+    expect(applyBtn).toBeInTheDocument();
+    expect(applyBtn).not.toBeDisabled();
+  });
+
+  it("disables the apply button for BLOCKING conflicts", () => {
+    const variant = makeVariant({
+      conflicts: [
+        {
+          id: "conf_block",
+          profileId: "deep_research",
+          constraint: {
+            id: "hc_block",
+            constraintText: "Keine Cloud",
+            category: "offline_only",
+            severity: "hard" as const,
+            position: null,
+          },
+          description: "Blocking conflict",
+          severity: "blocking",
+          resolution: "constraint_preserved",
+        },
+      ],
+    });
+
+    render(
+      <VariantCompare
+        sourceContent="Test"
+        enrichedContentUsed={false}
+        variant={variant}
+        onApply={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    const applyBtn = screen.getByTestId("variant-compare-apply-btn");
+    expect(applyBtn).toBeDisabled();
+  });
+
+  it("apply button calls onApply with the variant (no BLOCKING conflicts)", () => {
+    const onApply = vi.fn();
+    const variant = makeVariant();
+
+    render(
+      <VariantCompare
+        sourceContent="Test"
+        enrichedContentUsed={false}
+        variant={variant}
+        onApply={onApply}
+        onClose={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(screen.getByTestId("variant-compare-apply-btn"));
+    expect(onApply).toHaveBeenCalledTimes(1);
+    expect(onApply).toHaveBeenCalledWith(variant);
   });
 });

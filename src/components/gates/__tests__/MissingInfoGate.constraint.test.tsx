@@ -16,12 +16,9 @@ import type {
 } from "@/types";
 
 // ---------------------------------------------------------------------------
-// Mock feature-flag — gate enabled by default
+// Note: The Missing-Info-Gate is GA since v1.11.0 — no feature-flag mock is
+// needed; the gate always renders when a session exists.
 // ---------------------------------------------------------------------------
-const mockIsGateEnabled = vi.fn(() => true);
-vi.mock("@/lib/missingInfoFeatureFlag", () => ({
-  isMissingInfoGateEnabled: () => mockIsGateEnabled(),
-}));
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -120,7 +117,6 @@ describe("MissingInfoGate — Constraints (#255)", () => {
 
   beforeEach(() => {
     resetStore();
-    mockIsGateEnabled.mockReturnValue(true);
   });
 
   // -------------------------------------------------------------------------

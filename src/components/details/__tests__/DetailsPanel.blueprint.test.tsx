@@ -24,20 +24,9 @@ import type {
 } from "@/types";
 
 // ---------------------------------------------------------------------------
-// Mock missingInfoFeatureFlag — controlled per test
+// Note: Missing-Info-Gate and Direction Profiles are GA since v1.11.0 — no
+// feature-flag mocks are needed. The ActionBar always renders both buttons.
 // ---------------------------------------------------------------------------
-const mockIsGateEnabled = vi.fn(() => false); // OFF by default for regression safety
-vi.mock("@/lib/missingInfoFeatureFlag", () => ({
-  isMissingInfoGateEnabled: () => mockIsGateEnabled(),
-}));
-
-// ---------------------------------------------------------------------------
-// Mock directionFeatureFlag — controlled per test (Batch 6)
-// ---------------------------------------------------------------------------
-const mockIsDirectionEnabled = vi.fn(() => false); // OFF by default
-vi.mock("@/lib/directionFeatureFlag", () => ({
-  isDirectionProfilesEnabled: () => mockIsDirectionEnabled(),
-}));
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -778,25 +767,13 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     resetStore();
-    mockIsGateEnabled.mockReturnValue(false); // Default: OFF for regression
   });
 
   // -------------------------------------------------------------------------
   // ActionBar Gate Button Visibility
   // -------------------------------------------------------------------------
 
-  it("ActionBar does NOT show gate button when feature flag is disabled", () => {
-    mockIsGateEnabled.mockReturnValue(false);
-    const prompt = makePrompt();
-    setupStore(prompt, makeDetection("PROMPT"));
-
-    render(<ActionBar onOptimize={vi.fn()} onMissingInfoGate={vi.fn()} />);
-
-    expect(screen.queryByTestId("gate-actionbar-btn")).toBeNull();
-  });
-
-  it("ActionBar shows gate button when feature flag is enabled", () => {
-    mockIsGateEnabled.mockReturnValue(true);
+  it("ActionBar always shows the gate button (GA — no feature flag)", () => {
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -805,8 +782,19 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
     expect(screen.getByTestId("gate-actionbar-btn")).toBeTruthy();
   });
 
+  it("gate button is disabled while analysis is running", () => {
+    const prompt = makePrompt();
+    setupStore(prompt, makeDetection("PROMPT"));
+    useAppStore.setState({ isAnalyzing: true });
+
+    render(<ActionBar onOptimize={vi.fn()} onMissingInfoGate={vi.fn()} />);
+
+    const gateBtn = screen.getByTestId("gate-actionbar-btn");
+    expect(gateBtn).toBeDisabled();
+    expect(gateBtn.textContent).toContain("Analysiere");
+  });
+
   it("gate button calls onMissingInfoGate on click", () => {
-    mockIsGateEnabled.mockReturnValue(true);
     const onGate = vi.fn();
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
@@ -820,7 +808,6 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
   });
 
   it("gate button is NOT rendered when onMissingInfoGate prop is absent", () => {
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -831,7 +818,6 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
   });
 
   it("existing buttons remain visible when gate button is present", () => {
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -847,21 +833,19 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
   // DetailsPanel Gate Rendering
   // -------------------------------------------------------------------------
 
-  it("DetailsPanel does NOT render gate when feature flag is disabled", () => {
-    mockIsGateEnabled.mockReturnValue(false);
+  it("DetailsPanel does not open the gate modal by default (GA)", () => {
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
     render(<DetailsPanel />);
 
-    // Gate modal should NOT be rendered
+    // Gate modal is closed by default — it opens on user interaction.
     expect(
       screen.queryByText("❓ Fehlende Informationen"),
     ).not.toBeInTheDocument();
   });
 
-  it("DetailsPanel renders ActionBar with gate button when feature flag enabled", () => {
-    mockIsGateEnabled.mockReturnValue(true);
+  it("DetailsPanel renders ActionBar with gate button (GA)", () => {
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -877,7 +861,6 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
   it("handleOpenOptimizer does not crash when gateEnabled but no session exists", () => {
     // Regression test for #289: handleOpenOptimizer used to read session.items
     // without null-check when missingInfoSessions[prompt.id] was undefined.
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt({ id: "no-session-prompt" });
     setupStore(prompt, makeDetection("PROMPT"));
     // Explicitly ensure no missing info session exists for this prompt
@@ -896,7 +879,6 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
   });
 
   it("handleBlueprintOptimize does not crash when gateEnabled but no session exists", () => {
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt({ id: "no-session-bp" });
     setupStore(prompt, makeDetection("BLUEPRINT"));
     useAppStore.setState({ missingInfoSessions: {} });
@@ -918,7 +900,6 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
   // -------------------------------------------------------------------------
 
   it("handleOpenOptimizer opens Gate when REQUIRED session with non-skipped items exists", () => {
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt({ id: "req-session-prompt" });
     setupStore(prompt, makeDetection("PROMPT", "CLEAN"));
 
@@ -959,7 +940,6 @@ describe("DetailsPanel — Gate Trigger (Batch 6A)", () => {
   });
 
   it("handleBlueprintOptimize opens Gate when REQUIRED session with non-skipped items exists", () => {
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt({ id: "req-session-bp" });
     setupStore(prompt, makeDetection("BLUEPRINT", "CLEAN"));
 
@@ -1009,22 +989,9 @@ describe("ActionBar — Variant Button (Batch 6)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     resetStore();
-    mockIsDirectionEnabled.mockReturnValue(false); // Default: OFF
-    mockIsGateEnabled.mockReturnValue(false); // Default: OFF
   });
 
-  it("does NOT show variant button when feature flag is disabled", () => {
-    mockIsDirectionEnabled.mockReturnValue(false);
-    const prompt = makePrompt();
-    setupStore(prompt, makeDetection("PROMPT"));
-
-    render(<ActionBar onOpenVariantPanel={vi.fn()} />);
-
-    expect(screen.queryByTestId("variant-actionbar-btn")).toBeNull();
-  });
-
-  it("shows variant button when feature flag is enabled", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
+  it("always shows the variant button (GA — no feature flag)", () => {
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1034,8 +1001,19 @@ describe("ActionBar — Variant Button (Batch 6)", () => {
     expect(screen.getByText("🧭 Varianten erzeugen")).toBeTruthy();
   });
 
+  it("variant button is disabled while analysis is running", () => {
+    const prompt = makePrompt();
+    setupStore(prompt, makeDetection("PROMPT"));
+    useAppStore.setState({ isAnalyzing: true });
+
+    render(<ActionBar onOpenVariantPanel={vi.fn()} />);
+
+    const btn = screen.getByTestId("variant-actionbar-btn");
+    expect(btn).toBeDisabled();
+    expect(btn.textContent).toContain("Analysiere");
+  });
+
   it("variant button has correct accessibility attributes", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1049,7 +1027,6 @@ describe("ActionBar — Variant Button (Batch 6)", () => {
   });
 
   it("variant button is NOT rendered when onOpenVariantPanel prop is absent", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1060,7 +1037,6 @@ describe("ActionBar — Variant Button (Batch 6)", () => {
   });
 
   it("variant button calls onOpenVariantPanel on click", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const onVariant = vi.fn();
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
@@ -1074,7 +1050,6 @@ describe("ActionBar — Variant Button (Batch 6)", () => {
   });
 
   it("existing buttons remain visible when variant button is present", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1089,9 +1064,7 @@ describe("ActionBar — Variant Button (Batch 6)", () => {
     expect(screen.getByText("🧭 Varianten erzeugen")).toBeTruthy();
   });
 
-  it("variant button works alongside gate button when both flags enabled", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
-    mockIsGateEnabled.mockReturnValue(true);
+  it("variant button works alongside gate button (GA)", () => {
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1114,23 +1087,20 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     resetStore();
-    mockIsDirectionEnabled.mockReturnValue(false); // Default: OFF
-    mockIsGateEnabled.mockReturnValue(false); // Default: OFF
   });
 
-  it("does NOT render VariantPanel when feature flag is disabled", () => {
-    mockIsDirectionEnabled.mockReturnValue(false);
+  it("does NOT open VariantPanel by default (GA — closed until user clicks)", () => {
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
     render(<DetailsPanel />);
 
+    // Panel is closed by default; the ActionBar button is always rendered (GA).
     expect(screen.queryByTestId("variant-panel-overlay")).toBeNull();
-    expect(screen.queryByTestId("variant-actionbar-btn")).toBeNull();
+    expect(screen.getByTestId("variant-actionbar-btn")).toBeTruthy();
   });
 
-  it("renders ActionBar with variant button when feature flag enabled", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
+  it("renders ActionBar with variant button (GA)", () => {
     const prompt = makePrompt();
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1140,7 +1110,6 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   });
 
   it("clicking variant button opens VariantPanel modal", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt({ content: "Test prompt content" });
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1159,7 +1128,6 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   });
 
   it("DetailsPanel calls openVariantPanel with correct prompt ID", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt({
       id: "direction-test-prompt-123",
       content: "Test",
@@ -1179,7 +1147,6 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   });
 
   it("uses enrichedContent as variant source when available", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt({
       id: "enriched-prompt-1",
       content: "Original prompt content",
@@ -1211,7 +1178,6 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   });
 
   it("falls back to original prompt when no enriched content", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt({
       id: "plain-prompt-1",
       content: "Plain original content",
@@ -1232,8 +1198,6 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   });
 
   it("does NOT modify MissingInfoGate state when opening variant panel", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt({
       id: "gate-prompt-1",
       content: "Content for gate test",
@@ -1262,7 +1226,6 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   });
 
   it("closing VariantPanel via onClose cleans up local state", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt({ content: "Test" });
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1281,7 +1244,6 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   });
 
   it("no compare/save buttons are present in ActionBar or VariantPanel", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
     const prompt = makePrompt({ content: "Test" });
     setupStore(prompt, makeDetection("PROMPT"));
 
@@ -1301,10 +1263,6 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
   });
 
   it("optimizer and gate flow remain regression-free with variant button present", () => {
-    mockIsDirectionEnabled.mockReturnValue(true);
-    // Keep gate disabled for this regression test to avoid triggering
-    // the gate pre-check in handleOpenOptimizer (requires a session to exist).
-    mockIsGateEnabled.mockReturnValue(false);
     const prompt = makePrompt({
       content: "Test content for regression",
     });
@@ -1320,8 +1278,8 @@ describe("DetailsPanel — VariantPanel Integration (Batch 6)", () => {
     // Variant button visible
     expect(screen.getByTestId("variant-actionbar-btn")).toBeTruthy();
 
-    // Gate button should NOT be visible (flag OFF)
-    expect(screen.queryByTestId("gate-actionbar-btn")).toBeNull();
+    // Gate button is always visible (GA — no feature flag)
+    expect(screen.getByTestId("gate-actionbar-btn")).toBeTruthy();
   });
 });
 
@@ -1342,8 +1300,6 @@ describe("#291 — Normal Optimizer Blocking (Red Tests)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     resetStore();
-    mockIsGateEnabled.mockReturnValue(false);
-    mockIsDirectionEnabled.mockReturnValue(false);
   });
 
   // -------------------------------------------------------------------------
@@ -1554,7 +1510,6 @@ describe("#291 — Normal Optimizer Blocking (Red Tests)", () => {
   // -------------------------------------------------------------------------
 
   it("PROTECTION-F: REQUIRED gate still opens for CLEAN content when session has non-skipped items", () => {
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt({
       id: "regression-gate-test",
       content: "Gate regression test content",
@@ -1596,7 +1551,6 @@ describe("#291 — Normal Optimizer Blocking (Red Tests)", () => {
   });
 
   it("PROTECTION-F2: blocked content opens neither gate nor optimizer", () => {
-    mockIsGateEnabled.mockReturnValue(true);
     const prompt = makePrompt({
       id: "blocked-gate-test",
       content: "SENSITIVE_TEST_MARKER_291",
@@ -1817,7 +1771,6 @@ describe("#291 — Normal Optimizer Blocking (Red Tests)", () => {
     // This test verifies: blocked prompt + open gate = gate shows empty
     // state with no completion path, and blocked content is never exposed.
 
-    mockIsGateEnabled.mockReturnValue(true);
     const cleanPrompt = makePrompt({
       id: "state-i-clean",
       content: "Gate→Blocked clean content",

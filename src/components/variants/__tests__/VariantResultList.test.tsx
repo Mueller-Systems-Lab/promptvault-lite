@@ -99,6 +99,7 @@ function renderList(
       }
       onCompare={overrides?.onCompare}
       onSave={overrides?.onSave}
+      onApply={overrides?.onApply}
     />,
   );
 }
@@ -641,5 +642,93 @@ describe("VariantResultList — Compare & Save Buttons (Batch 7)", () => {
 
     const copyBtn = screen.getByTestId("variant-copy-btn-VAR_cpy");
     expect(copyBtn).not.toBeDisabled();
+  });
+
+  // ---------------------------------------------------------------------------
+  // Apply-to-Editor Button (GA #295)
+  // ---------------------------------------------------------------------------
+
+  it("apply button is enabled when onApply provided and no BLOCKING conflict", () => {
+    const variant = makeVariant({ variantId: "VAR_apply_1" });
+    renderList([variant], { onApply: vi.fn() });
+
+    const applyBtn = screen.getByTestId("variant-apply-btn-VAR_apply_1");
+    expect(applyBtn).toBeInTheDocument();
+    expect(applyBtn).not.toBeDisabled();
+    expect(applyBtn.getAttribute("aria-label")).toBe(
+      "Variante im Editor übernehmen",
+    );
+  });
+
+  it("apply button is disabled when onApply is NOT provided", () => {
+    const variant = makeVariant({ variantId: "VAR_apply_2" });
+    renderList([variant]); // No onApply
+
+    const applyBtn = screen.getByTestId("variant-apply-btn-VAR_apply_2");
+    expect(applyBtn).toBeDisabled();
+  });
+
+  it("apply button is disabled when BLOCKING conflict exists", () => {
+    const variant = makeVariant({
+      variantId: "VAR_apply_blocked",
+      conflicts: [
+        {
+          id: "conf_ab",
+          profileId: "deep_research",
+          constraint: {
+            id: "hc_ab",
+            category: "offline_only",
+            constraintText: "Keine Cloud",
+            severity: "hard" as const,
+            position: null,
+          },
+          description: "Blocking apply conflict",
+          severity: "blocking",
+          resolution: "constraint_preserved",
+        },
+      ],
+    });
+    renderList([variant], { onApply: vi.fn() });
+
+    const applyBtn = screen.getByTestId(
+      "variant-apply-btn-VAR_apply_blocked",
+    );
+    expect(applyBtn).toBeDisabled();
+  });
+
+  it("apply button is enabled when only WARNING conflicts exist", () => {
+    const variant = makeVariant({
+      variantId: "VAR_apply_warn",
+      conflicts: [
+        {
+          id: "conf_aw",
+          profileId: "ausfuehrlich",
+          constraint: {
+            id: "hc_aw",
+            category: "max_length",
+            constraintText: "Max 200",
+            severity: "hard" as const,
+            position: null,
+          },
+          description: "Warning apply conflict",
+          severity: "warning",
+          resolution: "constraint_preserved",
+        },
+      ],
+    });
+    renderList([variant], { onApply: vi.fn() });
+
+    const applyBtn = screen.getByTestId("variant-apply-btn-VAR_apply_warn");
+    expect(applyBtn).not.toBeDisabled();
+  });
+
+  it("apply button calls onApply with the variant on click", () => {
+    const onApply = vi.fn();
+    const variant = makeVariant({ variantId: "VAR_apply_3" });
+    renderList([variant], { onApply });
+
+    fireEvent.click(screen.getByTestId("variant-apply-btn-VAR_apply_3"));
+    expect(onApply).toHaveBeenCalledTimes(1);
+    expect(onApply).toHaveBeenCalledWith(variant);
   });
 });

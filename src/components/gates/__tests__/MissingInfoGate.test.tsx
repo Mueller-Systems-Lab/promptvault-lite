@@ -17,12 +17,9 @@ import type {
 } from "@/types";
 
 // ---------------------------------------------------------------------------
-// Mock missingInfoFeatureFlag — controlled per test via vi.fn()
+// Note: The Missing-Info-Gate is GA since v1.11.0 — no feature-flag mock is
+// needed; the gate renders whenever a session exists.
 // ---------------------------------------------------------------------------
-const mockIsGateEnabled = vi.fn(() => true);
-vi.mock("@/lib/missingInfoFeatureFlag", () => ({
-  isMissingInfoGateEnabled: () => mockIsGateEnabled(),
-}));
 
 // ---------------------------------------------------------------------------
 // Test Helpers
@@ -138,7 +135,6 @@ describe("MissingInfoGate", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockIsGateEnabled.mockReturnValue(true);
     resetStore();
   });
 
@@ -684,8 +680,7 @@ describe("MissingInfoGate", () => {
       ).toBeTruthy();
     });
 
-    it("renders nothing when feature-flag is disabled", () => {
-      mockIsGateEnabled.mockReturnValue(false);
+    it("renders the gate whenever a session exists (GA — no feature flag)", () => {
       seedSession(promptId, [makeClassifiedItem("Q1")]);
       const { container } = render(
         <MissingInfoGate
@@ -694,8 +689,9 @@ describe("MissingInfoGate", () => {
           onClose={onClose}
         />,
       );
-      // When feature flag is disabled, the component returns null
-      expect(container.innerHTML).toBe("");
+      // GA: the gate renders — the feature is always available.
+      expect(screen.getByTestId("gate-summary")).toBeTruthy();
+      expect(container.innerHTML).not.toBe("");
     });
 
     it("renders rationale text for each question", () => {

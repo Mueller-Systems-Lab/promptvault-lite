@@ -1,7 +1,7 @@
 // =============================================================================
 // PromptVault Lite — VariantPanel UI Tests (#266)
 // =============================================================================
-// Tests for: modal rendering, feature-flag gating, phase transitions,
+// Tests for: modal rendering, GA availability (v1.11.0), phase transitions,
 // error states, store interactions, no #216 interference.
 // =============================================================================
 
@@ -11,16 +11,14 @@ import { VariantPanel } from "../VariantPanel";
 import { useAppStore } from "@/stores/appStore";
 import { getDefaultSelection } from "@/lib/directionProfiles";
 import { generateVariants as generateDirectionVariants } from "@/lib/variantGenerator";
+import { contentFingerprint } from "@/observability/redaction";
 
 // =============================================================================
 // Mocks
 // =============================================================================
 
-// Mock the direction feature flag — controlled per test
-const mockFlagEnabled = vi.fn(() => true);
-vi.mock("@/lib/directionFeatureFlag", () => ({
-  isDirectionProfilesEnabled: () => mockFlagEnabled(),
-}));
+// Note: Direction Profiles / Variants are GA since v1.11.0 — no feature-flag
+// mock is needed.
 
 // Mock variantGenerator to avoid actual generation in UI tests
 vi.mock("@/lib/variantGenerator", async () => {
@@ -129,43 +127,18 @@ function makeTestVariant(
 describe("VariantPanel", () => {
   beforeEach(() => {
     resetStore();
-    mockFlagEnabled.mockReturnValue(true);
     vi.clearAllMocks();
   });
 
   // ---------------------------------------------------------------------------
-  // Feature-Flag Gating
+  // GA availability (v1.11.0)
   // ---------------------------------------------------------------------------
 
-  describe("Feature-Flag Gating", () => {
-    it("renders when feature flag is enabled", () => {
-      mockFlagEnabled.mockReturnValue(true);
+  describe("GA availability (v1.11.0)", () => {
+    it("renders without any feature flag (feature is always available)", () => {
       renderPanel();
 
       expect(screen.getByTestId("variant-panel")).toBeInTheDocument();
-    });
-
-    it("renders nothing when feature flag is disabled", () => {
-      mockFlagEnabled.mockReturnValue(false);
-      const { container } = render(
-        <VariantPanel
-          promptId="test-prompt"
-          sourceContent="Test"
-          enrichedContentUsed={false}
-          onClose={vi.fn()}
-        />,
-      );
-
-      expect(
-        container.querySelector('[data-testid="variant-panel"]'),
-      ).toBeNull();
-    });
-
-    it("renders nothing when feature flag returns false", () => {
-      mockFlagEnabled.mockReturnValue(false);
-      renderPanel();
-
-      expect(screen.queryByTestId("variant-panel")).not.toBeInTheDocument();
     });
   });
 
@@ -287,6 +260,7 @@ describe("VariantPanel", () => {
 
       const mockResult = {
         sourceContent: "Test",
+        sourceFingerprint: contentFingerprint("Test"),
         enrichedContentUsed: false,
         variants: [],
         profileConflicts: [],
@@ -415,6 +389,7 @@ describe("VariantPanel", () => {
       // Pre-populate variant results so phase transitions to results
       const mockResult = {
         sourceContent: "Test content",
+        sourceFingerprint: contentFingerprint("Test content"),
         enrichedContentUsed: false,
         variants: [
           {
@@ -506,6 +481,7 @@ describe("VariantPanel", () => {
 
       const mockResult = {
         sourceContent: "Test",
+        sourceFingerprint: contentFingerprint("Test"),
         enrichedContentUsed: false,
         variants: [
           makeTestVariant("VAR_btn_test", "sachlich", "Test Label", "Content"),
@@ -559,6 +535,7 @@ describe("VariantPanel", () => {
 
       vi.mocked(generateDirectionVariants).mockReturnValue({
         sourceContent: "Test",
+        sourceFingerprint: contentFingerprint("Test"),
         enrichedContentUsed: false,
         variants: [
           makeTestVariant("VAR_close_1", "sachlich", "Sachlich", "Content"),
@@ -608,6 +585,7 @@ describe("VariantPanel", () => {
 
       vi.mocked(generateDirectionVariants).mockReturnValue({
         sourceContent: "Test",
+        sourceFingerprint: contentFingerprint("Test"),
         enrichedContentUsed: false,
         variants: [
           makeTestVariant("VAR_back_1", "sachlich", "Sachlich", "Content"),
@@ -777,6 +755,7 @@ describe("VariantPanel", () => {
         variantResults: {
           test: {
             sourceContent: "Test",
+            sourceFingerprint: contentFingerprint("Test"),
             enrichedContentUsed: false,
             variants: [],
             profileConflicts: [],

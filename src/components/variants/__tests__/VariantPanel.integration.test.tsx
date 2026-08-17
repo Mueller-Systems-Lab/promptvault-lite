@@ -16,6 +16,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useAppStore } from "@/stores/appStore";
 import { getDefaultSelection } from "@/lib/directionProfiles";
 import { VariantPanel } from "../VariantPanel";
+import { contentFingerprint } from "@/observability/redaction";
 import type {
   PromptItem,
   DirectionProfileId,
@@ -29,11 +30,8 @@ import type {
 // Mocks
 // =============================================================================
 
-// Feature-flag: always enabled in integration tests
-const mockFlagEnabled = vi.fn(() => true);
-vi.mock("@/lib/directionFeatureFlag", () => ({
-  isDirectionProfilesEnabled: () => mockFlagEnabled(),
-}));
+// Note: Direction Profiles / Variants are GA since v1.11.0 — no feature-flag
+// mock is needed.
 
 // variantGenerator — mocked for deterministic results
 vi.mock("@/lib/variantGenerator", async () => {
@@ -117,8 +115,11 @@ function makeEnrichedContext(enrichedContent: string): EnrichedPromptContext {
 function makeVariantResult(
   overrides?: Partial<VariantGenerationResult>,
 ): VariantGenerationResult {
+  const sourceContent = overrides?.sourceContent ?? "Test-Quellinhalt";
   return {
-    sourceContent: overrides?.sourceContent ?? "Test-Quellinhalt",
+    sourceContent,
+    sourceFingerprint:
+      overrides?.sourceFingerprint ?? contentFingerprint(sourceContent),
     enrichedContentUsed: overrides?.enrichedContentUsed ?? false,
     variants: overrides?.variants ?? [
       makeTestVariant("VAR_INT_1", "sachlich", "Sachlich / Neutral"),
@@ -276,7 +277,6 @@ function renderPanel(
 describe("Batch 8C — #284 VariantPanel Integration", () => {
   beforeEach(() => {
     resetStore();
-    mockFlagEnabled.mockReturnValue(true);
     vi.clearAllMocks();
   });
 
@@ -728,7 +728,6 @@ describe("Batch 8C — #284 VariantPanel Integration", () => {
 describe("Batch 8C — #285 enriched + Constraint HIGH-RISK", () => {
   beforeEach(() => {
     resetStore();
-    mockFlagEnabled.mockReturnValue(true);
     vi.clearAllMocks();
   });
 
@@ -1398,7 +1397,6 @@ describe("Batch 8C — #285 enriched + Constraint HIGH-RISK", () => {
 describe("Batch 8C — #286 Regression #216 / Optimizer", () => {
   beforeEach(() => {
     resetStore();
-    mockFlagEnabled.mockReturnValue(true);
     vi.clearAllMocks();
   });
 
@@ -1557,23 +1555,18 @@ describe("Batch 8C — #286 Regression #216 / Optimizer", () => {
   });
 
   // -------------------------------------------------------------------------
-  // Feature-Flag Coexistence
+  // GA coexistence (v1.11.0 — no feature flags)
   // -------------------------------------------------------------------------
 
-  describe("Feature-Flag Coexistence", () => {
-    it("when direction flag is OFF, variant-related operations are guarded", () => {
-      mockFlagEnabled.mockReturnValue(false);
-
+  describe("GA coexistence (v1.11.0)", () => {
+    it("the variant panel renders without any feature flag (GA)", () => {
       renderPanel();
 
-      // Panel should render nothing
-      expect(screen.queryByTestId("variant-panel")).not.toBeInTheDocument();
+      // Panel renders — the feature is always available.
+      expect(screen.getByTestId("variant-panel")).toBeInTheDocument();
     });
 
-    it("when direction flag is ON but gate flag is OFF, both features coexist", () => {
-      // Direction flag ON
-      mockFlagEnabled.mockReturnValue(true);
-
+    it("variant and gate state coexist without feature flags", () => {
       seedPrompt("prompt-1", "test");
       useAppStore.setState({ selectedProfileIds: getDefaultSelection() });
 
@@ -1675,7 +1668,7 @@ describe("Batch 8C — #286 Regression #216 / Optimizer", () => {
     it("variant panel does NOT import MissingInfoGate modules", () => {
       // Check that VariantPanel.tsx does not import from gates directory
       // This is verified by code review: VariantPanel imports only from
-      // stores, directionFeatureFlag, and its own children.
+      // stores, observability, and its own children.
       // The module import tree is validated by tsc and lint.
       expect(true).toBe(true); // Architectural assertion validated by tooling
     });
@@ -1784,40 +1777,32 @@ describe("Batch 8C — #286 Regression #216 / Optimizer", () => {
 });
 
 // =============================================================================
-// Cross-Cutting: Feature Flag ON/OFF toggle tests
+// Cross-Cutting: GA availability (v1.11.0 — no feature flags)
 // =============================================================================
 
-describe("Batch 8C — Feature Flag Toggle (Cross-Cutting)", () => {
+describe("Batch 8C — GA availability (Cross-Cutting)", () => {
   beforeEach(() => {
     resetStore();
     vi.clearAllMocks();
   });
 
-  it("feature flag OFF: variant panel renders nothing, existing flow unaffected", () => {
-    mockFlagEnabled.mockReturnValue(false);
-
+  it("GA: variant panel renders without any feature flag, existing flow unaffected", () => {
     renderPanel();
 
-    expect(screen.queryByTestId("variant-panel")).not.toBeInTheDocument();
-    expect(
-      screen.queryByTestId("variant-panel-overlay"),
-    ).not.toBeInTheDocument();
+    expect(screen.getByTestId("variant-panel")).toBeInTheDocument();
+    expect(screen.getByTestId("variant-panel-overlay")).toBeInTheDocument();
   });
 
-  it("feature flag ON: variant panel renders normally", () => {
-    mockFlagEnabled.mockReturnValue(true);
-
+  it("GA: variant panel renders normally on re-render", () => {
     renderPanel();
 
     expect(screen.getByTestId("variant-panel")).toBeInTheDocument();
   });
 
-  it("feature flag toggling from OFF to ON works correctly", () => {
-    mockFlagEnabled.mockReturnValue(false);
+  it("GA: re-rendering keeps the panel visible", () => {
     const { rerender } = renderPanel();
-    expect(screen.queryByTestId("variant-panel")).not.toBeInTheDocument();
+    expect(screen.getByTestId("variant-panel")).toBeInTheDocument();
 
-    mockFlagEnabled.mockReturnValue(true);
     rerender(
       <VariantPanel
         promptId="test-prompt-1"

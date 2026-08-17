@@ -13,6 +13,7 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useAppStore } from "@/stores/appStore";
+import { contentFingerprint } from "@/observability/redaction";
 import type {
   PromptItem,
   DirectionProfileId,
@@ -21,11 +22,9 @@ import type {
 } from "@/types";
 
 // ---------------------------------------------------------------------------
-// Mock directionFeatureFlag — always enabled in tests
+// Note: Direction Profiles / Variants are GA since v1.11.0 — no feature-flag
+// mock is needed.
 // ---------------------------------------------------------------------------
-vi.mock("@/lib/directionFeatureFlag", () => ({
-  isDirectionProfilesEnabled: vi.fn(() => true),
-}));
 
 // ---------------------------------------------------------------------------
 // Mocks for variantGenerator and directionProfiles
@@ -39,6 +38,7 @@ vi.mock("@/lib/variantGenerator", () => ({
       options?: { maxVariants?: number; enrichedContentUsed?: boolean },
     ) => ({
       sourceContent,
+      sourceFingerprint: contentFingerprint(sourceContent),
       enrichedContentUsed: options?.enrichedContentUsed ?? false,
       variants: selection.selectedProfileIds
         .slice(0, options?.maxVariants ?? 5)
