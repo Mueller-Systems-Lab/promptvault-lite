@@ -7,6 +7,8 @@
 
 ---
 
+**v1.11.0 milestone:** ADVANCED_WORKFLOWS_GA (Issue #295) — **IMPLEMENTED / PENDING RELEASE** (branch `feature/advanced-workflows-ga`; no tag, no GitHub Release, no PyPI publish).
+
 ## Current Status: GREEN_RELEASED 🟢
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
@@ -14,6 +16,26 @@
 **Release:** v1.10.0 published as a GitHub Release (Windows x64 NSIS installer `PromptVault.Lite_1.10.0_x64-setup.exe` + release manifest + `SHA256SUMS.txt`); tag `v1.10.0` pushed.
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
+
+---
+
+## v1.11.0 — ADVANCED_WORKFLOWS_GA (IMPLEMENTED / PENDING RELEASE) 🟡
+
+**Status: GREEN_ADVANCED_WORKFLOWS_IMPLEMENTED / PENDING RELEASE** — implemented and verified, **not** released (no tag, no GitHub Release, no PyPI publish).
+
+| Feature | Status | Evidence |
+| --- | --- | --- |
+| Missing Info (#216) normal product capability — available by default in the standard production build | ✅ IMPLEMENTED / GA | `src/lib/advancedWorkflowsAvailability.ts` + `src/components/gates/MissingInfoGate.tsx` + advanced-workflows test suites |
+| Direction / Direction Profiles / Variants (#215) normal product capability — available by default | ✅ IMPLEMENTED / GA | `src/lib/advancedWorkflowsAvailability.ts` + `src/components/variants/*` + variant test suites |
+| Build-time env gates removed; production build can never be disabled via env (dev-only override remains) | ✅ IMPLEMENTED / REGRESSION-PROVEN | `src/lib/advancedWorkflowsAvailability.ts` (GA contract) + `src/lib/__tests__/advancedWorkflowsAvailability.test.ts` |
+| No Developer Mode required | ✅ IMPLEMENTED | advanced-workflows entry points work with devMode=false, no env (verified in appStore tests) |
+| Apply-to-editor integration (Missing-Info enrichment + Direction variants → PromptEditor, dirty state, explicit Save) | ✅ IMPLEMENTED | `applyMissingInfoResultToEditor` / `applyVariantToEditor` in `src/stores/appStore.ts` + `VariantPanel.ga.test.tsx` |
+| Stale-state invalidation (source change → results invalidated, apply refused `STALE_SOURCE`) | ✅ IMPLEMENTED | `invalidateAnalysisForPrompt` + `appStore.advancedWorkflowsGa.test.ts` |
+| Safe observability: `missing_info.*` / `direction.*` + bounded reason codes (safe-metadata-v1, fail-closed) | ✅ IMPLEMENTED | `src/observability/contracts.ts` + `diagnostics.ts` + `redaction.ts` + `advancedWorkflowsObservability.test.ts` |
+| Production native build proven (exe + NSIS + MSI, no feature env flags) | ✅ PROVEN | `target\release\promptvault-lite.exe` (1.11.0), `PromptVault Lite_1.11.0_x64-setup.exe`, MSI |
+| Native production E2E | ✅ PASS 11/11 | native production E2E suite (11/11), privacy sentinel 0 |
+
+> v1.11.0 builds on the v1.10.0 authoring lifecycle: advanced-workflow results (Missing-Info enrichment, direction variants) land in the v1.10.0 PromptEditor via explicit "Übernehmen" and are persisted with the existing save path.
 
 ---
 
@@ -26,6 +48,8 @@
 | Optimizer "Übernehmen" (apply to editor, explicit user action) + stale-analysis invalidation on content change | ✅ DONE / RELEASED (v1.10.0) | `src/components/optimization/OptimizationPanel.tsx` + `invalidateAnalysisForPrompt` + test suites + public E2E test 5 |
 | Authoring observability (prompt.create/edit/save/save_failed/cancel, optimizer.apply — safe metadata only) | ✅ DONE / RELEASED (v1.10.0) | `src/observability/__tests__/authoringObservability.test.tsx` + `AUTHORING_SAVE_FAILED` ReasonCode + public privacy sentinel 0 |
 | Native + public E2E on the installed release binary | ✅ PASS / RELEASED (v1.10.0) | `e2e-tests/specs/authoring-lifecycle.native.spec.js` + `e2e-tests/specs/authoring-lifecycle.public.spec.js` (6/6 each, app_version 1.10.0) |
+
+v1.11.0 (Advanced Workflows GA, pending release) builds on the v1.10.0 editor: Missing-Info enrichment and Direction variants can be applied into the PromptEditor (dirty state → explicit Save); stale results are invalidated on source change.
 
 ---
 
@@ -63,8 +87,8 @@
 | Hygiene Analysis (18 artifact categories) | v1.6.0 |
 | Prompt Optimizer (3 modes) | v1.6.0 |
 | Blueprint Detection / Quality Evaluation / Optimization | v1.7.0 |
-| Direction Profiles & Variants (opt-in) | v1.8.0 |
-| Missing-Info-Gate (opt-in) | v1.8.0 |
+| Direction Profiles & Variants (GA in v1.11.0 — pending release) | v1.8.0 |
+| Missing-Info-Gate (GA in v1.11.0 — pending release) | v1.8.0 |
 | Audio Summary (TTS via Web Speech API) | v1.7.2 |
 | Paste Prompt Analyzer | v1.7.2 |
 | Embeddings Phase 1 (mock) | v1.7.2 |
@@ -137,6 +161,7 @@
 ## Next Steps (Recommended)
 
 1. **v1.10.0 released (done):** GitHub Release v1.10.0 (Windows x64 NSIS installer + release manifest + checksums) and PyPI `promptvault-lite-manager==1.10.0` (OIDC Trusted Publishing) published; tag `v1.10.0` pushed. Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
-2. **v1.11.0 planning:** next milestone — candidate scope: Advanced Workflows GA (Missing Info / Direction), Embeddings Phase 2, code signing.
+2. **v1.11.0 Advanced Workflows GA — IMPLEMENTED / PENDING RELEASE:** production build proven (native E2E 11/11, privacy sentinel 0); awaiting owner approval for release (tag + GitHub Release + PyPI `promptvault-lite-manager`).
 3. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
-4. **Architecture Contract Audit / Security Posture Review.**
+4. **Code signing for the Windows installer.**
+5. **Architecture Contract Audit / Security Posture Review.**

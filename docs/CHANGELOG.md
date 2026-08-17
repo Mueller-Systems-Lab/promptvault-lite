@@ -1,10 +1,30 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.10.0
+version: 1.11.0
 ---
 
 # Changelog
+
+## v1.11.0 — Advanced Workflows GA: Missing Info & Direction/Variants (MINOR / feature wave)
+
+**Status: IMPLEMENTED / PENDING RELEASE — UNRELEASED.** No tag, no GitHub Release, no PyPI publish yet (Issue #295, branch `feature/advanced-workflows-ga`).
+
+### Added
+
+- **Advanced Workflows GA (Issue #295):** Missing Information (#216) and Direction / Direction Profiles / Variants (#215) graduate from hidden build-time env feature gates to **normal product capabilities**. Both features are available **by default in every standard production build** — no Developer Mode required, no build-time feature flag required.
+- **Feature gates removed from the product:** the old env gates `PROMPTVAULT_MISSING_INFO_GATE` / `PROMPTVAULT_DIRECTION_PROFILES` no longer gate the features. A production build can **never** be disabled via environment (regression-proven); a dev-only troubleshooting override (`0`/`false` in non-production builds) remains.
+- **Apply-to-editor integration:** Missing-Info enriched results and Direction variant results support **Übernehmen** ("✏️ Übernehmen" / "✏️ Im Editor übernehmen") into the v1.10.0 PromptEditor → dirty state → explicit user **Speichern**. **Abbrechen** preserves the original.
+- **Stale-state invalidation:** advanced-workflow results (gate sessions + variant results) are invalidated when the source content changes; apply on a stale source is refused (`STALE_SOURCE`) and stale results are cleared.
+- **Safe observability additions:** `missing_info.*` and `direction.*` operations with bounded reason codes (`NO_PROMPT_SELECTED`, `NO_MISSING_INFO`, `INVALID_ANSWER_STATE`, `GENERATION_FAILED`, `STALE_SOURCE`, `NO_VARIANT_SELECTED`, `APPLY_FAILED`). Privacy contract unchanged (`safe-metadata-v1` fail-closed): no prompt body, no answers, no variant text in diagnostics.
+- **Version bump to 1.11.0:** package.json, src-tauri/Cargo.toml, src-tauri/tauri.conf.json, tools/promptvault-cli/pyproject.toml, tools/promptvault-cli/src/promptvault_cli/__init__.py, Cargo.lock. The release manifest (tools/promptvault-cli/promptvault-release-manifest.json) intentionally remains v1.10.0 (immutable last-released record, finalized only at release time).
+
+### Verified (production build)
+
+- Production native build proven: `target\release\promptvault-lite.exe` (1.11.0) + NSIS installer `PromptVault Lite_1.11.0_x64-setup.exe` + MSI, built **without** feature env flags.
+- Native production E2E **11/11 PASS**; privacy sentinel **0**.
+
+> **Publication status:** NOT RELEASED. No tag, no GitHub Release, no PyPI publish for v1.11.0 in this milestone run.
 
 ## v1.10.0 — In-App Prompt Authoring Lifecycle (MINOR / feature wave)
 

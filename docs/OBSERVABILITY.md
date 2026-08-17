@@ -49,7 +49,7 @@ TRACE analyze-selected
   ├─ analyze-hygiene           succeeded
   ├─ context-evaluation        succeeded
   ├─ state-update              succeeded
-  └─ missing-info-gate         skipped   FEATURE_DISABLED
+  └─ missing-info-gate         succeeded   GA (no feature flag)
 ```
 
 ---
@@ -135,6 +135,32 @@ optimizer.apply     — Optimierungsergebnis explizit in den Editor übernommen 
 
 Diese Events tragen **ausschließlich sichere Metadaten**: `promptvault.authoring.mode` (`create`/`edit`), `promptvault.authoring.prompt_id` (opaque ID) und `promptvault.authoring.duration_ms`. **Nie** Prompt-Text, Titel-Inhalt oder Clipboard-Daten. Die drei Attribute sind in der `SAFE_ATTRIBUTE_KEYS`-Allowlist (`src/observability/redaction.ts`) freigegeben.
 
+### Advanced-Workflow-Operationen (v1.11.0 — GA)
+
+Missing Info (#216) und Direction/Variants (#215) sind seit v1.11.0 **GA** (immer verfügbar im Standard-Produktions-Build; kein Feature-Flag, kein Developer Mode; die früheren Flags `PROMPTVAULT_MISSING_INFO_GATE` / `PROMPTVAULT_DIRECTION_PROFILES` sind aus dem Produkt entfernt — ein Produktions-Build kann nie per Umgebung deaktiviert werden; nur in Nicht-Produktions-Builds bleibt ein `0`/`false`-Troubleshooting-Override). Beide Workflows emittieren eigene Operationen:
+
+```text
+missing_info.open         — Missing-Info-Dialog geöffnet (Store, succeeded/blocked)
+missing_info.submit       — Antwort übernommen (Store, succeeded)
+missing_info.complete     — Gate-Session abgeschlossen (Store, succeeded; failed bei INVALID_ANSWER_STATE)
+missing_info.cancel       — Dialog ohne Übernahme abgebrochen (Store, succeeded)
+missing_info.failed       — kein Ergebnis vorhanden / Quelle veraltet (Store, failed; NO_MISSING_INFO / STALE_SOURCE)
+missing_info.apply        — angereichertes Ergebnis in den Editor übernommen (Store, succeeded)
+missing_info.invalidated  — Ergebnisse bei Quelländerung ungültig gemacht (Store, blocked)
+
+direction.open            — Varianten-Panel geöffnet (Store, succeeded)
+direction.generate        — Varianten generiert (Store, succeeded; failed bei NO_PROMPT_SELECTED / GENERATION_FAILED)
+direction.cancel          — Panel ohne Generierung geschlossen (Store, succeeded)
+direction.variant_select  — Variante für Übernahme ausgewählt (UI, succeeded)
+direction.apply           — Variante in den Editor übernommen (Store, succeeded; failed bei NO_PROMPT_SELECTED / STALE_SOURCE / APPLY_FAILED)
+direction.copy            — Variante kopiert (UI, succeeded)
+direction.invalidated     — Varianten-Ergebnisse bei Quelländerung ungültig gemacht (Store, blocked)
+```
+
+Diese Events tragen **ausschließlich sichere Metadaten** (`promptvault.missing_info.*`: question_count, required_count, answered_count, outcome; `promptvault.direction.*`: variant_count, profile_count, profile_ids, enriched_source) — **nie** Prompt-Body, Antworten oder Variantentext. Die Attribute sind in der `SAFE_ATTRIBUTE_KEYS`-Allowlist (`src/observability/redaction.ts`) freigegeben; die Privacy-Boundary (`safe-metadata-v1`, fail-closed) bleibt unverändert.
+
+**Neue Reason Codes (v1.11.0):** `NO_PROMPT_SELECTED`, `NO_MISSING_INFO`, `INVALID_ANSWER_STATE`, `GENERATION_FAILED`, `STALE_SOURCE`, `NO_VARIANT_SELECTED`, `APPLY_FAILED`.
+
 ### Reason Codes
 
 Reason Codes sind zentral in `src/observability/diagnostics.ts` katalogisiert (Code + Beschreibung + Default-Kategorie). Beispiele:
@@ -152,6 +178,13 @@ STALE_ANALYSIS_RESULT
 CONSTRAINT_LOST
 PARTIAL_SAVE_FAILURE
 AUTHORING_SAVE_FAILED
+NO_PROMPT_SELECTED
+NO_MISSING_INFO
+INVALID_ANSWER_STATE
+GENERATION_FAILED
+STALE_SOURCE
+NO_VARIANT_SELECTED
+APPLY_FAILED
 ```
 
 Fehlerklassen (`ErrorClass`) trennen `EXPECTED_BLOCK`/`EXPECTED_SKIP` von echten Fehlern (`PROCESSING_ERROR`, `INVARIANT_VIOLATION`, `SECURITY_BLOCK`, …).

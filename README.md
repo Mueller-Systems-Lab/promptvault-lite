@@ -27,8 +27,9 @@ It is built for people who collect, write and refine many prompts — especially
 - **Quality & Hygiene Analysis** — score prompts across clarity, role, goal, context, output format and reusability; detect contamination such as secrets, private paths and evidence clutter
 - **Prompt Context Evaluation** — measure how well a prompt carries its own context
 - **Blueprint Detection** — detect prompt blueprints, hybrids and architecture-like agent instructions (10-dimension quality evaluation)
-- **Missing Info Gate** — dynamic pre-optimization questionnaire (opt-in, `PROMPTVAULT_MISSING_INFO_GATE=1`)
-- **Direction Profiles** — generate optimization variants in different directions (opt-in, `PROMPTVAULT_DIRECTION_PROFILES=1`)
+- **Advanced Workflows GA** — Missing Info and Direction/Variants are available by default in the standard production build (v1.11.0, implemented — pending release; no Developer Mode required, no build-time feature flag)
+- **Missing Info** — dynamic pre-optimization questionnaire that identifies information gaps and lets you answer, skip or assume before optimization (v1.11.0 GA)
+- **Direction Profiles & Variants** — generate optimization variants in different directions, compare them and apply the best one into the editor (v1.11.0 GA)
 - **Prompt Optimization** — deterministic local optimization (conservative/balanced/aggressive)
 - **Admin Observability** — read-only runtime diagnostics with trace/span correlation and reason codes
 - **Local TTS** — local speech output for prompt summaries (Piper neural / spd-say / espeak-ng / Web Speech fallback), no cloud TTS
@@ -41,6 +42,8 @@ It is built for people who collect, write and refine many prompts — especially
 ## Current Release & Publication Status
 
 **v1.10.0** is the current released version (tagged and published as a GitHub Release; MINOR — Integrated Prompt Authoring Lifecycle). The in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability) is released: public native + CLI install/update proofs PASS, authoring lifecycle E2E 6/6 PASS on the installed release binary.
+
+**v1.11.0 (Advanced Workflows GA) is implemented — pending release.** Missing Info and Direction/Variants are available by default in the standard production build: no Developer Mode required, no build-time feature flag. The old env gates `PROMPTVAULT_MISSING_INFO_GATE` / `PROMPTVAULT_DIRECTION_PROFILES` are removed from the product — a production build can never be disabled via environment (regression-proven; a dev-only troubleshooting override remains). A production native build (1.11.0) is proven: native production E2E 11/11 PASS, privacy sentinel 0. No tag, no GitHub Release, no PyPI publish yet.
 
 | Platform | Asset |
 |---|---|
@@ -136,8 +139,8 @@ Analyze Prompt
   ✓ Context
   ✓ Tauri IPC
   ✓ Rust Analysis
-  ⊘ Missing Info Gate
-      FEATURE_DISABLED
+  ✓ Missing Info Gate
+      available (GA, no feature flag)
 ```
 
 Enable it via **Settings → Entwickler-Werkzeuge → Admin Observability**, then open the **Diagnostics Panel** (🔍). You can export a redacted JSON bundle or copy a sanitized debug summary.
@@ -226,7 +229,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Stable public release (v1.10.0, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager` (1.10.0). In-app prompt authoring is released. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Stable public release (v1.10.0, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager` (1.10.0). In-app prompt authoring is released. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`. v1.11.0 (Advanced Workflows GA — Missing Info and Direction/Variants) is implemented and pending release; both features are available by default in the standard production build.
 
 ## License
 

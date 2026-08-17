@@ -1,8 +1,9 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-08-16
+**Last updated:** 2026-08-17
 **Current version:** v1.10.0 (GitHub Release published 2026-08-15 — Windows x64 installer `PromptVault.Lite_1.10.0_x64-setup.exe`; PyPI `promptvault-lite-manager==1.10.0` published via OIDC)
-**Next target:** v1.11.0 planning — candidate scope: Advanced Workflows GA (Missing Info / Direction), Embeddings Phase 2 (#199), code signing
+**Current milestone:** v1.11.0 — ADVANCED_WORKFLOWS_GA (Missing Info / Direction, Issue #295) — **IMPLEMENTED / PENDING RELEASE**
+**Next target (after v1.11.0):** Embeddings Phase 2 (#199), code signing
 
 ---
 
@@ -17,6 +18,20 @@
 | Native + public E2E on the installed release binary (authoring lifecycle 6/6; public install/update proofs) | ✅ PASS (v1.10.0) |
 | Windows x64 NSIS installer + release manifest + checksums | ✅ PUBLISHED (v1.10.0 GitHub Release) |
 | PyPI `promptvault-lite-manager==1.10.0` | ✅ PUBLISHED (OIDC Trusted Publishing) |
+
+## Current Milestone (v1.11.0 — IMPLEMENTED / PENDING RELEASE)
+
+| Task | Status |
+| --- | --- |
+| Advanced Workflows GA — Missing Info (#216) + Direction/Variants (#215) as normal product capabilities | ✅ IMPLEMENTED / PENDING RELEASE |
+| Build-time env gates removed; production build can never be disabled via env (dev-only override remains) | ✅ IMPLEMENTED / REGRESSION-PROVEN |
+| No Developer Mode required | ✅ IMPLEMENTED |
+| Apply-to-editor integration (Missing-Info enrichment + direction variants → PromptEditor, dirty state, explicit Save) | ✅ IMPLEMENTED |
+| Stale-state invalidation (source change → results invalidated, apply refused `STALE_SOURCE`) | ✅ IMPLEMENTED |
+| Safe observability: `missing_info.*` / `direction.*` + bounded reason codes (safe-metadata-v1 fail-closed) | ✅ IMPLEMENTED |
+| Version bump to 1.11.0 (release manifest intentionally stays 1.10.0) | ✅ IMPLEMENTED |
+| Production native build proven (exe + NSIS + MSI, no feature env flags); native E2E 11/11; privacy sentinel 0 | ✅ PROVEN |
+| Release: tag + GitHub Release + PyPI publish | ⏳ PENDING — NOT RELEASED |
 
 ## Recently Completed (v1.9.0)
 
@@ -42,8 +57,8 @@
 | P1 | Audio Summary (TTS via Web Speech API) | ✅ Merged |
 | P1 | Paste Prompt Analyzer | ✅ Merged |
 | P1 | Embeddings Phase 1 (Mock Provider) | ✅ Merged |
-| P0 | Missing-Info-Gate (#216) | ✅ Implemented — master, feature flag |
-| P0 | Direction Profiles & Variants (#215) | ✅ Implemented — master, feature flag |
+| P0 | Missing-Info-Gate (#216) | ✅ Implemented — v1.8.0 feature flag; **GA in v1.11.0 (pending release)** |
+| P0 | Direction Profiles & Variants (#215) | ✅ Implemented — v1.8.0 feature flag; **GA in v1.11.0 (pending release)** |
 | P0 | Optimizer Gate Session Guard (#289) | ✅ Closed |
 | P0 | Sensitive Content Optimizer Blocking (#291) | ✅ Closed |
 | P0 | Autonomous Test Harness Trust (#294) | ✅ Merged |
@@ -69,7 +84,6 @@
 | Priority | Task | Issue |
 | -------- | --- | --- |
 | P1 | ~~PyPI-Publikation `promptvault-lite-manager` + public `uv tool install` verifizieren~~ ✅ Done | — |
-| P1 | Advanced Workflows GA (Missing Info / Direction) — candidate for v1.11.0 (not yet done) | — |
 | P2 | Embeddings Phase 2: DB schema/storage | #199 |
 | P2 | Architecture Contract Audit | — |
 | P2 | Security Posture Review | — |

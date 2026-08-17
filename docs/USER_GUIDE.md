@@ -1,7 +1,7 @@
 ---
 title: Benutzerhandbuch
 description: Bedienung der Oberfläche, Suche, Analyse und Exportstatus.
-version: 1.10.0
+version: 1.11.0
 ---
 
 # Benutzerhandbuch
@@ -89,6 +89,62 @@ PromptVault Lite kann Prompts direkt in der App **erstellen** und **bearbeiten**
 ### Optimierungsergebnis übernehmen
 
 Im Optimierungsdialog gibt es neben **📋 Ergebnis kopieren** den Button **✏️ Übernehmen**: Er öffnet den Editor mit dem optimierten Inhalt (explizite Nutzeraktion — es wird nie automatisch überschrieben). Danach kannst du mit **Speichern** den übernommenen Inhalt persistieren.
+
+## Fehlende Informationen prüfen & ergänzen (v1.11.0)
+
+Nach der Analyse erkennt PromptVault Lite, welche Informationen im Prompt fehlen, und stellt dir gezielte Fragen — damit die Optimierung auf vollständigeren Voraussetzungen arbeitet. Die Funktion ist im normalen Produktions-Build verfügbar; es sind keine Entwickler-Umgebungsvariablen nötig.
+
+### Wo finde ich das?
+
+- In der **Detailansicht** nach der Analyse: Button **❓ Fehlende Infos prüfen**.
+- Läuft die Analyse noch, zeigt der Button: „Analyse läuft — Fehlende Infos werden nach der Analyse verfügbar".
+
+### Was zeigt der Dialog?
+
+- Der Dialog **„❓ Fehlende Informationen"** listet die erkannten Lücken als Fragen, gestaffelt nach Wichtigkeit:
+  - **Erforderliche Angaben** (REQUIRED)
+  - **Weitere erforderliche Angaben** (bei mehr als 5 Fragen einklappbar)
+  - **Erweiterte Angaben** (RECOMMENDED/OPTIONAL)
+- Zu jeder Frage erscheint eine kurze Begründung und ein Eingabefeld.
+
+### Antworten, überspringen, Annahmen treffen
+
+1. Beantworte die Fragen im Eingabefeld.
+2. Nicht-erforderliche Fragen kannst du einzeln **Überspringen** (Button je Frage; „Übersprungen" nach dem Überspringen).
+3. Footer-Aktionen:
+   - **▶ Angaben übernehmen** — schließt den Dialog, sobald alle erforderlichen Angaben beantwortet sind und keine Konflikte vorliegen.
+   - **🤖 Mit Annahmen fortfahren** — füllt fehlende erforderliche Angaben mit Annahmen und fährt fort.
+   - **⏭ Alle überspringen** — überspringt den kompletten Fragebogen.
+   - **Abbrechen** — schließt ohne zu übernehmen; dein Original-Prompt bleibt unverändert.
+
+### Ergebnis in den Editor übernehmen
+
+- Nach dem Abschluss kannst du das angereicherte Ergebnis mit **Übernehmen** / **Im Editor übernehmen** in den Editor übernehmen.
+- Der Editor öffnet sich mit dem angereicherten Inhalt (**„● Ungespeicherte Änderungen"**).
+- **Speichern** persistiert die Änderung; **Abbrechen** verwirft sie — das Original bleibt erhalten.
+- Ändert sich der Quell-Prompt, werden veraltete Ergebnisse ungültig und können nicht mehr übernommen werden.
+
+## Varianten erzeugen (Richtungsprofile) (v1.11.0)
+
+Die Varianten-Funktion erzeugt mehrere Optimierungsvarianten in unterschiedlichen Richtungen. Auch hier gilt: keine Entwickler-Umgebungsvariablen nötig, im normalen Produktions-Build verfügbar.
+
+### Wo finde ich das?
+
+- In der **Detailansicht**: Button **🧭 Varianten erzeugen**.
+
+### Ablauf
+
+1. Klicke auf **🧭 Varianten erzeugen** — der Dialog **„🧭 Varianten erzeugen — Richtungsprofile"** öffnet sich.
+2. Wähle **eine oder mehrere Richtungsprofile** aus (Mehrfachauswahl, max. 5; Kategorien sachlich, verkaeuferisch, technisch, kreativ sowie eine eigene freie Richtung). Als Quelle dient der Original-Prompt oder der angereicherte Inhalt aus dem Missing-Info-Dialog.
+3. Klicke auf **Varianten generieren**.
+4. Prüfe die Ergebnisvarianten: jede Karte zeigt Richtung, Empfehlung, Erklärung, Annahmen und den generierten Prompt (**„Generierten Prompt anzeigen"**).
+5. Aktionen je Variante:
+   - **↔️ Vergleichen** — Variante direkt neben dem Original ansehen.
+   - **💾 Speichern** — Variante als neue Version speichern.
+   - **✏️ Übernehmen** — Variante in den Editor übernehmen (im Vergleich auch **✏️ Im Editor übernehmen**).
+   - **📋 Kopieren** — Varianteninhalt in die Zwischenablage kopieren.
+6. Nach **✏️ Übernehmen** öffnet sich der Editor mit dem Varianteninhalt (**„● Ungespeicherte Änderungen"**); **Speichern** persistiert, **Abbrechen** verwirft — das Original bleibt erhalten.
+7. Bei BLOCKING-Konflikten sind **Speichern** und **Übernehmen** deaktiviert („Übernehmen bei BLOCKING-Konflikten nicht möglich").
 
 ## Export
 
