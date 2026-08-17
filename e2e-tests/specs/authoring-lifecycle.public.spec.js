@@ -56,6 +56,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const RANDOM = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 
+// Expected product version, derived from the canonical repo source
+// (package.json) so this spec never pins a stale release version.
+const EXPECTED_VERSION = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "..", "..", "package.json"), "utf8")
+).version;
+
 // ---------------------------------------------------------------------------
 // Test-Identitäten (ASCII-sicher, damit der Rust-Filename-Sanitizer
 // create_prompt -> "<sanitized title>.md" deterministisch vorhersagbar ist)
@@ -311,7 +317,7 @@ describe("v1.10.0 Authoring Lifecycle — Public Release Binary Proof (Windows)"
     }
   }
 
-  it("1. REAL_PUBLIC_NATIVE_BINARY: Release-EXE v1.10.0, kein Debug-Bridge", async () => {
+  it("1. REAL_PUBLIC_NATIVE_BINARY: Release-EXE, kein Debug-Bridge", async () => {
     const heading = await $("h1");
     await heading.waitForExist({ timeout: 90000 });
     expect(await heading.getText()).toMatch(/PromptVault Lite/);
@@ -320,7 +326,7 @@ describe("v1.10.0 Authoring Lifecycle — Public Release Binary Proof (Windows)"
     // und explizit die Version 1.10.0 des PUBLIC release binary.
     const statusbar = await $(".app-statusbar");
     await statusbar.waitForExist({ timeout: 10000 });
-    expect(await statusbar.getText()).toMatch(/PromptVault Lite v1\.10\.0/);
+    expect(await statusbar.getText()).toContain("PromptVault Lite v" + EXPECTED_VERSION);
 
     // PUBLIC BINARY PROOF: ADR-005-Debug-Bridge ist im Release NICHT
     // exponiert (is_e2e_bridge_available() -> cfg!(debug_assertions) -> false).
@@ -535,7 +541,7 @@ describe("v1.10.0 Authoring Lifecycle — Public Release Binary Proof (Windows)"
 
     // Struktur: sicherer Diagnose-Export bleibt nutzbar
     expect(data.schema_version).toBe(1);
-    expect(data.app_version).toBe("1.10.0"); // PUBLIC release version
+    expect(data.app_version).toBe(EXPECTED_VERSION);
     expect(Array.isArray(data.traces)).toBe(true);
     expect(Array.isArray(data.events)).toBe(true);
     expect(data.traces.length + data.events.length).toBeGreaterThan(0);
