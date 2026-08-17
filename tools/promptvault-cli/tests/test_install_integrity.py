@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 from unittest import mock
@@ -17,6 +18,14 @@ def _sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def _canonical_version() -> str:
+    init = (Path(__file__).resolve().parent.parent / "src" / "promptvault_cli" / "__init__.py").read_text()
+    match = re.search(r'__version__\s*=\s*"([^"]+)"', init)
+    if not match:
+        raise RuntimeError("__version__ not found in promptvault_cli/__init__.py")
+    return match.group(1)
+
+
 def _valid_manifest(data: bytes = b"payload", **entry_overrides) -> dict:
     entry = {
         "filename": "setup.exe",
@@ -27,7 +36,7 @@ def _valid_manifest(data: bytes = b"payload", **entry_overrides) -> dict:
     entry.update(entry_overrides)
     return {
         "schema_version": 1,
-        "version": "1.10.0",
+        "version": _canonical_version(),
         "artifacts": {platform_tag(): entry},
     }
 
@@ -100,7 +109,7 @@ def test_installer_not_invoked_on_missing_version(tmp_path: Path) -> None:
 
 def test_installer_not_invoked_on_version_mismatch(tmp_path: Path) -> None:
     manifest = _valid_manifest()
-    manifest["version"] = "1.9.0"
+    manifest["version"] = "0.0.0"
     path = _write_manifest(tmp_path, manifest)
     sub = _patched_install(path, b"payload")
     sub.run.assert_not_called()
