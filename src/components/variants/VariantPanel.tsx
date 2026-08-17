@@ -10,7 +10,7 @@
 
 import React, { useState, useCallback, useEffect } from "react";
 import { useAppStore } from "@/stores/appStore";
-import { isDirectionProfilesEnabled } from "@/lib/directionFeatureFlag";
+import { isObservabilityEnabled, emitDiagnosticEvent } from "@/observability/events";
 import { DirectionProfileSelector } from "./DirectionProfileSelector";
 import { VariantResultList } from "./VariantResultList";
 import { VariantCompare } from "./VariantCompare";
@@ -53,16 +53,6 @@ export const VariantPanel: React.FC<VariantPanelProps> = ({
   const variantResult = useAppStore((s) => s.variantResults[promptId]);
   const storeGenerateVariants = useAppStore((s) => s.generateVariants);
   const storeCloseVariantPanel = useAppStore((s) => s.closeVariantPanel);
-
-  // ---------------------------------------------------------------------------
-  // Feature flag
-  // ---------------------------------------------------------------------------
-  const featureEnabled = isDirectionProfilesEnabled(
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard for jsdom/test
-    typeof process !== "undefined" && process.env
-      ? (process.env as Record<string, string | undefined>)
-      : undefined,
-  );
 
   // ---------------------------------------------------------------------------
   // Local state
@@ -160,12 +150,30 @@ export const VariantPanel: React.FC<VariantPanelProps> = ({
     [storeCloseVariantPanel, onClose],
   );
 
-  // ---------------------------------------------------------------------------
-  // Feature-flag guard — after all hooks
-  // ---------------------------------------------------------------------------
-  if (!featureEnabled) {
-    return null;
-  }
+  /** Apply a variant to the prompt editor (GA #295). */
+  const handleApply = useCallback(
+    (variant: PromptVariant) => {
+      if (isObservabilityEnabled()) {
+        emitDiagnosticEvent({
+          schemaVersion: 1,
+          traceId: `direction-${promptId}`,
+          spanId: `direction-select-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+          timestamp: new Date().toISOString(),
+          layer: "ui",
+          operation: "direction.variant_select",
+          stage: "apply",
+          status: "succeeded",
+          attributes: {
+            "promptvault.direction.profile_ids": [variant.profileId],
+          },
+        });
+      }
+      const store = useAppStore.getState();
+      store.applyVariantToEditor(promptId, variant);
+      onClose();
+    },
+    [promptId, onClose],
+  );
 
   // ---------------------------------------------------------------------------
   // Derived
@@ -282,6 +290,7 @@ export const VariantPanel: React.FC<VariantPanelProps> = ({
                 }
                 onCompare={handleCompareOpen}
                 onSave={handleSaveVariant}
+                onApply={handleApply}
               />
             </div>
 
@@ -320,6 +329,7 @@ export const VariantPanel: React.FC<VariantPanelProps> = ({
             }
             variant={compareVariant}
             onSave={handleSaveVariant}
+            onApply={handleApply}
             onClose={handleCompareClose}
           />
         )}

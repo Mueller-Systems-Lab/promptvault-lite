@@ -10,6 +10,7 @@
 // =============================================================================
 
 import React, { useState, useCallback } from "react";
+import { isObservabilityEnabled, emitDiagnosticEvent } from "@/observability/events";
 import type { PromptVariant } from "@/types";
 
 // =============================================================================
@@ -27,6 +28,8 @@ export interface VariantResultListProps {
   onCompare?: (variant: PromptVariant) => void;
   /** Called when the user clicks "💾 Speichern" on a variant. */
   onSave?: (variant: PromptVariant) => void;
+  /** Called when the user clicks "✏️ Übernehmen" on a variant (GA #295). */
+  onApply?: (variant: PromptVariant) => void;
 }
 
 // =============================================================================
@@ -58,12 +61,14 @@ interface VariantResultCardProps {
   variant: PromptVariant;
   onCompare?: (variant: PromptVariant) => void;
   onSave?: (variant: PromptVariant) => void;
+  onApply?: (variant: PromptVariant) => void;
 }
 
 const VariantResultCard: React.FC<VariantResultCardProps> = ({
   variant,
   onCompare,
   onSave,
+  onApply,
 }) => {
   const [conflictsExpanded, setConflictsExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -78,6 +83,21 @@ const VariantResultCard: React.FC<VariantResultCardProps> = ({
   );
 
   const handleCopy = useCallback(async () => {
+    if (isObservabilityEnabled()) {
+      emitDiagnosticEvent({
+        schemaVersion: 1,
+        traceId: `direction-copy-${variant.profileId}`,
+        spanId: `direction-copy-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+        timestamp: new Date().toISOString(),
+        layer: "ui",
+        operation: "direction.copy",
+        stage: "copy",
+        status: "succeeded",
+        attributes: {
+          "promptvault.direction.profile_ids": [variant.profileId],
+        },
+      });
+    }
     try {
       await navigator.clipboard.writeText(variant.content);
       setCopied(true);
@@ -87,7 +107,7 @@ const VariantResultCard: React.FC<VariantResultCardProps> = ({
     } catch {
       // Fallback: no clipboard access
     }
-  }, [variant.content]);
+  }, [variant.content, variant.profileId]);
 
   return (
     <div
@@ -270,6 +290,25 @@ const VariantResultCard: React.FC<VariantResultCardProps> = ({
           type="button"
           className="btn btn-sm variant-action-btn"
           onClick={() => {
+            if (onApply) onApply(variant);
+          }}
+          disabled={!onApply || blockingConflicts.length > 0}
+          title={
+            blockingConflicts.length > 0
+              ? "Übernehmen bei BLOCKING-Konflikten nicht möglich"
+              : !onApply
+                ? "Übernehmen nicht verfügbar"
+                : "Variante im Editor übernehmen"
+          }
+          aria-label="Variante im Editor übernehmen"
+          data-testid={`variant-apply-btn-${variant.variantId}`}
+        >
+          ✏️ Übernehmen
+        </button>
+        <button
+          type="button"
+          className="btn btn-sm variant-action-btn"
+          onClick={() => {
             void handleCopy();
           }}
           data-testid={`variant-copy-btn-${variant.variantId}`}
@@ -291,6 +330,7 @@ export const VariantResultList: React.FC<VariantResultListProps> = ({
   sourceContent: _sourceContent,
   onCompare,
   onSave,
+  onApply,
 }) => {
   // ---------------------------------------------------------------------------
   // Empty state
@@ -338,6 +378,7 @@ export const VariantResultList: React.FC<VariantResultListProps> = ({
             variant={variant}
             onCompare={onCompare}
             onSave={onSave}
+            onApply={onApply}
           />
         ))}
       </div>

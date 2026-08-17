@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { useAppStore } from "@/stores/appStore";
-import { isMissingInfoGateEnabled } from "@/lib/missingInfoFeatureFlag";
 import {
   extractHardConstraints,
   checkConflicts,
@@ -253,13 +252,6 @@ export const MissingInfoGate: React.FC<MissingInfoGateProps> = ({
   onClose,
   onComplete,
 }) => {
-  // --- Feature-flag guard ---
-  const gateEnabled = isMissingInfoGateEnabled(
-    (typeof process !== "undefined" ? process.env : undefined) as
-      | Record<string, string | undefined>
-      | undefined,
-  );
-
   // --- Store selectors (memoized to stabilize useMemo/useCallback deps) ---
   // Record<string,T> indexing returns T (not T|undefined) per TS but can
   // be undefined at runtime. Match the codebase pattern from appStore.ts.
@@ -342,9 +334,6 @@ export const MissingInfoGate: React.FC<MissingInfoGateProps> = ({
   }, [requiredItems, sessionAnswers, localAnswers]);
 
   const allRequiredAnswered = answeredRequiredCount >= requiredItems.length;
-
-  // Feature-flag disabled state
-  const isGateDisabled = !gateEnabled;
 
   // No session / empty state
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Record key may not exist at runtime
@@ -557,11 +546,6 @@ export const MissingInfoGate: React.FC<MissingInfoGateProps> = ({
   );
 
   // --- States that prevent rendering ---
-
-  // Feature-flag disabled: render nothing (gate is inactive)
-  if (isGateDisabled) {
-    return null;
-  }
 
   // No session at all: render empty gate message
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Record key may not exist at runtime

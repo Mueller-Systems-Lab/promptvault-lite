@@ -7,7 +7,6 @@
 // =============================================================================
 
 import React, { useCallback } from "react";
-import { isDirectionProfilesEnabled } from "@/lib/directionFeatureFlag";
 import type { PromptVariant, PreservedConstraintReference } from "@/types";
 
 // =============================================================================
@@ -23,6 +22,8 @@ export interface VariantCompareProps {
   variant: PromptVariant;
   /** Called when the user wants to save this variant. */
   onSave?: (variant: PromptVariant) => void;
+  /** Called when the user wants to apply this variant to the editor (GA #295). */
+  onApply?: (variant: PromptVariant) => void;
   /** Called when the user closes the comparison. */
   onClose: () => void;
 }
@@ -57,18 +58,9 @@ export const VariantCompare: React.FC<VariantCompareProps> = ({
   enrichedContentUsed,
   variant,
   onSave,
+  onApply,
   onClose,
 }) => {
-  // ---------------------------------------------------------------------------
-  // Feature flag — all hooks before conditional return
-  // ---------------------------------------------------------------------------
-  const featureEnabled = isDirectionProfilesEnabled(
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard for jsdom/test
-    typeof process !== "undefined" && process.env
-      ? (process.env as Record<string, string | undefined>)
-      : undefined,
-  );
-
   const handleSave = useCallback(() => {
     if (!onSave) return;
     const blocking = variant.conflicts.filter((c) => c.severity === "blocking");
@@ -76,6 +68,14 @@ export const VariantCompare: React.FC<VariantCompareProps> = ({
       onSave(variant);
     }
   }, [onSave, variant]);
+
+  const handleApply = useCallback(() => {
+    if (!onApply) return;
+    const blocking = variant.conflicts.filter((c) => c.severity === "blocking");
+    if (blocking.length === 0) {
+      onApply(variant);
+    }
+  }, [onApply, variant]);
 
   // ---------------------------------------------------------------------------
   // Derived
@@ -91,13 +91,6 @@ export const VariantCompare: React.FC<VariantCompareProps> = ({
   );
   const hasBlockingConflict = blockingConflicts.length > 0;
   const hasConflicts = variant.conflicts.length > 0;
-
-  // ---------------------------------------------------------------------------
-  // Feature-flag guard
-  // ---------------------------------------------------------------------------
-  if (!featureEnabled) {
-    return null;
-  }
 
   // ---------------------------------------------------------------------------
   // Render: Modal
@@ -301,6 +294,23 @@ export const VariantCompare: React.FC<VariantCompareProps> = ({
               data-testid="variant-compare-save-btn"
             >
               💾 Variante speichern
+            </button>
+          )}
+          {onApply && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleApply}
+              disabled={hasBlockingConflict}
+              title={
+                hasBlockingConflict
+                  ? "Übernehmen bei BLOCKING-Konflikten nicht möglich"
+                  : "Variante im Editor übernehmen"
+              }
+              aria-label="Variante im Editor übernehmen"
+              data-testid="variant-compare-apply-btn"
+            >
+              ✏️ Im Editor übernehmen
             </button>
           )}
         </div>

@@ -26,6 +26,7 @@ import {
   checkDirectionProfileConflicts,
 } from "./constraintChecker";
 import { getProfile, DIRECTION_PROFILES } from "./directionProfiles";
+import { contentFingerprint } from "@/observability/redaction";
 
 // =============================================================================
 // Constants
@@ -118,6 +119,7 @@ export function generateVariants(
   if (uniqueIds.length === 0) {
     return {
       sourceContent,
+      sourceFingerprint: contentFingerprint(sourceContent),
       enrichedContentUsed,
       variants: [],
       profileConflicts: [],
@@ -280,6 +282,7 @@ export function generateVariants(
 
   return {
     sourceContent,
+    sourceFingerprint: contentFingerprint(sourceContent),
     enrichedContentUsed,
     variants,
     profileConflicts: allProfileConflicts,

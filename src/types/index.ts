@@ -946,6 +946,13 @@ export interface VariantGenerationResult {
   /** Ursprungs-Prompt (original ODER enriched). */
   sourceContent: string;
 
+  /**
+   * Fingerprint (contentFingerprint) of the sourceContent the variants were
+   * generated from. Used for stale-state detection: an Apply-to-Editor is
+   * refused when the current source no longer matches this fingerprint.
+   */
+  sourceFingerprint: string;
+
   /** Wurde enrichedContent verwendet? */
   enrichedContentUsed: boolean;
 

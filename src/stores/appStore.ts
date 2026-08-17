@@ -41,7 +41,6 @@ import {
   type ClassificationContext,
 } from "@/lib/missingInfoClassifier";
 import { mergeAnswers } from "@/lib/gateContentMerger";
-import { isMissingInfoGateEnabled } from "@/lib/missingInfoFeatureFlag";
 import { generateVariants as generateDirectionVariants } from "@/lib/variantGenerator";
 import { getDefaultSelection } from "@/lib/directionProfiles";
 import {
@@ -386,6 +385,10 @@ interface AppState {
   ) => void;
   setCustomDirectionInput: (promptId: string, value: string) => void;
 
+  // Advanced Workflows GA (#295) — Apply-to-Editor actions
+  applyVariantToEditor: (promptId: string, variant: PromptVariant) => void;
+  applyMissingInfoResultToEditor: (promptId: string) => void;
+
   // Save-as-New-Version (Batch 7)
   saveVariantAsPrompt: (variant: PromptVariant) => Promise<void>;
 
@@ -476,6 +479,90 @@ function emitAuthoringEvent(
     category: options.category,
     reasonCode: options.reasonCode,
     durationMs: options.durationMs,
+    attributes: Object.keys(attributes).length > 0 ? attributes : undefined,
+  });
+}
+
+interface AdvancedWorkflowEventOptions {
+  /** Prompt ID — emitted under promptvault.gate.prompt_id (allowlisted). */
+  promptId?: string;
+  /** Whether to use promptvault.prompt_id instead of promptvault.gate.prompt_id. */
+  promptIdKey?: "gate" | "prompt";
+  reasonCode?: ReasonCode;
+  category?: DiagnosticCategory;
+  questionCount?: number;
+  requiredCount?: number;
+  answeredCount?: number;
+  outcome?: string;
+  variantCount?: number;
+  profileCount?: number;
+  profileIds?: string[];
+  enrichedSource?: boolean;
+  sourceFingerprint?: string;
+}
+
+/**
+ * Emit an advanced-workflow (missing_info.* / direction.*) observability event
+ * with SAFE metadata only. NEVER carries question text, answer text, variant
+ * text, or prompt body. All keys are bounded and allowlisted.
+ */
+function emitAdvancedWorkflowEvent(
+  operation: string,
+  status: DiagnosticStatus,
+  options: AdvancedWorkflowEventOptions = {},
+): void {
+  if (!isObservabilityEnabled()) return;
+  const attributes: Record<string, unknown> = {};
+  if (options.promptId !== undefined) {
+    attributes[
+      options.promptIdKey === "prompt"
+        ? "promptvault.prompt_id"
+        : "promptvault.gate.prompt_id"
+    ] = options.promptId;
+  }
+  if (options.questionCount !== undefined) {
+    attributes["promptvault.missing_info.question_count"] =
+      options.questionCount;
+  }
+  if (options.requiredCount !== undefined) {
+    attributes["promptvault.missing_info.required_count"] =
+      options.requiredCount;
+  }
+  if (options.answeredCount !== undefined) {
+    attributes["promptvault.missing_info.answered_count"] =
+      options.answeredCount;
+  }
+  if (options.outcome !== undefined) {
+    attributes["promptvault.missing_info.outcome"] = options.outcome;
+  }
+  if (options.variantCount !== undefined) {
+    attributes["promptvault.direction.variant_count"] = options.variantCount;
+  }
+  if (options.profileCount !== undefined) {
+    attributes["promptvault.direction.profile_count"] = options.profileCount;
+  }
+  if (options.profileIds !== undefined) {
+    attributes["promptvault.direction.profile_ids"] = options.profileIds;
+  }
+  if (options.enrichedSource !== undefined) {
+    attributes["promptvault.direction.enriched_source"] =
+      options.enrichedSource;
+  }
+  if (options.sourceFingerprint !== undefined) {
+    attributes["promptvault.advanced.source_fingerprint"] =
+      options.sourceFingerprint;
+  }
+  emitDiagnosticEvent({
+    schemaVersion: 1,
+    traceId: `${operation}-${options.promptId ?? "unknown"}`,
+    spanId: `${operation}-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+    timestamp: new Date().toISOString(),
+    layer: "store",
+    operation,
+    stage: operation,
+    status,
+    category: options.category,
+    reasonCode: options.reasonCode,
     attributes: Object.keys(attributes).length > 0 ? attributes : undefined,
   });
 }
@@ -774,39 +861,12 @@ export const useAppStore = create<AppState>((set, get) => ({
    * Detects gaps from existing analysis data, classifies them,
    * and creates a new session (or reopens an existing one).
    *
-   * Gate is feature-flag gated: no-op if PROMPTVAULT_MISSING_INFO_GATE is disabled.
+   * GA since v1.11.0: no feature flag gate. The action always proceeds to
+   * the analysis-prerequisite check.
    * BLOCKING_SENSITIVE_CONTENT: gate never opens.
    * Existing session: just sets isGateOpen=true (edit mode, answers pre-filled).
    */
   openMissingInfoGate: (promptId: string) => {
-    // Feature-flag gate
-    if (
-      !isMissingInfoGateEnabled(
-        (typeof process !== "undefined" ? process.env : undefined) as
-          | Record<string, string | undefined>
-          | undefined,
-      )
-    ) {
-      if (isObservabilityEnabled()) {
-        emitDiagnosticEvent({
-          schemaVersion: 1,
-          traceId: `gate-${promptId}`,
-          spanId: `gate-ff-${promptId}-${Date.now()}`,
-          timestamp: new Date().toISOString(),
-          layer: "store",
-          operation: "open-missing-info-gate",
-          stage: "feature-flag-check",
-          status: "skipped",
-          reasonCode: "FEATURE_DISABLED",
-          category: "EXPECTED_SKIP",
-          attributes: {
-            "promptvault.gate.prompt_id": promptId,
-          },
-        });
-      }
-      return;
-    }
-
     const state = get();
     const existingSession = state.missingInfoSessions[promptId];
 
@@ -824,6 +884,10 @@ export const useAppStore = create<AppState>((set, get) => ({
           },
         },
       });
+      emitAdvancedWorkflowEvent("missing_info.open", "succeeded", {
+        promptId,
+        questionCount: existingSession.items.length,
+      });
       return;
     }
 
@@ -835,23 +899,11 @@ export const useAppStore = create<AppState>((set, get) => ({
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard: Record<T> may not have key
     if (!contextEval) {
-      if (isObservabilityEnabled()) {
-        emitDiagnosticEvent({
-          schemaVersion: 1,
-          traceId: `gate-${promptId}`,
-          spanId: `gate-no-analysis-${promptId}-${Date.now()}`,
-          timestamp: new Date().toISOString(),
-          layer: "store",
-          operation: "open-missing-info-gate",
-          stage: "analysis-prerequisite",
-          status: "blocked",
-          reasonCode: "ANALYSIS_DATA_MISSING",
-          category: "EXPECTED_BLOCK",
-          attributes: {
-            "promptvault.gate.prompt_id": promptId,
-          },
-        });
-      }
+      emitAdvancedWorkflowEvent("missing_info.open", "blocked", {
+        promptId,
+        reasonCode: "ANALYSIS_DATA_MISSING",
+        category: "EXPECTED_BLOCK",
+      });
       set({
         error: "Keine Analyse-Daten vorhanden. Bitte zuerst analysieren.",
       });
@@ -866,23 +918,11 @@ export const useAppStore = create<AppState>((set, get) => ({
       blueprintEval?.contamination_status === "BLOCKING_SENSITIVE_CONTENT"
     ) {
       /* eslint-enable @typescript-eslint/no-unnecessary-condition */
-      if (isObservabilityEnabled()) {
-        emitDiagnosticEvent({
-          schemaVersion: 1,
-          traceId: `gate-${promptId}`,
-          spanId: `gate-blocked-${promptId}-${Date.now()}`,
-          timestamp: new Date().toISOString(),
-          layer: "store",
-          operation: "open-missing-info-gate",
-          stage: "sensitive-content-check",
-          status: "blocked",
-          reasonCode: "BLOCKING_SENSITIVE_CONTENT",
-          category: "SECURITY_BLOCK",
-          attributes: {
-            "promptvault.gate.prompt_id": promptId,
-          },
-        });
-      }
+      emitAdvancedWorkflowEvent("missing_info.open", "blocked", {
+        promptId,
+        reasonCode: "BLOCKING_SENSITIVE_CONTENT",
+        category: "SECURITY_BLOCK",
+      });
       return; // Gate never opens
     }
 
@@ -924,6 +964,10 @@ export const useAppStore = create<AppState>((set, get) => ({
           },
           isGateOpen: true,
           activeGatePromptId: promptId,
+        });
+        emitAdvancedWorkflowEvent("missing_info.open", "succeeded", {
+          promptId,
+          questionCount: 0,
         });
         return;
       }
@@ -1006,6 +1050,12 @@ export const useAppStore = create<AppState>((set, get) => ({
           [promptId]: [],
         },
       });
+      emitAdvancedWorkflowEvent("missing_info.open", "succeeded", {
+        promptId,
+        questionCount: session.items.length,
+        requiredCount: session.items.filter((i) => i.tier === "REQUIRED")
+          .length,
+      });
     } catch (err) {
       set({ error: `Gate-Öffnung fehlgeschlagen: ${String(err)}` });
     }
@@ -1013,55 +1063,63 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   /** Stores an answer for a gate item. Answers are editable (no overwrite guard). */
   answerGateItem: (promptId: string, answer: MissingInfoAnswer) => {
-    set((state) => {
-      const session = state.missingInfoSessions[promptId];
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard: Record key may not exist
-      if (!session || session.status !== "ACTIVE") return {};
-      return {
-        missingInfoSessions: {
-          ...state.missingInfoSessions,
-          [promptId]: {
-            ...session,
-            answers: {
-              ...session.answers,
-              [answer.itemId]: answer,
-            },
+    const session = get().missingInfoSessions[promptId];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard: Record key may not exist
+    if (!session || session.status !== "ACTIVE") return;
+    set((state) => ({
+      missingInfoSessions: {
+        ...state.missingInfoSessions,
+        [promptId]: {
+          ...session,
+          answers: {
+            ...session.answers,
+            [answer.itemId]: answer,
           },
         },
-      };
+      },
+    }));
+    const after = get().missingInfoSessions[promptId];
+    emitAdvancedWorkflowEvent("missing_info.submit", "succeeded", {
+      promptId,
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard: Record key may not exist
+      answeredCount: Object.keys(after?.answers ?? {}).length,
     });
   },
 
   /** Marks a gate item as skipped. Only RECOMMENDED/OPTIONAL items can be skipped. */
   skipGateItem: (promptId: string, itemId: string) => {
-    set((state) => {
-      const session = state.missingInfoSessions[promptId];
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard
-      if (!session || session.status !== "ACTIVE") return {};
+    const session = get().missingInfoSessions[promptId];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard
+    if (!session || session.status !== "ACTIVE") return;
 
-      const item = session.items.find((i) => i.id === itemId);
-      // REQUIRED items cannot be skipped
-      if (!item || item.tier === "REQUIRED") return {};
+    const item = session.items.find((i) => i.id === itemId);
+    // REQUIRED items cannot be skipped
+    if (!item || item.tier === "REQUIRED") return;
 
-      const existingSkipped = state.gateSkippedItems[promptId] ?? [];
-      if (existingSkipped.includes(itemId)) return {};
+    const existingSkipped = get().gateSkippedItems[promptId] ?? [];
+    if (existingSkipped.includes(itemId)) return;
 
-      return {
-        gateSkippedItems: {
-          ...state.gateSkippedItems,
-          [promptId]: [...existingSkipped, itemId],
+    set((state) => ({
+      gateSkippedItems: {
+        ...state.gateSkippedItems,
+        [promptId]: [...existingSkipped, itemId],
+      },
+      missingInfoSessions: {
+        ...state.missingInfoSessions,
+        [promptId]: {
+          ...session,
+          // Remove answer if previously answered
+          answers: Object.fromEntries(
+            Object.entries(session.answers).filter(([key]) => key !== itemId),
+          ),
         },
-        missingInfoSessions: {
-          ...state.missingInfoSessions,
-          [promptId]: {
-            ...session,
-            // Remove answer if previously answered
-            answers: Object.fromEntries(
-              Object.entries(session.answers).filter(([key]) => key !== itemId),
-            ),
-          },
-        },
-      };
+      },
+    }));
+    const after = get().missingInfoSessions[promptId];
+    emitAdvancedWorkflowEvent("missing_info.submit", "succeeded", {
+      promptId,
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard: Record key may not exist
+      answeredCount: Object.keys(after?.answers ?? {}).length,
     });
   },
 
@@ -1071,81 +1129,92 @@ export const useAppStore = create<AppState>((set, get) => ({
    * Only possible if all REQUIRED items are answered OR outcome is SKIPPED/ASSUMPTIONS.
    */
   completeGate: (promptId: string, outcome: GateOutcome) => {
-    set((state) => {
-      const session = state.missingInfoSessions[promptId];
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard
-      if (!session) return {};
+    const state = get();
+    const session = state.missingInfoSessions[promptId];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard
+    if (!session) return;
 
-      const prompt = state.prompts.find((p) => p.id === promptId);
-      if (!prompt) return {};
+    const prompt = state.prompts.find((p) => p.id === promptId);
+    if (!prompt) return;
 
-      // Validate: all REQUIRED items must be answered (unless SKIPPED/ASSUMPTIONS)
-      if (outcome === "COMPLETED") {
-        const requiredItems = session.items.filter(
-          (i) => i.tier === "REQUIRED",
-        );
-        const requiredUnanswered = requiredItems.some(
-          (item) =>
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard
-            !session.answers[item.id]?.value?.trim() &&
-            !(state.gateSkippedItems[promptId] ?? []).includes(item.id),
-        );
-        if (requiredUnanswered) {
-          // Can't complete — missing required answers
-          return {};
-        }
-      }
-
-      // Collect answers as array for mergeAnswers
-      const answersArray = Object.values(session.answers);
-      const skippedItemIds = new Set(state.gateSkippedItems[promptId] ?? []);
-
-      // Merge answers into original content
-      const mergeResult = mergeAnswers(
-        prompt.content,
-        answersArray,
-        session.items,
-        outcome,
-        { skippedItemIds },
+    // Validate: all REQUIRED items must be answered (unless SKIPPED/ASSUMPTIONS)
+    if (outcome === "COMPLETED") {
+      const requiredItems = session.items.filter(
+        (i) => i.tier === "REQUIRED",
       );
+      const requiredUnanswered = requiredItems.some(
+        (item) =>
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard
+          !session.answers[item.id]?.value?.trim() &&
+          !(state.gateSkippedItems[promptId] ?? []).includes(item.id),
+      );
+      if (requiredUnanswered) {
+        // Can't complete — missing required answers (no-op, but observable)
+        emitAdvancedWorkflowEvent("missing_info.complete", "failed", {
+          promptId,
+          reasonCode: "INVALID_ANSWER_STATE",
+          category: "STATE_ERROR",
+        });
+        return;
+      }
+    }
 
-      // Determine enriched content: null for SKIPPED, merged for COMPLETED/ASSUMPTIONS
-      const enrichedContent =
-        outcome === "SKIPPED" ? null : mergeResult.enrichedContent;
+    // Collect answers as array for mergeAnswers
+    const answersArray = Object.values(session.answers);
+    const skippedItemIds = new Set(state.gateSkippedItems[promptId] ?? []);
 
-      const enrichedContext: EnrichedPromptContext = {
-        originalContent: prompt.content,
-        enrichedContent: enrichedContent ?? prompt.content,
-        answers: answersArray,
-        gateOutcome: outcome,
-        sessionId: session.sessionId,
-        enrichedAt: new Date().toISOString(),
-      };
+    // Merge answers into original content
+    const mergeResult = mergeAnswers(
+      prompt.content,
+      answersArray,
+      session.items,
+      outcome,
+      { skippedItemIds },
+    );
 
-      return {
-        missingInfoSessions: {
-          ...state.missingInfoSessions,
-          [promptId]: {
-            ...session,
-            status: outcome,
-            outcome,
-            enrichedContent,
-          },
+    // Determine enriched content: null for SKIPPED, merged for COMPLETED/ASSUMPTIONS
+    const enrichedContent =
+      outcome === "SKIPPED" ? null : mergeResult.enrichedContent;
+
+    const enrichedContext: EnrichedPromptContext = {
+      originalContent: prompt.content,
+      enrichedContent: enrichedContent ?? prompt.content,
+      answers: answersArray,
+      gateOutcome: outcome,
+      sessionId: session.sessionId,
+      enrichedAt: new Date().toISOString(),
+    };
+
+    set((s) => ({
+      missingInfoSessions: {
+        ...s.missingInfoSessions,
+        [promptId]: {
+          ...session,
+          status: outcome,
+          outcome,
+          enrichedContent,
         },
-        enrichedContexts: {
-          ...state.enrichedContexts,
-          [promptId]: enrichedContext,
-        },
-        isGateOpen: false,
-        activeGatePromptId: null,
-      };
+      },
+      enrichedContexts: {
+        ...s.enrichedContexts,
+        [promptId]: enrichedContext,
+      },
+      isGateOpen: false,
+      activeGatePromptId: null,
+    }));
+
+    emitAdvancedWorkflowEvent("missing_info.complete", "succeeded", {
+      promptId,
+      outcome,
+      answeredCount: answersArray.length,
+      questionCount: session.items.length,
     });
   },
 
   /** Closes the gate modal without discarding the session (CANCELLED status). */
   closeGate: () => {
+    const promptId = get().activeGatePromptId;
     set((state) => {
-      const promptId = state.activeGatePromptId;
       if (!promptId) {
         return { isGateOpen: false, activeGatePromptId: null };
       }
@@ -1166,6 +1235,11 @@ export const useAppStore = create<AppState>((set, get) => ({
         },
       };
     });
+    if (promptId) {
+      emitAdvancedWorkflowEvent("missing_info.cancel", "succeeded", {
+        promptId,
+      });
+    }
   },
 
   /**
@@ -1224,6 +1298,10 @@ export const useAppStore = create<AppState>((set, get) => ({
       isGeneratingVariants: false,
       variantGenerationError: null,
     });
+    emitAdvancedWorkflowEvent("direction.open", "succeeded", {
+      promptId,
+      promptIdKey: "prompt",
+    });
   },
 
   /**
@@ -1232,11 +1310,18 @@ export const useAppStore = create<AppState>((set, get) => ({
    * reopening the panel restores the last selection state.
    */
   closeVariantPanel: () => {
+    const promptId = get().activeVariantPromptId;
     set({
       showVariantPanel: false,
       activeVariantPromptId: null,
       variantGenerationError: null,
     });
+    if (promptId) {
+      emitAdvancedWorkflowEvent("direction.cancel", "succeeded", {
+        promptId,
+        promptIdKey: "prompt",
+      });
+    }
   },
 
   /**
@@ -1270,6 +1355,13 @@ export const useAppStore = create<AppState>((set, get) => ({
             "Kein Prompt-Inhalt verfügbar. Bitte wählen Sie einen Prompt aus.",
           isGeneratingVariants: false,
         });
+        emitAdvancedWorkflowEvent("direction.generate", "failed", {
+          promptId,
+          promptIdKey: "prompt",
+          reasonCode: "NO_PROMPT_SELECTED",
+          category: "USER_INPUT_ERROR",
+          variantCount: 0,
+        });
         return;
       }
 
@@ -1286,12 +1378,141 @@ export const useAppStore = create<AppState>((set, get) => ({
         },
         isGeneratingVariants: false,
       }));
+      emitAdvancedWorkflowEvent("direction.generate", "succeeded", {
+        promptId,
+        promptIdKey: "prompt",
+        variantCount: result.variants.length,
+        profileCount: selection.selectedProfileIds.length,
+        profileIds: selection.selectedProfileIds,
+        enrichedSource: !!enrichedContext,
+        sourceFingerprint: result.sourceFingerprint,
+      });
     } catch (err) {
       set({
         variantGenerationError: String(err),
         isGeneratingVariants: false,
       });
+      emitAdvancedWorkflowEvent("direction.generate", "failed", {
+        promptId,
+        promptIdKey: "prompt",
+        reasonCode: "GENERATION_FAILED",
+        category: "PROCESSING_ERROR",
+        variantCount: 0,
+      });
     }
+  },
+
+  /**
+   * Applies a generated variant to the prompt editor (edit mode, dirty).
+   *
+   * GA contract (#295):
+   * - Finds the prompt; if missing, emits direction.apply failed
+   *   (NO_PROMPT_SELECTED) and returns.
+   * - Stale guard: if variant results exist for the prompt and the stored
+   *   sourceFingerprint does NOT match the current source, the apply is
+   *   refused (STALE_SOURCE), stale results are cleared and the panel closed.
+   * - Otherwise: opens the editor in edit mode with the variant content
+   *   (dirty). NEVER calls savePromptEditor — persistence is the user's
+   *   explicit action.
+   */
+  applyVariantToEditor: (promptId: string, variant: PromptVariant) => {
+    const state = get();
+    const prompt = state.prompts.find((p) => p.id === promptId);
+    if (!prompt) {
+      emitAdvancedWorkflowEvent("direction.apply", "failed", {
+        promptId,
+        promptIdKey: "prompt",
+        reasonCode: "NO_PROMPT_SELECTED",
+        category: "USER_INPUT_ERROR",
+      });
+      return;
+    }
+
+    // Stale guard: variant results must match the current source fingerprint.
+    const result = state.variantResults[promptId];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard: Record key may not exist
+    if (result) {
+      const currentSource =
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard
+        state.enrichedContexts[promptId]?.enrichedContent ?? prompt.content;
+      if (result.sourceFingerprint !== contentFingerprint(currentSource)) {
+        emitAdvancedWorkflowEvent("direction.apply", "failed", {
+          promptId,
+          promptIdKey: "prompt",
+          reasonCode: "STALE_SOURCE",
+          category: "STATE_ERROR",
+        });
+        // Clear the stale results (also closes the panel if active).
+        get().resetVariantSession(promptId);
+        return;
+      }
+    }
+
+    // Apply: editor in edit mode with variant content (dirty, not saved).
+    get().openEditPrompt(promptId);
+    get().updateEditorField("content", variant.content);
+
+    // Close the variant panel state.
+    set({ showVariantPanel: false, activeVariantPromptId: null });
+
+    emitAdvancedWorkflowEvent("direction.apply", "succeeded", {
+      promptId,
+      promptIdKey: "prompt",
+      profileIds: [variant.profileId],
+    });
+  },
+
+  /**
+   * Applies the enriched content of a completed Missing-Info-Gate session
+   * to the prompt editor (edit mode, dirty).
+   *
+   * GA contract (#295):
+   * - If no enriched context (or empty enrichedContent) exists, emits
+   *   missing_info.failed (NO_MISSING_INFO) and returns.
+   * - Stale guard: if ctx.originalContent differs from the current prompt
+   *   content, emits missing_info.failed (STALE_SOURCE), resets the gate
+   *   session and returns.
+   * - Otherwise: opens the editor with the enriched content (dirty) and
+   *   closes the gate state if open.
+   */
+  applyMissingInfoResultToEditor: (promptId: string) => {
+    const state = get();
+    const ctx = state.enrichedContexts[promptId];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard: Record key may not exist
+    if (!ctx || !ctx.enrichedContent) {
+      emitAdvancedWorkflowEvent("missing_info.failed", "failed", {
+        promptId,
+        reasonCode: "NO_MISSING_INFO",
+        category: "EXPECTED_BLOCK",
+      });
+      return;
+    }
+
+    const prompt = state.prompts.find((p) => p.id === promptId);
+    if (!prompt || ctx.originalContent !== prompt.content) {
+      emitAdvancedWorkflowEvent("missing_info.failed", "failed", {
+        promptId,
+        reasonCode: "STALE_SOURCE",
+        category: "STATE_ERROR",
+      });
+      get().resetGateSession(promptId);
+      return;
+    }
+
+    // Apply: editor in edit mode with enriched content (dirty, not saved).
+    get().openEditPrompt(promptId);
+    get().updateEditorField("content", ctx.enrichedContent);
+
+    // Close gate state if open.
+    if (state.activeGatePromptId === promptId) {
+      set({ isGateOpen: false, activeGatePromptId: null });
+    }
+
+    emitAdvancedWorkflowEvent("missing_info.apply", "succeeded", {
+      promptId,
+      outcome: ctx.gateOutcome,
+      answeredCount: ctx.answers.length,
+    });
   },
 
   /**
@@ -1655,45 +1876,96 @@ export const useAppStore = create<AppState>((set, get) => ({
   /**
    * Removes all stale analysis results for a prompt (evaluations, hygiene,
    * context evaluations, blueprint detections, blueprint evaluations).
+   * Also removes advanced-workflow session state (missing-info sessions,
+   * enriched contexts, skipped gate items, variant results) so stale
+   * results are never shown as current.
    * Called after a content change + save so stale analysis is never shown
    * as current. The T8 auto-detection effect re-runs because the content
    * fingerprint changed.
    */
   invalidateAnalysisForPrompt: (promptId: string) => {
-    set((state) => {
+    const state = get();
+    const hadGateState =
+      promptId in state.missingInfoSessions ||
+      promptId in state.enrichedContexts ||
+      promptId in state.gateSkippedItems;
+    const hadVariantState = promptId in state.variantResults;
+
+    set((s) => {
       const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [promptId]: _removedEvaluation,
         ...evaluations
-      } = state.evaluations;
+      } = s.evaluations;
       const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [promptId]: _removedHygiene,
         ...hygiene
-      } = state.hygiene;
+      } = s.hygiene;
       const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [promptId]: _removedContext,
         ...contextEvaluations
-      } = state.contextEvaluations;
+      } = s.contextEvaluations;
       const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [promptId]: _removedDetection,
         ...blueprintDetections
-      } = state.blueprintDetections;
+      } = s.blueprintDetections;
       const {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [promptId]: _removedBlueprintEval,
         ...blueprintEvaluations
-      } = state.blueprintEvaluations;
+      } = s.blueprintEvaluations;
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedSession,
+        ...missingInfoSessions
+      } = s.missingInfoSessions;
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedEnriched,
+        ...enrichedContexts
+      } = s.enrichedContexts;
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedSkipped,
+        ...gateSkippedItems
+      } = s.gateSkippedItems;
+      const {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [promptId]: _removedVariants,
+        ...variantResults
+      } = s.variantResults;
       return {
         evaluations,
         hygiene,
         contextEvaluations,
         blueprintDetections,
         blueprintEvaluations,
+        missingInfoSessions,
+        enrichedContexts,
+        gateSkippedItems,
+        variantResults,
       };
     });
+
+    // Diagnostic events for invalidated advanced state (safe prompt_id only).
+    if (hadGateState) {
+      emitAdvancedWorkflowEvent("missing_info.invalidated", "blocked", {
+        promptId,
+        reasonCode: "STALE_GATE_CONTEXT",
+        category: "STATE_ERROR",
+      });
+    }
+    if (hadVariantState) {
+      emitAdvancedWorkflowEvent("direction.invalidated", "blocked", {
+        promptId,
+        promptIdKey: "prompt",
+        reasonCode: "STALE_VARIANT_RESULT",
+        category: "STATE_ERROR",
+      });
+    }
   },
 
   // Derived data

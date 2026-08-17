@@ -238,6 +238,41 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
     description: "Prompt authoring save (create/update) failed",
     defaultCategory: "PROCESSING_ERROR",
   },
+  NO_PROMPT_SELECTED: {
+    code: "NO_PROMPT_SELECTED",
+    description: "No prompt is selected/available for the requested operation",
+    defaultCategory: "USER_INPUT_ERROR",
+  },
+  NO_MISSING_INFO: {
+    code: "NO_MISSING_INFO",
+    description: "No missing-info enrichment exists to apply",
+    defaultCategory: "EXPECTED_BLOCK",
+  },
+  INVALID_ANSWER_STATE: {
+    code: "INVALID_ANSWER_STATE",
+    description: "Gate cannot complete — required answers are missing",
+    defaultCategory: "STATE_ERROR",
+  },
+  GENERATION_FAILED: {
+    code: "GENERATION_FAILED",
+    description: "Variant generation failed",
+    defaultCategory: "PROCESSING_ERROR",
+  },
+  STALE_SOURCE: {
+    code: "STALE_SOURCE",
+    description: "Advanced workflow result is stale relative to the current source",
+    defaultCategory: "STATE_ERROR",
+  },
+  NO_VARIANT_SELECTED: {
+    code: "NO_VARIANT_SELECTED",
+    description: "No variant is selected for the requested operation",
+    defaultCategory: "EXPECTED_BLOCK",
+  },
+  APPLY_FAILED: {
+    code: "APPLY_FAILED",
+    description: "Applying an advanced workflow result to the editor failed",
+    defaultCategory: "PROCESSING_ERROR",
+  },
 };
 
 export function getReasonCodeDescription(code: ReasonCode): string {

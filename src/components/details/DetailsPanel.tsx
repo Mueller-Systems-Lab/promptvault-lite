@@ -5,8 +5,6 @@ import { OptimizationPanel } from "@/components/optimization/OptimizationPanel";
 import { BlueprintOptimizationPanel } from "@/components/optimization/BlueprintOptimizationPanel";
 import { MissingInfoGate } from "@/components/gates/MissingInfoGate";
 import { VariantPanel } from "@/components/variants/VariantPanel";
-import { isMissingInfoGateEnabled } from "@/lib/missingInfoFeatureFlag";
-import { isDirectionProfilesEnabled } from "@/lib/directionFeatureFlag";
 import ContentClassBadge from "@/components/common/ContentClassBadge";
 import { PromptAudioSummary } from "@/components/details/PromptAudioSummary";
 import type { BlueprintContamination, GateOutcome } from "@/types";
@@ -235,16 +233,9 @@ export const ActionBar: React.FC<{
   const blueprintBlocked = contaminationStatus === "BLOCKING_SENSITIVE_CONTENT";
   const optimizerBlocked = blocked || blueprintBlocked;
 
-  // Missing-Info-Gate feature flag and session state (Batch 5)
-  const gateEnabled = isMissingInfoGateEnabled(
-    (typeof process !== "undefined" ? process.env : undefined) as
-      | Record<string, string | undefined>
-      | undefined,
-  );
-
-  const gateSession = gateEnabled
-    ? useAppStore.getState().missingInfoSessions[prompt.id]
-    : undefined;
+  // Missing-Info-Gate session state (GA since v1.11.0 — always available)
+  const gateSession = useAppStore.getState().missingInfoSessions[prompt.id];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime: Record key may not exist
   const gateRequiredCount = gateSession
     ? gateSession.items.filter((item) => item.tier === "REQUIRED").length
     : 0;
@@ -252,13 +243,6 @@ export const ActionBar: React.FC<{
     gateRequiredCount > 0
       ? `❓ ${gateRequiredCount} fehlende Info${gateRequiredCount === 1 ? "" : "s"}`
       : "❓ Fehlende Infos prüfen";
-
-  // Direction Profiles feature flag (Batch 6)
-  const variantEnabled = isDirectionProfilesEnabled(
-    (typeof process !== "undefined" ? process.env : undefined) as
-      | Record<string, string | undefined>
-      | undefined,
-  );
 
   return (
     <div className="action-bar">
@@ -347,25 +331,35 @@ export const ActionBar: React.FC<{
           🔷 BP optimieren
         </button>
       )}
-      {gateEnabled && onMissingInfoGate && (
+      {onMissingInfoGate && (
         <button
           className="btn"
           onClick={onMissingInfoGate}
-          title="Fehlende Informationen prüfen und ergänzen"
+          disabled={isAnalyzing}
+          title={
+            isAnalyzing
+              ? "Analyse läuft — Fehlende Infos werden nach der Analyse verfügbar"
+              : "Fehlende Informationen prüfen und ergänzen"
+          }
           data-testid="gate-actionbar-btn"
         >
-          {gateLabel}
+          {isAnalyzing ? "⏳ Analysiere..." : gateLabel}
         </button>
       )}
-      {variantEnabled && onOpenVariantPanel && (
+      {onOpenVariantPanel && (
         <button
           className="btn btn-primary"
           onClick={onOpenVariantPanel}
-          title="Varianten mit Richtungsprofilen erzeugen"
+          disabled={isAnalyzing}
+          title={
+            isAnalyzing
+              ? "Analyse läuft — Varianten werden nach der Analyse verfügbar"
+              : "Varianten mit Richtungsprofilen erzeugen"
+          }
           aria-label="Varianten erzeugen"
           data-testid="variant-actionbar-btn"
         >
-          🧭 Varianten erzeugen
+          {isAnalyzing ? "⏳ Analysiere..." : "🧭 Varianten erzeugen"}
         </button>
       )}
     </div>
@@ -397,13 +391,6 @@ export const DetailsPanel: React.FC = () => {
       setShowBlueprintOptimizer(false);
     }
   }, [isBlocked]);
-
-  // Gate feature-flag check
-  const gateEnabled = isMissingInfoGateEnabled(
-    (typeof process !== "undefined" ? process.env : undefined) as
-      | Record<string, string | undefined>
-      | undefined,
-  );
 
   /** Open the MissingInfoGate (via ActionBar button or auto-trigger). */
   const handleOpenGate = useCallback(() => {
@@ -440,54 +427,50 @@ export const DetailsPanel: React.FC = () => {
   const handleOpenOptimizer = useCallback(() => {
     if (!prompt || isBlocked) return;
 
-    // Gate check: auto-open gate if REQUIRED items exist (Batch 5)
-    if (gateEnabled) {
-      const store = useAppStore.getState();
-      const session = store.missingInfoSessions[prompt.id];
-      const skipped = store.gateSkippedItems[prompt.id] ?? [];
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime key may be absent
-      const items = session?.items ?? [];
-      const hasRequired =
-        items.length > 0 &&
-        items.some(
-          (item) => item.tier === "REQUIRED" && !skipped.includes(item.id),
-        );
+    // Gate check: auto-open gate if REQUIRED items exist (Batch 5, GA)
+    const store = useAppStore.getState();
+    const session = store.missingInfoSessions[prompt.id];
+    const skipped = store.gateSkippedItems[prompt.id] ?? [];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime key may be absent
+    const items = session?.items ?? [];
+    const hasRequired =
+      items.length > 0 &&
+      items.some(
+        (item) => item.tier === "REQUIRED" && !skipped.includes(item.id),
+      );
 
-      if (hasRequired) {
-        setShowGate(true);
-        return;
-      }
+    if (hasRequired) {
+      setShowGate(true);
+      return;
     }
 
     setShowOptimizer(true);
-  }, [prompt, gateEnabled, isBlocked]);
+  }, [prompt, isBlocked]);
 
   // Blueprint optimize — opens the optimization modal for BLUEPRINT/HYBRID content.
   // Disabled when BLOCKING_SENSITIVE_CONTENT (button stays disabled at the ActionBar level).
   const handleBlueprintOptimize = useCallback(() => {
     if (!prompt || isBlocked) return;
 
-    // Same gate check as optimizer (Batch 5)
-    if (gateEnabled) {
-      const store = useAppStore.getState();
-      const session = store.missingInfoSessions[prompt.id];
-      const skipped = store.gateSkippedItems[prompt.id] ?? [];
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime key may be absent
-      const items = session?.items ?? [];
-      const hasRequired =
-        items.length > 0 &&
-        items.some(
-          (item) => item.tier === "REQUIRED" && !skipped.includes(item.id),
-        );
+    // Same gate check as optimizer (Batch 5, GA)
+    const store = useAppStore.getState();
+    const session = store.missingInfoSessions[prompt.id];
+    const skipped = store.gateSkippedItems[prompt.id] ?? [];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime key may be absent
+    const items = session?.items ?? [];
+    const hasRequired =
+      items.length > 0 &&
+      items.some(
+        (item) => item.tier === "REQUIRED" && !skipped.includes(item.id),
+      );
 
-      if (hasRequired) {
-        setShowGate(true);
-        return;
-      }
+    if (hasRequired) {
+      setShowGate(true);
+      return;
     }
 
     setShowBlueprintOptimizer(true);
-  }, [prompt, isBlocked, gateEnabled]);
+  }, [prompt, isBlocked]);
 
   // Determine content to pass to optimizers: enriched if available, else original
   const optimizerContent = (() => {

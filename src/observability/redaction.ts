@@ -70,6 +70,15 @@ const SAFE_ATTRIBUTE_KEYS: ReadonlySet<string> = new Set([
   "promptvault.authoring.mode",
   "promptvault.authoring.prompt_id",
   "promptvault.authoring.duration_ms",
+  "promptvault.missing_info.question_count",
+  "promptvault.missing_info.required_count",
+  "promptvault.missing_info.answered_count",
+  "promptvault.missing_info.outcome",
+  "promptvault.direction.variant_count",
+  "promptvault.direction.profile_count",
+  "promptvault.direction.profile_ids",
+  "promptvault.direction.enriched_source",
+  "promptvault.advanced.source_fingerprint",
 ]);
 
 /** Bounded, code-owned invariant violation types (not user content). */
