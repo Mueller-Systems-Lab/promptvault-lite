@@ -6,7 +6,7 @@ on:
       release_ref:
         description: "Release tag to build and publish (must be an existing vX.Y.Z tag)"
         required: true
-        default: "v1.10.0"
+        default: "v1.11.0"
         type: string
 
 permissions:
