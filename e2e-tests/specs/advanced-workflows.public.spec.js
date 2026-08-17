@@ -64,6 +64,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const RANDOM = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 
+// Expected product version, derived from the canonical repo source
+// (package.json) so this spec never pins a stale release version.
+const EXPECTED_VERSION = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "..", "..", "package.json"), "utf8")
+).version;
+
 // ---------------------------------------------------------------------------
 // Test-Identitäten (ASCII-sicher, damit der Rust-Filename-Sanitizer
 // deterministisch vorhersagbare Dateinamen erzeugt)
@@ -594,7 +600,7 @@ describe("v1.11.0 Advanced Workflows GA — Production Release Binary Proof (Win
     }
   }
 
-  it("1. REAL_PRODUCTION_BINARY: Release-EXE v1.11.0, kein Debug-Bridge, echter Rust-Scan", async () => {
+  it("1. REAL_PRODUCTION_BINARY: Release-EXE, kein Debug-Bridge, echter Rust-Scan", async () => {
     const heading = await $("h1");
     await heading.waitForExist({ timeout: 90000 });
     expect(await heading.getText()).toMatch(/PromptVault Lite/);
@@ -604,7 +610,7 @@ describe("v1.11.0 Advanced Workflows GA — Production Release Binary Proof (Win
     const statusbar = await $(".app-statusbar");
     await statusbar.waitForExist({ timeout: 10000 });
     const statusText = await statusbar.getText();
-    expect(statusText).toMatch(/PromptVault Lite v1\.11\.0/);
+    expect(statusText).toContain("PromptVault Lite v" + EXPECTED_VERSION);
 
     // PRODUCTION BINARY PROOF: ADR-005-Debug-Bridge ist im Release NICHT
     // exponiert (is_e2e_bridge_available() -> cfg!(debug_assertions) -> false).
@@ -1141,7 +1147,7 @@ describe("v1.11.0 Advanced Workflows GA — Production Release Binary Proof (Win
 
     // Struktur: sicherer Diagnose-Export bleibt nutzbar (Release-Version)
     expect(data.schema_version).toBe(1);
-    expect(data.app_version).toBe("1.11.0"); // PRODUCTION release version
+    expect(data.app_version).toBe(EXPECTED_VERSION);
     expect(data.diagnostic_export_policy).toBe("safe-metadata-v1");
     expect(Array.isArray(data.traces)).toBe(true);
     expect(Array.isArray(data.events)).toBe(true);
