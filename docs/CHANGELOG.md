@@ -1,14 +1,26 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.11.0
+version: 1.11.1
 ---
 
 # Changelog
 
+## v1.11.1 — Patch: Release/Version-Test-Contract-Reparatur (PATCH)
+
+**Status: RELEASED** — Tag `v1.11.1` (2026-08-17): GitHub Release published (Windows-x64-NSIS-Installer, Release-Manifest, `SHA256SUMS.txt`); `promptvault-lite-manager==1.11.1` published on PyPI.
+
+### Fixed
+
+- **Root cause of the v1.11.0 PyPI publication failure removed:** stale release-version-pinned CLI test fixtures replaced by a canonical derived-version contract — `pyproject.toml` vs `__init__.py` equality with no hardcoded release literal.
+- **Checked-in release manifest now covered by the test suite:** `promptvault-release-manifest.json` must match the package version and carry a valid single artifact (filename, URL, sha256, size, type) — closing the "bump the package but forget the manifest" drift hole that would make `promptvault install` fail closed at runtime.
+- **Version-consistency script default can never go stale:** the expected version is derived from `tools/promptvault-cli/pyproject.toml` instead of a hardcoded literal; the CLI argument remains an explicit override.
+- **Fail-closed install integrity retained:** a stale or mismatched manifest still aborts installation before any installer runs.
+- **v1.11.0 remains immutable:** its GitHub Release and tag stay untouched; v1.11.1 supersedes it for PyPI publication.
+
 ## v1.11.0 — Advanced Workflows GA: Missing Info & Direction/Variants (MINOR / feature wave)
 
-**Status: IMPLEMENTED / PENDING RELEASE — UNRELEASED.** No tag, no GitHub Release, no PyPI publish yet (Issue #295, branch `feature/advanced-workflows-ga`).
+**Status: RELEASED (GitHub) / PyPI publication failed.** Tag `v1.11.0` pushed and GitHub Release published on 2026-08-17; the PyPI publication of `promptvault-lite-manager==1.11.0` FAILED the package-test gate (stale version-pinned test fixtures) and was superseded by the v1.11.1 patch (Issue #295, branch `feature/advanced-workflows-ga`).
 
 ### Added
 
@@ -17,14 +29,14 @@ version: 1.11.0
 - **Apply-to-editor integration:** Missing-Info enriched results and Direction variant results support **Übernehmen** ("✏️ Übernehmen" / "✏️ Im Editor übernehmen") into the v1.10.0 PromptEditor → dirty state → explicit user **Speichern**. **Abbrechen** preserves the original.
 - **Stale-state invalidation:** advanced-workflow results (gate sessions + variant results) are invalidated when the source content changes; apply on a stale source is refused (`STALE_SOURCE`) and stale results are cleared.
 - **Safe observability additions:** `missing_info.*` and `direction.*` operations with bounded reason codes (`NO_PROMPT_SELECTED`, `NO_MISSING_INFO`, `INVALID_ANSWER_STATE`, `GENERATION_FAILED`, `STALE_SOURCE`, `NO_VARIANT_SELECTED`, `APPLY_FAILED`). Privacy contract unchanged (`safe-metadata-v1` fail-closed): no prompt body, no answers, no variant text in diagnostics.
-- **Version bump to 1.11.0:** package.json, src-tauri/Cargo.toml, src-tauri/tauri.conf.json, tools/promptvault-cli/pyproject.toml, tools/promptvault-cli/src/promptvault_cli/__init__.py, Cargo.lock. The release manifest (tools/promptvault-cli/promptvault-release-manifest.json) intentionally remains v1.10.0 (immutable last-released record, finalized only at release time).
+- **Version bump to 1.11.0:** package.json, src-tauri/Cargo.toml, src-tauri/tauri.conf.json, tools/promptvault-cli/pyproject.toml, tools/promptvault-cli/src/promptvault_cli/__init__.py, Cargo.lock. The release manifest (tools/promptvault-cli/promptvault-release-manifest.json) was finalized at release time to the release version 1.11.0 — it is never left pinned to the previous release.
 
 ### Verified (production build)
 
 - Production native build proven: `target\release\promptvault-lite.exe` (1.11.0) + NSIS installer `PromptVault Lite_1.11.0_x64-setup.exe` + MSI, built **without** feature env flags.
 - Native production E2E **11/11 PASS**; privacy sentinel **0**.
 
-> **Publication status:** NOT RELEASED. No tag, no GitHub Release, no PyPI publish for v1.11.0 in this milestone run.
+> **Publication status:** GitHub Release v1.11.0 published (tag `v1.11.0`, 2026-08-17); PyPI publication of `promptvault-lite-manager==1.11.0` FAILED the package-test gate (stale version-pinned test fixtures) and was superseded by the v1.11.1 patch.
 
 ## v1.10.0 — In-App Prompt Authoring Lifecycle (MINOR / feature wave)
 

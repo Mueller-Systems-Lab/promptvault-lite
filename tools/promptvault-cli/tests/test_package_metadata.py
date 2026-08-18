@@ -14,6 +14,7 @@ A future version bump therefore never requires editing this test file,
 while any real drift between the two sources still fails the suite.
 """
 
+import json
 import re
 import tomllib
 from pathlib import Path
@@ -49,6 +50,33 @@ def test_pyproject_version_matches_package_version() -> None:
     No stale release literal lives in this test.
     """
     assert _pyproject_version() == _package_version()
+
+
+def test_checked_in_release_manifest_matches_package_version() -> None:
+    """The checked-in release manifest must track the package version.
+
+    Closes the release-drift hole where pyproject.toml and ``__init__.py``
+    are bumped but the release manifest is forgotten: a stale manifest
+    would make ``promptvault install`` fail closed at runtime (the
+    original v1.11.0 incident class). No stale release literal lives here —
+    the expected values are read from the canonical ``__init__.py``
+    version via ``_package_version()``, so any real manifest-vs-package
+    drift fails the suite.
+    """
+    manifest_path = PROJECT_ROOT / "promptvault-release-manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+
+    assert manifest["version"] == _package_version()
+
+    artifacts = manifest["artifacts"]
+    assert len(artifacts) == 1
+    entry = next(iter(artifacts.values()))
+
+    assert _package_version() in entry["filename"]
+    assert f"v{_package_version()}" in entry["url"]
+    assert re.fullmatch(r"[0-9a-f]{64}", entry["sha256"])
+    assert isinstance(entry["size"], int) and entry["size"] > 0
+    assert entry["type"] == "nsis"
 
 
 def test_executable_entry_point_unchanged() -> None:

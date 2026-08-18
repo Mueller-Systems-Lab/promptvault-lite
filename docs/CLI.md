@@ -19,8 +19,8 @@ Zwei Ebenen sind strikt zu trennen:
 
 ## Publikationsstatus
 
-- **GitHub Release / Tag `v1.9.1`:** `PUBLISHED` — Windows-x64-NSIS-Installer, Release-Manifest und `SHA256SUMS.txt`.
-- **PyPI:** `PUBLISHED` — `promptvault-lite-manager==1.9.1` ist öffentlich installierbar:
+- **GitHub Release / Tag `v1.11.1`:** `PUBLISHED` — Windows-x64-NSIS-Installer, Release-Manifest und `SHA256SUMS.txt`.
+- **PyPI:** `PUBLISHED` — `promptvault-lite-manager==1.11.1` ist öffentlich installierbar:
 
 ```bash
 uv tool install promptvault-lite-manager
@@ -49,7 +49,7 @@ Prüft CLI-Version, Python-Version, OS, Architektur, Plattform-Tag, Installation
 
 ### `install`
 
-Nur Windows. Löst das native Artefakt über das Release-Manifest auf. Das Manifest wird zuerst lokal gesucht (`PROMPTVAULT_MANIFEST` oder CWD/`~/.promptvault/`); fehlt es, wird es deterministisch vom GitHub-Release `v1.9.1` geladen (`promptvault-release-manifest.json`). Das Artefakt wird in einen kontrollierten Cache (`~/.promptvault/downloads/`) heruntergeladen, **SHA-256 und Größe fail-closed** verifiziert und dann still (`/S`) als NSIS-Installer ausgeführt. Bei Integritätsfehlern wird mit `STOP_ARTIFACT_INTEGRITY_FAILED` abgebrochen.
+Nur Windows. Löst das native Artefakt über das Release-Manifest auf. Das Manifest wird zuerst lokal gesucht (`PROMPTVAULT_MANIFEST` oder CWD/`~/.promptvault/`); fehlt es, wird es deterministisch vom GitHub-Release geladen, das der CLI-Version entspricht (`releases/download/v<version>/promptvault-release-manifest.json`). Das Artefakt wird in einen kontrollierten Cache (`~/.promptvault/downloads/`) heruntergeladen, **SHA-256 und Größe fail-closed** verifiziert und dann still (`/S`) als NSIS-Installer ausgeführt. Bei Integritätsfehlern wird mit `STOP_ARTIFACT_INTEGRITY_FAILED` abgebrochen.
 
 Seit v1.9.1 ist der Release-Vertrag strikt fail-closed: Ein installierbares Artefakt **muss** `filename`, `type`, `sha256` und `size` besitzen; das Manifest **muss** eine gültige `version` haben, die exakt der angeforderten CLI-Version entspricht. Fehlende oder ungültige Pflichtfelder, Version-Mismatch, falsche SHA-256/Größe oder eine unsupported Plattform brechen die Installation ab, bevor ein Installer gestartet wird.
 
@@ -103,4 +103,4 @@ uv tool uninstall promptvault-lite-manager
 
 ## Hinweis zum Windows-Artefakt
 
-Das `v1.9.1`-GitHub-Release enthält den Windows-x64-NSIS-Installer (`PromptVault.Lite_1.9.1_x64-setup.exe`), das Release-Manifest und `SHA256SUMS.txt`. Der CLI-Install-Pfad (`promptvault install`) lädt dieses Manifest und Artefakt deterministisch und installiert nach erfolgreicher SHA-256-Verifikation.
+Das `v1.11.1`-GitHub-Release enthält den Windows-x64-NSIS-Installer (`PromptVault.Lite_1.11.1_x64-setup.exe`), das Release-Manifest und `SHA256SUMS.txt`. Der CLI-Install-Pfad (`promptvault install`) lädt dieses Manifest und Artefakt deterministisch vom GitHub-Release, das der CLI-Version entspricht, und installiert nach erfolgreicher SHA-256-Verifikation.

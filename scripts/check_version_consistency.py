@@ -8,6 +8,11 @@ same release version. Used as a pre-release gate to prevent version drift
 Usage:
     python scripts/check_version_consistency.py [expected-version]
 
+Without an argument the expected version is derived from
+``tools/promptvault-cli/pyproject.toml`` (``project.version``) instead of a
+hardcoded literal, so the default can never go stale at the next bump. An
+explicit CLI argument overrides the derived default.
+
 Exit code 0 when all sources agree, non-zero otherwise.
 """
 
@@ -62,8 +67,14 @@ def read_version(path: Path) -> str:
     raise ValueError(f"Unknown source: {path}")
 
 
+def _default_expected_version() -> str:
+    """Derive the expected version from the CLI's canonical pyproject.toml."""
+    pyproject = REPO_ROOT / "tools" / "promptvault-cli" / "pyproject.toml"
+    return tomllib.loads(pyproject.read_text())["project"]["version"]
+
+
 def main() -> int:
-    expected = sys.argv[1] if len(sys.argv) > 1 else "1.10.0"
+    expected = sys.argv[1] if len(sys.argv) > 1 else _default_expected_version()
     failures: list[str] = []
     versions: dict[str, str] = {}
     for label, path in SOURCES.items():
