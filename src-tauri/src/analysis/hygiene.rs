@@ -806,7 +806,7 @@ fn detect_role_mismatch(content: &str) -> Vec<DetectedArtifact> {
 /// Verwendet einfache Heuristiken unabhängig vom TS-Klassifikator.
 fn is_guideline_content(content: &str) -> bool {
     let guideline_indicators = [
-        r"(?im)^#{1,3}\s*(System-Richtlinie|Richtlinie|Guideline|Policy|Regelwerk|Leitlinie|Prinzipien)\b",
+        r"(?im)^#{1,3}\s*(System-Richtlinie|Richtlinie|Guidelines?|Policy|Policies?|Regelwerk|Leitlinie|Prinzipien|Conventions?|Rules?)\b",
         r"(?im)(Verzichte auf|Verwende|Achte auf|Halte dich|Nutze|Vermeide|Stelle sicher)\b",
         r"(?im)^#{1,3}\s*(Regeln?|Vorgaben?|Anweisungen)\b",
         r"(?i)(Token-Effizienz|BatchPrompting|Batch-Verarbeitung|Ausgabequalität|Skeleton-of-Thought|Kontext-Management|Output-Management)\b",

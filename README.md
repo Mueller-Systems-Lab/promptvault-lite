@@ -2,7 +2,7 @@
 
 **Local-first desktop app for managing, analyzing and improving prompt collections.**
 
-PromptVault Lite turns messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
+PromptVault Lite turns messy prompt folders into a structured, searchable and structure-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
 ![Release](https://img.shields.io/badge/release-v1.11.1-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
@@ -16,7 +16,7 @@ PromptVault Lite turns messy prompt folders into a structured, searchable and qu
 
 ## What it does
 
-PromptVault Lite scans local `.md`, `.markdown` and `.txt` prompt files, shows them in a desktop explorer, evaluates their quality and hygiene, detects blueprint-style prompts, and helps you optimize prompt structure in a deterministic, offline workflow.
+PromptVault Lite scans local `.md`, `.markdown` and `.txt` prompt files, shows them in a desktop explorer, evaluates their structural quality (structure & completeness) and hygiene, detects blueprint-style prompts, and helps you optimize prompt structure in a deterministic, offline workflow.
 
 It is built for people who collect, write and refine many prompts — especially agent prompts, project prompts, workflow prompts and reusable prompt blueprints.
 
@@ -26,7 +26,7 @@ It is built for people who collect, write and refine many prompts — especially
 
 - **In-App Prompt Authoring** — create, edit, save and persist prompts directly in the app (v1.10.0, released)
 - **Local Prompt Archive** — recursively scan local folders (`.md`, `.markdown`, `.txt`, 1 MiB limit)
-- **Quality & Hygiene Analysis** — score prompts across clarity, role, goal, context, output format and reusability; detect contamination such as secrets, private paths and evidence clutter
+- **Structural Quality & Hygiene Analysis** — assess prompt structure and completeness (clarity, role, goal, context, output format, reusability — applied where relevant); detect contamination such as secrets, private paths and evidence clutter
 - **Prompt Context Evaluation** — measure how well a prompt carries its own context
 - **Blueprint Detection** — detect prompt blueprints, hybrids and architecture-like agent instructions (10-dimension quality evaluation)
 - **Advanced Workflows GA** — Missing Info and Direction/Variants are available by default in the standard production build (v1.11.0, implemented — pending release; no Developer Mode required, no build-time feature flag)

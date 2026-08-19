@@ -1,0 +1,66 @@
+{
+  "version": "1.0.0",
+  "description": "Durable regression subset promoted from the semantic quality benchmark. These cases express general behavior categories; the assertions are encoded as principle-level tests in src-tauri/src/analysis/quality.rs (test_red_*) — no benchmark IDs or phrases are hardcoded in production code.",
+  "categories": {
+    "terse_good_prompt": "A short, self-contained transformation task with input anchor and output contract must not be crushed to a low score.",
+    "keyword_stuffed_nonsense": "Headings with nonsense bodies and meaningless numbered steps must not reach a high score.",
+    "contradictory_prompt": "Explicitly contradictory mandates must lower the score.",
+    "cosmetic_heading_change": "Adding empty headings/boilerplate without semantic improvement must not materially change the score.",
+    "genuine_context_improvement": "Adding genuinely required context must improve the score meaningfully.",
+    "irrelevant_safety_boilerplate": "Generic safety/compliance boilerplate on a harmless task must not inflate the score.",
+    "guideline_routing": "Guidelines (incl. English) must be routed to the guideline scoring model; task prompts must not.",
+    "irrelevant_missing_info": "Inapplicable criteria must not be reported as missing information."
+  },
+  "cases": [
+    {
+      "id": "sem-t-en-exl-terse-001",
+      "category": "terse_good_prompt",
+      "note": "Calibration contrast-pair member A1/F-family; reference EXCELLENT."
+    },
+    {
+      "id": "sem-t-de-exl-terse-002",
+      "category": "terse_good_prompt",
+      "note": "Reference EXCELLENT; must not be false-low."
+    },
+    {
+      "id": "sem-t-en-poo-pkey-001",
+      "category": "keyword_stuffed_nonsense",
+      "note": "Adversarial buzzword/contradiction case; reference BROKEN."
+    },
+    {
+      "id": "sem-t-en-brk-bhns-001",
+      "category": "keyword_stuffed_nonsense",
+      "note": "Headings + nonsense bodies; reference BROKEN."
+    },
+    {
+      "id": "sem-t-en-poo-pcon-001",
+      "category": "contradictory_prompt",
+      "note": "Mutually exclusive output contracts; reference BROKEN."
+    },
+    {
+      "id": "sem-t-en-god-gstr-003",
+      "category": "cosmetic_heading_change",
+      "note": "Pair C1 vs C2: cosmetic formatting must not add >10 points."
+    },
+    {
+      "id": "sem-t-de-fai-fmis-001",
+      "category": "genuine_context_improvement",
+      "note": "Pair D1 vs D2: real context must add >=20 points."
+    },
+    {
+      "id": "sem-t-de-fai-fsafe-001",
+      "category": "irrelevant_safety_boilerplate",
+      "note": "Harmless recipe with GDPR/security spam; reference FAIR at most."
+    },
+    {
+      "id": "sem-g-en-god-gguid-001",
+      "category": "guideline_routing",
+      "note": "English guideline; must route to guideline scoring."
+    },
+    {
+      "id": "sem-t-en-exl-terse-005",
+      "category": "irrelevant_missing_info",
+      "note": "Terse-good: inapplicable criteria must not be reported missing."
+    }
+  ]
+}

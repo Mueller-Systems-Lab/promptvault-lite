@@ -47,11 +47,14 @@ version: 1.11.0
 - Klicke auf **Analysieren** in der Detailansicht.
 - Alternativ kann die App alle geladenen Prompts der Reihe nach analysieren.
 
-### Qualitätsscore
+### Analyse-Ergebnis (Struktur- und Vollständigkeits-Analyse)
+
+Die Analyse bewertet die **Struktur und Vollständigkeit** eines Prompts anhand klarer, regelbasierter Kriterien. Sie ist eine Unterstützung beim Aufräumen und Strukturieren — **keine objektive inhaltliche Qualitätsmessung**: Ein kurzer, klarer Prompt für eine einzelne Aufgabe kann hervorragend sein, auch wenn er keine Rolle, keine Sicherheitsgrenzen und keine nummerierten Schritte enthält; umgekehrt macht viel Formulierung ohne Substanz einen Prompt nicht besser.
 
 - Bereich: `0–100`
-- Hoher Wert = guter Aufbau, klare Zielsetzung, gute Struktur
-- Die Analyse bewertet u. a. Rolle, Ziel, Kontext, Eingaben, Vorgehen, Ausgabeformat, Qualitätsanforderungen, Sicherheitsgrenzen, Klarheit und Wiederverwendbarkeit
+- Hoher Wert = der Prompt ist strukturell vollständig (Rolle, Ziel, Kontext, Eingaben, Vorgehen, Ausgabeformat, Qualitätsanforderungen, Sicherheitsgrenzen, Klarheit, Wiederverwendbarkeit werden anhand von Regeln geprüft, soweit sie für die Aufgabe relevant sind)
+- Nicht anwendbare Kriterien (z. B. Sicherheitsgrenzen bei einer harmlosen Übersetzung) fließen nicht in das Ergebnis ein
+- Die inhaltliche Prüfung (ob der Prompt inhaltlich sinnvoll, widerspruchsfrei und für den Zweck geeignet ist) bleibt Aufgabe des Menschen
 
 ### Hygieneanalyse
 

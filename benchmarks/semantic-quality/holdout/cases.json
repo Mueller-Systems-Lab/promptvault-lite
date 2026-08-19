@@ -1,0 +1,134 @@
+[
+  {
+    "id": "sem-t-en-exl-terse-504",
+    "language": "en",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "tags": ["terse", "excellent", "one-off", "code", "output-contract"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "Write a function in Python that counts word frequencies in a string. Ignore case and punctuation. Return a dict sorted by frequency, most frequent first."
+  },
+  {
+    "id": "sem-t-en-exl-struc-503",
+    "language": "en",
+    "kind": "task",
+    "stratum": "structured-excellent",
+    "tags": ["structured", "excellent", "output-contract"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "## Goal\nConvert the JSON document in {INPUT_FILE} into a normalized CSV for import into {TARGET_SYSTEM}.\n\n## Context\nThe source has nested objects and arrays. The target expects one row per leaf value with columns: id, path, value, type. The mapping rules are defined in {MAPPING_SPEC}.\n\n## Input\n- Source file: {INPUT_FILE}\n- Mapping spec: {MAPPING_SPEC}\n\n## Procedure\n1. Load and validate the JSON against its schema.\n2. Apply the flattening rules from the mapping spec.\n3. Write the CSV with the four required columns.\n\n## Output format\nCSV with header row, UTF-8, comma-separated, quoted where needed.\n\n## Quality requirements\n- Every leaf of the JSON must produce exactly one row.\n- Malformed rows must be collected in {ERROR_FILE} with the source path.\n\n## Constraints\n- Do not alter the source file.\n- Do not invent mapping rules that are not in the spec."
+  },
+  {
+    "id": "sem-t-en-god-gnat-504",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-natural",
+    "tags": ["natural", "good", "no-headings", "missing-irrelevant-context"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "Draft a short welcome message for new users of {{app_name}}. It should explain what the app does in two sentences, point to the getting-started guide, and end with a friendly invitation to explore. Do not mention pricing or technical details."
+  },
+  {
+    "id": "sem-r-en-god-rtpl-502",
+    "language": "en",
+    "kind": "template",
+    "stratum": "reusable-template-good",
+    "tags": ["reusable-template", "good", "placeholders"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "# Meeting Minutes Template\n\n- Meeting: {{meeting_title}}\n- Date: {{date}}\n- Attendees: {{attendees}}\n\n## Agenda\n{{agenda_items}}\n\n## Decisions\n{{decisions}}\n\n## Action Items\n{{action_items}} (owner, due date)\n\n## Notes\n{{notes}}\n\nFill every section. If a section has no content, write NOTHING instead of leaving it empty."
+  },
+  {
+    "id": "sem-t-de-fai-fmis-504",
+    "language": "de",
+    "kind": "task",
+    "stratum": "fair-missing-critical-context",
+    "tags": ["missing-context", "fair"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "Erstelle ein Angebot für den Kunden."
+  },
+  {
+    "id": "sem-t-en-fai-famb-503",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-ambiguous",
+    "tags": ["ambiguous", "fair"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "Make it better. You know what I mean."
+  },
+  {
+    "id": "sem-g-de-fai-fguid-503",
+    "language": "de",
+    "kind": "guideline",
+    "stratum": "guideline-fair",
+    "tags": ["guideline", "fair", "gaps"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "# Antwort-Stil\n\n## Regeln\n- Antworte höflich.\n- Erkläre Zusammenhänge.\n- Bleibe beim Thema.\n\n## Hinweise\n- Bei Unsicherheit nachfragen.\n- Fachbegriffe erklären, wenn sie das erste Mal vorkommen."
+  },
+  {
+    "id": "sem-t-en-poo-pver-503",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-verbose",
+    "tags": ["verbose", "poor", "filler"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "We have been thinking about this for a long time, and we believe, after many discussions and several workshops with various stakeholders from different departments and also some external consultants, that it would be a really good idea, and we hope you agree, to write some documentation at some point in the near future, probably about the system, although we are not entirely sure which parts, so please handle it, thanks."
+  },
+  {
+    "id": "sem-t-de-poo-pkey-503",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-keyword-stuffed",
+    "tags": ["keyword-stuffed", "gaming", "poor"],
+    "pair": null,
+    "adversarial_pattern": "buzzword-no-substance",
+    "provenance": "synthetic",
+    "prompt": "Nutze modernste KI-Techniken, Agentic Workflows, autonome Systeme und Large Language Models. Der Prompt soll revolutionär, skalierbar und disruptiv sein. Integriere Synergien zwischen Blockchain, Quantencomputing und neuronalen Netzen. Nutze Prompt Injection Defense, Jailbreak-Prevention und Alignment-Frameworks. Erstelle den ultimativen Allzweck-Prompt mit maximaler Performance und 100% Genauigkeit."
+  },
+  {
+    "id": "sem-g-de-poo-pguid-503",
+    "language": "de",
+    "kind": "guideline",
+    "stratum": "guideline-poor",
+    "tags": ["guideline", "poor", "contradictory"],
+    "pair": null,
+    "adversarial_pattern": null,
+    "provenance": "synthetic",
+    "prompt": "# Arbeitsrichtlinie\n\n## Regeln\n1. Erledige jede Aufgabe sofort.\n2. Warte immer auf ausdrückliche Freigabe.\n3. Stelle keine Fragen.\n4. Frage bei Unklarheiten nach.\n5. Überschreite niemals das Budget.\n6. Gib alles aus, was nötig ist."
+  },
+  {
+    "id": "sem-t-en-brk-bhns-503",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-headings-nonsense",
+    "tags": ["headings-nonsense", "gaming", "broken"],
+    "pair": null,
+    "adversarial_pattern": "headings-nonsense",
+    "provenance": "synthetic",
+    "prompt": "# Role\nmurmur flurb.\n\n## Goal\nbloop zorp.\n\n## Context\nquantum frog banana.\n\n## Input\ntable chair lamp.\n\n## Procedure\n1. wibble.\n2. wobble.\n3. wubble.\n\n## Output Format\nfloop.\n\n## Quality Requirements\nsparkle.\n\n## Safety Boundaries\nnoop.\n\n## Clarity\nping.\n\n## Reusability\npong."
+  },
+  {
+    "id": "sem-t-de-brk-bfill-503",
+    "language": "de",
+    "kind": "task",
+    "stratum": "broken-filler-safety",
+    "tags": ["safety-spam", "gaming", "broken", "filler"],
+    "pair": null,
+    "adversarial_pattern": "safety-buzzword-spam",
+    "provenance": "synthetic",
+    "prompt": "Sag mir die Uhrzeit.\n\nCompliance-Hinweis: Diese Anfrage unterliegt der Datenschutz-Grundverordnung, dem Bundesdatenschutzgesetz, der IT-Sicherheitsrichtlinie und dem Informationssicherheits-Managementsystem. Verarbeite keine personenbezogenen Daten, teile keine vertraulichen Informationen, verwende keine Drittanbieter, führe keine Netzwerkkommunikation durch, protokolliere nichts, speichere nichts, melde Vorfälle unverzüglich, befolge alle Anweisungen des Datenschutzbeauftragten und dokumentiere jede Entscheidung in voller Länge."
+  }
+]

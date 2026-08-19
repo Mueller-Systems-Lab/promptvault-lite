@@ -1,0 +1,1592 @@
+[
+ {
+  "id": "sem-t-en-exl-terse-001",
+  "overall_score": 99,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 8
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "If intended as a reusable template, standardize the placeholder style and naming convention."
+  ],
+  "confidence": 0.96
+ },
+ {
+  "id": "sem-t-de-exl-terse-002",
+  "overall_score": 98,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 8
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "None needed beyond optional placeholder normalization for reuse."
+  ],
+  "confidence": 0.96
+ },
+ {
+  "id": "sem-t-de-exl-terse-003",
+  "overall_score": 86,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 5,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 6,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 8
+  },
+  "critical_issues": [
+   "Irrelevant safety/privacy boilerplate for a basic summarization task reduces prompt efficiency.",
+   "The privacy instruction is underspecified relative to the actual task and adds generic noise rather than operational guidance."
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Remove the generic safety notice unless the source text is actually sensitive.",
+   "Keep only constraints that materially affect summarization behavior."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "sem-t-de-exl-terse-005",
+  "overall_score": 99,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 8
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "If intended as a reusable template, standardize the placeholder style and naming convention."
+  ],
+  "confidence": 0.96
+ },
+ {
+  "id": "sem-t-en-exl-struc-001",
+  "overall_score": 97,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": 9,
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "The prompt does not explicitly say what to do if dependency manifests are outside {SCOPE_DIR} while CVE review is required."
+  ],
+  "recommended_improvements": [
+   "Clarify whether dependency manifests outside {SCOPE_DIR} may be consulted when assessing CVEs.",
+   "Specify how to handle files in {FILE_LIST} that conflict with {SCOPE_DIR} or {EXCLUDE_LIST}."
+  ],
+  "confidence": 0.94
+ },
+ {
+  "id": "sem-t-de-exl-struc-002",
+  "overall_score": 96,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": 8,
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "The prompt does not say how to represent parameters with no default value.",
+   "It assumes the endpoint may support multiple methods but does not explicitly require method discovery from the spec."
+  ],
+  "recommended_improvements": [
+   "State how to document absent defaults, for example 'kein Defaultwert'.",
+   "Clarify whether all HTTP methods on the endpoint must be documented separately."
+  ],
+  "confidence": 0.93
+ },
+ {
+  "id": "sem-r-en-exl-rtpl-001",
+  "overall_score": 90,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 7,
+   "INPUT_DEFINITION": 9,
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 8,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 10
+  },
+  "critical_issues": [
+   "The input contract is underspecified for line-specific review because a branch reference alone does not guarantee accessible line mappings or test status."
+  ],
+  "missing_information": [
+   "No explicit source for test results, despite 'Never approve code with failing tests.'",
+   "No clear instruction on whether non-blocking comments should be omitted when limiting to a verdict plus findings."
+  ],
+  "recommended_improvements": [
+   "Require a concrete diff or PR link rather than 'Diff or branch' if line-specific review is expected.",
+   "Specify how test status should be obtained or what to do if it is unavailable."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "sem-t-en-exl-struc-004",
+  "overall_score": 87,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": 10,
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [],
+  "confidence": 0.93
+ },
+ {
+  "id": "sem-t-de-god-gstr-002",
+  "overall_score": 96,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 7
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Optionally specify desired tone, such as sachlich or dynamisch, if brand voice matters."
+  ],
+  "confidence": 0.93
+ },
+ {
+  "id": "sem-t-en-god-gstr-003",
+  "overall_score": 60,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 6,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 7,
+   "CONSTRAINT_RELEVANCE": 7,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The prompt does not identify which pull request to review.",
+   "'Review the pull request in {{repo}}' is ambiguous because a repository can contain many pull requests.",
+   "It requires file and line references without defining the review artifact or diff source."
+  ],
+  "missing_information": [
+   "Pull request number, URL, or diff reference.",
+   "Any acceptance criteria or review focus.",
+   "Whether comments should cover only bugs or also tests, design, and style."
+  ],
+  "recommended_improvements": [
+   "Specify the exact pull request or diff to review.",
+   "Provide the review scope and expected severity framing.",
+   "State what to do if fewer than three issues are found."
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "sem-t-en-god-gstr-004",
+  "overall_score": 74,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 8,
+   "INPUT_DEFINITION": 9,
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 6,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 7
+  },
+  "critical_issues": [
+   "The prompt contains generic filler that adds little operational value.",
+   "Several sections restate obvious translation behavior instead of sharpening the task."
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Remove low-value boilerplate such as generic context, clarity, and quality sections.",
+   "Tighten the prompt to the essential translation instructions.",
+   "If reusability matters, use a consistent placeholder format."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "sem-t-en-god-gstr-005",
+  "overall_score": 62,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 7,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 2,
+   "OUTPUT_CONTRACT": 7,
+   "CONSTRAINT_RELEVANCE": 5,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 4,
+   "AMBIGUITY_CONTROL": 4,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The prompt does not identify a specific pull request, only a repository.",
+   "It asks for file and line references without defining the artifact to inspect.",
+   "The added structure is mostly boilerplate and does not resolve the core missing input."
+  ],
+  "missing_information": [
+   "Pull request number, URL, or diff reference.",
+   "Any source for acceptance criteria or expected behavior.",
+   "What to do if there are fewer than three meaningful issues."
+  ],
+  "recommended_improvements": [
+   "Replace the repository placeholder with an explicit PR or diff reference.",
+   "Cut generic context and keep only task-relevant constraints.",
+   "Clarify review scope and prioritization rules."
+  ],
+  "confidence": 0.91
+ },
+ {
+  "id": "sem-t-en-god-gnat-002",
+  "overall_score": 92,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 8,
+   "INPUT_DEFINITION": 9,
+   "OUTPUT_CONTRACT": 7,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 8
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Whether to include an email subject line.",
+   "Any company-specific tone, branding, or payment details beyond the due window."
+  ],
+  "recommended_improvements": [
+   "Specify whether the output should include a subject line and greeting/body/signoff structure.",
+   "Add any required payment details or company voice requirements if consistency matters."
+  ],
+  "confidence": 0.93
+ },
+ {
+  "id": "sem-t-en-god-gnat-003",
+  "overall_score": 89,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 8,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 8,
+   "AMBIGUITY_CONTROL": 7,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "It does not explicitly say whether call sites or exports using the old names must also be updated."
+  ],
+  "missing_information": [
+   "Whether only declarations in `src/utils.js` should change, or all references to those functions as well.",
+   "Whether the doc comments should use JSDoc style or plain line comments."
+  ],
+  "recommended_improvements": [
+   "State that all internal/external references must be updated to preserve behavior.",
+   "Specify the expected comment style and whether the response should include code diff, full file, or rename list only."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "sem-t-en-god-gnat-005",
+  "overall_score": 83,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 8,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": 8,
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 8,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 7,
+   "AMBIGUITY_CONTROL": 6,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 6,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": 8,
+   "REUSABILITY": 7
+  },
+  "critical_issues": [
+   "The prompt requires checking whether the PR matches the ticket, but the ticket source is not identified.",
+   "It requires checking that tests pass without stating where test results come from or whether the reviewer should run tests."
+  ],
+  "missing_information": [
+   "Repository or project context for `{{pr_number}}`.",
+   "The linked ticket or acceptance criteria.",
+   "Whether the reviewer should inspect CI, run tests locally, or both."
+  ],
+  "recommended_improvements": [
+   "Name the ticket source or include the ticket identifier alongside the PR number.",
+   "Specify the review output format beyond the final verdict, such as findings first then verdict.",
+   "Clarify whether comments should be line-specific, summary-only, or both."
+  ],
+  "confidence": 0.89
+ },
+ {
+  "id": "sem-r-en-god-rtpl-002",
+  "overall_score": 97,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 10
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Optionally add a timestamp/timezone field if shift handoff timing matters.",
+   "Optionally add an owner/contact field if accountability is required."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "sem-g-en-god-gguid-001",
+  "overall_score": 88,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 8,
+   "NECESSARY_CONTEXT": 8,
+   "INPUT_DEFINITION": 6,
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 8,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": 8,
+   "REUSABILITY": 9
+  },
+  "critical_issues": [
+   "The guideline refers to matching the ticket but does not define where ticket context comes from."
+  ],
+  "missing_information": [
+   "How reviewers should access ticket requirements.",
+   "Whether tests must be run locally, read from CI, or both."
+  ],
+  "recommended_improvements": [
+   "Add a standard review workflow, such as diff review, test verification, and verdict format.",
+   "Define the source of truth for tickets and test status."
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "sem-g-de-god-gguid-002",
+  "overall_score": 87,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 8,
+   "NECESSARY_CONTEXT": 8,
+   "INPUT_DEFINITION": 5,
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 6,
+   "ACTIONABILITY": 7,
+   "AMBIGUITY_CONTROL": 6,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 7,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [
+   "Regel 1 verlangt ein Verb im Infinitiv, aber das Beispiel „Fix, ...\" passt sprachlich nicht dazu.",
+   "Unklar, ob das Versionsdatum an jede einzelne Zeile oder an die gesamten Release-Notizen angehängt werden soll."
+  ],
+  "missing_information": [
+   "Welche Eingabe die Release-Notizen zugrunde liegt, z. B. Changelog, Commits oder Tickets.",
+   "Ob die Notizen intern oder extern veröffentlicht werden."
+  ],
+  "recommended_improvements": [
+   "Korrigiere das Beispiel so, dass es wirklich den geforderten Stil zeigt.",
+   "Präzisiere die Ausgabestruktur, besonders die Position des Versionsdatums.",
+   "Nenne die erwartete Eingabequelle für die Änderungen."
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "sem-g-en-god-gguid-003",
+  "overall_score": 92,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 7,
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": 10,
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Whether the written summary is for internal use only or has a fixed audience/template.",
+   "Whether `HIGH` impact has a predefined severity rubric."
+  ],
+  "recommended_improvements": [
+   "Define the expected summary structure more explicitly if consistency across incidents matters.",
+   "Specify the severity rubric or link it to an existing classification standard."
+  ],
+  "confidence": 0.93
+ },
+ {
+  "id": "sem-t-de-fai-fmis-001",
+  "overall_score": 43,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": "N/A",
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 4,
+   "AMBIGUITY_CONTROL": 4,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Ziel ist erkennbar, aber praktisch nicht ausführbar ohne Produkt-, Zielgruppen- und Nutzenkontext."
+  ],
+  "missing_information": [
+   "Zielgruppe des Werbetextes.",
+   "Produktmerkmale und zentrale Vorteile der Software.",
+   "Kanal und Format, z. B. Website, Anzeige oder E-Mail."
+  ],
+  "recommended_improvements": [
+   "Nenne Zielgruppe, Tonalität und Hauptnutzen.",
+   "Lege Länge und Ausgabeformat fest, z. B. kurze Landingpage-Headline plus Absatz."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "sem-t-en-fai-fmis-002",
+  "overall_score": 40,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 2,
+   "OUTPUT_CONTRACT": 2,
+   "CONSTRAINT_RELEVANCE": 0,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The script's purpose is undefined: 'processes the input file' could mean almost anything.",
+   "No input format, transformation, or output format is specified."
+  ],
+  "missing_information": [
+   "What kind of file is being processed.",
+   "What transformation or validation is required.",
+   "Where and in what format the output should be saved."
+  ],
+  "recommended_improvements": [
+   "Define the input format, desired processing steps, and output format.",
+   "State whether the answer should be full code, a function, or a runnable CLI script.",
+   "Add example input and expected output."
+  ],
+  "confidence": 0.91
+ },
+ {
+  "id": "sem-t-de-fai-fmis-003",
+  "overall_score": 40,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Das Thema und der Zweck der Präsentation fehlen komplett.",
+   "Ohne Zielgruppe, Inhalt oder gewünschte Länge ist keine treue Ausführung möglich."
+  ],
+  "missing_information": [
+   "Thema des Team-Meetings.",
+   "Ziel der Präsentation.",
+   "Gewünschter Umfang und Format, z. B. Agenda, Folienstruktur oder Sprechertext."
+  ],
+  "recommended_improvements": [
+   "Nenne Thema, Zielgruppe und gewünschte Anzahl der Folien.",
+   "Beschreibe den gewünschten Stil, z. B. informativ, strategisch oder statusorientiert."
+  ],
+  "confidence": 0.91
+ },
+ {
+  "id": "sem-t-en-fai-famb-001",
+  "overall_score": 36,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 4,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 1,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No application, bottleneck, environment, or performance target is identified.",
+   "The requested deliverable is unspecified: analysis, code changes, plan, or report are all plausible."
+  ],
+  "missing_information": [
+   "What application is being improved.",
+   "What 'performance' means here: latency, throughput, memory, startup, etc.",
+   "What output is expected from the executor."
+  ],
+  "recommended_improvements": [
+   "Specify the system, the performance problem, and the success metric.",
+   "State whether the model should diagnose, propose changes, or produce code.",
+   "Provide profiling data or a reproduction scenario if available."
+  ],
+  "confidence": 0.91
+ },
+ {
+  "id": "sem-t-de-fai-famb-002",
+  "overall_score": 42,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 7,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Das zentrale Objekt der Aufgabe fehlt: Welches Konzept erklärt werden soll, ist unbekannt."
+  ],
+  "missing_information": [
+   "Welches Konzept gemeint ist.",
+   "Für welches Vorwissen oder welche Zielgruppe die Erklärung gedacht ist."
+  ],
+  "recommended_improvements": [
+   "Nenne das konkrete Konzept.",
+   "Falls relevant, gib Zielgruppe oder Kontext an, damit 'einfach und kurz' passend umgesetzt werden kann."
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "sem-r-de-fai-fph-001",
+  "overall_score": 70,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 8,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": 6,
+   "OUTPUT_CONTRACT": 6,
+   "CONSTRAINT_RELEVANCE": 8,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 7,
+   "AMBIGUITY_CONTROL": 7,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 6,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 7
+  },
+  "critical_issues": [
+   "The prompt never states what source material or facts the report should be based on.",
+   "The expected structure and level of detail are only loosely specified."
+  ],
+  "missing_information": [
+   "What concrete progress data, notes, or deliverables should be summarized.",
+   "Whether the team expects a fixed format such as bullets, prose, or sections."
+  ],
+  "recommended_improvements": [
+   "Specify the source input for the weekly report.",
+   "Define a simple output structure such as summary, achievements, problems, next steps.",
+   "State the desired length or level of detail."
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "sem-r-en-fai-fph-002",
+  "overall_score": 70,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 8,
+   "NECESSARY_CONTEXT": 6,
+   "INPUT_DEFINITION": 6,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 8,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 7,
+   "AMBIGUITY_CONTROL": 7,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 6,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 8
+  },
+  "critical_issues": [
+   "It does not define what a completed review should contain beyond a few checklist items.",
+   "'Tests: run them' is underspecified and leaves scope unclear."
+  ],
+  "missing_information": [
+   "What review criteria should drive approve versus reject decisions.",
+   "Whether comments should be brief checklist entries or a full review narrative."
+  ],
+  "recommended_improvements": [
+   "Add explicit review dimensions such as correctness, risk, tests, and style.",
+   "Clarify the expected output format for the completed checklist.",
+   "Replace vague items like 'run them' with concrete instructions."
+  ],
+  "confidence": 0.84
+ },
+ {
+  "id": "sem-t-de-fai-fsafe-001",
+  "overall_score": 66,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": "N/A",
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 2,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The safety and privacy boilerplate is irrelevant to a harmless cake recipe.",
+   "Irrelevant compliance text substantially dilutes the useful instruction."
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Remove the unrelated privacy and security directives.",
+   "Keep only the recipe request with ingredients and preparation steps.",
+   "Optionally add serving size or baking time if desired."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "sem-t-en-fai-fsafe-002",
+  "overall_score": 67,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": "N/A",
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 7,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 4,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The compliance note is unrelated to the harmless poetry task.",
+   "Extra boilerplate adds noise without improving execution."
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Remove the irrelevant compliance paragraph.",
+   "If needed, specify a traditional 5-7-5 haiku structure explicitly."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "sem-g-de-fai-fguid-001",
+  "overall_score": 58,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 2,
+   "CONSTRAINT_RELEVANCE": 7,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 4,
+   "AMBIGUITY_CONTROL": 6,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 7
+  },
+  "critical_issues": [
+   "This reads more like a loose guideline than an executable prompt.",
+   "There is no clear response contract for what the model should produce.",
+   "Key review dimensions are too generic to guide high-quality output."
+  ],
+  "missing_information": [
+   "What artifact is being reviewed.",
+   "What form the review response should take.",
+   "What concrete standards define 'quality' or 'problems'."
+  ],
+  "recommended_improvements": [
+   "Add an explicit task such as 'review the provided diff and list findings'.",
+   "Define the expected output format.",
+   "Replace generic advice with operational criteria."
+  ],
+  "confidence": 0.82
+ },
+ {
+  "id": "sem-g-en-fai-fguid-002",
+  "overall_score": 62,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 2,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 5,
+   "AMBIGUITY_CONTROL": 7,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 8
+  },
+  "critical_issues": [
+   "It states naming principles but does not tell the executor what to do with them.",
+   "There is no output contract or target activity such as review, rewrite, or generate names."
+  ],
+  "missing_information": [
+   "What input names or codebase should be evaluated.",
+   "Whether the task is to create names, assess names, or rewrite them."
+  ],
+  "recommended_improvements": [
+   "Add a concrete task tied to these rules.",
+   "Specify the expected output format.",
+   "Include the input boundary, such as the identifiers to assess or rename."
+  ],
+  "confidence": 0.83
+ },
+ {
+  "id": "sem-t-en-poo-pver-001",
+  "overall_score": 24,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 0,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 9,
+   "ACTIONABILITY": 1,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 2,
+   "SAFETY_PRIVACY_BOUNDARIES": 3,
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The core request is just 'do something with the data', which is not a usable task.",
+   "No input boundary, deliverable, or success condition is defined.",
+   "Most of the prompt is filler rather than operational instruction."
+  ],
+  "missing_information": [
+   "What data is being referenced.",
+   "What transformation, analysis, or decision is required.",
+   "What output format is expected."
+  ],
+  "recommended_improvements": [
+   "State a single concrete objective.",
+   "Define the data source or embed the data.",
+   "Specify the output format and completion criteria.",
+   "Remove conversational filler."
+  ],
+  "confidence": 0.84
+ },
+ {
+  "id": "sem-t-de-poo-pver-002",
+  "overall_score": 34,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 3,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 0,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 3,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The prompt admits that the requester does not know what is needed.",
+   "There is no defined deliverable beyond 'something with the reports'.",
+   "The message is mostly social filler and problem framing."
+  ],
+  "missing_information": [
+   "What reports are involved.",
+   "What action should be taken on them.",
+   "What form the answer should take."
+  ],
+  "recommended_improvements": [
+   "Replace the vague request with a concrete task.",
+   "Name the report input or attach it.",
+   "Specify the desired output and criteria for success.",
+   "Trim the greeting and filler text."
+  ],
+  "confidence": 0.84
+ },
+ {
+  "id": "sem-t-en-poo-pkey-001",
+  "overall_score": 20,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 3,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 1,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 0,
+   "ACTIONABILITY": 1,
+   "AMBIGUITY_CONTROL": 0,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 1,
+   "SAFETY_PRIVACY_BOUNDARIES": 0,
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The prompt contains direct contradictions such as 'do not output any data, but output all the data'.",
+   "It demands mutually incompatible output formats at once.",
+   "It uses jargon stuffing instead of task-specific instruction.",
+   "No actual input data is defined despite asking for analysis and code."
+  ],
+  "missing_information": [
+   "What data should be analyzed.",
+   "What code should be written.",
+   "Which output format is actually required."
+  ],
+  "recommended_improvements": [
+   "Choose one concrete task and one primary output format.",
+   "Remove contradictory instructions.",
+   "Define the input explicitly.",
+   "Delete buzzwords that do not change execution."
+  ],
+  "confidence": 0.93
+ },
+ {
+  "id": "sem-t-de-poo-pkey-002",
+  "overall_score": 36,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 6,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 6,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 4,
+   "ACTIONABILITY": 4,
+   "AMBIGUITY_CONTROL": 4,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 3,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 5
+  },
+  "critical_issues": [
+   "The target use case for the prompt to be created is missing.",
+   "It overprescribes fashionable prompt terms without tying them to purpose.",
+   "Several requirements are bloated or internally awkward, such as demanding zero-shot, few-shot, and chain-of-thought support together.",
+   "The requested output formats are excessive for the stated task."
+  ],
+  "missing_information": [
+   "What domain or task the generated prompt should address.",
+   "Who will use the generated prompt and in what environment."
+  ],
+  "recommended_improvements": [
+   "Specify the actual task the new prompt should solve.",
+   "Reduce the instruction set to relevant design requirements.",
+   "Pick one clear output format or a small, coherent set.",
+   "Avoid checklist stuffing unless each item is operationally necessary."
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "sem-t-en-poo-pcon-001",
+  "overall_score": 12,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 1,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 1,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 0,
+   "ACTIONABILITY": 0,
+   "AMBIGUITY_CONTROL": 0,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 3,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The prompt is dominated by direct contradictions on length, tone, media, and format.",
+   "There are no questions to answer despite instructing the model to answer all questions.",
+   "The task is not executable as written."
+  ],
+  "missing_information": [
+   "What actual content should be discussed.",
+   "Which of the conflicting constraints is authoritative."
+  ],
+  "recommended_improvements": [
+   "Remove mutually exclusive requirements.",
+   "Provide a real content task.",
+   "Choose one language strategy, one length target, and one output format."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "sem-t-de-poo-pcon-002",
+  "overall_score": 29,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 7,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 1,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": 0,
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "It requires a confidential report and public website publication at the same time.",
+   "It asks for brevity while demanding exhaustive detail.",
+   "It forbids names while requiring quotes from participants, which would normally identify them.",
+   "The privacy/confidentiality boundary is actively misleading."
+  ],
+  "missing_information": [
+   "What project the report is about.",
+   "What source material should be used.",
+   "Which requirement takes priority when constraints conflict."
+  ],
+  "recommended_improvements": [
+   "Resolve the confidentiality contradiction first.",
+   "Define the source input and audience.",
+   "Choose either a concise summary or a detailed report.",
+   "Make naming and quotation requirements compatible."
+  ],
+  "confidence": 0.94
+ },
+ {
+  "id": "sem-t-en-poo-pred-001",
+  "overall_score": 31,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": "N/A",
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 4,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 4,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The prompt asks for analysis of numbers but provides no numbers or data source.",
+   "The expected form of the analysis is not specified beyond a vague explanation.",
+   "Most of the text is redundant role inflation rather than actionable instruction."
+  ],
+  "missing_information": [
+   "The actual numbers or dataset to analyze.",
+   "The desired depth or type of analysis.",
+   "The expected output format or length."
+  ],
+  "recommended_improvements": [
+   "Provide the exact data to analyze or a clear input placeholder.",
+   "State what kind of interpretation is wanted, such as trends, anomalies, or summary.",
+   "Replace repeated self-praise with one concise role statement or remove it entirely."
+  ],
+  "confidence": 0.91
+ },
+ {
+  "id": "sem-t-de-poo-pred-002",
+  "overall_score": 28,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 3,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 2,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 2,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The task only says to create a text without specifying topic, audience, or purpose.",
+   "The repeated quality language adds no operational guidance.",
+   "There is no concrete output contract beyond a generic demand for quality."
+  ],
+  "missing_information": [
+   "What text should be written about.",
+   "Who the target audience is.",
+   "What format, tone, or length is required."
+  ],
+  "recommended_improvements": [
+   "Specify the subject and intended use of the text.",
+   "Define output expectations such as length, tone, and structure.",
+   "Replace repeated quality slogans with concrete acceptance criteria."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "sem-g-de-poo-pguid-001",
+  "overall_score": 24,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 7,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 0,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 6,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 6
+  },
+  "critical_issues": [
+   "The rules directly contradict each other: always answer in German but translate all answers into English.",
+   "The rules directly contradict each other: never mention weather but begin every answer with a weather remark.",
+   "The length cap conflicts with the requirement to answer every question fully."
+  ],
+  "missing_information": [
+   "How contradictions should be prioritized if multiple rules cannot all be satisfied."
+  ],
+  "recommended_improvements": [
+   "Remove contradictory rules or define a strict precedence order.",
+   "Choose one language requirement instead of mutually exclusive ones.",
+   "Align brevity constraints with completeness expectations."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "sem-g-en-poo-pguid-002",
+  "overall_score": 30,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 7,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 0,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 6,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 6
+  },
+  "critical_issues": [
+   "The core formatting rules are mutually exclusive: always return JSON and never return JSON.",
+   "Markdown tables for everything conflicts with do not use any formatting.",
+   "Keep responses very short conflicts with covering every topic exhaustively.",
+   "Never mention this policy conflicts with referencing it in every response."
+  ],
+  "missing_information": [
+   "A rule priority order for resolving unavoidable conflicts."
+  ],
+  "recommended_improvements": [
+   "Remove mutually exclusive rules and keep one coherent output mode.",
+   "Match length expectations to coverage expectations.",
+   "Retain only constraints that are operationally compatible."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "sem-t-en-brk-bhns-001",
+  "overall_score": 5,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 0,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 0,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 5,
+   "ACTIONABILITY": 0,
+   "AMBIGUITY_CONTROL": 0,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 1,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Nearly every section is meaningless filler or gibberish.",
+   "No real task, input, or deliverable can be inferred.",
+   "The structured headings create the appearance of rigor without semantic content."
+  ],
+  "missing_information": [
+   "A real goal.",
+   "Real context.",
+   "A real input definition.",
+   "A meaningful output format."
+  ],
+  "recommended_improvements": [
+   "Replace placeholder nonsense with concrete task content.",
+   "Define a specific objective, input, and expected output.",
+   "Delete empty headings unless they carry real instructions."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "sem-t-de-brk-bhns-002",
+  "overall_score": 10,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 1,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 1,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 6,
+   "ACTIONABILITY": 1,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 3,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The sections are mostly nonsensical and do not define an executable task.",
+   "Input and output labels exist, but their contents are too vague to use.",
+   "The prompt relies on empty structure rather than meaningful instructions."
+  ],
+  "missing_information": [
+   "The actual purpose of the task.",
+   "Usable context and data.",
+   "A concrete deliverable."
+  ],
+  "recommended_improvements": [
+   "State a specific goal in plain language.",
+   "Describe the input in a way that can be acted on.",
+   "Specify what the output should contain and how it should be formatted."
+  ],
+  "confidence": 0.94
+ },
+ {
+  "id": "sem-t-en-brk-bfak-001",
+  "overall_score": 24,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 7,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 6,
+   "CONSTRAINT_RELEVANCE": 0,
+   "INTERNAL_CONSISTENCY": 2,
+   "ACTIONABILITY": 1,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 3,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 2
+  },
+  "critical_issues": [
+   "Critical task details are placeholders: algorithm, language, format, baseline, and parameters are undefined.",
+   "The numeric targets are fake-precise and unsupported by any context.",
+   "The requirement that all metrics improve by exactly 31.4159% is arbitrary and likely incompatible with the stated precision and recall targets."
+  ],
+  "missing_information": [
+   "What algorithm is being optimized.",
+   "What implementation language is required.",
+   "What benchmark baseline and hardware definition should be used.",
+   "What the report format should be."
+  ],
+  "recommended_improvements": [
+   "Replace placeholders with concrete task parameters.",
+   "Use realistic performance targets tied to a known baseline.",
+   "Define measurable evaluation conditions instead of arbitrary exact percentages."
+  ],
+  "confidence": 0.89
+ },
+ {
+  "id": "sem-t-de-brk-bfak-002",
+  "overall_score": 23,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 3,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 6,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 3,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Most instructions are buzzwords without operational meaning.",
+   "No input, system, or concrete task subject is defined.",
+   "Terms like 87% efficiency, 100% agility, and blue format are meaningless in context."
+  ],
+  "missing_information": [
+   "What procedure is being executed.",
+   "What data or artifact is being worked on.",
+   "What 'blue format' means.",
+   "How success should be evaluated."
+  ],
+  "recommended_improvements": [
+   "Replace jargon with concrete actions and measurable checks.",
+   "Define the subject, input, and desired output.",
+   "Remove arbitrary percentages unless they correspond to real metrics."
+  ],
+  "confidence": 0.89
+ },
+ {
+  "id": "sem-t-de-brk-bfill-001",
+  "overall_score": 53,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 8,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 8,
+   "AMBIGUITY_CONTROL": 7,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 7,
+   "SIGNAL_TO_NOISE": 2,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The prompt is overloaded with irrelevant security and compliance boilerplate for a harmless shopping-list task.",
+   "The noise strongly outweighs any useful instruction beyond the first sentence.",
+   "Several constraints are operationally irrelevant to the requested output."
+  ],
+  "missing_information": [
+   "Optional preferences such as household size, dietary needs, or budget."
+  ],
+  "recommended_improvements": [
+   "Keep only the first sentence or add practical shopping constraints instead of security boilerplate.",
+   "If needed, specify scope such as number of people or meal plan assumptions.",
+   "Define whether the list should be categorized or budget-oriented."
+  ],
+  "confidence": 0.82
+ },
+ {
+  "id": "sem-t-en-brk-bfill-002",
+  "overall_score": 50,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 4,
+   "NECESSARY_CONTEXT": "N/A",
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": "N/A",
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 1,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The actual request is buried under a large amount of irrelevant filler.",
+   "Most of the prompt content has no bearing on the task of answering 2+2.",
+   "The output expectation is implicit rather than directly stated."
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Ask the question directly without unrelated exposition.",
+   "If a format is desired, state it explicitly.",
+   "Remove filler that distracts from the task signal."
+  ],
+  "confidence": 0.81
+ },
+ {
+  "id": "sem-g-en-brk-bguid-001",
+  "overall_score": 26,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 1,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 9,
+   "ACTIONABILITY": 1,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 4,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 2
+  },
+  "critical_issues": [
+   "The guideline is almost entirely tautological and gives no usable instruction.",
+   "Terms like work properly, provide the output, and be good are too vague to operationalize.",
+   "The structure suggests a policy document, but the content does not define behavior."
+  ],
+  "missing_information": [
+   "What the guideline applies to.",
+   "What outputs are expected.",
+   "What constraints actually are.",
+   "How quality should be judged."
+  ],
+  "recommended_improvements": [
+   "Replace vague headings with concrete rules.",
+   "Define scope, required behavior, and output expectations.",
+   "Add examples or explicit criteria if this is intended as a reusable guideline."
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "sem-g-de-brk-bguid-002",
+  "overall_score": 26,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 1,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 9,
+   "ACTIONABILITY": 1,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 4,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 2
+  },
+  "critical_issues": [
+   "Die Richtlinie ist weitgehend leer und tautologisch.",
+   "Aussagen wie 'Es gelten die Regeln' oder 'Sei qualitativ' liefern keine umsetzbare Anweisung.",
+   "Die Struktur wirkt formell, aber der Inhalt definiert kein tatsächliches Verhalten."
+  ],
+  "missing_information": [
+   "Wofür die Richtlinie gilt.",
+   "Welche Ausgabe konkret erwartet wird.",
+   "Welche Einschränkungen gemeint sind.",
+   "Wie Qualität bewertet werden soll."
+  ],
+  "recommended_improvements": [
+   "Konkrete Regeln statt selbstreferenzieller Platzhalter formulieren.",
+   "Anwendungsbereich, Ausgabe und Grenzen explizit definieren.",
+   "Wenn Wiederverwendung beabsichtigt ist, klare Kriterien oder Beispiele ergänzen."
+  ],
+  "confidence": 0.92
+ }
+]
