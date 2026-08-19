@@ -4,11 +4,13 @@
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and quality-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.10.0-blue)
+![Release](https://img.shields.io/badge/release-v1.11.1-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+
+> **🌐 Public website:** [**promptvault-lite — Produkt-Website**](https://xxammaxx.github.io/promptvault-lite/) — includes a clean product demo, features, workflow, privacy details and installation instructions.
 
 ---
 
