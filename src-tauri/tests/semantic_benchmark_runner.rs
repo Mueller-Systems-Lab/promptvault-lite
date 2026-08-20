@@ -12,15 +12,26 @@ use serde_json::{json, Value};
 use std::path::PathBuf;
 
 fn bench_dir() -> PathBuf {
+    // PV_BENCH_DIR overrides the corpus directory (used for the fresh
+    // v2 benchmark under benchmarks/semantic-quality-v2/).
+    if let Ok(dir) = std::env::var("PV_BENCH_DIR") {
+        return PathBuf::from(dir);
+    }
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../benchmarks/semantic-quality")
 }
 
 fn load_cases(split: &str) -> Value {
-    let path = match split {
+    let mut path = match split {
         "calibration" => bench_dir().join("cases/calibration.json"),
-        "holdout" => bench_dir().join("holdout/cases.json"),
+        "development" => bench_dir().join("cases/development.json"),
+        "holdout" => bench_dir().join("cases/holdout.json"),
         _ => panic!("unknown split"),
     };
+    // The legacy corpus keeps the holdout split under holdout/cases.json;
+    // fall back to that layout when the v2 layout is absent.
+    if !path.exists() && split == "holdout" {
+        path = bench_dir().join("holdout/cases.json");
+    }
     let raw = std::fs::read_to_string(&path)
         .unwrap_or_else(|e| panic!("cannot read {}: {}", path.display(), e));
     serde_json::from_str(&raw).unwrap_or_else(|e| panic!("cannot parse {}: {}", path.display(), e))
@@ -88,9 +99,15 @@ fn run_case(case: &Value) -> Value {
 #[test]
 fn run_semantic_benchmark() {
     let label = std::env::var("PV_BENCH_LABEL").unwrap_or_else(|_| "baseline".to_string());
+    let v2 = std::env::var("PV_BENCH_DIR").is_ok();
     let mut out = Vec::new();
 
-    for split in ["calibration", "holdout"] {
+    let splits: &[&str] = if v2 {
+        &["development", "holdout"]
+    } else {
+        &["calibration", "holdout"]
+    };
+    for split in splits {
         let cases = load_cases(split);
         let arr = cases.as_array().expect("array");
         for case in arr {
@@ -110,5 +127,6 @@ fn run_semantic_benchmark() {
     .expect("serialize");
     std::fs::write(&out_path, pretty).expect("write results");
     println!("WROTE {}", out_path.display());
-    assert_eq!(out.len(), 60, "expected 60 benchmark cases");
+    let expected = if v2 { 72 } else { 60 };
+    assert_eq!(out.len(), expected, "expected {expected} benchmark cases");
 }

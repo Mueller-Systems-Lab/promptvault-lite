@@ -1,0 +1,864 @@
+[
+ {
+  "id": "s2-task-en-terse-excellent-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "translation",
+   "placeholder",
+   "output-contract"
+  ],
+  "pair": "A1",
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Translate the following Spanish email into English. Preserve the polite business tone. Return only the translation:\n\n{{email_body}}"
+ },
+ {
+  "id": "s2-task-en-terse-excellent-002",
+  "language": "en",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "summarization",
+   "inline-input",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Summarize this paragraph in two sentences: \"The R&D team shipped the new caching layer to production on Wednesday; p95 latency dropped from 210 ms to 90 ms and the rollout caused no incidents.\" Return only the summary."
+ },
+ {
+  "id": "s2-task-en-terse-excellent-003",
+  "language": "en",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "extraction",
+   "placeholder",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Extract all email addresses and phone numbers from the text below. Return them as a JSON object with the keys \"emails\" and \"phones\":\n\n{{contact_text}}"
+ },
+ {
+  "id": "s2-task-en-terse-excellent-004",
+  "language": "en",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "rewrite",
+   "inline-input",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Rewrite this sentence in a formal tone: \"The meeting was delayed.\" Return only the rewritten sentence."
+ },
+ {
+  "id": "s2-task-de-terse-excellent-005",
+  "language": "de",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "translation",
+   "placeholder",
+   "output-contract"
+  ],
+  "pair": "A2",
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Übersetze die folgende französische E-Mail ins Deutsche. Behalte den freundlichen Geschäftston bei. Gib nur die Übersetzung zurück:\n\n{{email_body}}"
+ },
+ {
+  "id": "s2-task-de-terse-excellent-006",
+  "language": "de",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "classification",
+   "inline-input",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Klassifiziere die folgende Kundenanfrage als Reklamation, Anfrage oder Beratungswunsch. Antworte nur mit der Kategorie:\n\n„Mein Laptop ist nach zwei Wochen wieder defekt und ich möchte ein Ersatzgerät.“"
+ },
+ {
+  "id": "s2-task-de-terse-excellent-007",
+  "language": "de",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "extraction",
+   "inline-input",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Nenne alle Fristen aus dem folgenden Text im Format JJJJ-MM-TT, jeweils mit einem kurzen Grund:\n\n„Der Kickoff ist am 2026-09-01, der Zwischenbericht fällt auf den 2026-10-15 und das Review findet am 2026-11-20 statt.“"
+ },
+ {
+  "id": "s2-task-en-good-natural-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "good-natural",
+  "tags": [
+   "good",
+   "natural",
+   "no-headings",
+   "email",
+   "audience",
+   "length"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Write a short, warm email to our beta users announcing that offline sync is now available. Explain the benefit in one or two sentences, thank them for the feedback that shaped the release, link to the changelog, and keep the whole email under 120 words."
+ },
+ {
+  "id": "s2-task-en-good-natural-002",
+  "language": "en",
+  "kind": "task",
+  "stratum": "good-natural",
+  "tags": [
+   "good",
+   "natural",
+   "no-headings",
+   "code-review",
+   "focus"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Could you review the checkout refactor pull request and check whether the new payment retry logic handles duplicate webhooks correctly? Only look at that flow, ignore style and naming, and end your reply with a single verdict: APPROVE or REQUEST_CHANGES."
+ },
+ {
+  "id": "s2-task-de-good-natural-003",
+  "language": "de",
+  "kind": "task",
+  "stratum": "good-natural",
+  "tags": [
+   "good",
+   "natural",
+   "no-headings",
+   "summary",
+   "format"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Fasse mir die wichtigsten Ergebnisse aus der Nutzerbefragung zusammen, die du in der angehängten Datei findest. Nenne die drei häufigsten Wünsche, die größten Kritikpunkte und die Zahl der Teilnehmer, die Offline-Nutzung gewünscht haben. Gib deine Antwort als Bericht mit drei Abschnitten, jeder mit einer kurzen Überschrift."
+ },
+ {
+  "id": "s2-task-de-good-natural-004",
+  "language": "de",
+  "kind": "task",
+  "stratum": "good-natural",
+  "tags": [
+   "good",
+   "natural",
+   "no-headings",
+   "summary",
+   "audience"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Schreibe eine Zusammenfassung des heutigen Sprint-Reviews für das Update an die Geschäftsleitung. Nenne, was fertig geworden ist, was sich verzögert hat und warum, sowie den geplanten Termin für das nächste Release. Formuliere so, dass auch jemand, der nicht im Projekt war, alles versteht, und halte den Text auf maximal einer halben Seite."
+ },
+ {
+  "id": "s2-task-en-fair-incomplete-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "fair-incomplete",
+  "tags": [
+   "fair",
+   "incomplete",
+   "missing-input",
+   "summarization"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Summarize the attached report for the board."
+ },
+ {
+  "id": "s2-task-en-fair-incomplete-002",
+  "language": "en",
+  "kind": "task",
+  "stratum": "fair-incomplete",
+  "tags": [
+   "fair",
+   "incomplete",
+   "missing-context",
+   "marketing"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Write a press release."
+ },
+ {
+  "id": "s2-task-en-fair-incomplete-003",
+  "language": "en",
+  "kind": "task",
+  "stratum": "fair-incomplete",
+  "tags": [
+   "fair",
+   "incomplete",
+   "missing-context",
+   "migration"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Draft a data migration script to move customer records to the new system."
+ },
+ {
+  "id": "s2-task-de-fair-incomplete-004",
+  "language": "de",
+  "kind": "task",
+  "stratum": "fair-incomplete",
+  "tags": [
+   "fair",
+   "incomplete",
+   "missing-context",
+   "documentation"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Erstelle ein Pflichtenheft für das neue Projekt."
+ },
+ {
+  "id": "s2-task-de-fair-incomplete-005",
+  "language": "de",
+  "kind": "task",
+  "stratum": "fair-incomplete",
+  "tags": [
+   "fair",
+   "incomplete",
+   "missing-input",
+   "translation"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Übersetze den Vertragsentwurf für unseren neuen Partner."
+ },
+ {
+  "id": "s2-task-en-poor-vague-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "email"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Write an email to a customer."
+ },
+ {
+  "id": "s2-task-en-poor-vague-002",
+  "language": "en",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "explanation"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Explain the concept."
+ },
+ {
+  "id": "s2-task-en-poor-vague-003",
+  "language": "en",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "improve"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Make it better."
+ },
+ {
+  "id": "s2-task-en-poor-vague-004",
+  "language": "en",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "report"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Write a report."
+ },
+ {
+  "id": "s2-task-en-poor-vague-005",
+  "language": "en",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "presentation"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Create a presentation for the team meeting."
+ },
+ {
+  "id": "s2-task-en-poor-vague-006",
+  "language": "en",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "advice"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Give me advice."
+ },
+ {
+  "id": "s2-task-de-poor-vague-007",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "werbetext"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Verfasse einen Werbetext für die neue App unseres Startups."
+ },
+ {
+  "id": "s2-task-de-poor-vague-008",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "angebot"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Verfasse eine Bewertung für das Buch."
+ },
+ {
+  "id": "s2-task-de-poor-vague-009",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "konzept"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Erkläre mir das Konzept."
+ },
+ {
+  "id": "s2-task-de-poor-vague-010",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "bericht"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Schreibe einen Bericht."
+ },
+ {
+  "id": "s2-task-de-poor-vague-011",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "praesentation"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Erstelle eine Folienpräsentation für das wöchentliche Statusmeeting."
+ },
+ {
+  "id": "s2-task-de-poor-vague-012",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "verbessern"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Verbessere den Text."
+ },
+ {
+  "id": "s2-task-en-broken-buzzword-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "broken-buzzword",
+  "tags": [
+   "broken",
+   "keyword-stuffed",
+   "buzzword",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": "buzzword-no-substance",
+  "provenance": "synthetic-v2",
+  "prompt": "You are an expert consultant. Your deliverable must be of the highest quality and unmatched excellence. Apply best practices and professional standards at every step. The result has to be comprehensive, detailed, and 100% correct. Do not settle for less than 100% correctness, 100% completeness, and 100% precision. Present your answer simultaneously as a JSON object, a CSV table, and a Markdown document. Be thorough, be exhaustive, be 100% correct."
+ },
+ {
+  "id": "s2-task-en-broken-buzzword-002",
+  "language": "en",
+  "kind": "task",
+  "stratum": "broken-buzzword",
+  "tags": [
+   "broken",
+   "keyword-stuffed",
+   "buzzword",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": "buzzword-no-substance",
+  "provenance": "synthetic-v2",
+  "prompt": "Act as a leading domain specialist. Apply state-of-the-art methodology and industry-leading techniques to deliver a flawless deliverable of top-tier excellence. Your answer must reflect best practices and the highest professional standards. It has to be comprehensive, exhaustive, and 100% accurate, with zero tolerance for error. Provide the complete result in three formats: JSON, CSV, and Markdown. Ensure maximum quality, maximum detail, and 100% correctness."
+ },
+ {
+  "id": "s2-task-de-broken-buzzword-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "broken-buzzword",
+  "tags": [
+   "broken",
+   "keyword-stuffed",
+   "buzzword",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": "buzzword-no-substance",
+  "provenance": "synthetic-v2",
+  "prompt": "Du bist ein Experte mit langjähriger Erfahrung. Erstelle ein Ergebnis von höchster Qualität und herausragender Exzellenz. Wende Best Practices und professionelle Standards konsequent an. Die Ausgabe muss vollständig, detailliert und zu 100 % korrekt sein. Bestehe auf 100 % Korrektheit, 100 % Vollständigkeit und höchster Präzision. Gib die Antwort zugleich als JSON-Objekt, als CSV-Tabelle und als Markdown-Dokument aus. Arbeite gründlich, arbeite exakt, arbeite zu 100 % korrekt."
+ },
+ {
+  "id": "s2-task-de-broken-buzzword-002",
+  "language": "de",
+  "kind": "task",
+  "stratum": "broken-buzzword",
+  "tags": [
+   "broken",
+   "keyword-stuffed",
+   "buzzword",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": "buzzword-no-substance",
+  "provenance": "synthetic-v2",
+  "prompt": "Du bist ein zertifizierter Top-Experte für beste Ergebnisse. Deine Leistung muss Best-in-Class, maximiert und von höchster Exzellenz sein. Setze bewährte Best Practices und strenge professionelle Standards ein. Der Output muss umfassend, detailliert und zu 100 % korrekt sein – ohne Kompromisse. Formatiere das Ergebnis in allen drei Formaten: JSON, CSV und Markdown. Sei ausführlich, sei präzise, sei 100 % korrekt."
+ },
+ {
+  "id": "s2-task-en-broken-contradictory-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "broken-contradictory",
+  "tags": [
+   "broken",
+   "contradictory",
+   "output-contract",
+   "length"
+  ],
+  "pair": null,
+  "adversarial_pattern": "contradictory-requirements",
+  "provenance": "synthetic-v2",
+  "prompt": "Write a product description for a new wireless speaker. Write in German and translate to English. Keep it under 50 words but cover every detail exhaustively. Never mention the budget. Always include the budget breakdown."
+ },
+ {
+  "id": "s2-task-en-broken-contradictory-002",
+  "language": "en",
+  "kind": "task",
+  "stratum": "broken-contradictory",
+  "tags": [
+   "broken",
+   "contradictory",
+   "output-contract",
+   "format"
+  ],
+  "pair": null,
+  "adversarial_pattern": "contradictory-requirements",
+  "provenance": "synthetic-v2",
+  "prompt": "Write a short status report for the team. Return JSON. Return CSV. Return Markdown. Answer all questions. Answer none of the questions. Do not use technical terms, but explain all technical details."
+ },
+ {
+  "id": "s2-task-de-broken-contradictory-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "broken-contradictory",
+  "tags": [
+   "broken",
+   "contradictory",
+   "output-contract",
+   "length"
+  ],
+  "pair": null,
+  "adversarial_pattern": "contradictory-requirements",
+  "provenance": "synthetic-v2",
+  "prompt": "Schreibe eine Produktbeschreibung für eine neue kabellose Tastatur. Schreibe auf Deutsch und übersetze ins Englische. Fasse dich kurz, aber erkläre jedes Detail ausführlich. Erwähne das Budget niemals. Gib aber immer die komplette Budgetaufschlüsselung an."
+ },
+ {
+  "id": "s2-task-de-broken-contradictory-002",
+  "language": "de",
+  "kind": "task",
+  "stratum": "broken-contradictory",
+  "tags": [
+   "broken",
+   "contradictory",
+   "output-contract",
+   "format"
+  ],
+  "pair": null,
+  "adversarial_pattern": "contradictory-requirements",
+  "provenance": "synthetic-v2",
+  "prompt": "Verfasse einen kurzen Statusbericht für das Team. Liefere die Antwort als JSON. Liefere die Antwort als CSV. Liefere die Antwort als Markdown. Beantworte alle Fragen. Beantworte keine der Fragen. Verwende keine Fachwörter, erkläre aber jede technische Besonderheit genau."
+ },
+ {
+  "id": "s2-task-en-fair-boilerplate-noise-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "fair-boilerplate-noise",
+  "tags": [
+   "fair",
+   "boilerplate",
+   "noise",
+   "safety",
+   "recipe"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Write a recipe for fluffy pancakes. List the ingredients and the step-by-step preparation. Safety notice: Do not disclose any personal data, do not share confidential information, and comply with the applicable data protection rules at all times."
+ },
+ {
+  "id": "s2-task-de-fair-boilerplate-noise-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "fair-boilerplate-noise",
+  "tags": [
+   "fair",
+   "boilerplate",
+   "noise",
+   "safety",
+   "poem"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Schreibe ein kurzes Gedicht über den frühen Morgen. Sicherheitshinweis: Gib keinerlei personenbezogene Daten preis, behandle alle Informationen vertraulich und beachte die geltenden Datenschutzbestimmungen."
+ },
+ {
+  "id": "s2-task-en-poor-repetitive-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "poor-repetitive",
+  "tags": [
+   "poor",
+   "repetitive",
+   "role-stuffing"
+  ],
+  "pair": null,
+  "adversarial_pattern": "repeated-role",
+  "provenance": "synthetic-v2",
+  "prompt": "You are a creative marketing specialist. You are a senior marketing specialist. You are a brilliant marketing specialist. You are an award-winning marketing specialist. Draft a tagline for our new energy drink. Draft a tagline for our new energy drink. Draft a tagline for our new energy drink. Remember: draft a tagline for our new energy drink."
+ },
+ {
+  "id": "s2-task-de-poor-repetitive-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-repetitive",
+  "tags": [
+   "poor",
+   "repetitive",
+   "role-stuffing"
+  ],
+  "pair": null,
+  "adversarial_pattern": "repeated-role",
+  "provenance": "synthetic-v2",
+  "prompt": "Du bist ein professioneller Texter. Du bist ein leitender Texter. Du bist ein brillanter Texter. Du bist ein preisgekrönter Texter. Schreibe einen Slogan für unser neues Produkt. Schreibe einen Slogan für unser neues Produkt. Schreibe einen Slogan für unser neues Produkt. Vergiss nicht: Schreibe einen Slogan für unser neues Produkt."
+ },
+ {
+  "id": "s2-task-en-good-coding-concrete-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "good-coding-concrete",
+  "tags": [
+   "good",
+   "coding",
+   "concrete",
+   "python",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Write a Python function that validates IPv4 addresses. The function takes one string argument and returns True if it is a valid IPv4 address and False otherwise. A valid address consists of four octets separated by dots, each octet being an integer from 0 to 255 without leading zeros."
+ },
+ {
+  "id": "s2-task-de-poor-coding-vague-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-coding-vague",
+  "tags": [
+   "poor",
+   "coding",
+   "vague",
+   "missing-input"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Behebe den Fehler im Code."
+ },
+ {
+  "id": "s2-task-en-good-agent-workflow-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "good-agent-workflow",
+  "tags": [
+   "good",
+   "agent",
+   "workflow",
+   "sequential",
+   "verification"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+   "prompt": "You are an autonomous agent. Execute the following steps sequentially, verifying each output before proceeding to the next step. Step 1: read the file input.txt and list its lines. Step 2: filter out lines that start with a hash symbol. Step 3: count the remaining lines and print the total. Step 4: write the filtered lines to output.txt. Only advance to the next step when the previous step's output has been checked for correctness."
+  },
+  {
+   "id": "s2-template-en-reusable-template-001",
+   "language": "en",
+   "kind": "template",
+   "stratum": "reusable-template",
+   "tags": [
+    "template",
+    "bug-report",
+    "reusable",
+    "placeholders"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "# Bug Report Template\n- Environment: {ENVIRONMENT}\n- Steps to reproduce: {STEPS}\n- Expected: {EXPECTED}\n- Actual: {ACTUAL}\n\nFill each section. If a section has no content, write NOTHING."
+  },
+  {
+   "id": "s2-template-en-reusable-template-002",
+   "language": "en",
+   "kind": "template",
+   "stratum": "reusable-template",
+   "tags": [
+    "template",
+    "meeting-minutes",
+    "reusable",
+    "placeholders"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "# Project Sync Minutes\n\n- Session name: {{session_name}}\n- Date: {{sync_date}}\n- Facilitator: {{facilitator}}\n\n## Agenda\n{{agenda_entries}}\n\n## Agreements\n{{agreements}}\n\n## Owner Commitments\n{{owner_commitments}} (owner, due date)\n\n## Risky Items\n{{risky_items}}\n\nFill every section. If a section has no content, write NOTHING instead of leaving it empty."
+  },
+  {
+   "id": "s2-template-de-reusable-template-001",
+   "language": "de",
+   "kind": "template",
+   "stratum": "reusable-template",
+   "tags": [
+    "template",
+    "wochenbericht",
+    "reusable",
+    "placeholders"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "# Wochenbericht\n\n- Woche: {{woche}}\n- Projekt: {{projekt}}\n- Fortschritt: {{fortschritt}}\n- Probleme: {{probleme}}\n\nFülle jedes Feld. Falls ein Feld leer ist, schreibe NICHTS."
+  },
+  {
+   "id": "s2-template-de-reusable-template-002",
+   "language": "de",
+   "kind": "template",
+   "stratum": "reusable-template",
+   "tags": [
+    "template",
+    "retrospektive",
+    "reusable",
+    "placeholders"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "# Retrospektive\n\n- Sprint: {{sprint_name}}\n- Datum: {{retro_datum}}\n- Moderator: {{moderator}}\n\n## Was gut lief\n{{gut_gelaufen}}\n\n## Was wir ändern wollen\n{{aenderungen}}\n\n## Experiment für den nächsten Sprint\n{{experiment}}\n\nFülle jeden Abschnitt. Hat ein Abschnitt keinen Inhalt, schreibe NICHTS statt ihn leer zu lassen."
+  },
+  {
+   "id": "s2-guideline-en-guideline-001",
+   "language": "en",
+   "kind": "guideline",
+   "stratum": "guideline",
+   "tags": [
+    "guideline",
+    "good",
+    "code-review",
+    "rules"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "# Pull Request Review Guideline\n\n## Scope\nApplies to every pull request opened against the main branch.\n\n## Rules\n1. The description must state the problem, the solution, and how the change was tested.\n2. Every behavior change needs an accompanying test; request one if it is missing.\n3. Schema or migration changes must be flagged and reviewed together with the data change.\n4. Keep the diff focused; unrelated reformatting belongs in a separate pull request.\n\n## Constraints\n- Do not modify code during review; write review comments instead.\n- Do not dismiss a review thread before the author has replied.\n\n## Output\nFinish with one of: APPROVE, REQUEST_CHANGES, COMMENT, plus a one-line summary of the main risk."
+  },
+  {
+   "id": "s2-guideline-en-guideline-002",
+   "language": "en",
+   "kind": "guideline",
+   "stratum": "guideline",
+   "tags": [
+    "guideline",
+    "mediocre",
+    "vague"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "Be professional. Always. Sometimes also be friendly. Make good decisions."
+  },
+  {
+   "id": "s2-guideline-de-guideline-001",
+   "language": "de",
+   "kind": "guideline",
+   "stratum": "guideline",
+   "tags": [
+    "guideline",
+    "good",
+    "schreibstil",
+    "regeln"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "# Schreibstil für Support-Antworten\n\n## Geltungsbereich\nGilt für alle schriftlichen Antworten an Kundinnen und Kunden im Support.\n\n## Regeln\n1. Verwende aktive Formulierungen statt Passiv.\n2. Vermeide Füllwörter wie „eigentlich“, „quasi“ und „sozusagen“.\n3. Halte Sätze unter 20 Wörtern.\n4. Nenne zuerst das Ergebnis, dann den Weg dorthin.\n\n## Einschränkungen\n- Keine Vermutungen über Liefertermine.\n- Keine Fachbegriffe ohne kurze Erklärung in Klammern.\n\n## Ausgabe\nJede Antwort endet mit einem konkreten nächsten Schritt in einem eigenen Satz."
+  },
+  {
+   "id": "s2-guideline-de-guideline-002",
+   "language": "de",
+   "kind": "guideline",
+   "stratum": "guideline",
+   "tags": [
+    "guideline",
+    "mediocre",
+    "widerspruechlich"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "# Antwort-Stil\n\n## Regeln\n1. Antworte in maximal drei Sätzen.\n2. Erkläre jedes Thema vollständig und in aller Ausführlichkeit.\n3. Verwende die üblichen Fachbegriffe.\n4. Vermeide Fachbegriffe und benutze einfache Worte.\n5. Schreibe formell und distanziert.\n6. Schreib locker und persönlich.\n7. Gib keine Stilregeln in der Antwort wieder.\n8. Zitiere diese Richtlinie in jeder Antwort."
+  },
+  {
+   "id": "s2-task-en-ambiguous-task-001",
+   "language": "en",
+   "kind": "task",
+   "stratum": "ambiguous-task",
+   "tags": [
+    "ambiguous",
+    "fair",
+    "data"
+   ],
+   "pair": "G1",
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "Handle the data and then send it to the right people."
+  },
+  {
+   "id": "s2-task-de-ambiguous-task-001",
+   "language": "de",
+   "kind": "task",
+   "stratum": "ambiguous-task",
+   "tags": [
+    "ambiguous",
+    "fair",
+    "daten"
+   ],
+   "pair": "G2",
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "Bearbeite die Daten und schicke sie dann an die richtigen Leute."
+  },
+  {
+   "id": "s2-task-en-unusual-valid-001",
+   "language": "en",
+   "kind": "task",
+   "stratum": "unusual-valid",
+   "tags": [
+    "unusual",
+    "valid",
+    "yaml",
+    "release-notes"
+   ],
+   "pair": null,
+   "adversarial_pattern": null,
+   "provenance": "synthetic-v2",
+   "prompt": "task: write_release_notes\nversion: 1.4.0\naudience: external users of the CLI tool\ncommits:\n  - \"feat: add json export flag\"\n  - \"feat: warn on expired api tokens\"\n  - \"fix: retry flaky uploads once\"\n  - \"refactor: drop deprecated login endpoint\"\n  - \"chore: bump build toolchain\"\noutput:\n  format: markdown\n  first_line: \"# 1.4.0\"\n  group_by: [features, fixes, breaking]\n  breaking_rules:\n    - removed endpoint: login_v1\n    - migration_hint: use /auth/token\nconstraints:\n  - skip chore commits\n  - one bullet per user-visible change\n  - bullets under 15 words"
+  }
+]
