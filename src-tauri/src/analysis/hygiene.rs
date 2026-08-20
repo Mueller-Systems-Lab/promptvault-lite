@@ -803,25 +803,12 @@ fn detect_role_mismatch(content: &str) -> Vec<DetectedArtifact> {
 }
 
 /// Prüft ob der Inhalt eine Guideline/Richtlinie ist (nicht Task-Prompt).
-/// Verwendet einfache Heuristiken unabhängig vom TS-Klassifikator.
+///
+/// Delegiert an den gemeinsamen R2-Router (`r2::type_router::is_guideline`,
+/// spec §10 M2) — die einzige Quelle der Wahrheit für Guideline-Routing
+/// (qualität.rs und hygiene.rs teilen sich diesen Router).
 fn is_guideline_content(content: &str) -> bool {
-    let guideline_indicators = [
-        r"(?im)^#{1,3}\s*(System-Richtlinie|Richtlinie|Guidelines?|Policy|Policies?|Regelwerk|Leitlinie|Prinzipien|Conventions?|Rules?)\b",
-        r"(?im)(Verzichte auf|Verwende|Achte auf|Halte dich|Nutze|Vermeide|Stelle sicher)\b",
-        r"(?im)^#{1,3}\s*(Regeln?|Vorgaben?|Anweisungen)\b",
-        r"(?i)(Token-Effizienz|BatchPrompting|Batch-Verarbeitung|Ausgabequalität|Skeleton-of-Thought|Kontext-Management|Output-Management)\b",
-        r"(?im)^(?:Do not|Don't|Always|Never|Use|Avoid|Ensure|Define|Keep|Apply)\s",
-    ];
-
-    let mut indicator_count = 0;
-    for pattern in &guideline_indicators {
-        if let Ok(re) = Regex::new(pattern) {
-            if re.is_match(content) {
-                indicator_count += 1;
-            }
-        }
-    }
-    indicator_count >= 2
+    crate::analysis::r2::type_router::is_guideline(content)
 }
 
 /// Kategorie 17: Missing Structure (fehlender Standardaufbau)

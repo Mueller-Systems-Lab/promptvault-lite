@@ -48,6 +48,10 @@ fn run_case(case: &Value) -> Value {
 
     // Guideline routing probe: the guideline variant uses "Scope/Zweck"
     let guideline_routed = eval.criteria.iter().any(|c| c.name == "Scope/Zweck");
+    // R2 engine kind (guideline/template/task) — added so the metrics script
+    // can distinguish templates (which also carry Scope/Zweck in R2) from
+    // genuine guidelines when scoring routing accuracy.
+    let content_kind = promptvault_lite_lib::analysis::r2::kind_label(&prompt);
 
     // Hygiene artifact severity counts
     let mut critical = 0usize;
@@ -71,6 +75,7 @@ fn run_case(case: &Value) -> Value {
         "adversarial_pattern": case.get("adversarial_pattern"),
         "overall_score": eval.overall_score,
         "guideline_routed": guideline_routed,
+        "content_kind": content_kind,
         "criteria": criteria,
         "missing_sections": eval.missing_sections,
         "recommendations": eval.recommendations,

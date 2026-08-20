@@ -134,12 +134,28 @@ def main():
     ordering_acc = sum(1 for (i, j) in ordered if (pv[i]['overall_score'] > pv[j]['overall_score']) == (gold[i]['overall_score'] > gold[j]['overall_score'])) / len(ordered) if ordered else 0.0
 
     # guideline/task routing
+    # R2 engine records `content_kind` (guideline/template/task) per result so
+    # templates (which carry "Scope/Zweck" in R2) are not miscounted as
+    # guidelines. Legacy result files without `content_kind` fall back to the
+    # "Scope/Zweck" probe (`guideline_routed`).
     routed = {r['id']: r['guideline_routed'] for r in json.load(open(pv_path))['results']}
-    routing_ok = sum(1 for i in ids
-                     if (cases[i]['kind'] == 'guideline' and routed[i]) or (cases[i]['kind'] in ('task', 'template') and not routed[i]))
+    results_by_id = {r['id']: r for r in json.load(open(pv_path))['results']}
+    routing_ok = 0
+    for i in ids:
+        r = results_by_id.get(i, {})
+        if 'content_kind' in r:
+            engine_kind = r['content_kind']
+            expected = cases[i]['kind']
+            routing_ok += int(engine_kind == expected)
+        else:
+            ck = cases[i]['kind']
+            if (ck == 'guideline' and routed[i]) or (ck in ('task', 'template') and not routed[i]):
+                routing_ok += 1
     routing_acc = routing_ok / len(ids)
     guide_total = sum(1 for i in ids if cases[i]['kind'] == 'guideline')
-    guide_ok = sum(1 for i in ids if cases[i]['kind'] == 'guideline' and routed[i])
+    guide_ok = sum(1 for i in ids
+                   if cases[i]['kind'] == 'guideline' and
+                   results_by_id.get(i, {}).get('content_kind') == 'guideline')
 
     # missing-info precision/recall/FPR
     tp = fp = fn = tn = 0
