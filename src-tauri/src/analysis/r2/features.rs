@@ -57,7 +57,7 @@ cached_regex!(placeholder_labeled_re, r"\{\{\w+\}\}|\{[A-Z][A-Z0-9_]*\}");
 cached_regex!(following_re, r"(?i)(the following|folgend\w*)");
 cached_regex!(
     input_anchor_re,
-    r"(?i)(the following|folgend\w*|input|eingabe)"
+    r"(?i)(the following|folgend\w*|input|eingabe|the text below|text below|below|den folgenden text|nachfolgend|unten stehenden text)"
 );
 cached_regex!(
     // F4 rule (b): labeled-field line ("- Environment: {ENVIRONMENT}"). The
@@ -128,21 +128,25 @@ cached_regex!(
     // Team-Meeting", "unsere neue Software") is NOT self-contained. Three
     // groups: (a) explicit phrases — product/service/artifact/project nouns
     // with a definite/possessive article ("the software", "das konzept",
-    // "our product", "the input file", "das team-meeting"), (b) the legacy
+    // "our product", "the input file", "das team-meeting", "das buch",
+    // "the book", "das statusmeeting", "the status meeting"), (b) the legacy
     // explicit list (api/database/codebase/audience/company/brand + DE
     // equivalents), and (c) a generic article+noun pattern covering the core
     // subject nouns with an optional article (the|our|a|an|der|die|das|
     // unser|ein|eine) and up to two intervening words so "the new gadget",
-    // "the input file" and "unsere neue Software" are caught
-    // (case-insensitive).
+    // "the input file", "das wöchentliche Statusmeeting" and "unsere neue
+    // Software" are caught (case-insensitive).
     //
-    // NOTE — deliberate exclusions (r2_contract must stay 27/27; the three
-    // EN phrases collide with contract prompts whose subject IS the provided
-    // input and must NOT flip self_contained):
-    //   - "the meeting" / generic "meeting": R4 "The meeting was delayed."
-    //     (the inline input being rewritten) and R25 "Summarize the meeting
-    //     notes." (the transform input). German "das meeting" / "das
-    //     team-meeting" stay covered.
+    // NOTE — deliberate exclusions (r2_contract must stay 27/27; the phrases
+    // collide with contract prompts whose subject IS the provided input and
+    // must NOT flip self_contained):
+    //   - "the meeting" / generic "meeting": handled CONTEXT-AWARE by
+    //     [`has_external_meeting_ref`] — the phrase IS an external reference
+    //     ("Write a summary of the meeting.") EXCEPT when it is the
+    //     inline/transform input: R4 "The meeting was delayed." (the quoted
+    //     inline input being rewritten) and R25 "Summarize the meeting
+    //     notes." (the transform input) stay self-contained. German "das
+    //     meeting" / "das team-meeting" stay covered by the alternation.
     //   - "the document" / generic "document": R5 "Use the value in
     //     {FILE_CONTENT} as the document." and R19 "Summarize the document."
     //     — the document IS the supplied input.
@@ -154,10 +158,54 @@ cached_regex!(
     // intentionally omits meeting/document/data for the same reason. Every
     // phrase required by the F9 acceptance prompts ("unsere neue Software",
     // "das Team-Meeting", "das Konzept", "the input file", "a customer",
-    // "the new gadget") is covered by the alternation or the generic pattern.
+    // "the new gadget", "das Buch", "das wöchentliche Statusmeeting") is
+    // covered by the alternation or the generic pattern.
     external_ref_re,
-    r"(?i)(our software|unsere software|unsere neue software|the software|die software|the app|die app|the tool|the website|die website|the service|der dienst|the project|das projekt|the concept|das konzept|das meeting|the team meeting|das team-meeting|the input file|die eingabedatei|the input|die eingabe|the file|die datei|das dokument|the presentation|die präsentation|the product|das produkt|our product|unser produkt|the system|das system|die daten|the gadget|das gadget|our api|unsere api|the database|die datenbank|the codebase|the repo|der code|the customer|the client|the user|the target audience|the audience|the company|the brand|der kunde|der benutzer|der client|(?:the|our|a|an|der|die|das|unser|ein|eine)\s+(?:\w+\s+){0,2}(?:software|app|tool|website|webseite|service|dienst|project|projekt|konzept|concept|file|datei|dokument|presentation|präsentation|produkt|product|system|daten|customer|kunde|client|user|benutzer|gadget|audience))"
+    r"(?i)(our software|unsere software|unsere neue software|the software|die software|the app|die app|the tool|the website|die website|the service|der dienst|the project|das projekt|the concept|das konzept|das buch|the book|das statusmeeting|the status meeting|das meeting|the team meeting|das team-meeting|the input file|die eingabedatei|the input|die eingabe|the file|die datei|das dokument|the presentation|die präsentation|the product|das produkt|our product|unser produkt|the system|das system|die daten|the gadget|das gadget|our api|unsere api|the database|die datenbank|the codebase|the repo|der code|the customer|the client|the user|the target audience|the audience|the company|the brand|der kunde|der benutzer|der client|(?:the|our|a|an|der|die|das|unser|ein|eine)\s+(?:\w+\s+){0,2}(?:software|app|tool|website|webseite|service|dienst|project|projekt|konzept|concept|file|datei|dokument|presentation|präsentation|produkt|product|system|daten|customer|kunde|client|user|benutzer|gadget|audience|buch|book|statusmeeting))"
 );
+
+/// F9 external-subject detection (spec §5): the regex alternation plus the
+/// context-aware English "the meeting" rule. "The meeting" is an external
+/// subject reference ("Write a summary of the meeting.") EXCEPT when it is
+/// the inline/transform input the prompt operates on:
+///   - inside a quoted inline-input portion opened after a colon (R4:
+///     "Rewrite this sentence in a formal tone: \"The meeting was
+///     delayed.\"") — the quoted sentence IS the provided input;
+///   - as the transform input "the meeting notes"/"the meeting minutes"
+///     (R25: "Summarize the meeting notes.") — mirroring the documented
+///     "the document"/"the data" exclusions.
+fn has_external_subject_ref(content: &str) -> bool {
+    external_ref_re().is_match(content) || has_external_meeting_ref(content)
+}
+
+/// Context-aware "the meeting" reference check — see [`has_external_subject_ref`].
+fn has_external_meeting_ref(content: &str) -> bool {
+    static RE: OnceLock<Regex> = OnceLock::new();
+    let re = RE.get_or_init(|| Regex::new(r"(?i)\bthe meeting\b").unwrap());
+    for m in re.find_iter(content) {
+        let rest = content[m.end()..].trim_start().to_lowercase();
+        if rest.starts_with("notes") || rest.starts_with("minutes") {
+            // Transform input (R25): the meeting notes/minutes ARE the input.
+            continue;
+        }
+        if inline_quote_before(content, m.start()) {
+            // Inline input (R4): the quoted sentence being rewritten.
+            continue;
+        }
+        return true;
+    }
+    false
+}
+
+/// True when the text immediately before `start` is a quoted segment opened
+/// after a colon (`: "..."`) — the standard inline-input layout (R4).
+fn inline_quote_before(content: &str, start: usize) -> bool {
+    let before = &content[..start];
+    if let Some(q) = before.rfind(['"', '„', '“']) {
+        return before[..q].trim_end().ends_with(':');
+    }
+    false
+}
 cached_regex!(
     sequence_re,
     r"(?i)(schritt|step|zuerst|first|dann|then|vorgehen|procedure|anleitung|ablauf|workflow)"
@@ -358,6 +406,33 @@ const CONCRETE_GENERIC_NOUNS: &[&str] = &[
     // are unaffected).
     "einen",
     "über",
+    // Calibration v2 (fresh development-set error classes): generic
+    // deliverable categories that never make a bare prompt concrete, plus
+    // their surface variants:
+    //   - "press"+"release" (the two-token surface of "press release" —
+    //     whole-token matching, so "Write a press release." names a generic
+    //     marketing deliverable, not a specific artifact), "pressemitteilung";
+    //   - "bewertung"/"review" (generic opinion-piece category);
+    //   - "folienpräsentation"/"folien"/"slides"/"präsentationen"
+    //     (presentation category — "präsentation" is already generic above);
+    //   - "buch"/"book" (generic artifact category);
+    //   - "statusmeeting" and its "wöchentliche" modifier (mirrors the
+    //     documented "Team"/"Montag" complement — "Erstelle eine
+    //     Folienpräsentation für das wöchentliche Statusmeeting." names a
+    //     recurring generic meeting, not a specific artifact).
+    "press",
+    "release",
+    "pressemitteilung",
+    "bewertung",
+    "review",
+    "folienpräsentation",
+    "folien",
+    "slides",
+    "buch",
+    "book",
+    "präsentationen",
+    "statusmeeting",
+    "wöchentliche",
 ];
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
@@ -1068,7 +1143,7 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
     // and redundancy are all available. Empty heading skeletons and
     // junk/stuffed prompts no longer qualify (previously they short-circuited
     // Context to 10 via self_contained == true).
-    fs.self_contained = external_ref_re().find(content).is_none()
+    fs.self_contained = !has_external_subject_ref(content)
         && (fs.task_signal != EvidenceStrength::None
             || fs.guideline_signal == 1.0
             || fs.template_signal == 1.0)
@@ -1438,7 +1513,8 @@ mod tests {
         // F9 broadening (task test prompts, EN + DE): prompts referencing an
         // undefined external subject — "unsere neue Software", "das
         // Team-Meeting", "das Konzept", "the input file", "a customer",
-        // "the new gadget" — are NOT self-contained.
+        // "the new gadget", "das Buch", "das wöchentliche Statusmeeting" —
+        // are NOT self-contained.
         let cases = [
             "Schreibe einen Werbetext für unsere neue Software.",
             "Erstelle eine Präsentation für das Team-Meeting am Montag.",
@@ -1446,11 +1522,55 @@ mod tests {
             "Write a Python script that processes the input file and saves the output.",
             "Write an email to a customer.",
             "Write a product description for the new gadget.",
+            "Verfasse eine Bewertung für das Buch.",
+            "Erstelle eine Folienpräsentation für das wöchentliche Statusmeeting.",
+            "Write a summary of the meeting.",
         ];
         for c in cases {
             let fs = extract(c, Language::En);
             assert!(!fs.self_contained, "expected NOT self-contained: {c}");
         }
+    }
+
+    #[test]
+    fn r4_inline_meeting_not_external_subject() {
+        // Calibration v2 + r2_contract R4: "The meeting was delayed." is the
+        // quoted inline input being rewritten — it must NOT count as an
+        // external subject reference, so the prompt stays self-contained.
+        let content = "Rewrite this sentence in a formal tone: \"The meeting was delayed.\"\nReturn only the rewritten sentence.";
+        let fs = extract(content, Language::En);
+        assert!(
+            fs.self_contained,
+            "R4 inline input must stay self-contained"
+        );
+    }
+
+    #[test]
+    fn meeting_notes_transform_input_not_external_subject() {
+        // r2_contract R25: "the meeting notes" are the transform input, not
+        // an external subject — the prompt stays self-contained.
+        let content = "Summarize the meeting notes.";
+        let fs = extract(content, Language::En);
+        assert!(
+            fs.self_contained,
+            "R25 transform input must stay self-contained"
+        );
+    }
+
+    #[test]
+    fn text_below_anchor_references_placeholder() {
+        // Calibration v2 error class 4: the input-anchor phrase "the text
+        // below" must count the trailing {{contact_text}} paragraph as
+        // referenced — a placeholder anchored by "from the text below" is
+        // not placeholder spam.
+        let content = "Extract all email addresses and phone numbers from the text below. Return them as a JSON object with the keys \"emails\" and \"phones\":\n\n{{contact_text}}";
+        let fs = extract(content, Language::En);
+        assert_eq!(fs.placeholder_count, 1);
+        assert_eq!(
+            fs.referenced_placeholder_fraction, 1.0,
+            "{{contact_text}} anchored by 'the text below' must be referenced"
+        );
+        assert!(fs.placeholder_quality >= 0.8);
     }
 
     #[test]
@@ -1607,7 +1727,12 @@ mod tests {
         // ("Angebot" generic deliverable category, "Kunden" the generic
         // "kunde" surface) and "Erstelle einen Bericht über das Projekt."
         // ("Bericht"/"Projekt" generic; "einen"/"über" function words).
-        let cases: [(&str, Language); 7] = [
+        // Calibration v2 additions: "Write a press release." ("press" +
+        // "release" generic deliverable category), "Verfasse eine Bewertung
+        // für das Buch." ("bewertung"/"buch" generic), "Erstelle eine
+        // Folienpräsentation für das wöchentliche Statusmeeting."
+        // ("folienpräsentation"/"wöchentliche"/"statusmeeting" generic).
+        let cases: [(&str, Language); 10] = [
             ("Write an email to a customer.", Language::En),
             (
                 "Schreibe einen Werbetext für unsere neue Software.",
@@ -1627,6 +1752,12 @@ mod tests {
             ),
             ("Erstelle ein Angebot für den Kunden.", Language::De),
             ("Erstelle einen Bericht über das Projekt.", Language::De),
+            ("Write a press release.", Language::En),
+            ("Verfasse eine Bewertung für das Buch.", Language::De),
+            (
+                "Erstelle eine Folienpräsentation für das wöchentliche Statusmeeting.",
+                Language::De,
+            ),
         ];
         for (c, l) in cases {
             let fs = extract(c, l);

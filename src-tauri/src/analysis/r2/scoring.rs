@@ -168,15 +168,34 @@ fn score_dim(
 ) -> f64 {
     let poor = signal_poor(f, conflicts);
     let s = match name {
-        "Goal" => match f.goal_statement {
-            // Goal ladder aligned with the F2 feature: Strong encodes
-            // transform+input, goal clause/heading, purpose or
-            // deliverable+context -> full 10. Moderate/Weak/None map down.
-            EvidenceStrength::Strong => 10.0,
-            EvidenceStrength::Moderate => 8.0,
-            EvidenceStrength::Weak => 6.0,
-            EvidenceStrength::None => 1.0,
-        },
+        "Goal" => {
+            // Template goal credit (calibration v2, error class A — GOOD
+            // templates under-scored, gold 90 EXCELLENT): a structured
+            // template (labeled placeholders + section headings / fill
+            // instruction) implies a clear purpose from its title and fill
+            // instruction even without an imperative goal sentence. Rubric
+            // anchor: templates with labeled placeholders + fill instructions
+            // are GOOD/EXCELLENT (dev-set GOAL 9). Applied ONLY for
+            // ContentKind::Template and ONLY when the F2 ladder would
+            // under-credit (goal below Moderate — the common case for a
+            // form-shaped template with no goal clause).
+            if matches!(kind, ContentKind::Template)
+                && f.placeholder_count >= 2
+                && f.goal_statement < EvidenceStrength::Moderate
+            {
+                8.0
+            } else {
+                match f.goal_statement {
+                    // Goal ladder aligned with the F2 feature: Strong encodes
+                    // transform+input, goal clause/heading, purpose or
+                    // deliverable+context -> full 10. Moderate/Weak/None map down.
+                    EvidenceStrength::Strong => 10.0,
+                    EvidenceStrength::Moderate => 8.0,
+                    EvidenceStrength::Weak => 6.0,
+                    EvidenceStrength::None => 1.0,
+                }
+            }
+        }
         "Context" => {
             // NOTE: no early `return` — the signal-poor cap below must also
             // apply to the self_contained neutral anchor (10.0 -> 3.0).
@@ -206,7 +225,20 @@ fn score_dim(
             }
         }
         "Input" => {
-            if f.placeholder_count > 0 && f.referenced_placeholder_fraction < 0.4 {
+            // Template input credit (calibration v2, error class A — GOOD
+            // templates under-scored, gold 90 EXCELLENT): the labeled
+            // placeholders ARE the input definition for a structured template
+            // — each field names the data the user must supply. Rubric
+            // anchor: templates with labeled placeholders + fill instructions
+            // are GOOD/EXCELLENT (dev-set INPUT 9). Applied ONLY for
+            // ContentKind::Template and ONLY when the F3 ladder would
+            // under-credit (input below Moderate).
+            if matches!(kind, ContentKind::Template)
+                && f.placeholder_count >= 3
+                && f.input_present < EvidenceStrength::Moderate
+            {
+                8.0
+            } else if f.placeholder_count > 0 && f.referenced_placeholder_fraction < 0.4 {
                 3.0 // placeholder spam cap
             } else {
                 match f.input_present {
@@ -231,31 +263,52 @@ fn score_dim(
                 }
             }
         }
-        "Output" => match f.output_contract_strength {
-            EvidenceStrength::Strong => {
-                // -1 penalty only for a strong mismatch (output_matches_task
-                // < 0.2). summarize->bullets (R25) is a valid type-pair that
-                // the F6 artifact-pair table cannot express (no "summary"
-                // artifact noun in the prompt) — it must not lose the point.
-                10.0 - if f.output_matches_task < 0.2 {
-                    1.0
-                } else {
-                    0.0
+        "Output" => {
+            // Template output credit (calibration v2, error class A — GOOD
+            // templates under-scored, gold 90 EXCELLENT): a structured
+            // template defines its output by its section/field structure —
+            // the filled form IS the deliverable, even without an explicit
+            // artifact/format contract ("## Agenda/## Agreements/## Owner
+            // Commitments" sections were previously not recognized as output
+            // structure, leaving Output at 1.0). Rubric anchor: templates
+            // with labeled placeholders + fill instructions are GOOD/
+            // EXCELLENT (dev-set OUTPUT 9). Applied ONLY for
+            // ContentKind::Template and ONLY when the F5 ladder would
+            // under-credit (contract below Moderate — the common case for a
+            // form-shaped template with no output clause).
+            if matches!(kind, ContentKind::Template)
+                && f.placeholder_count >= 3
+                && f.output_contract_strength < EvidenceStrength::Moderate
+            {
+                8.0
+            } else {
+                match f.output_contract_strength {
+                    EvidenceStrength::Strong => {
+                        // -1 penalty only for a strong mismatch (output_matches_task
+                        // < 0.2). summarize->bullets (R25) is a valid type-pair that
+                        // the F6 artifact-pair table cannot express (no "summary"
+                        // artifact noun in the prompt) — it must not lose the point.
+                        10.0 - if f.output_matches_task < 0.2 {
+                            1.0
+                        } else {
+                            0.0
+                        }
+                    }
+                    EvidenceStrength::Moderate => 7.0,
+                    // Weak output (bare artifact mention or transform-verb
+                    // implication only) anchors below the explicit Moderate 7 — 4.0
+                    // keeps the Weak band visibly weak across the equal-weight mean.
+                    EvidenceStrength::Weak => 4.0,
+                    EvidenceStrength::None => {
+                        if poor {
+                            1.0
+                        } else {
+                            optional_or(&app, 1.0)
+                        }
+                    }
                 }
             }
-            EvidenceStrength::Moderate => 7.0,
-            // Weak output (bare artifact mention or transform-verb
-            // implication only) anchors below the explicit Moderate 7 — 4.0
-            // keeps the Weak band visibly weak across the equal-weight mean.
-            EvidenceStrength::Weak => 4.0,
-            EvidenceStrength::None => {
-                if poor {
-                    1.0
-                } else {
-                    optional_or(&app, 1.0)
-                }
-            }
-        },
+        }
         "Constraint" => {
             if f.relevant_constraints + f.boilerplate_constraints == 0 {
                 if poor {
@@ -342,17 +395,18 @@ fn score_dim(
             }
         }
         "Noise" => {
-            let mut n = if f.signal_to_noise >= 0.8 && f.redundancy < 0.2 && f.filler_ratio < 0.2 {
-                10.0
-            } else if f.signal_to_noise >= 0.6 {
-                7.0
-            } else if f.signal_to_noise >= 0.4 {
-                5.0
-            } else if f.signal_to_noise >= 0.2 {
-                3.0
-            } else {
-                1.0
-            };
+            let mut n: f64 =
+                if f.signal_to_noise >= 0.8 && f.redundancy < 0.2 && f.filler_ratio < 0.2 {
+                    10.0
+                } else if f.signal_to_noise >= 0.6 {
+                    7.0
+                } else if f.signal_to_noise >= 0.4 {
+                    5.0
+                } else if f.signal_to_noise >= 0.2 {
+                    3.0
+                } else {
+                    1.0
+                };
             if f.safety_boilerplate_severity >= 2 {
                 n -= 2.0;
             } else if f.safety_boilerplate_severity == 1 {
@@ -360,6 +414,17 @@ fn score_dim(
             }
             if f.redundancy >= 0.4 {
                 n -= 3.0; // FIX H: stuffing visibly hurts noise
+            }
+            // Repetition -> Noise (calibration v2, error class B — repetitive
+            // prompts over-scored, gold 64 FAIR): a prompt that repeats its
+            // role statements and instruction (4x role + 4x instruction) is
+            // mostly filler with a buried task. Rubric anchor: SIGNAL_TO_NOISE
+            // 3 = "mostly filler; task buried" (dev-set 4x-repetition prompt).
+            // The >= 0.4 redundancy penalty misses the borderline band
+            // (~0.3..0.4 where signal_poor does not fire); any material
+            // repetition (>= 0.3) caps Noise at 3.0.
+            if f.redundancy >= 0.3 {
+                n = n.min(3.0);
             }
             n
         }
@@ -412,19 +477,22 @@ fn score_dim(
     } else {
         s
     };
-    // Bare-task caps (old-benchmark regression reg3): a Task-kind prompt whose
-    // core is NOT concrete — bare: vague action, no specific operation, no
-    // specific nouns ("Schreibe einen Werbetext für unsere neue Software.",
-    // "Write an email to a customer.") — must not collect the neutral high
-    // anchors on the substance dimensions even when it is not signal-poor.
-    // Reference rubric anchors: GOAL 5-6 (goal recognizable but vague), ACTION
-    // 2-4 (executor must invent core substance), AMBIG 1-4 (several decisions
+    // Bare-task caps (old-benchmark regression reg3 + calibration v2): a
+    // Task-kind prompt whose core is NOT concrete — bare: vague action, no
+    // specific operation, no specific nouns ("Schreibe einen Werbetext für
+    // unsere neue Software.", "Write a press release.") — must not collect
+    // the neutral high anchors on the substance dimensions even when it is
+    // not signal-poor.
+    // Reference rubric anchors: GOAL 5-6 (goal recognizable but vague), CONTEXT
+    // 3-5 (a bare prompt without supplied context is context-missing — the
+    // self_contained neutral anchor must not give it Context 10; calibration
+    // v2 "Write a press release." was false-high 78 vs gold 54), ACTION 2-4
+    // (executor must invent core substance), AMBIG 1-4 (several decisions
     // stay open), CONSTRAINT 0-2 (constraints needed but absent — capped only
     // when none are stated), COMPLETENESS (several required components
-    // missing). Context/Output/Input/Noise/Safety/Consistency are NOT capped:
-    // their ladders already reflect the state (Context via
-    // self_contained/external refs, Output via the output ladder, Noise via
-    // s2n). Guidelines and templates are excluded (kind gate). A fully
+    // missing). Output/Input/Noise/Safety/Consistency are NOT capped: their
+    // ladders already reflect the state (Output via the output ladder, Noise
+    // via s2n). Guidelines and templates are excluded (kind gate). A fully
     // supplied context (context_substance == Strong) closes the substance gap
     // that makes a prompt bare, so the caps do not apply there — the R24
     // improved prompt ("Write a product description for the new gadget." +
@@ -438,6 +506,12 @@ fn score_dim(
     {
         capped = match name {
             "Goal" => capped.min(6.0),
+            // Calibration v2: a bare prompt without supplied context is
+            // context-missing (reference NECESSARY_CONTEXT 3-5), even when
+            // it names no explicit external subject ("Write a press
+            // release." — the subject is implicitly missing, not
+            // explicitly referenced).
+            "Context" => capped.min(3.0),
             "Actionability" => capped.min(3.0),
             "Ambiguity" => capped.min(5.0),
             "Constraint" if f.relevant_constraints + f.boilerplate_constraints == 0 => {
@@ -624,6 +698,139 @@ mod tests {
         );
     }
 
+    /// Calibration v2 (development-set error class 1/5): a bare Task prompt
+    /// WITHOUT an explicit external subject ("Write a press release.",
+    /// "Write a report.") still gets Context 10 via the self_contained
+    /// neutral anchor — the subject is implicitly missing, not explicitly
+    /// referenced, so the bare treatment must cap Context at 3.0 too
+    /// (reference NECESSARY_CONTEXT 3-5).
+    #[test]
+    fn bare_self_contained_context_capped() {
+        for content in [
+            "Write a press release.",
+            "Write a report.",
+            "Schreibe einen Bericht.",
+        ] {
+            let lang = type_router::detect_language(content);
+            let f = features::extract(content, lang);
+            let kind = type_router::ContentKind::Task(type_router::PromptType::GeneralTask);
+            let conflicts = contradictions::detect(content, lang);
+            assert!(
+                !f.concrete_core,
+                "bare prompt must have concrete_core=false: {content}"
+            );
+            assert!(
+                f.self_contained,
+                "no explicit external subject -> self_contained: {content}"
+            );
+            let dims = score_dimensions(&f, &kind, &conflicts);
+            assert_eq!(
+                dims.get("Context"),
+                3.0,
+                "bare Context cap 3.0 (self_contained neutral anchor): {content}"
+            );
+            let o = overall(&dims, &conflicts);
+            assert!(
+                o < 70,
+                "bare self-contained prompt must not be false-high (>= 70): {content} scored {o}"
+            );
+        }
+    }
+
+    /// Calibration v2 (development-set error class A): structured templates —
+    /// labeled placeholders + section headings + fill instruction ("# Project
+    /// Sync Minutes", "## Agenda/## Agreements/## Owner Commitments", "Fill
+    /// every section") — were under-scored (gold 90 EXCELLENT, engine 70-71)
+    /// because the section structure was not recognized as output/goal
+    /// evidence. The template credit (kind-gated, placeholder-count keyed)
+    /// must lift Goal and Output to 8.0 and keep Input credited; the credit
+    /// must NOT leak to Task-kind prompts with placeholders.
+    #[test]
+    fn structured_template_credit() {
+        let content = "# Project Sync Minutes\n\n- Session name: {{session_name}}\n- Date: {{sync_date}}\n- Facilitator: {{facilitator}}\n\n## Agenda\n{{agenda_entries}}\n\n## Agreements\n{{agreements}}\n\n## Owner Commitments\n{{owner_commitments}} (owner, due date)\n\n## Risky Items\n{{risky_items}}\n\nFill every section. If a section has no content, write NOTHING instead of leaving it empty.";
+        let lang = type_router::detect_language(content);
+        let f = features::extract(content, lang);
+        let kind = type_router::classify(content).kind;
+        let conflicts = contradictions::detect(content, lang);
+        assert!(
+            matches!(kind, ContentKind::Template),
+            "structured form must route as Template"
+        );
+        assert!(
+            f.placeholder_count >= 3,
+            "template must carry >= 3 labeled placeholders, got {}",
+            f.placeholder_count
+        );
+        let dims = score_dimensions(&f, &kind, &conflicts);
+        // The fill instruction + title imply the purpose even without an
+        // imperative goal sentence (Goal 8.0 credit).
+        assert_eq!(dims.get("Goal"), 8.0, "template Goal credit 8.0");
+        // The section/field structure IS the output contract (Output 8.0
+        // credit) — previously Output scored 1.0.
+        assert_eq!(dims.get("Output"), 8.0, "template Output credit 8.0");
+        // The labeled placeholders define the input (ladder already Strong,
+        // so the credit is a no-op floor at >= 8.0).
+        assert!(
+            dims.get("Input") >= 8.0,
+            "template Input must be >= 8.0, got {}",
+            dims.get("Input")
+        );
+        let o = overall(&dims, &conflicts);
+        assert!(
+            o >= 80,
+            "structured template must be GOOD+ (was 70 pre-fix), got {o}"
+        );
+
+        // Negative control: a Task-kind prompt with 3 placeholders must NOT
+        // receive the template Output/Goal credit — the kind gate is binding.
+        let task_content = "Create a report. Use {A}, {B} and {C}.";
+        let f2 = features::extract(task_content, type_router::Language::En);
+        let kind2 = type_router::ContentKind::Task(type_router::PromptType::GeneralTask);
+        let c2 = contradictions::detect(task_content, type_router::Language::En);
+        let dims2 = score_dimensions(&f2, &kind2, &c2);
+        assert!(
+            f2.placeholder_count >= 3,
+            "negative control needs >= 3 placeholders"
+        );
+        assert_ne!(
+            dims2.get("Output"),
+            8.0,
+            "Task-kind prompt must not get the template Output credit"
+        );
+    }
+
+    /// Calibration v2 (development-set error class B): the 4x-repetition
+    /// prompt (role statement x4 + instruction x4) is mostly filler with a
+    /// buried task — rubric SIGNAL_TO_NOISE 3 ("mostly filler; task buried",
+    /// gold 64 FAIR). Its redundancy lands in the borderline band
+    /// (~0.3..0.4) where the signal-poor gate does not fire; the Noise ladder
+    /// must cap at 3.0 regardless so the over-scored prompt (engine 79,
+    /// gold 64) drops.
+    #[test]
+    fn repetition_caps_noise() {
+        let content = "You are a creative marketing specialist. You are a senior marketing specialist. You are a brilliant marketing specialist. You are an award-winning marketing specialist. Draft a tagline for our new energy drink. Draft a tagline for our new energy drink. Draft a tagline for our new energy drink. Remember: draft a tagline for our new energy drink.";
+        let lang = type_router::detect_language(content);
+        let f = features::extract(content, lang);
+        let kind = type_router::classify(content).kind;
+        let conflicts = contradictions::detect(content, lang);
+        assert!(
+            f.redundancy >= 0.3 && f.redundancy < 0.4,
+            "dev repetition must sit in the borderline redundancy band, got {}",
+            f.redundancy
+        );
+        let dims = score_dimensions(&f, &kind, &conflicts);
+        assert_eq!(
+            dims.get("Noise"),
+            3.0,
+            "repetition >= 0.3 must cap Noise at 3.0"
+        );
+        let o = overall(&dims, &conflicts);
+        assert!(
+            o < 79,
+            "repetitive prompt must drop below the pre-fix 79, got {o}"
+        );
+    }
+
     /// Manual debug-dump tool (NOT an assertion test): prints feature values
     /// and dimension scores for the R2 contract prompts, then panics to
     /// surface the output. `#[ignore]`d so the module suite stays green; run
@@ -651,6 +858,8 @@ mod tests {
             ("fmis-003", "Erstelle eine Präsentation für das Team-Meeting am Montag."),
             ("fmis-002", "Write a Python script that processes the input file and saves the output."),
             ("famb-002", "Erkläre mir das Konzept. Halte es einfach und kurz."),
+            ("dev-tpl-002", "# Project Sync Minutes\n\n- Session name: {{session_name}}\n- Date: {{sync_date}}\n- Facilitator: {{facilitator}}\n\n## Agenda\n{{agenda_entries}}\n\n## Agreements\n{{agreements}}\n\n## Owner Commitments\n{{owner_commitments}} (owner, due date)\n\n## Risky Items\n{{risky_items}}\n\nFill every section. If a section has no content, write NOTHING instead of leaving it empty."),
+            ("dev-rep-en", "You are a creative marketing specialist. You are a senior marketing specialist. You are a brilliant marketing specialist. You are an award-winning marketing specialist. Draft a tagline for our new energy drink. Draft a tagline for our new energy drink. Draft a tagline for our new energy drink. Remember: draft a tagline for our new energy drink."),
         ];
         for (label, content) in prompts {
             let lang = type_router::detect_language(content);
