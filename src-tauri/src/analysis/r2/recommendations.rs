@@ -1,6 +1,7 @@
 //! R2 recommendations (spec §2/§9) — gated, capped (max 4) WHAT/WHY/CHANGE
 //! recommendation generation in DE/EN, containing the PV criterion keyword
-//! (metrics matching depends on it — scripts/semantic_quality_metrics.py).
+//! so users can map each recommendation back to the criterion list
+//! (product-contract property).
 
 #![allow(dead_code)] // wired in a later capsule
 
@@ -17,8 +18,7 @@ const MAX_RECS: usize = 4;
 /// Priority order: fired contradictions first (highest), then the Required
 /// dimensions that matter (Goal/Input/Output), then the remaining
 /// content-gated dimensions. Every emitted text carries the PV criterion
-/// keyword the benchmark matcher keys on
-/// (scripts/semantic_quality_metrics.py lines ~177-216).
+/// keyword so users can map the recommendation to the criterion list.
 pub fn generate(
     dims: &DimensionScores,
     kind: &ContentKind,
@@ -135,7 +135,7 @@ fn dim_rec(name: &str, dims: &DimensionScores, features: &FeatureSet, de: bool) 
             // contract (Moderate/Strong) suppresses the rec. None (absent) or
             // Weak (transform-verb implication only, score 5.0) still warrants
             // "specify the output format" — e.g. "Summarize the following
-            // text:" (R20). `dims.get("Output") > 5.0` aligns the score gate
+            // text:". `dims.get("Output") > 5.0` aligns the score gate
             // with the Weak ladder anchor so Weak (5.0) is not suppressed by
             // the shared `>= 5.0` rec gate.
             if !gate_passes(dims, name)

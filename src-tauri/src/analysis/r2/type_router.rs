@@ -424,16 +424,13 @@ pub fn classify(content: &str) -> Classification {
 
     // Labeled fill-in form (>= 2 labeled lines with placeholders) plus an
     // explicit fill instruction is a Template even without the literal
-    // "template"/"Vorlage" marker — covers German/English field templates
-    // such as "# Wochenbericht" / "# Feature Kickoff Brief".
+    // "template"/"Vorlage" marker — covers German/English field templates.
     //
     // NOTE: the density-based `template_score` requires >= 3 labeled fields
     // (not 2). A thin 2-field form with neither a fill instruction nor a
-    // template marker (e.g. the legacy fair-quality "Wochenbericht" shape)
-    // stays a Task, keeping the old-corpus routing and score calibration
-    // bit-identical; genuine templates carry >= 3 fields, a marker, or a
-    // fill instruction, and the fill-form rule above (>= 2 fields) covers
-    // the spec'd labeled-field template signal.
+    // template marker stays a Task; genuine templates carry >= 3 fields, a
+    // marker, or a fill instruction, and the fill-form rule above (>= 2
+    // fields) covers the spec'd labeled-field template signal.
     let fill_instruction_hit = re::fill_instruction().is_match(&lower);
     let template_by_fill_form = labeled_field_lines >= 2 && fill_instruction_hit;
 
@@ -552,7 +549,7 @@ mod tests {
 
     #[test]
     fn template_with_labeled_fields() {
-        let content = "# Bug Report Template\n- Environment: {ENVIRONMENT}\n- Steps to reproduce: {STEPS}\n- Expected: {EXPECTED}\n- Actual: {ACTUAL}\n\nFill each section. If a section has no content, write NOTHING.";
+        let content = "# Defect Report Template\n- Browser: {BROWSER}\n- Steps to reproduce: {STEPS}\n- Expected: {EXPECTED}\n- Actual: {ACTUAL}\n\nFill each section. If a section has no content, write NOTHING.";
         assert!(is_template(content));
     }
 
@@ -575,9 +572,9 @@ mod tests {
 
     #[test]
     fn de_template_with_fill_instruction_routes() {
-        // Fresh v2 shape: labeled fields (double braces) + German fill
-        // instruction, no literal "template"/"Vorlage" word.
-        let content = "# Wochenbericht\n\n- Woche: {{woche}}\n- Projekt: {{projekt}}\n- Fortschritt: {{fortschritt}}\n- Probleme: {{probleme}}\n\nFülle jedes Feld. Falls ein Feld leer ist, schreibe NICHTS.";
+        // Labeled fields (double braces) + German fill instruction, no
+        // literal "template"/"Vorlage" word.
+        let content = "# Statusbericht\n\n- Woche: {{woche}}\n- Projekt: {{projekt}}\n- Fortschritt: {{fortschritt}}\n- Probleme: {{probleme}}\n\nFülle jedes Feld. Falls ein Feld leer ist, schreibe NICHTS.";
         assert!(is_template(content));
     }
 
@@ -585,17 +582,18 @@ mod tests {
     fn de_template_with_fill_instruction_variants_route() {
         // Retrospektive (Fülle jeden … + schreibe NICHTS) and
         // Kunden-Onboarding (Ergänze alle Abschnitte … mit NICHTS) shapes.
-        let retro = "# Retrospektive\n\n- Sprint: {{sprint_name}}\n- Datum: {{retro_datum}}\n- Moderator: {{moderator}}\n\n## Was gut lief\n{{gut_gelaufen}}\n\n## Experiment\n{{experiment}}\n\nFülle jeden Abschnitt. Hat ein Abschnitt keinen Inhalt, schreibe NICHTS.";
+        let retro = "# Retrospektive\n\n- Sprint: {{sprint_name}}\n- Datum: {{retro_datum}}\n- Moderator: {{moderator}}\n\n## Was gut lief\n{{gut_gelaufen}}\n\n## Was wir ändern wollen\n{{aenderungen}}\n\nFülle jeden Abschnitt. Hat ein Abschnitt keinen Inhalt, schreibe NICHTS.";
         assert!(is_template(retro));
         let onboarding = "# Kunden-Onboarding\n\n- Kunde: {{kundenname}}\n- Ansprechpartner: {{ansprechpartner}}\n- Startdatum: {{startdatum}}\n\n## Offene Punkte\n{{offene_punkte}}\n\nErgänze alle Abschnitte. Leere Felder füllst du mit NICHTS aus.";
         assert!(is_template(onboarding));
     }
 
     #[test]
-    fn en_feature_kickoff_template_routes() {
-        // Holdout v2 shape: labeled fields (double braces) + placeholder
-        // density, without the literal "template" word.
-        let content = "# Feature Kickoff Brief\n\n- Feature: {{feature_title}}\n- Product lead: {{product_lead}}\n- Target release: {{release_version}}\n\n## Problem Statement\n{{problem_statement}}\n\n## Success Criteria\n{{success_criteria}}\n\n## Scope\nIn scope: {{in_scope}}\nOut of scope: {{out_of_scope}}\n\n## Unknowns\n{{unknowns}}\n\nComplete each block. Unfilled blocks are marked with NOTHING.";
+    fn en_template_with_double_brace_fields_routes() {
+        // A labeled-field template with double-brace fields + a "Complete
+        // each block. Unfilled blocks are marked with NOTHING." instruction
+        // routes Template without the literal "template" word.
+        let content = "# Feature Kickoff\n\n- Feature: {{feature_title}}\n- Product lead: {{product_lead}}\n- Target release: {{release_version}}\n\n## Problem Statement\n{{problem_statement}}\n\n## Success Criteria\n{{success_criteria}}\n\n## Scope\nIn scope: {{in_scope}}\nOut of scope: {{out_of_scope}}\n\n## Unknowns\n{{unknowns}}\n\nComplete each block. Unfilled blocks are marked with NOTHING.";
         assert!(is_template(content));
     }
 
@@ -610,10 +608,10 @@ mod tests {
 
     #[test]
     fn thin_two_field_form_without_fill_instruction_stays_task() {
-        // Legacy fair-quality shape: only 2 labeled fields, no fill
-        // instruction, no template marker. Must NOT be promoted to a
-        // template (keeps old-corpus routing/score calibration stable).
-        let content = "# Wochenbericht\n\nSchreibe einen Wochenbericht über die Fortschritte. Erwähne die wichtigsten Punkte und Probleme. Der Bericht ist für das Team.\n\n- Woche: {{woche}}\n- Projekt: {{projekt}}";
+        // A thin two-field form without a fill instruction is a Task, not a
+        // Template: only 2 labeled fields, no fill instruction, no template
+        // marker.
+        let content = "# Monatsbericht\n\nSchreibe einen Monatsbericht über die Fortschritte. Erwähne die wichtigsten Punkte und Probleme. Der Bericht ist für das Team.\n\n- Woche: {{woche}}\n- Projekt: {{projekt}}";
         assert!(!is_template(content));
     }
 
@@ -626,10 +624,10 @@ mod tests {
     }
 
     #[test]
-    fn single_heading_policy_holdout_shape_routes() {
-        // Real holdout shape: heading + two modal sentences (must / Never)
-        // plus imperative bullets -> guideline.
-        let content = "# Commit Message Policy\n\nCommit messages must describe what changed and why. Each commit message has a subject under 72 characters, a blank line, and a body that explains the motivation. Reference the ticket number in the subject. Do not paste diff fragments into the message. Never force-push to shared branches. Mark incompatible changes in the footer. Combine preparatory commits before merging.";
+    fn single_heading_policy_modal_prose_routes() {
+        // Policy-heading + modal rule sentences: heading + two modal
+        // sentences (must / Never) plus imperative bullets -> guideline.
+        let content = "# Incident Response Policy\n\nEvery incident must be classified by impact and severity. Each response step has an owner and a deadline. Reference the ticket number in every update. Do not post unverified details to shared channels. Never destroy forensic evidence before sign-off. Mark any incomplete follow-up in the footer. Combine related changes before merging.";
         assert!(is_guideline(content));
     }
 

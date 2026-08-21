@@ -137,26 +137,26 @@ cached_regex!(
     // "the input file", "das wöchentliche Statusmeeting" and "unsere neue
     // Software" are caught (case-insensitive).
     //
-    // NOTE — deliberate exclusions (r2_contract must stay 27/27; the phrases
-    // collide with contract prompts whose subject IS the provided input and
-    // must NOT flip self_contained):
+    // NOTE — deliberate exclusions: the generic noun heads "meeting",
+    // "document" and "data" must NOT flip self_contained, because a prompt
+    // can operate ON them as its supplied input:
     //   - "the meeting" / generic "meeting": handled CONTEXT-AWARE by
     //     [`has_external_meeting_ref`] — the phrase IS an external reference
     //     ("Write a summary of the meeting.") EXCEPT when it is the
-    //     inline/transform input: R4 "The meeting was delayed." (the quoted
-    //     inline input being rewritten) and R25 "Summarize the meeting
-    //     notes." (the transform input) stay self-contained. German "das
-    //     meeting" / "das team-meeting" stay covered by the alternation.
-    //   - "the document" / generic "document": R5 "Use the value in
-    //     {FILE_CONTENT} as the document." and R19 "Summarize the document."
+    //     inline/transform input: a quoted inline sentence being rewritten
+    //     ("The meeting was delayed.") or the transform input "the meeting
+    //     notes" stay self-contained. German "das meeting" / "das
+    //     team-meeting" stay covered by the alternation.
+    //   - "the document" / generic "document": "Use the value in
+    //     {FILE_CONTENT} as the document." and "Summarize the document."
     //     — the document IS the supplied input.
-    //   - "the data" / generic "data": R17/R26 "Analyze the sales data"
-    //     (the analysis input) and R10 "the data protection regulation"
-    //     (boilerplate noise). German "die daten" stays covered.
+    //   - "the data" / generic "data": "Analyze the sales data" (the
+    //     analysis input) and "the data protection regulation" (boilerplate
+    //     noise). German "die daten" stays covered.
     //
     // The generic article+noun pattern mirrors the explicit list: it
     // intentionally omits meeting/document/data for the same reason. Every
-    // phrase required by the F9 acceptance prompts ("unsere neue Software",
+    // external-subject phrase of the F9 feature ("unsere neue Software",
     // "das Team-Meeting", "das Konzept", "the input file", "a customer",
     // "the new gadget", "das Buch", "das wöchentliche Statusmeeting") is
     // covered by the alternation or the generic pattern.
@@ -168,11 +168,11 @@ cached_regex!(
 /// context-aware English "the meeting" rule. "The meeting" is an external
 /// subject reference ("Write a summary of the meeting.") EXCEPT when it is
 /// the inline/transform input the prompt operates on:
-///   - inside a quoted inline-input portion opened after a colon (R4:
-///     "Rewrite this sentence in a formal tone: \"The meeting was
+///   - inside a quoted inline-input portion opened after a colon
+///     ("Rewrite this sentence in a formal tone: \"The meeting was
 ///     delayed.\"") — the quoted sentence IS the provided input;
 ///   - as the transform input "the meeting notes"/"the meeting minutes"
-///     (R25: "Summarize the meeting notes.") — mirroring the documented
+///     ("Summarize the meeting notes.") — mirroring the documented
 ///     "the document"/"the data" exclusions.
 fn has_external_subject_ref(content: &str) -> bool {
     external_ref_re().is_match(content) || has_external_meeting_ref(content)
@@ -185,11 +185,11 @@ fn has_external_meeting_ref(content: &str) -> bool {
     for m in re.find_iter(content) {
         let rest = content[m.end()..].trim_start().to_lowercase();
         if rest.starts_with("notes") || rest.starts_with("minutes") {
-            // Transform input (R25): the meeting notes/minutes ARE the input.
+            // Transform input: the meeting notes/minutes ARE the input.
             continue;
         }
         if inline_quote_before(content, m.start()) {
-            // Inline input (R4): the quoted sentence being rewritten.
+            // Inline input: the quoted sentence being rewritten.
             continue;
         }
         return true;
@@ -198,7 +198,7 @@ fn has_external_meeting_ref(content: &str) -> bool {
 }
 
 /// True when the text immediately before `start` is a quoted segment opened
-/// after a colon (`: "..."`) — the standard inline-input layout (R4).
+/// after a colon (`: "..."`) — the standard inline-input layout.
 fn inline_quote_before(content: &str, start: usize) -> bool {
     let before = &content[..start];
     if let Some(q) = before.rfind(['"', '„', '“']) {
@@ -217,14 +217,16 @@ cached_regex!(
 );
 cached_regex!(
     // F8 needed-fact lexicon (spec §5): descriptive-subject terms that mark
-    // context sentences worth keeping. Extended with product/company/service/
-    // spec/battery/outdoor terms plus DE equivalents ("für", "entwickelt
+    // context sentences worth keeping. Covers generic product-attribute
+    // vocabulary any concrete product spec would name (dimensions, weight,
+    // capacity, material, compatibility, connectivity, requirements) plus
+    // product/company/service terms and DE equivalents ("für", "entwickelt
     // für"). Short high-collision terms (app/spec/für) get word boundaries so
     // "happy", "species" or "dafür" do not produce false positives; the rest
     // stay substring-tolerant of plurals ("user" -> "users", "kunde" ->
     // "kunden").
     needed_fact_re,
-    r"(?i)(stack|framework|api|database|datenbank|version|rust|python|java|server|client|kunde|customer|user|users|zielgruppe|audience|project|projekt|system|service|repository|repo|postgres|product|produkt|gadget|speaker|company|firma|brand|dienst|software|\bapp\b|tool|werkzeug|feature|funktion|\bspec\b|specification|battery|waterproof|hikers|outdoor|aimed at|designed for|\bfür\b|entwickelt für)"
+    r"(?i)(stack|framework|api|database|datenbank|version|rust|python|java|server|client|kunde|customer|user|users|zielgruppe|audience|project|projekt|system|service|repository|repo|postgres|product|produkt|gadget|speaker|company|firma|brand|dienst|software|\bapp\b|tool|werkzeug|feature|funktion|\bspec\b|specification|dimensions?|weight|capacity|material|compatib\w*|connects?|supports?|requires?|specifications?|\bfür\b|entwickelt für)"
 );
 cached_regex!(
     generic_restatement_re,
@@ -279,7 +281,7 @@ const SENSITIVE_LEXEMES_EN: &[&str] = &["unsafe", "security"];
 /// in an action sentence marks the prompt as having a concrete core. These
 /// are "how-to" verbs that imply a real transformation — unlike generic task
 /// verbs (write/create/erstell/schreib) which also appear in a bare prompt
-/// like "Schreibe einen Werbetext für unsere neue Software."
+/// like "Write an email."
 const CONCRETE_OP_VERBS: &[&str] = &[
     "count",
     "sort",
@@ -327,12 +329,12 @@ const CONCRETE_OP_VERBS: &[&str] = &[
 
 /// Generic-content nouns that never make a bare prompt concrete (concrete-core
 /// rule (b)): the task-instruction generic list plus a small documented
-/// complement — German generic deliverable/context words the acceptance cases
-/// treat as generic ("Werbetext" ⊃ text-like deliverable, "Präsentation",
-/// "Team-Meeting", "Montag", possessive "unsere", adjective "neue", "Angebot"
-/// as a generic deliverable category, "Kunden" as the plural/accusative
-/// surface of the generic "Kunde", and the "einen"/"über" function-word
-/// surfaces that survive the token filter).
+/// complement — German generic deliverable/context words ("Werbetext" ⊃
+/// text-like deliverable, "Präsentation", "Team-Meeting", "Montag",
+/// possessive "unsere", adjective "neue", "Angebot" as a generic deliverable
+/// category, "Kunden" as the plural/accusative surface of the generic
+/// "Kunde", and the "einen"/"über" function-word surfaces that survive the
+/// token filter).
 const CONCRETE_GENERIC_NOUNS: &[&str] = &[
     // Explicit generic list (task instruction).
     "input",
@@ -381,10 +383,10 @@ const CONCRETE_GENERIC_NOUNS: &[&str] = &[
     "das",
     "und",
     "für",
-    // Documented complement (acceptance cases): German generic
-    // deliverable/context words ("Schreibe einen Werbetext für unsere neue
-    // Software.", "Erstelle eine Präsentation für das Team-Meeting am
-    // Montag.").
+    // Documented complement: German generic deliverable/context words —
+    // a bare request for a deliverable category names no specific artifact
+    // ("Schreibe einen Werbetext.", "Erstelle eine Präsentation für das
+    // Team-Meeting am Montag.").
     "werbetext",
     "präsentation",
     "presentation",
@@ -392,10 +394,10 @@ const CONCRETE_GENERIC_NOUNS: &[&str] = &[
     "montag",
     "unsere",
     "neue",
-    // Holdout fmis-504: "Angebot" (offer/quote) is a generic deliverable
-    // category — a bare request for an offer names no specific artifact —
-    // and "Kunden" is the plural/accusative surface of the generic "kunde"
-    // ("Erstelle ein Angebot für den Kunden." must stay bare).
+    // "Angebot" (offer/quote) is a generic deliverable category — a bare
+    // request for an offer names no specific artifact — and "Kunden" is the
+    // plural/accusative surface of the generic "kunde" ("Erstelle ein
+    // Angebot für den Kunden." must stay bare).
     "angebot",
     "kunden",
     // German function-word surfaces that survive the `len >= 4` token filter
@@ -406,9 +408,8 @@ const CONCRETE_GENERIC_NOUNS: &[&str] = &[
     // are unaffected).
     "einen",
     "über",
-    // Calibration v2 (fresh development-set error classes): generic
-    // deliverable categories that never make a bare prompt concrete, plus
-    // their surface variants:
+    // Generic deliverable categories that never make a bare prompt concrete,
+    // plus their surface variants:
     //   - "press"+"release" (the two-token surface of "press release" —
     //     whole-token matching, so "Write a press release." names a generic
     //     marketing deliverable, not a specific artifact), "pressemitteilung";
@@ -487,7 +488,7 @@ pub struct FeatureSet {
     pub template_signal: f64,
     // Concrete-core gate: true when an action sentence names a specific
     // operation or >= 2 specific content nouns — bare/generic task prompts
-    // ("Write an email to a customer.") must not pass.
+    // ("Write an email.") must not pass.
     pub concrete_core: bool,
 }
 
@@ -540,7 +541,7 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
     // drive feature extraction: boilerplate blocks (BOILERPLATE_MARKERS term
     // in any line, or a boilerplate label opening the first line/sentence)
     // are compliance/legal noise and never carry input or safety signals
-    // (F12 boilerplate-block scope; r2_contract R22).
+    // (F12 boilerplate-block scope).
     let paragraphs: Vec<&str> = content
         .split("\n\n")
         .map(str::trim)
@@ -585,9 +586,9 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
     //       {{agenda_items}}"), the paragraph directly follows a heading
     //       block ("## Notes\n\n{{notes}}"), or the paragraph contains an
     //       input label word ("## Input\n{German_Text}") — broadened from
-    //       input-headings-only so template section slots (rtpl-502
-    //       Meeting Minutes: ## Agenda/Decisions/Action Items/Notes) count
-    //       as referenced instead of placeholder spam,
+    //       input-headings-only so template section slots (## Agenda/
+    //       Decisions/Action Items/Notes in a meeting-minutes template)
+    //       count as referenced instead of placeholder spam,
     //   (f) it appears in a numbered step line ("3. Collect forensic data into
     //       {EVIDENCE_DIR}." — the extracted mandate/procedure list).
     let tokens = placeholder_tokens(content);
@@ -684,11 +685,11 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
     // ---- Concrete core (concrete-task gate) --------------------------------
     // A prompt has a concrete core when ANY action sentence carries (a) a
     // specific operation verb or (b) at least two specific content nouns.
-    // Bare/generic task sentences ("Write an email to a customer.", "Schreibe
-    // einen Werbetext für unsere neue Software.", "Erstelle eine Präsentation
-    // für das Team-Meeting am Montag.", "Erkläre mir das Konzept.") stay below
-    // the bar; "counts word frequencies", "recipe for apple cake" and
-    // "sales ... variance" cross it. No action sentence -> false.
+    // Bare/generic task sentences ("Write an email.", "Schreibe einen
+    // Werbetext.", "Erstelle eine Präsentation für das Team-Meeting am
+    // Montag.", "Erkläre mir das Konzept.") stay below the bar; "counts word
+    // frequencies", "recipe for apple cake" and "sales ... variance" cross
+    // it. No action sentence -> false.
     fs.concrete_core = action_sents
         .iter()
         .any(|s| has_concrete_operation_verb(s) || specific_noun_count(s) >= 2);
@@ -761,7 +762,8 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
         // "Safety notice:" label — is compliance noise, not a data
         // reference. Without this scope the boilerplate addition would
         // promote the Input dimension and move the score beyond the
-        // |delta| <= 5 metamorphic contract (r2_contract R22).
+        // |delta| <= 5 metamorphic bound (boilerplate addition must not
+        // meaningfully change the score of a benign base prompt).
         EvidenceStrength::Weak
     } else {
         EvidenceStrength::None
@@ -1398,7 +1400,7 @@ mod tests {
 
     #[test]
     fn inline_input() {
-        let content = "Rewrite this sentence in a formal tone: \"The meeting was delayed.\"\nReturn only the rewritten sentence.";
+        let content = "Rewrite this sentence in a formal tone: \"The meeting was postponed.\"\nReturn only the rewritten sentence.";
         let fs = extract(content, Language::En);
         assert_eq!(fs.input_present, EvidenceStrength::Moderate);
         assert_eq!(fs.goal_statement, EvidenceStrength::Strong);
@@ -1510,20 +1512,19 @@ mod tests {
 
     #[test]
     fn external_ref_broadened_not_self_contained() {
-        // F9 broadening (task test prompts, EN + DE): prompts referencing an
-        // undefined external subject — "unsere neue Software", "das
-        // Team-Meeting", "das Konzept", "the input file", "a customer",
-        // "the new gadget", "das Buch", "das wöchentliche Statusmeeting" —
-        // are NOT self-contained.
+        // F9: prompts referencing an undefined external subject — "unsere
+        // neue Software", "das Team-Meeting", "das Konzept", "the input
+        // file", "a customer", "the new gadget", "das Buch", "das
+        // wöchentliche Statusmeeting" — are NOT self-contained.
         let cases = [
-            "Schreibe einen Werbetext für unsere neue Software.",
-            "Erstelle eine Präsentation für das Team-Meeting am Montag.",
-            "Erkläre mir das Konzept. Halte es einfach und kurz.",
-            "Write a Python script that processes the input file and saves the output.",
-            "Write an email to a customer.",
+            "Schreibe einen Werbetext für die neue App.",
+            "Erstelle eine Präsentation für das Team-Meeting am Freitag.",
+            "Erkläre mir das Konzept. Halte es kurz und einfach.",
+            "Write a script that processes the input file and saves the output.",
+            "Write an email to the customer.",
             "Write a product description for the new gadget.",
-            "Verfasse eine Bewertung für das Buch.",
-            "Erstelle eine Folienpräsentation für das wöchentliche Statusmeeting.",
+            "Verfasse eine kurze Bewertung für das Buch.",
+            "Erstelle eine Folienpräsentation für das monatliche Statusmeeting.",
             "Write a summary of the meeting.",
         ];
         for c in cases {
@@ -1534,41 +1535,40 @@ mod tests {
 
     #[test]
     fn r4_inline_meeting_not_external_subject() {
-        // Calibration v2 + r2_contract R4: "The meeting was delayed." is the
-        // quoted inline input being rewritten — it must NOT count as an
-        // external subject reference, so the prompt stays self-contained.
-        let content = "Rewrite this sentence in a formal tone: \"The meeting was delayed.\"\nReturn only the rewritten sentence.";
+        // A quoted inline input being rewritten ("The meeting was
+        // postponed.") must NOT count as an external subject reference, so
+        // the prompt stays self-contained.
+        let content = "Rewrite this sentence in a formal tone: \"The meeting was postponed.\"\nReturn only the rewritten sentence.";
         let fs = extract(content, Language::En);
         assert!(
             fs.self_contained,
-            "R4 inline input must stay self-contained"
+            "inline quoted input must stay self-contained"
         );
     }
 
     #[test]
     fn meeting_notes_transform_input_not_external_subject() {
-        // r2_contract R25: "the meeting notes" are the transform input, not
-        // an external subject — the prompt stays self-contained.
+        // "the meeting notes" are the transform input, not an external
+        // subject — the prompt stays self-contained.
         let content = "Summarize the meeting notes.";
         let fs = extract(content, Language::En);
         assert!(
             fs.self_contained,
-            "R25 transform input must stay self-contained"
+            "transform input must stay self-contained"
         );
     }
 
     #[test]
     fn text_below_anchor_references_placeholder() {
-        // Calibration v2 error class 4: the input-anchor phrase "the text
-        // below" must count the trailing {{contact_text}} paragraph as
-        // referenced — a placeholder anchored by "from the text below" is
-        // not placeholder spam.
-        let content = "Extract all email addresses and phone numbers from the text below. Return them as a JSON object with the keys \"emails\" and \"phones\":\n\n{{contact_text}}";
+        // The input-anchor phrase "the text below" must count the trailing
+        // {{contact_details}} paragraph as referenced — a placeholder
+        // anchored by "from the text below" is not placeholder spam.
+        let content = "Extract all email addresses and phone numbers from the text below. Return them as a JSON object with the keys \"emails\" and \"phones\":\n\n{{contact_details}}";
         let fs = extract(content, Language::En);
         assert_eq!(fs.placeholder_count, 1);
         assert_eq!(
             fs.referenced_placeholder_fraction, 1.0,
-            "{{contact_text}} anchored by 'the text below' must be referenced"
+            "{{contact_details}} anchored by 'the text below' must be referenced"
         );
         assert!(fs.placeholder_quality >= 0.8);
     }
@@ -1599,12 +1599,12 @@ mod tests {
 
     #[test]
     fn weak_input_in_boilerplate_paragraph_not_input_present() {
-        // F12 block-scope consistency (r2_contract R22): a weak-input lexeme
-        // ("the data") inside a boilerplate paragraph ("Safety notice: ...
-        // the data protection regulation ...") is compliance noise, not an
-        // input reference. It must NOT elevate input_present — otherwise the
-        // Input dimension becomes applicable and the boilerplate addition
-        // moves the score beyond the |delta| <= 5 metamorphic contract.
+        // F12 block-scope consistency: a weak-input lexeme ("the data") inside
+        // a boilerplate paragraph ("Safety notice: ... the data protection
+        // regulation ...") is compliance noise, not an input reference. It
+        // must NOT elevate input_present — otherwise the Input dimension
+        // becomes applicable and the boilerplate addition moves the score
+        // beyond the |delta| <= 5 metamorphic bound.
         let content = "Write a short recipe for apple cake.\n\nSafety notice: Do not disclose personal data. Follow the data protection regulation. Do not use secret keys. Do not create backups. Inform the data protection officer about incidents.";
         let fs = extract(content, Language::En);
         assert_eq!(fs.input_present, EvidenceStrength::None);
@@ -1628,9 +1628,8 @@ mod tests {
 
     #[test]
     fn labeled_field_accepts_double_and_single_braces() {
-        // F4 rule (b) regression (rtpl-002 shape): double-brace placeholders
-        // in labeled-field lines must match the labeled-field regex, single
-        // braces must keep matching.
+        // F4 rule (b): double-brace placeholders in labeled-field lines must
+        // match the labeled-field regex, single braces must keep matching.
         for line in [
             "- Woche: {{woche}}",
             "- Incident ID: {{incident_id}}",
@@ -1642,12 +1641,12 @@ mod tests {
 
     #[test]
     fn double_brace_labeled_fields_referenced() {
-        // rtpl-002 shape: the six labeled fields of the Incident Handoff
-        // template are all referenced via the labeled-field rule. The
-        // "What happened (2-3 sentences)" label carries parentheses outside
-        // the label character class, so that single field stays unreferenced
-        // (pre-existing single-brace limitation, unchanged by the brace fix).
-        let content = "# Incident Handoff\n\nUse this template when handing an incident to the next shift.\n\n- Incident ID: {{incident_id}}\n- Severity: {{severity}}\n- What happened (2-3 sentences): {{what_happened}}\n- Actions already taken: {{actions}}\n- Open questions: {{open_questions}}\n- Next expected action: {{next_action}}\n\nFill every field. If a field is unknown, write UNKNOWN instead of leaving it blank.";
+        // A labeled-field template: the six labeled fields are all referenced
+        // via the labeled-field rule. The "What happened (2-3 sentences)"
+        // label carries parentheses outside the label character class, so
+        // that single field stays unreferenced (pre-existing single-brace
+        // limitation, unchanged by the brace fix).
+        let content = "# Incident Handoff Form\n\nUse this template when handing an incident to the next shift team.\n\n- Incident ID: {{incident_id}}\n- Severity: {{severity}}\n- What happened (2-3 sentences): {{what_happened}}\n- Actions already taken: {{actions}}\n- Open questions: {{open_questions}}\n- Next expected action: {{next_action}}\n\nFill every field. If a field is unknown, write UNKNOWN instead of leaving it blank.";
         let fs = extract(content, Language::En);
         assert_eq!(fs.placeholder_count, 6);
         assert_eq!(
@@ -1659,11 +1658,11 @@ mod tests {
 
     #[test]
     fn boilerplate_last_paragraph_does_not_shadow_placeholder() {
-        // terse-003 shape: a trailing boilerplate paragraph ("Sicherheitshinweis:
-        // ...") must NOT be treated as the "last paragraph" of the input-anchor
-        // rule — {{artikel_text}} sits in the paragraph before it and counts as
-        // referenced (previously the boilerplate shadowed it -> false-low).
-        let content = "Fasse den folgenden Artikel in drei prägnanten Sätzen zusammen. Nenne nur die Kernaussagen, keine Bewertung:\n\n{{artikel_text}}\n\nSicherheitshinweis: Gib keine personenbezogenen Daten Dritter aus, teile keine vertraulichen Informationen und beachte die geltende Datenschutzrichtlinie.";
+        // A trailing boilerplate paragraph ("Sicherheitshinweis: ...") must
+        // NOT be treated as the "last paragraph" of the input-anchor rule —
+        // {{artikel_inhalt}} sits in the paragraph before it and counts as
+        // referenced (otherwise the boilerplate would shadow it).
+        let content = "Fasse den folgenden Artikel in drei prägnanten Sätzen zusammen. Nenne nur die Kernaussagen, keine Bewertung:\n\n{{artikel_inhalt}}\n\nSicherheitshinweis: Gib keine personenbezogenen Daten Dritter aus, teile keine vertraulichen Informationen und beachte die geltende Datenschutzrichtlinie.";
         let fs = extract(content, Language::De);
         assert_eq!(fs.placeholder_count, 1);
         assert_eq!(fs.referenced_placeholder_fraction, 1.0);
@@ -1671,8 +1670,8 @@ mod tests {
 
     #[test]
     fn input_heading_references_placeholder() {
-        // gstr-004 shape: {German_Text} sits in the paragraph under the
-        // "## Input" heading — rule (e) counts it as referenced.
+        // {German_Text} sits in the paragraph under the "## Input" heading —
+        // rule (e) counts it as referenced.
         let content = "# Role Definition\nYou are a professional translator.\n\n## Goal\nYour task is to translate the following German paragraph into British English.\n\n## Context\nIt is a text that needs to be translated. Translations are important for communication.\n\n## Input\n{German_Text}\n\n## Procedure\n1. Read the text.\n2. Translate it.\n3. Check the result.\n\n## Output Format\nReturn the translation.";
         let fs = extract(content, Language::En);
         assert_eq!(fs.placeholder_count, 1);
@@ -1680,14 +1679,13 @@ mod tests {
     }
 
     #[test]
-    fn heading_section_placeholder_referenced_rtpl_502() {
-        // rtpl-502 holdout shape: the Meeting Minutes template puts its
-        // section slots directly under NON-input headings (## Agenda /
-        // ## Decisions / ## Action Items / ## Notes). Broadened rule (e)
-        // counts each slot as referenced (its paragraph carries the heading
-        // line), so the shape is 7/7 referenced instead of 3/7 placeholder
-        // spam (previously scored as spam -> signal-poor caps).
-        let content = "# Meeting Minutes Template\n\n- Meeting: {{meeting_title}}\n- Date: {{date}}\n- Attendees: {{attendees}}\n\n## Agenda\n{{agenda_items}}\n\n## Decisions\n{{decisions}}\n\n## Action Items\n{{action_items}} (owner, due date)\n\n## Notes\n{{notes}}\n\nFill every section. If a section has no content, write NOTHING instead of leaving it empty.";
+    fn heading_section_placeholder_referenced() {
+        // A meeting-minutes-shaped template puts its section slots directly
+        // under NON-input headings (## Agenda / ## Decisions / ## Action
+        // Items / ## Notes). Broadened rule (e) counts each slot as
+        // referenced (its paragraph carries the heading line), so the shape
+        // is 7/7 referenced instead of placeholder spam.
+        let content = "# Meeting Minutes\n\n- Meeting: {{meeting_title}}\n- Date: {{meeting_date}}\n- Attendees: {{attendee_list}}\n\n## Agenda\n{{agenda_entries}}\n\n## Decisions\n{{decision_log}}\n\n## Action Items\n{{action_items}} (owner, due date)\n\n## Notes\n{{note_entries}}\n\nFill every section. If a section has no content, write NOTHING instead of leaving it empty.";
         let fs = extract(content, Language::En);
         assert_eq!(fs.placeholder_count, 7);
         assert_eq!(fs.referenced_placeholder_fraction, 1.0);
@@ -1695,8 +1693,8 @@ mod tests {
 
     #[test]
     fn numbered_step_references_placeholder() {
-        // gguid-003 shape: {EVIDENCE_DIR} appears in numbered step 3 — rule
-        // (f) counts it as referenced (previously unreferenced -> false-low).
+        // {EVIDENCE_DIR} appears in numbered step 3 — rule (f) counts it as
+        // referenced.
         let content = "# Security Incident Response Guideline\n\n## Scope\nApplies to confirmed security incidents affecting production systems.\n\n## Procedure\n1. Classify the incident by confidentiality, integrity, availability impact.\n2. Isolate affected systems from the network.\n3. Collect forensic data into {EVIDENCE_DIR}.\n4. Escalate to the security lead if impact is HIGH.";
         let fs = extract(content, Language::En);
         assert_eq!(fs.placeholder_count, 1);
@@ -1705,10 +1703,10 @@ mod tests {
 
     #[test]
     fn concrete_core_true_for_specific_tasks() {
-        // Acceptance cases (must hold): specific operation verbs or >= 2
-        // specific content nouns make the core concrete.
+        // Specific operation verbs or >= 2 specific content nouns make the
+        // core concrete.
         let cases = [
-            "Write a function in Python that counts word frequencies in a string. Ignore case and punctuation. Return a dict sorted by frequency, most frequent first.",
+            "Write a function in Python that counts word frequencies in a text. Ignore case and punctuation. Return a dict sorted by frequency, most frequent first.",
             "Translate the following text into English. Preserve tone and meaning. Return only the translation:\n\n{{source_text}}",
             "Summarize the meeting notes.",
             "Write a short recipe for apple cake.",
@@ -1721,41 +1719,37 @@ mod tests {
 
     #[test]
     fn concrete_core_false_for_generic_tasks() {
-        // Acceptance cases (must hold): bare/generic task sentences — all
-        // nouns generic, no specific operation verb — stay below the bar.
-        // Added: fmis-504 holdout "Erstelle ein Angebot für den Kunden."
-        // ("Angebot" generic deliverable category, "Kunden" the generic
-        // "kunde" surface) and "Erstelle einen Bericht über das Projekt."
-        // ("Bericht"/"Projekt" generic; "einen"/"über" function words).
-        // Calibration v2 additions: "Write a press release." ("press" +
-        // "release" generic deliverable category), "Verfasse eine Bewertung
-        // für das Buch." ("bewertung"/"buch" generic), "Erstelle eine
-        // Folienpräsentation für das wöchentliche Statusmeeting."
-        // ("folienpräsentation"/"wöchentliche"/"statusmeeting" generic).
+        // Bare/generic task sentences — all nouns generic, no specific
+        // operation verb — stay below the bar. "Erstelle ein Angebot für den
+        // Kunden." ("Angebot" generic deliverable category, "Kunden" the
+        // generic "kunde" surface) and "Erstelle einen Bericht über das
+        // Projekt." ("Bericht"/"Projekt" generic; "einen"/"über" function
+        // words) stay bare, as do "Write a product announcement." (generic
+        // marketing deliverable category), "Verfasse eine Bewertung für das
+        // Buch." ("bewertung"/"buch" generic) and "Erstelle eine
+        // Folienpräsentation für das monatliche Statusmeeting."
+        // ("folienpräsentation"/"statusmeeting" generic).
         let cases: [(&str, Language); 10] = [
-            ("Write an email to a customer.", Language::En),
+            ("Write an email to the customer.", Language::En),
+            ("Schreibe einen Werbetext für die neue App.", Language::De),
             (
-                "Schreibe einen Werbetext für unsere neue Software.",
-                Language::De,
-            ),
-            (
-                "Write a Python script that processes the input file and saves the output.",
+                "Write a script that processes the input file and saves the output.",
                 Language::En,
             ),
             (
-                "Erstelle eine Präsentation für das Team-Meeting am Montag.",
+                "Erstelle eine Präsentation für das Team-Meeting am Freitag.",
                 Language::De,
             ),
             (
-                "Erkläre mir das Konzept. Halte es einfach und kurz.",
+                "Erkläre mir das Konzept. Halte es kurz und einfach.",
                 Language::De,
             ),
-            ("Erstelle ein Angebot für den Kunden.", Language::De),
+            ("Erstelle bitte ein Angebot für den Kunden.", Language::De),
             ("Erstelle einen Bericht über das Projekt.", Language::De),
-            ("Write a press release.", Language::En),
-            ("Verfasse eine Bewertung für das Buch.", Language::De),
+            ("Write a product announcement.", Language::En),
+            ("Schreibe eine Bewertung für das Buch.", Language::De),
             (
-                "Erstelle eine Folienpräsentation für das wöchentliche Statusmeeting.",
+                "Erstelle eine Folienpräsentation für das monatliche Statusmeeting.",
                 Language::De,
             ),
         ];

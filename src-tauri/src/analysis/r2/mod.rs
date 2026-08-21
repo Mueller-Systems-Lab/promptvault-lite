@@ -187,6 +187,76 @@ pub fn evaluate_for_test(content: &str) -> PromptEvaluation {
     evaluate(content, "r2-test")
 }
 
+/// One scored R2 dimension, exposed for deep observability.
+pub struct R2DimView {
+    pub name: &'static str,
+    pub score: f64,
+    pub applicable: bool,
+}
+
+/// Deep observability result of the production R2 pipeline for a prompt.
+///
+/// Exposes the internal decision data the shallow `PromptEvaluation` cannot
+/// carry: the routing label, the concrete prompt type, the signal-poor gate,
+/// terse sufficiency, the contradiction weight, the critical-conflict flag
+/// and the 12 scored dimensions. Deterministic and env-var-free.
+pub struct R2TestOutcome {
+    pub eval: PromptEvaluation,
+    pub kind_label: &'static str,
+    pub prompt_type: &'static str,
+    pub signal_poor: bool,
+    pub terse_sufficient: bool,
+    pub conflict_weight: u8,
+    pub has_critical_conflict: bool,
+    pub dims: Vec<R2DimView>,
+}
+
+/// Deep, deterministic test entry — delegates to the same production
+/// [`evaluate`] path (fixed test prompt id `"r2-test"`) and re-runs the
+/// internal scoring/feature extraction to expose the decision data.
+pub fn deep_evaluate_for_test(content: &str) -> R2TestOutcome {
+    let eval = evaluate(content, "r2-test");
+
+    let lang = type_router::detect_language(content);
+    let classification = type_router::classify(content);
+    let features = features::extract(content, lang);
+    let conflicts = contradictions::detect(content, lang);
+    let dims = scoring::score_dimensions(&features, &classification.kind, &conflicts);
+    let weight = contradictions::conflict_weight(&conflicts);
+
+    let kind_label = match classification.kind {
+        ContentKind::Guideline => "guideline",
+        ContentKind::Template => "template",
+        ContentKind::Task(_) => "task",
+    };
+    let prompt_type = match classification.kind {
+        ContentKind::Guideline => "guideline",
+        ContentKind::Template => "template",
+        ContentKind::Task(pt) => pt.label(),
+    };
+
+    R2TestOutcome {
+        eval,
+        kind_label,
+        prompt_type,
+        signal_poor: scoring::signal_poor_for_test(&features, &conflicts),
+        terse_sufficient: features.terse_sufficiency,
+        conflict_weight: weight,
+        has_critical_conflict: conflicts
+            .iter()
+            .any(|c| c.class == 1 || c.class == 3 || c.class == 6 || c.weight >= 6),
+        dims: scoring::DIM_NAMES
+            .iter()
+            .enumerate()
+            .map(|(i, name)| R2DimView {
+                name,
+                score: dims.dims[i],
+                applicable: dims.applicable[i],
+            })
+            .collect(),
+    }
+}
+
 /// High-level routing label of `content` for the benchmark runner:
 /// `"guideline"` / `"template"` / `"task"`, derived from the type router's
 /// [`ContentKind`] classification (spec §7).
@@ -363,7 +433,7 @@ mod tests {
 
     #[test]
     fn terse_no_placeholder_excellent() {
-        let content = "Write a function in Python that counts word frequencies in a string. Ignore case and punctuation. Return a dict sorted by frequency, most frequent first.";
+        let content = "Write a function in Python that counts word frequencies in a string. Ignore case and punctuation. Return a dict sorted by frequency, highest first.";
         let eval = evaluate_for_test(content);
         assert!(
             eval.overall_score >= 80,
@@ -408,7 +478,7 @@ mod tests {
 
     #[test]
     fn template_routing() {
-        let content = "# Bug Report Template\n- Environment: {ENVIRONMENT}\n- Steps to reproduce: {STEPS}\n- Expected: {EXPECTED}\n- Actual: {ACTUAL}\n\nFill each section. If a section has no content, write NOTHING.";
+        let content = "# Defect Report Template\n- Browser: {BROWSER}\n- Steps to reproduce: {STEPS}\n- Expected: {EXPECTED}\n- Actual: {ACTUAL}\n\nFill each section. If a section has no content, write NOTHING.";
         let eval = evaluate_for_test(content);
         let reuse = eval
             .criteria

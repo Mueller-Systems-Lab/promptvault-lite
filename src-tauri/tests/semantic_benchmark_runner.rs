@@ -4,9 +4,21 @@
 //! (promptvault_lite_lib::analysis::quality + hygiene) over the synthetic
 //! benchmark corpus and writes normalized results for metric computation.
 //!
-//! Run: cargo test --test semantic_benchmark_runner -- --nocapture
+//! Methodology protocol: ONE FILE PER SPLIT. The runner selects exactly one
+//! split via `PV_BENCH_SPLIT` ("development" | "holdout" | "calibration") and
+//! writes `results/<label>.json` with a `{"split": ..., "count": N, "label":
+//! ...}` header so the metrics layer can fail closed on split separation.
+//! Splits are NEVER combined in one artifact.
 //!
-//! Output: ../benchmarks/semantic-quality/results/pv-<label>.json
+//! Run:
+//!   cargo test --test semantic_benchmark_runner -- --nocapture
+//!
+//! Env:
+//!   PV_BENCH_DIR    corpus root (default ../benchmarks/semantic-quality)
+//!   PV_BENCH_SPLIT  "development" | "holdout" | "calibration" (default: development)
+//!   PV_BENCH_LABEL  result label (default: baseline)
+//!
+//! Output: <PV_BENCH_DIR>/results/pv-<label>.json
 
 use serde_json::{json, Value};
 use std::path::PathBuf;
@@ -35,6 +47,20 @@ fn load_cases(split: &str) -> Value {
     let raw = std::fs::read_to_string(&path)
         .unwrap_or_else(|e| panic!("cannot read {}: {}", path.display(), e));
     serde_json::from_str(&raw).unwrap_or_else(|e| panic!("cannot parse {}: {}", path.display(), e))
+}
+
+/// Expected case count per split (methodology protocol: split-separated
+/// counts, never a combined total).
+fn expected_count(split: &str, v2: bool) -> usize {
+    match (v2, split) {
+        // v2 development / holdout (72 total split 54/18).
+        (true, "development") => 54,
+        (true, "holdout") => 18,
+        // v1 calibration (48) + legacy holdout (12).
+        (false, "calibration") => 48,
+        (false, "holdout") => 12,
+        _ => panic!("unknown split {split} for v2={v2}"),
+    }
 }
 
 fn run_case(case: &Value) -> Value {
@@ -100,33 +126,53 @@ fn run_case(case: &Value) -> Value {
 fn run_semantic_benchmark() {
     let label = std::env::var("PV_BENCH_LABEL").unwrap_or_else(|_| "baseline".to_string());
     let v2 = std::env::var("PV_BENCH_DIR").is_ok();
-    let mut out = Vec::new();
-
-    let splits: &[&str] = if v2 {
-        &["development", "holdout"]
-    } else {
-        &["calibration", "holdout"]
-    };
-    for split in splits {
-        let cases = load_cases(split);
-        let arr = cases.as_array().expect("array");
-        for case in arr {
-            out.push(run_case(case));
+    // Default split follows the corpus layout: v2 defaults to development,
+    // the legacy v1 corpus defaults to calibration (both avoid the combined
+    // artifact the methodology protocol forbids).
+    let split = std::env::var("PV_BENCH_SPLIT").unwrap_or_else(|_| {
+        if v2 {
+            "development".to_string()
+        } else {
+            "calibration".to_string()
         }
+    });
+
+    // Methodology protocol: exactly one split per artifact. The runner never
+    // combines development + holdout into a single 72-case file.
+    if !matches!(split.as_str(), "development" | "holdout" | "calibration") {
+        panic!("PV_BENCH_SPLIT must be development|holdout|calibration, got {split}");
     }
+    if v2 && split == "calibration" {
+        panic!("v2 benchmark (PV_BENCH_DIR set) has no calibration split");
+    }
+
+    let cases = load_cases(&split);
+    let arr = cases.as_array().expect("array");
+    let out: Vec<Value> = arr.iter().map(run_case).collect();
 
     let results_dir = bench_dir().join("results");
     std::fs::create_dir_all(&results_dir).expect("create results dir");
     let out_path = results_dir.join(format!("pv-{}.json", label));
     let pretty = serde_json::to_string_pretty(&json!({
+        "split": split,
+        "count": out.len(),
         "label": label,
         "engine": "promptvault-lite (Rust) evaluate_prompt + analyze_hygiene",
-        "count": out.len(),
         "results": out,
     }))
     .expect("serialize");
     std::fs::write(&out_path, pretty).expect("write results");
-    println!("WROTE {}", out_path.display());
-    let expected = if v2 { 72 } else { 60 };
-    assert_eq!(out.len(), expected, "expected {expected} benchmark cases");
+    println!(
+        "WROTE {} (split={split}, count={})",
+        out_path.display(),
+        out.len()
+    );
+
+    let expected = expected_count(&split, v2);
+    assert_eq!(
+        out.len(),
+        expected,
+        "expected {expected} benchmark cases for split {split}, got {}",
+        out.len()
+    );
 }

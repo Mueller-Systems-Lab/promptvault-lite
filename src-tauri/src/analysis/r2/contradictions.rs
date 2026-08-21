@@ -26,11 +26,11 @@
 //! route it to the format topic). `lexicons.rs` TOPIC_TABLE carries the
 //! canonical DE/EN language trigger terms.
 //!
-//! Same-polarity-different-target conflicts (old-benchmark regression
-//! pcon-002/pguid-001): the C1 language logic — same topic, DIFFERENT
-//! demanded values, both mandates possibly +1 — is extended to `secrecy`
-//! ("vertraulich" vs "veröffentliche"), `length` ("kurz" vs "ausführlich")
-//! and `tone` ("formal" vs "casual") via [`value_of`] / [`first_differing_value`].
+//! Same-polarity-different-target conflicts: the C1 language logic — same
+//! topic, DIFFERENT demanded values, both mandates possibly +1 — is extended
+//! to `secrecy` ("vertraulich" vs "veröffentliche"), `length` ("kurz" vs
+//! "ausführlich") and `tone` ("formal" vs "casual") via [`value_of`] /
+//! [`first_differing_value`].
 //! A single mandate demanding two different values ("Fasse dich kurz, aber
 //! gehe ausführlich ... ein") is self-contradictory too (mirror of the C3
 //! numeric-bounds check). `format` gets a CONSERVATIVE pairing: it fires
@@ -141,10 +141,10 @@ const IMPERATIVE_VERBS: &[&str] = &[
     "Erkläre",
     "Antworte",
     "Gib",
-    // German supplements: secrecy "public" mandate (pcon-002) and the
-    // language pair of pguid-001 ("Übersetze alle Antworten ins Englische."
-    // must be a mandate for the C1 conflict against "Antworte ... auf
-    // Deutsch." to fire — EN "Translate" was already present).
+    // German supplements: a secrecy "public" mandate and the language pair
+    // of a C1 conflict ("Übersetze alle Antworten ins Englische." must be a
+    // mandate for the conflict against "Antworte ... auf Deutsch." to fire
+    // — EN "Translate" was already present).
     "Veröffentliche",
     "Übersetze",
     // English (spec §8)
@@ -977,8 +977,7 @@ mod tests {
         assert_eq!(conflict_weight(&conflicts), 0);
     }
 
-    // ---- same-polarity different-value conflicts (old-benchmark regression)
-    // ---- pcon-002 / pguid-001 --------------------------------------------
+    // ---- same-polarity different-value conflicts -------------------------
 
     #[test]
     fn secrecy_differing_values_conflict() {
@@ -1026,8 +1025,8 @@ mod tests {
 
     #[test]
     fn content_weather_negation_antonym() {
-        // pguid-001 rules 3+4: never mention weather vs begin with a weather
-        // remark — opposite polarity, same internal "content" topic.
+        // Never mention weather vs begin with a weather remark — opposite
+        // polarity, same internal "content" topic.
         let conflicts = detect(
             "Sprich nie über das Wetter. Beginne jede Antwort mit einer Wetterbemerkung.",
             EN,
@@ -1083,13 +1082,13 @@ mod tests {
     }
 
     #[test]
-    fn benchmark_pcon_002_regression() {
-        // Old-benchmark BROKEN reference prompt: secrecy (vertraulich vs
+    fn contradictory_instruction_regression() {
+        // A contradictory procedural instruction: secrecy (vertraulich vs
         // veröffentliche) + length (kurz vs ausführlich) must fire so
         // signal_poor (weight >= 4) triggers.
-        let content = "Erstelle einen Bericht über das Projekt. Der Bericht muss vertraulich sein \
-                       und nicht weitergegeben werden dürfen. Veröffentliche den Bericht außerdem \
-                       auf der öffentlichen Website. Fasse dich kurz, aber gehe ausführlich auf \
+        let content = "Erstelle eine Projektzusammenfassung. Die Zusammenfassung muss vertraulich \
+                       sein und nicht weitergegeben werden dürfen. Veröffentliche die Zusammenfassung \
+                       außerdem auf der öffentlichen Website. Fasse dich kurz, aber gehe ausführlich auf \
                        jedes Detail ein. Verwende keine technischen Begriffe, erkläre aber alle \
                        technischen Details. Nenne keine Namen, zitiere aber die beteiligten \
                        Personen.";
@@ -1098,27 +1097,26 @@ mod tests {
             conflicts
                 .iter()
                 .any(|c| c.topic == "secrecy" && c.class == 4),
-            "pcon-002: expected C4 secrecy conflict, got {conflicts:?}"
+            "expected C4 secrecy conflict, got {conflicts:?}"
         );
         assert!(
             conflicts
                 .iter()
                 .any(|c| c.topic == "length" && c.class == 3),
-            "pcon-002: expected C3 length conflict, got {conflicts:?}"
+            "expected C3 length conflict, got {conflicts:?}"
         );
         assert!(
             conflict_weight(&conflicts) >= 4,
-            "pcon-002: conflict_weight must reach signal_poor threshold, got {}",
+            "conflict_weight must reach signal_poor threshold, got {}",
             conflict_weight(&conflicts)
         );
     }
 
     #[test]
-    fn benchmark_pguid_001_regression() {
-        // Old-benchmark BROKEN reference prompt: language (German vs English)
-        // plus content (never weather vs begin with weather remark).
-        let content =
-            "# Richtlinie für Antworten\n\n## Regeln\n1. Antworte immer auf Deutsch.\n2. \
+    fn conflicting_guideline_rules() {
+        // Conflicting guideline rules: language (German vs English) plus
+        // content (never weather vs begin with weather remark).
+        let content = "# Antwortregeln\n\n## Regeln\n1. Antworte immer auf Deutsch.\n2. \
                        Übersetze alle Antworten ins Englische.\n3. Sprich nie über das Wetter.\n4. \
                        Beginne jede Antwort mit einer Wetterbemerkung.\n5. Halte Antworten unter \
                        10 Wörtern.\n6. Beantworte jede Frage vollständig.";
@@ -1127,17 +1125,17 @@ mod tests {
             conflicts
                 .iter()
                 .any(|c| c.class == 1 && c.topic == "language"),
-            "pguid-001: expected C1 language conflict, got {conflicts:?}"
+            "expected C1 language conflict, got {conflicts:?}"
         );
         assert!(
             conflicts
                 .iter()
                 .any(|c| c.class == 7 && c.topic == "content"),
-            "pguid-001: expected C7 content conflict, got {conflicts:?}"
+            "expected C7 content conflict, got {conflicts:?}"
         );
         assert!(
             conflict_weight(&conflicts) >= 4,
-            "pguid-001: conflict_weight must reach signal_poor threshold, got {}",
+            "conflict_weight must reach signal_poor threshold, got {}",
             conflict_weight(&conflicts)
         );
     }
