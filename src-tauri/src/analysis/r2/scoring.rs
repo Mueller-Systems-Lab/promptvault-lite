@@ -410,10 +410,8 @@ fn score_dim(
             if matches!(kind, ContentKind::Guideline) && f.guideline_signal == 1.0 {
                 if f.relevant_constraints >= 2 {
                     9.0
-                } else if f.relevant_constraints == 1 {
-                    7.0
                 } else {
-                    7.0 // guideline with rule signal but no lexicon hit still has constraint
+                    7.0
                 }
             } else if f.relevant_constraints + f.boilerplate_constraints == 0 {
                 if poor {
