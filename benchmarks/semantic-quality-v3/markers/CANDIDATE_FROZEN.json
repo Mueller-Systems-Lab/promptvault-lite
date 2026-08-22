@@ -1,0 +1,12 @@
+{
+  "frozen_by": "owner",
+  "freeze_timestamp": "2026-08-22T00:00:00Z",
+  "candidate_sha": "4178f0439569724e14bcd14480ca925d060e6646",
+  "candidate_tree": "9aa4729b4638628bba5df54d0350a830a540e060",
+  "source_fingerprint": "4819a6d3e64b24983bf66aa0d4dd9a3bcd39198d1d3304aba391cf9451207433",
+  "weight_fingerprint": "d4cf182060a8fd5286148f864e91a2b76e830f113b11b5abee92495336e70d99",
+  "benchmark_fingerprint": "4a01d6ff7c5c5fab74df390754c873fd058efe10a2b29ef9e5652497e38c876f",
+  "dev_result_fingerprint": "1f99bbb1509ae7dd6177eadb516817cf1db8c90c86406b5141b1a0593d7c29d4",
+  "calibration_iterations_used": 2,
+  "branch": "quality/analyzer-r2-cleanroom"
+}
