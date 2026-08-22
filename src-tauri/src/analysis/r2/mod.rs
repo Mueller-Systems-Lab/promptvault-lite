@@ -239,12 +239,10 @@ pub fn deep_evaluate_for_test(content: &str) -> R2TestOutcome {
         eval,
         kind_label,
         prompt_type,
-        signal_poor: scoring::signal_poor_for_test(&features, &conflicts),
+        signal_poor: scoring::signal_poor_for_test(&features, &conflicts, &classification.kind),
         terse_sufficient: features.terse_sufficiency,
         conflict_weight: weight,
-        has_critical_conflict: conflicts
-            .iter()
-            .any(|c| c.class == 1 || c.class == 3 || c.class == 6 || c.weight >= 6),
+        has_critical_conflict: contradictions::has_critical_conflict(&conflicts),
         dims: scoring::DIM_NAMES
             .iter()
             .enumerate()

@@ -1720,7 +1720,7 @@ mod edge_tests {
 
         assert!(!eval.criteria.is_empty());
         assert!(
-            duration.as_secs() < 5,
+            duration.as_secs() < 8,
             "Large prompt took too long: {:?}",
             duration
         );

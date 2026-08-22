@@ -79,6 +79,7 @@ pub struct Conflict {
     pub first: String,
     pub second: String,
     pub confident: bool,
+    pub critical: bool,
 }
 
 /// A single extracted imperative/constraint mandate (internal).
@@ -141,6 +142,15 @@ const IMPERATIVE_VERBS: &[&str] = &[
     "Erkläre",
     "Antworte",
     "Gib",
+    "Schreibe",
+    "Erstelle",
+    "Ende",
+    "Beende",
+    "Füge",
+    "Zeige",
+    "Zitiere",
+    "Starte",
+    "Schließe",
     // German supplements: a secrecy "public" mandate and the language pair
     // of a C1 conflict ("Übersetze alle Antworten ins Englische." must be a
     // mandate for the conflict against "Antworte ... auf Deutsch." to fire
@@ -158,6 +168,16 @@ const IMPERATIVE_VERBS: &[&str] = &[
     "Never",
     "Write",
     "Return",
+    "Begin",
+    "Start",
+    "End",
+    "Finish",
+    "Include",
+    "Exclude",
+    "Show",
+    "Cite",
+    "State",
+    "Explain",
     // English supplements (acceptance suite)
     "Answer",
     "Output",
@@ -251,6 +271,56 @@ const TONE_VALUES: &[(&str, &[&str])] = &[
     ),
 ];
 
+/// Voice demanded values (active vs passive).
+const VOICE_VALUES: &[(&str, &[&str])] = &[
+    ("active", &["aktiv", "active"]),
+    ("passive", &["passiv", "passive"]),
+];
+
+/// Unit demanded values (metric vs imperial).
+const UNIT_VALUES: &[(&str, &[&str])] = &[
+    (
+        "metric",
+        &["metrisch", "metrische", "metric", "cm", "meters"],
+    ),
+    ("imperial", &["imperial", "imperiale", "inches", "feet"]),
+];
+
+/// Section placement values (start vs end).
+const SECTION_VALUES: &[(&str, &[&str])] = &[
+    (
+        "start",
+        &[
+            "beginne mit",
+            "beginn mit",
+            "start with",
+            "begin with",
+            "starte mit",
+            "beginne",
+            "begin",
+            "start",
+            "starte",
+        ],
+    ),
+    (
+        "end",
+        &[
+            "ende mit",
+            "beende mit",
+            "schließe mit",
+            "end with",
+            "finish with",
+            "close with",
+            "ende",
+            "beende",
+            "schließe",
+            "end",
+            "finish",
+            "close",
+        ],
+    ),
+];
+
 /// C2 format demanded values — only explicit format names; the conservative
 /// pairing additionally requires an exclusivity marker per mandate.
 const FORMAT_VALUES: &[(&str, &[&str])] = &[
@@ -258,6 +328,9 @@ const FORMAT_VALUES: &[(&str, &[&str])] = &[
     ("csv", &["csv"]),
     ("markdown", &["markdown"]),
     ("plain text", &["plain text"]),
+    ("yaml", &["yaml"]),
+    ("xml", &["xml"]),
+    ("table", &["table", "tabelle"]),
 ];
 
 /// Supplementary topic triggers (internal, deterministic), consulted only
@@ -330,10 +403,10 @@ fn imperative_pattern() -> String {
 cached_regex!(negator_re, &negator_pattern());
 cached_regex!(imperative_re, &imperative_pattern());
 
-// Constraint-signal regex verbatim from spec §8.
+// Constraint-signal regex verbatim from spec §8, extended for mandatory mandates.
 cached_regex!(
     constraint_signal_re,
-    r"(?i)\b(immer|nie|niemals|sofort|erst|nur|verboten|soll|muss|must|always|never|immediately|only|exactly|at least|at most)\b"
+    r"(?i)\b(immer|nie|niemals|sofort|erst|nur|verboten|soll|muss|must|always|never|immediately|only|exactly|at least|at most|mandatory|required|verpflichtend|erforderlich|obligatorisch)\b"
 );
 
 // Numeric length-constraint regexes: `exactly 50 words` (Exact),
@@ -477,6 +550,9 @@ fn value_hits(lower: &str, topic: &str) -> Vec<(&'static str, &'static str)> {
         "length" => LENGTH_VALUES,
         "tone" => TONE_VALUES,
         "format" => FORMAT_VALUES,
+        "voice" => VOICE_VALUES,
+        "unit" => UNIT_VALUES,
+        "section" => SECTION_VALUES,
         _ => return Vec::new(),
     };
     groups
@@ -542,7 +618,12 @@ pub fn extract_mandates(content: &str) -> Vec<Mandate> {
                 };
                 let value = match topic.as_deref() {
                     Some("language") => language_value(&lower),
-                    Some(t) if matches!(t, "secrecy" | "length" | "tone" | "format") => {
+                    Some(t)
+                        if matches!(
+                            t,
+                            "secrecy" | "length" | "tone" | "format" | "voice" | "unit" | "section"
+                        ) =>
+                    {
                         value_of(&lower, t)
                     }
                     _ => None,
@@ -561,10 +642,21 @@ pub fn extract_mandates(content: &str) -> Vec<Mandate> {
 }
 
 /// C1..C8 class + weight per topic (spec §8). `None` for unknown topics.
+/// Fatal band (weight 6) includes new closed-antonym topics: voice, section,
+/// metric, unit, inclusion, source_use, web_use, reasoning and prose.
 fn class_and_weight(topic: &str) -> Option<(u8, u8)> {
     match topic {
         "language" => Some((1, 6)),
         "output_data" => Some((6, 6)),
+        "voice" => Some((1, 6)),
+        "section" => Some((1, 6)),
+        "metric" => Some((6, 6)),
+        "unit" => Some((1, 6)),
+        "inclusion" => Some((5, 6)),
+        "source_use" => Some((6, 6)),
+        "web_use" => Some((6, 6)),
+        "reasoning" => Some((7, 6)),
+        "prose" => Some((2, 6)),
         "format" => Some((2, 4)),
         "secrecy" => Some((4, 4)),
         "question_scope" => Some((5, 4)),
@@ -575,6 +667,26 @@ fn class_and_weight(topic: &str) -> Option<(u8, u8)> {
     }
 }
 
+pub fn has_critical_conflict(conflicts: &[Conflict]) -> bool {
+    conflicts.iter().any(|c| c.critical)
+}
+
+fn is_critical_topic(topic: &str) -> bool {
+    matches!(
+        topic,
+        "language"
+            | "output_data"
+            | "voice"
+            | "section"
+            | "metric"
+            | "unit"
+            | "inclusion"
+            | "source_use"
+            | "web_use"
+            | "reasoning"
+    )
+}
+
 fn make_conflict(class: u8, weight: u8, topic: &str, first: &str, second: &str) -> Conflict {
     Conflict {
         class,
@@ -583,11 +695,40 @@ fn make_conflict(class: u8, weight: u8, topic: &str, first: &str, second: &str) 
         first: first.to_string(),
         second: second.to_string(),
         confident: true,
+        critical: is_critical_topic(topic),
+    }
+}
+
+fn make_critical_conflict(
+    class: u8,
+    weight: u8,
+    topic: &str,
+    first: &str,
+    second: &str,
+) -> Conflict {
+    Conflict {
+        class,
+        weight,
+        topic: topic.to_string(),
+        first: first.to_string(),
+        second: second.to_string(),
+        confident: true,
+        critical: true,
     }
 }
 
 fn make_pair_conflict(class: u8, weight: u8, topic: &str, a: &Mandate, b: &Mandate) -> Conflict {
     make_conflict(class, weight, topic, &a.text, &b.text)
+}
+
+fn make_critical_pair_conflict(
+    class: u8,
+    weight: u8,
+    topic: &str,
+    a: &Mandate,
+    b: &Mandate,
+) -> Conflict {
+    make_critical_conflict(class, weight, topic, &a.text, &b.text)
 }
 
 /// First same-topic mandate pair (i < j) with opposite polarity. When
@@ -729,13 +870,16 @@ fn conflict_for_topic(topic: &str, mandates: &[Mandate]) -> Option<Conflict> {
         }
     }
 
-    // C3/C4/C7 value topics (length/secrecy/tone): same-topic mandates that
-    // demand DIFFERENT values contradict even when both carry the same
-    // polarity ("vertraulich" vs "veröffentliche" are two +1 demands),
+    // C3/C4/C7 value topics (length/secrecy/tone/voice/unit/section): same-topic
+    // mandates that demand DIFFERENT values contradict even when both carry
+    // the same polarity ("vertraulich" vs "veröffentliche" are two +1 demands),
     // mirroring the C1 language logic. A SINGLE mandate demanding two
     // different values ("Fasse dich kurz, aber gehe ausführlich ... ein.")
     // is self-contradictory — the numeric-bounds twin of the C3 check.
-    if matches!(topic, "length" | "secrecy" | "tone") {
+    if matches!(
+        topic,
+        "length" | "secrecy" | "tone" | "voice" | "unit" | "section"
+    ) {
         for m in &ms {
             let hits = value_hits(&m.text.to_lowercase(), topic);
             if hits.len() >= 2 {
@@ -758,10 +902,41 @@ fn conflict_for_topic(topic: &str, mandates: &[Mandate]) -> Option<Conflict> {
 
     // C3 length: a single sentence demanding "exactly N words" AND
     // "at least/at most M words" (M excluding N) is self-contradictory.
+    // Extended to cross-mandate numeric bounds: mandates in different
+    // sentences with incompatible numeric constraints also conflict.
     if topic == "length" {
         for m in &ms {
             if let Some((first, second)) = conflicting_length_bounds(&m.text) {
                 return Some(make_conflict(class, weight, topic, &first, &second));
+            }
+        }
+        // Cross-mandate numeric bounds: collect all length constraints across
+        // length-topic mandates and check incompatibilities across mandates.
+        let mut all: Vec<(LengthKind, u64, String, usize)> = Vec::new();
+        for (idx, m) in ms.iter().enumerate() {
+            for (_, kind, val, phrase) in length_constraints(&m.text) {
+                all.push((kind, val, phrase, idx));
+            }
+        }
+        for i in 0..all.len() {
+            for j in (i + 1)..all.len() {
+                if all[i].3 == all[j].3 {
+                    continue;
+                }
+                let (ki, vi, si, _) = &all[i];
+                let (kj, vj, sj, _) = &all[j];
+                let contradiction = match (ki, kj) {
+                    (LengthKind::Exact, LengthKind::Min) => vj > vi,
+                    (LengthKind::Min, LengthKind::Exact) => vi > vj,
+                    (LengthKind::Exact, LengthKind::Max) => vj < vi,
+                    (LengthKind::Max, LengthKind::Exact) => vi < vj,
+                    (LengthKind::Min, LengthKind::Max) => vi > vj,
+                    (LengthKind::Max, LengthKind::Min) => vj > vi,
+                    _ => false,
+                };
+                if contradiction {
+                    return Some(make_conflict(class, weight, topic, si, sj));
+                }
             }
         }
     }
@@ -793,6 +968,24 @@ pub fn multi_format_conflict(content: &str) -> Option<Conflict> {
     None
 }
 
+fn prose_format_conflict(mandates: &[Mandate]) -> Option<Conflict> {
+    let structured = ["json", "csv", "markdown", "table", "yaml", "xml"];
+    let fmt = mandates.iter().find(|m| {
+        m.topic.as_deref() == Some("format")
+            && m.value.as_deref().is_some_and(|v| structured.contains(&v))
+    })?;
+    let prose_m = mandates
+        .iter()
+        .find(|m| m.topic.as_deref() == Some("prose"))?;
+    Some(make_critical_conflict(
+        2,
+        6,
+        "format",
+        &fmt.text,
+        &prose_m.text,
+    ))
+}
+
 /// Detect contradictions (spec §8). Mandates are capped at 60; each topic
 /// contributes at most one conflict; all emitted conflicts are unambiguous.
 pub fn detect(content: &str, _lang: Language) -> Vec<Conflict> {
@@ -804,6 +997,12 @@ pub fn detect(content: &str, _lang: Language) -> Vec<Conflict> {
     // C2 format exclusivity — separate whole-content check (spec §8).
     if let Some(c) = multi_format_conflict(content) {
         conflicts.push(c);
+    }
+    if let Some(c) = prose_format_conflict(&mandates) {
+        // Single-conflict-per-topic cap for format also applies to prose cross.
+        if !conflicts.iter().any(|e| e.topic == "format") {
+            conflicts.push(c);
+        }
     }
 
     for rule in TOPIC_TABLE {

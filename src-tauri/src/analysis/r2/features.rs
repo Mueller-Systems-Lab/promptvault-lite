@@ -28,7 +28,7 @@ macro_rules! cached_regex {
 // action sentence and its placeholder counts as referenced.
 cached_regex!(
     action_re,
-    r"(?i)\b(schreib\w*|erstell\w*|generier\w*|übersetz\w*|fass\w*|summar\w*|analysier\w*|prüf\w*|erklär\w*|extrahier\w*|klassifizier\w*|konvertier\w*|plan\w*|kürz\w*|paraphras\w*|korrigier\w*|bewert\w*|entwirf\w*|nutz\w*|write|create|generate|translate|summarize|summarise|analy|review|check|extract|classify|convert|plan|draft|rewrite|rename|refactor|tidy|fill|explain|improve|use)\b"
+    r"(?i)\b(schreib\w*|erstell\w*|generier\w*|übersetz\w*|fass\w*|summar\w*|analysier\w*|prüf\w*|erklär\w*|extrahier\w*|klassifizier\w*|konvertier\w*|plan\w*|kürz\w*|paraphras\w*|korrigier\w*|bewert\w*|entwirf\w*|list\w*|identifizier\w*|find\w*|gib\w*|nenn\w*|ermittel\w*|zeig\w*|nutz\w*|write\w*|create\w*|generate\w*|translate\w*|summarize\w*|summarise\w*|analy\w*|review\w*|check\w*|extract\w*|classify\w*|convert\w*|plan\w*|draft\w*|rewrite\w*|rename\w*|refactor\w*|tidy\w*|fill\w*|explain\w*|improve\w*|identif\w*|enumerat\w*|collect\w*|select\w*|retriev\w*|show\w*|output\w*|return\w*|use)\b"
 );
 cached_regex!(
     goal_clause_re,
@@ -49,8 +49,10 @@ cached_regex!(
 cached_regex!(
     // F2 vague-goal regex: transform stems (summar/fass/summarize) added so a
     // transform prompt with a vague object still reaches Moderate at minimum.
+    // Extended with listing family (list/identif/find/return/enumerat/collect)
+    // so extraction prompts reach Moderate without a deliverable noun.
     vague_goal_re,
-    r"(?i)(verbesser|improve|erklär|explain|analysier|analy|erstelle|create|schreib|write|summar|fass|summarize)"
+    r"(?i)(verbesser|improve|erklär|explain|analysier|analy|erstelle|create|schreib|write|summar|fass|summarize|list|identif|find|return|enumerat|collect|select|retriev|show|output)"
 );
 cached_regex!(fence_re, r"(?m)^```");
 cached_regex!(placeholder_labeled_re, r"\{\{\w+\}\}|\{[A-Z][A-Z0-9_]*\}");
@@ -97,19 +99,23 @@ cached_regex!(
 cached_regex!(
     // F5 boundary terms. Extended with "one for"/"einer für"/"eine für"/
     // "one per"/"je ein" so "Return three bullets: one for decisions, ..."
-    // counts as a bounded output contract (spec §5).
+    // counts as a bounded output contract (spec §5). Extended for
+    // enumeration shapes: "one per line", "per line" variants.
     boundary_re,
-    r"(?i)(nur|only|sorted by|with keys|with fields|at most|exactly|maximal|mindestens|one for|einer für|eine für|one per|je ein)"
+    r"(?i)(nur|only|sorted by|with keys|with fields|at most|exactly|maximal|mindestens|one for|einer für|eine für|one per|je ein|per line)"
 );
 cached_regex!(
     structure_re,
-    r"(?i)(struktur|schema|json|csv|markdown|bullet|liste|tabelle|table|abschnitt|section|felder|fields)"
+    r"(?i)(struktur|schema|json|csv|markdown|bullet|liste|tabelle|table|abschnitt|section|felder|fields|line|lines|items?|points?|zeile|zeilen)"
 );
 cached_regex!(
     // F5 moderate-output signals. Added: counted-bullet returns ("Return
     // three bullets", "3 Sätze", ...) and "als bullet"/"as bullets".
+    // Extended for enumeration shapes: "one per line", "three lines/items",
+    // "N bullet points", "return one per line", "separate lines",
+    // plus German "pro Zeile" variants.
     moderate_output_re,
-    r"(?i)(als json|as json|als liste|as a list|in markdown|return only the|gib nur die|als tabelle|as a table|as markdown|als text|as text|return\s+(three|two|one|four|five|\d+)\s*(bullets?|sätze|sentences|punkte|items?)|als\s+bullet|as\s+bullets)"
+    r"(?i)(als json|as json|als liste|as a list|in markdown|return only the|gib nur die|als tabelle|as a table|as markdown|als text|as text|return\s+(three|two|one|four|five|\d+)\s*(bullets?|sätze|sentences|punkte|items?|lines?|points?)|als\s+bullet|as\s+bullets|one per line|per line|separate lines?|\d+\s*lines?|\d+\s*items?|return one per line|pro zeile|eine pro zeile|je zeile)"
 );
 cached_regex!(
     example_output_re,
@@ -203,6 +209,26 @@ fn inline_quote_before(content: &str, start: usize) -> bool {
     let before = &content[..start];
     if let Some(q) = before.rfind(['"', '„', '“']) {
         return before[..q].trim_end().ends_with(':');
+    }
+    false
+}
+
+/// Quoted inline input: a colon followed by a quoted block (`: "..."`),
+/// as in `List ... as three separate lines:\n\n"The crew ..."`. Reuses
+/// the inline_quote_before logic but scans for any quoted block opened
+/// after a colon.
+fn has_quoted_inline_input(content: &str) -> bool {
+    for (idx, _) in content.match_indices(':') {
+        let after = &content[idx + 1..];
+        let trimmed = after.trim_start();
+        if trimmed.starts_with('"') || trimmed.starts_with('„') || trimmed.starts_with('“') {
+            let first = trimmed.chars().next().unwrap();
+            let rest = &trimmed[first.len_utf8()..];
+            if rest.contains('"') || rest.contains('“') || rest.contains('”') || rest.contains('„')
+            {
+                return true;
+            }
+        }
     }
     false
 }
@@ -559,7 +585,12 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
         .copied()
         .filter(|s| action_re().is_match(s))
         .collect();
-    fs.atomic_action = action_sents.len() == 1;
+    // Atomic: single action sentence, or a two-sentence enumeration pattern
+    // (task + output contract "Return only the ...") which is still a single
+    // intent for terse tasks. This keeps the terse_translation contract green
+    // after the Return verb was added to the action family.
+    fs.atomic_action = action_sents.len() == 1
+        || (action_sents.len() == 2 && moderate_output_re().is_match(content) && sents.len() <= 4);
     fs.task_signal = if action_sents.iter().any(|s| is_substantive(s)) {
         EvidenceStrength::Strong
     } else if !action_sents.is_empty() {
@@ -731,6 +762,22 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
     } else {
         EvidenceStrength::None
     };
+    if content.contains("Identify all email addresses") {
+        eprintln!(
+            "DEBUG GOAL goal={:?} clause_sub={} heading_sub={} first_deliv={} trans_strong={} first_vague={} goal_words={} transform_verb={} placeholder_count={} ref_frac={} input_present={:?}",
+            fs.goal_statement,
+            clause_substantive,
+            heading_substantive,
+            first_sentence_deliverable,
+            transform_goal_strong,
+            first_sentence_vague,
+            goal_words_without_action,
+            transform_verb_present,
+            fs.placeholder_count,
+            fs.referenced_placeholder_fraction,
+            fs.input_present
+        );
+    }
 
     // ---- F3: input presence ---------------------------------------------
     let fence_with_content = fence_re()
@@ -749,6 +796,7 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
         .iter()
         .any(|p| inline_input_re().is_match(p))
         || file_ref_re().is_match(content)
+        || has_quoted_inline_input(content)
     {
         EvidenceStrength::Moderate
     } else if non_boilerplate_paras
@@ -818,8 +866,19 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
     let input_anchored = fs.input_present >= EvidenceStrength::Moderate
         || (!inline_input_re().is_match(content)
             && !weak_input_re().is_match(content)
-            && !following_re().is_match(content));
-    fs.terse_sufficiency = fs.atomic_action
+            && !following_re().is_match(content)
+            && !has_quoted_inline_input(content));
+    // Terse sufficiency: atomic intent may be a single action sentence or
+    // a two-sentence enumeration pattern (task sentence + output contract
+    // "Return one per line") which is still a single intent. Allow 2 action
+    // sentences when the output contract is at least Moderate and the prompt
+    // is short (<=6 sentences) so genuine terse extractions qualify while
+    // gaming prompts with scattered actions remain excluded.
+    let terse_intent = fs.atomic_action
+        || (action_sents.len() == 2
+            && fs.output_contract_strength >= EvidenceStrength::Moderate
+            && fs.sentence_count <= 6);
+    fs.terse_sufficiency = terse_intent
         && fs.goal_statement >= EvidenceStrength::Moderate
         && fs.output_contract_strength >= EvidenceStrength::Moderate
         && input_anchored

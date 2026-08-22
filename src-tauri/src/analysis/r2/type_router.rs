@@ -103,7 +103,7 @@ mod re {
     );
     cached_regex!(
         extraction,
-        r"(?:\bextrahier\w*\b|\bextract\w*\b|\bentnimm\w*\b|pull out|extrahiere)"
+        r"(?:\bextrahier\w*\b|\bextract\w*\b|\bentnimm\w*\b|pull out|extrahiere|\blist\w*\b|\bidentif\w*\b|\bfind\w*\b|\breturn\w*\b|\benumerat\w*\b|\bcollect\w*\b|\bselect\w*\b|\bretriev\w*\b|\bshow\w*\b|\boutput\w*\b|\bliste\w*\b|\bidentifizier\w*\b|\bfinde\w*\b|\bgib\w*\b|\bnenn\w*\b|\bermittel\w*\b|\bzeig\w*\b)"
     );
     cached_regex!(
         classification,

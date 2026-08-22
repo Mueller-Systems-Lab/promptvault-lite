@@ -113,19 +113,92 @@ fn optional_or(app: &Applicability, fallback: f64) -> f64 {
 /// ("report about {A} with regard to {B} ... {M}") satisfies F4's per-token
 /// reference rule for the tokens sitting in the task sentence without
 /// anchoring real input.
-fn signal_poor(f: &FeatureSet, conflicts: &[Conflict]) -> bool {
-    f.task_signal == EvidenceStrength::None
+///
+/// Type-aware sufficiency (R2.1): the first arm is kind-aware — a Guideline
+/// or Template with sufficient rule/placeholder signals is not signal-poor
+/// even when `task_signal == None`; a terse Task with atomic intent and
+/// bounded output can be sufficient despite brevity. Junk still fails all arms.
+fn signal_sufficient(f: &FeatureSet, kind: &ContentKind) -> bool {
+    match kind {
+        ContentKind::Guideline => {
+            // Guideline sufficient when rule content present: imperative-bullet
+            // density (guideline_signal), modal-rule language, or constraint
+            // density. Use guideline_signal as aggregated proxy plus constraint
+            // presence; require low filler/redundancy already checked outside.
+            f.guideline_signal == 1.0 || f.relevant_constraints > 0
+        }
+        ContentKind::Template => {
+            // Template sufficient when useful placeholders: high referenced
+            // fraction and quality plus fill instruction / section structure
+            // (template_signal). Useful placeholder != spam.
+            f.template_signal == 1.0
+                && f.referenced_placeholder_fraction >= 0.8
+                && f.placeholder_quality >= 0.5
+                && !placeholder_spam(f)
+        }
+        ContentKind::Task(pt) => {
+            if f.task_signal != EvidenceStrength::None {
+                // Extraction tasks require a defined input (following text,
+                // placeholder, or quoted inline). A generic "Identify key
+                // opportunities..." with no input anchor is not sufficient.
+                let needs_input = matches!(
+                    pt,
+                    super::type_router::PromptType::Extraction
+                        | super::type_router::PromptType::Translation
+                        | super::type_router::PromptType::Summarization
+                        | super::type_router::PromptType::Transformation
+                );
+                if needs_input
+                    && f.input_present == EvidenceStrength::None
+                    && f.placeholder_count == 0
+                {
+                    // fall through to terse bundle
+                } else {
+                    return true;
+                }
+            }
+            // Terse bundle: atomic intent + goal >= Moderate + defined input
+            // (input_present >= Weak or anchored placeholder) + output >=
+            // Moderate + low filler/redundancy.
+            f.atomic_action
+                && f.goal_statement >= EvidenceStrength::Moderate
+                && f.output_contract_strength >= EvidenceStrength::Moderate
+                && (f.input_present >= EvidenceStrength::Weak
+                    || f.referenced_placeholder_fraction >= 0.5)
+                && f.filler_ratio < 0.4
+                && f.redundancy < 0.4
+        }
+    }
+}
+
+fn signal_poor(f: &FeatureSet, conflicts: &[Conflict], kind: &ContentKind) -> bool {
+    !signal_sufficient(f, kind)
         || f.filler_ratio >= 0.4
         || f.redundancy >= 0.4
         || conflict_weight(conflicts) >= 4
+        || super::contradictions::has_critical_conflict(conflicts)
         || (f.placeholder_count > 0 && f.referenced_placeholder_fraction < 0.4)
         || placeholder_spam(f)
 }
 
 /// Observable signal-poor gate for the deep test entry (same rule as the
-/// internal scoring gate).
-pub(crate) fn signal_poor_for_test(f: &FeatureSet, conflicts: &[Conflict]) -> bool {
-    signal_poor(f, conflicts)
+/// internal scoring gate). Kind-aware.
+pub(crate) fn signal_poor_for_test(
+    f: &FeatureSet,
+    conflicts: &[Conflict],
+    kind: &ContentKind,
+) -> bool {
+    signal_poor(f, conflicts, kind)
+}
+
+/// Backwards-compatible shim for call sites without kind (treated as Task).
+#[allow(dead_code)]
+pub(crate) fn signal_poor_for_test_legacy(f: &FeatureSet, conflicts: &[Conflict]) -> bool {
+    signal_poor(
+        f,
+        conflicts,
+        &ContentKind::Task(super::type_router::PromptType::GeneralTask),
+    )
 }
 
 /// Placeholder spam rubric: a large placeholder set (>= 5 slots) with a
@@ -171,7 +244,7 @@ fn score_dim(
     conflicts: &[Conflict],
     kind: &ContentKind,
 ) -> f64 {
-    let poor = signal_poor(f, conflicts);
+    let poor = signal_poor(f, conflicts, kind);
     let s = match name {
         "Goal" => {
             // A structured template (labeled placeholders + section headings /
@@ -184,6 +257,11 @@ fn score_dim(
             // form-shaped template with no goal clause).
             if matches!(kind, ContentKind::Template)
                 && f.placeholder_count >= 2
+                && f.goal_statement < EvidenceStrength::Moderate
+            {
+                8.0
+            } else if matches!(kind, ContentKind::Guideline)
+                && f.guideline_signal == 1.0
                 && f.goal_statement < EvidenceStrength::Moderate
             {
                 8.0
@@ -358,15 +436,19 @@ fn score_dim(
             }
         }
         "Consistency" => {
-            let w = conflict_weight(conflicts);
-            if w == 0 {
-                10.0
-            } else if w <= 3 {
-                5.0
-            } else if w <= 5 {
-                3.0
-            } else {
+            if super::contradictions::has_critical_conflict(conflicts) {
                 0.0
+            } else {
+                let w = conflict_weight(conflicts);
+                if w == 0 {
+                    10.0
+                } else if w <= 3 {
+                    5.0
+                } else if w <= 5 {
+                    3.0
+                } else {
+                    0.0
+                }
             }
         }
         "Completeness" => {
@@ -464,6 +546,17 @@ fn score_dim(
         }
         _ => 5.0,
     };
+    if name == "Goal" && f.goal_statement == EvidenceStrength::Strong && (s - 10.0).abs() > 0.01 {
+        eprintln!(
+            "DEBUG SCORING Goal Strong but s={} poor={} kind={:?} placeholder={} concrete={} bare={}",
+            s,
+            poor,
+            kind,
+            f.placeholder_count,
+            f.concrete_core,
+            f.concrete_core
+        );
+    }
     // Signal-poor cap (FIX E): a junk prompt never keeps a high ladder score
     // on the substance dimensions — the cap applies AFTER the ladder so the
     // ladder semantics stay intact. Consistency is NOT capped (it reflects
@@ -531,7 +624,7 @@ pub fn overall(dims: &DimensionScores, conflicts: &[Conflict]) -> u8 {
         return 0;
     }
     let mut o = ((sum / n as f64) * 10.0).round().clamp(0.0, 100.0) as u8;
-    if conflict_weight(conflicts) >= 6 {
+    if conflict_weight(conflicts) >= 6 || super::contradictions::has_critical_conflict(conflicts) {
         o = o.min(45);
     }
     o
