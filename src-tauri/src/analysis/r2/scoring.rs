@@ -137,6 +137,18 @@ fn signal_sufficient(f: &FeatureSet, kind: &ContentKind) -> bool {
                 && !placeholder_spam(f)
         }
         ContentKind::Task(pt) => {
+            // Natural-good arm (R2.2): a substantive task with an anchored
+            // placeholder and a moderate goal is sufficient even without an
+            // atomic single-action shape — covers natural prose like
+            // "Verfasse eine Dankesmail an die Bewerberin unten ..."
+            // that carries filler-like politeness but is otherwise complete.
+            if f.task_signal >= EvidenceStrength::Moderate
+                && f.placeholder_count > 0
+                && f.referenced_placeholder_fraction >= 0.5
+                && f.goal_statement >= EvidenceStrength::Moderate
+            {
+                return true;
+            }
             if f.task_signal != EvidenceStrength::None {
                 // Extraction tasks require a defined input (following text,
                 // placeholder, or quoted inline). A generic "Identify key
@@ -351,9 +363,15 @@ fn score_dim(
             // ONLY when the F5 ladder would under-credit (contract below
             // Moderate — the common case for a form-shaped template with no
             // output clause).
-            if matches!(kind, ContentKind::Template)
+            // Guideline output credit (R2.2): a guideline's output discipline is
+            // its rule set — a guideline with sufficient rule signals defines its
+            // output via persistent policy, even without an explicit format clause.
+            if (matches!(kind, ContentKind::Template)
                 && f.placeholder_count >= 3
-                && f.output_contract_strength < EvidenceStrength::Moderate
+                && f.output_contract_strength < EvidenceStrength::Moderate)
+                || (matches!(kind, ContentKind::Guideline)
+                    && f.guideline_signal == 1.0
+                    && f.output_contract_strength < EvidenceStrength::Moderate)
             {
                 8.0
             } else {
@@ -386,7 +404,18 @@ fn score_dim(
             }
         }
         "Constraint" => {
-            if f.relevant_constraints + f.boilerplate_constraints == 0 {
+            // Guideline constraint fix (R2.2): a guideline's rule set IS its
+            // constraint — sufficient guideline signal implies relevant
+            // constraints even when per-sentence lexicon misses bare imperatives.
+            if matches!(kind, ContentKind::Guideline) && f.guideline_signal == 1.0 {
+                if f.relevant_constraints >= 2 {
+                    9.0
+                } else if f.relevant_constraints == 1 {
+                    7.0
+                } else {
+                    7.0 // guideline with rule signal but no lexicon hit still has constraint
+                }
+            } else if f.relevant_constraints + f.boilerplate_constraints == 0 {
                 if poor {
                     2.0 // signal-poor prompts never get the Optional(10) neutral
                 } else {
@@ -401,7 +430,12 @@ fn score_dim(
             }
         }
         "Actionability" => {
-            if f.procedure_steps == EvidenceStrength::Strong {
+            // Guideline actionability (R2.2): a guideline with rule signal is
+            // actionable by definition (follow the rules), even without atomic
+            // or procedure steps.
+            if matches!(kind, ContentKind::Guideline) && f.guideline_signal == 1.0 {
+                8.0
+            } else if f.procedure_steps == EvidenceStrength::Strong {
                 9.0
             } else if f.procedure_steps == EvidenceStrength::Moderate {
                 7.0

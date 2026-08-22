@@ -28,7 +28,7 @@ macro_rules! cached_regex {
 // action sentence and its placeholder counts as referenced.
 cached_regex!(
     action_re,
-    r"(?i)\b(schreib\w*|erstell\w*|generier\w*|übersetz\w*|fass\w*|summar\w*|analysier\w*|prüf\w*|erklär\w*|extrahier\w*|klassifizier\w*|konvertier\w*|plan\w*|kürz\w*|paraphras\w*|korrigier\w*|bewert\w*|entwirf\w*|verfass\w*|fertig\w*|list\w*|identifizier\w*|find\w*|gib\w*|nenn\w*|ermittel\w*|zeig\w*|nutz\w*|write\w*|create\w*|generate\w*|translate\w*|summarize\w*|summarise\w*|analy\w*|review\w*|check\w*|extract\w*|classify\w*|convert\w*|plan\w*|draft\w*|rewrite\w*|rename\w*|refactor\w*|tidy\w*|fill\w*|explain\w*|improve\w*|identif\w*|enumerat\w*|collect\w*|select\w*|retriev\w*|show\w*|output\w*|return\w*|use)\b"
+    r"(?i)\b(schreib\w*|erstell\w*|generier\w*|übersetz\w*|fass\w*|summar\w*|analysier\w*|prüf\w*|erklär\w*|extrahier\w*|klassifizier\w*|konvertier\w*|plan\w*|kürz\w*|paraphras\w*|korrigier\w*|bewert\w*|entwirf\w*|verfass\w*|fertig\w*|list\w*|identifizier\w*|find\w*|gib\w*|nenn\w*|ermittel\w*|zeig\w*|nutz\w*|überarbeit\w*|konzentrier\w*|write\w*|create\w*|generate\w*|translate\w*|summarize\w*|summarise\w*|analy\w*|review\w*|check\w*|extract\w*|classify\w*|convert\w*|plan\w*|draft\w*|rewrite\w*|rename\w*|refactor\w*|tidy\w*|fill\w*|explain\w*|improve\w*|identif\w*|enumerat\w*|collect\w*|select\w*|retriev\w*|show\w*|output\w*|return\w*|use)\b"
 );
 cached_regex!(
     goal_clause_re,
@@ -59,7 +59,7 @@ cached_regex!(placeholder_labeled_re, r"\{\{\w+\}\}|\{[A-Z][A-Z0-9_]*\}");
 cached_regex!(following_re, r"(?i)(the following|folgend\w*)");
 cached_regex!(
     input_anchor_re,
-    r"(?i)(the following|folgend\w*|input|eingabe|the text below|text below|below|den folgenden text|nachfolgend|unten stehenden text)"
+    r"(?i)(the following|folgend\w*|input|eingabe|the text below|text below|below|den folgenden text|nachfolgend|unten stehenden text|\bunten\b|\bbelow\b|\banbei\b|\battached\b)"
 );
 cached_regex!(
     // F4 rule (b): labeled-field line ("- Environment: {ENVIRONMENT}"). The
@@ -749,10 +749,19 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
         && ((fs.placeholder_count > 0 && fs.referenced_placeholder_fraction >= 0.5)
             || inline_input_re().is_match(content)
             || following_re().is_match(content));
+    // Generation fallback: an anchored placeholder (fraction >=0.5) plus an
+    // action verb in the first sentence makes the goal Strong even without a
+    // deliverable noun — covers natural-good "Verfasse eine Dankesmail ..."
+    // where the deliverable is a compound ("Dankesmail") not in the noun list.
+    let first_sentence_has_action = sents.first().is_some_and(|s| action_re().is_match(s));
+    let generation_goal_strong = fs.placeholder_count > 0
+        && fs.referenced_placeholder_fraction >= 0.5
+        && first_sentence_has_action;
     fs.goal_statement = if clause_substantive
         || heading_substantive
         || first_sentence_deliverable
         || transform_goal_strong
+        || generation_goal_strong
     {
         EvidenceStrength::Strong
     } else if first_sentence_vague {
@@ -1181,10 +1190,21 @@ pub fn extract(content: &str, _lang: Language) -> FeatureSet {
         .chain(NOISE_FILLER_EN.iter())
         .copied()
         .collect();
+    // Position-aware filler: politeness inside the task (e.g. "danke" in
+    // "Verfasse eine Dankesmail...") must not inflate filler. Only a short
+    // (<15 tokens), non-action sentence among the last 2 sentences that
+    // contains a filler term / filler_sentence_re counts.
     let filler_count = sents
         .iter()
-        .copied()
-        .filter(|s| contains_any(s, &filler_terms) || filler_sentence_re().is_match(s))
+        .enumerate()
+        .filter(|(idx, s)| {
+            let is_tail = *idx >= sents.len().saturating_sub(2);
+            let token_count = s.split_whitespace().count();
+            let short = token_count < 15;
+            let has_action = action_re().is_match(s);
+            let is_filler = contains_any(s, &filler_terms) || filler_sentence_re().is_match(s);
+            is_tail && short && !has_action && is_filler
+        })
         .count();
     fs.filler_ratio = filler_count as f64 / fs.sentence_count.max(1) as f64;
     // Task sentences were already collected for F1 (`action_sents`) — reuse.

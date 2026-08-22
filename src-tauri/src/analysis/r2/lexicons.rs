@@ -42,6 +42,8 @@ pub const ACTION_VERBS_DE: &[&str] = &[
     r"nenn\w*",
     r"ermittel\w*",
     r"zeig\w*",
+    r"überarbeit\w*",
+    r"konzentrier\w*",
 ];
 
 /// English imperative verb stems as regex fragments (consumer adds `\b` +
@@ -164,6 +166,8 @@ pub const GUIDELINE_HEADINGS: &[&str] = &[
     "Anweisungen",
     "Leitlinie",
     "Prinzipien",
+    "Leitfaden",
+    "Leitfäden",
 ];
 
 /// Suffixes that turn a compound heading into a guideline-style block
@@ -178,6 +182,9 @@ pub const COMPOUND_HEADING_SUFFIXES: &[&str] = &[
     "-regeln",
     "-Rules",
     "-Style",
+    "-kommunikation",
+    "-verhalten",
+    "-leitfaden",
 ];
 
 /// German imperative bullet openers (bullet-point directives).

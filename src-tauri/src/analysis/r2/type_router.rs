@@ -391,6 +391,24 @@ pub fn classify(content: &str) -> Classification {
         guideline_score += modal_rule_sentences as f64 * 0.6;
     }
 
+    // --- Natural-language guideline fallback (R2.2) -----------------------
+    // 3+ imperative bullets without a heading and without placeholders
+    // imply a guideline even when no canonical heading was detected —
+    // covers "Leitfaden für E-Mail-Kommunikation" etc. Without headings
+    // the base score is 3*0.6=1.8, so add 1.5 to cross the 2.0 threshold.
+    // Keep the dominated check below.
+    {
+        let placeholder_present =
+            re::placeholder().is_match(content) || lower.contains('{') || lower.contains("{{");
+        if guideline_score < 2.0
+            && imperative_bullet_lines >= 3
+            && heading_count == 0
+            && !placeholder_present
+        {
+            guideline_score += 1.5;
+        }
+    }
+
     // --- Negative control (dominance check) --------------------------------
     // "Verwende aktive Formulierungen, wenn du den Bericht schreibst." must
     // NOT route as a guideline even though it looks imperative.

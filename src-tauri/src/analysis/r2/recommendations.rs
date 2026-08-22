@@ -10,8 +10,9 @@ use super::features::{EvidenceStrength, FeatureSet};
 use super::scoring::{DimensionScores, DIM_NAMES};
 use super::type_router::{ContentKind, Language};
 
-/// Cap on emitted recommendations per prompt (spec §9).
-const MAX_RECS: usize = 4;
+/// Cap on emitted recommendations per prompt (spec §9) — R2.2 limits to top 3
+/// highest-confidence to avoid generic flood (prefer 0 good over 5 bad).
+const MAX_RECS: usize = 3;
 
 /// Generate gated, capped recommendations (spec §9).
 ///
@@ -28,9 +29,14 @@ pub fn generate(
 ) -> Vec<String> {
     // Applicability is already folded into `dims.applicable` by the scoring
     // layer; the content-gated suppression rules (spec §9) branch on `dims`
-    // and `features` only, so `kind` is not needed here.
+    // and `features` only. R2.2 keeps kind for future guideline-specific
+    // suppression but not yet branched.
     let _ = kind;
-    let de = lang == Language::De;
+    // Language fix (R2.2): Mixed often arises from stopword substring "a"
+    // matching — treat Mixed as DE to avoid EN recommendations for DE prompts
+    // (e.g. "Verfasse eine Dankesmail..."). For truly mixed, DE fallback is
+    // acceptable as DE/EN templates share the same structure.
+    let de = matches!(lang, Language::De | Language::Mixed);
 
     let mut out: Vec<String> = Vec::new();
 
