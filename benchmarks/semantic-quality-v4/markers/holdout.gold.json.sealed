@@ -1,0 +1,1352 @@
+[
+  {
+    "id": "v4-h-task-en-terse-excellent-001",
+    "overall_score": 96,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 96,
+        "band": "EXCELLENT"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 96,
+        "band": "EXCELLENT"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 96,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-de-terse-excellent-001",
+    "overall_score": 98,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 98,
+        "band": "EXCELLENT"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 98,
+        "band": "EXCELLENT"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 98,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-terse-excellent-002",
+    "overall_score": 92,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 92,
+        "band": "EXCELLENT"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 92,
+        "band": "EXCELLENT"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 92,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-good-natural-001",
+    "overall_score": 91,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 91,
+        "band": "EXCELLENT"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 91,
+        "band": "EXCELLENT"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 91,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-de-good-natural-001",
+    "overall_score": 84,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 84,
+        "band": "GOOD"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 84,
+        "band": "GOOD"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 84,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-fair-incomplete-001",
+    "overall_score": 51,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 5,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 5,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 5,
+      "ACTIONABILITY": 5,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+      "SIGNAL_TO_NOISE": 5
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 51,
+        "band": "POOR"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 51,
+        "band": "POOR"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 51,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-de-fair-incomplete-001",
+    "overall_score": 56,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 5,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 5,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 5,
+      "ACTIONABILITY": 5,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+      "SIGNAL_TO_NOISE": 5
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 56,
+        "band": "FAIR"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 56,
+        "band": "FAIR"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 56,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-fair-incomplete-002",
+    "overall_score": 58,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 5,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 5,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 5,
+      "ACTIONABILITY": 5,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+      "SIGNAL_TO_NOISE": 5
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 58,
+        "band": "FAIR"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 58,
+        "band": "FAIR"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 58,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-poor-vague-001",
+    "overall_score": 35,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 35,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 35,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 35,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-de-poor-vague-001",
+    "overall_score": 38,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 38,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 38,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 38,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-poor-vague-002",
+    "overall_score": 35,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 35,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 35,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 35,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-de-poor-vague-002",
+    "overall_score": 31,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 31,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 31,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 31,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-broken-buzzword-001",
+    "overall_score": 19,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 19,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 19,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 19,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-de-broken-buzzword-001",
+    "overall_score": 16,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 16,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 16,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 16,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-broken-buzzword-002",
+    "overall_score": 19,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 19,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 19,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 19,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-broken-contradictory-001",
+    "overall_score": 12,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 12,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 12,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 12,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-de-broken-contradictory-001",
+    "overall_score": 14,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 14,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 14,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 14,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-broken-contradictory-002",
+    "overall_score": 16,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 16,
+        "band": "BROKEN"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 16,
+        "band": "BROKEN"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 16,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-fair-boilerplate-noise-001",
+    "overall_score": 61,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 5,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 5,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 5,
+      "ACTIONABILITY": 5,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+      "SIGNAL_TO_NOISE": 5
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 61,
+        "band": "FAIR"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 61,
+        "band": "FAIR"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 61,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-poor-repetitive-001",
+    "overall_score": 40,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 2
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 40,
+        "band": "POOR"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 40,
+        "band": "POOR"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 40,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-template-en-reusable-template-001",
+    "overall_score": 78,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 5,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 5,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 5,
+      "ACTIONABILITY": 5,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+      "SIGNAL_TO_NOISE": 5
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 78,
+        "band": "GOOD"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 78,
+        "band": "GOOD"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 78,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-template-de-reusable-template-001",
+    "overall_score": 80,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 80,
+        "band": "GOOD"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 80,
+        "band": "GOOD"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 80,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-guideline-en-guideline-001",
+    "overall_score": 83,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 83,
+        "band": "GOOD"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 83,
+        "band": "GOOD"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 83,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-guideline-de-guideline-001",
+    "overall_score": 82,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 82,
+        "band": "GOOD"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 82,
+        "band": "GOOD"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 82,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-ambiguous-task-001",
+    "overall_score": 62,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 5,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 5,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 5,
+      "ACTIONABILITY": 5,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+      "SIGNAL_TO_NOISE": 5
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 62,
+        "band": "FAIR"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 62,
+        "band": "FAIR"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 62,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-de-ambiguous-task-001",
+    "overall_score": 64,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 5,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 5,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 5,
+      "ACTIONABILITY": 5,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+      "SIGNAL_TO_NOISE": 5
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 64,
+        "band": "FAIR"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 64,
+        "band": "FAIR"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 64,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-translation-001",
+    "overall_score": 97,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 97,
+        "band": "EXCELLENT"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 97,
+        "band": "EXCELLENT"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 97,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-summarization-001",
+    "overall_score": 95,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 95,
+        "band": "EXCELLENT"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 95,
+        "band": "EXCELLENT"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 95,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-extraction-001",
+    "overall_score": 91,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 91,
+        "band": "EXCELLENT"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 91,
+        "band": "EXCELLENT"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 91,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v4-h-task-en-classification-001",
+    "overall_score": 94,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "synthetic-heuristic",
+        "provider_family": "heuristic",
+        "score": 94,
+        "band": "EXCELLENT"
+      },
+      "judge_b": {
+        "model_id": "synthetic-heuristic-2",
+        "provider_family": "heuristic2",
+        "score": 94,
+        "band": "EXCELLENT"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "SYNTHETIC",
+        "final_score": 94,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "v4-gen",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  }
+]
