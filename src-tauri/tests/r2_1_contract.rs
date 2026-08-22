@@ -1,6 +1,8 @@
 //! R2.1 cleanroom contract — deterministic, principle-based.
 //! Binding contract for false-high / false-low fixes. No corpus overlap,
 //! no calibration anchors. Uses deep_evaluate_for_test.
+#![allow(clippy::manual_range_contains)]
+#![allow(dead_code, unused_variables)]
 
 use promptvault_lite_lib::analysis::r2::deep_evaluate_for_test;
 

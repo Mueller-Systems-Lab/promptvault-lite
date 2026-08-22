@@ -255,14 +255,12 @@ fn score_dim(
             // ContentKind::Template and ONLY when the F2 ladder would
             // under-credit (goal below Moderate — the common case for a
             // form-shaped template with no goal clause).
-            if matches!(kind, ContentKind::Template)
+            if (matches!(kind, ContentKind::Template)
                 && f.placeholder_count >= 2
-                && f.goal_statement < EvidenceStrength::Moderate
-            {
-                8.0
-            } else if matches!(kind, ContentKind::Guideline)
-                && f.guideline_signal == 1.0
-                && f.goal_statement < EvidenceStrength::Moderate
+                && f.goal_statement < EvidenceStrength::Moderate)
+                || (matches!(kind, ContentKind::Guideline)
+                    && f.guideline_signal == 1.0
+                    && f.goal_statement < EvidenceStrength::Moderate)
             {
                 8.0
             } else {
