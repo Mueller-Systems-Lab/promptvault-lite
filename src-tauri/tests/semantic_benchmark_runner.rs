@@ -52,13 +52,18 @@ fn load_cases(split: &str) -> Value {
 /// Expected case count per split (methodology protocol: split-separated
 /// counts, never a combined total).
 fn expected_count(split: &str, v2: bool) -> usize {
-    match (v2, split) {
-        // v2 development / holdout (72 total split 54/18).
-        (true, "development") => 54,
-        (true, "holdout") => 18,
-        // v1 calibration (48) + legacy holdout (12).
-        (false, "calibration") => 48,
-        (false, "holdout") => 12,
+    // v2/v3 corpora are variable-size; accept the actual file length for
+    // any PV_BENCH_DIR corpus. Only the legacy v1 corpus (no PV_BENCH_DIR) has
+    // fixed sizes.
+    if v2 {
+        // For benchmark v2/v3, defer to the actual cases file length — the
+        // caller already loaded `arr` and will assert against its length.
+        // Return 0 as a sentinel that the caller should use arr.len() instead.
+        return 0;
+    }
+    match split {
+        "calibration" => 48,
+        "holdout" => 12,
         _ => panic!("unknown split {split} for v2={v2}"),
     }
 }
@@ -168,7 +173,10 @@ fn run_semantic_benchmark() {
         out.len()
     );
 
-    let expected = expected_count(&split, v2);
+    let mut expected = expected_count(&split, v2);
+    if v2 {
+        expected = arr.len();
+    }
     assert_eq!(
         out.len(),
         expected,

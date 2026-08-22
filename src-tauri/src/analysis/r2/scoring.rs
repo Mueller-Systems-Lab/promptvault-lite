@@ -177,7 +177,7 @@ fn signal_poor(f: &FeatureSet, conflicts: &[Conflict], kind: &ContentKind) -> bo
         || f.redundancy >= 0.4
         || conflict_weight(conflicts) >= 4
         || super::contradictions::has_critical_conflict(conflicts)
-        || (f.placeholder_count > 0 && f.referenced_placeholder_fraction < 0.4)
+        || (f.placeholder_count > 1 && f.referenced_placeholder_fraction < 0.4)
         || placeholder_spam(f)
 }
 

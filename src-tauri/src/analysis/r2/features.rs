@@ -28,7 +28,7 @@ macro_rules! cached_regex {
 // action sentence and its placeholder counts as referenced.
 cached_regex!(
     action_re,
-    r"(?i)\b(schreib\w*|erstell\w*|generier\w*|übersetz\w*|fass\w*|summar\w*|analysier\w*|prüf\w*|erklär\w*|extrahier\w*|klassifizier\w*|konvertier\w*|plan\w*|kürz\w*|paraphras\w*|korrigier\w*|bewert\w*|entwirf\w*|list\w*|identifizier\w*|find\w*|gib\w*|nenn\w*|ermittel\w*|zeig\w*|nutz\w*|write\w*|create\w*|generate\w*|translate\w*|summarize\w*|summarise\w*|analy\w*|review\w*|check\w*|extract\w*|classify\w*|convert\w*|plan\w*|draft\w*|rewrite\w*|rename\w*|refactor\w*|tidy\w*|fill\w*|explain\w*|improve\w*|identif\w*|enumerat\w*|collect\w*|select\w*|retriev\w*|show\w*|output\w*|return\w*|use)\b"
+    r"(?i)\b(schreib\w*|erstell\w*|generier\w*|übersetz\w*|fass\w*|summar\w*|analysier\w*|prüf\w*|erklär\w*|extrahier\w*|klassifizier\w*|konvertier\w*|plan\w*|kürz\w*|paraphras\w*|korrigier\w*|bewert\w*|entwirf\w*|verfass\w*|fertig\w*|list\w*|identifizier\w*|find\w*|gib\w*|nenn\w*|ermittel\w*|zeig\w*|nutz\w*|write\w*|create\w*|generate\w*|translate\w*|summarize\w*|summarise\w*|analy\w*|review\w*|check\w*|extract\w*|classify\w*|convert\w*|plan\w*|draft\w*|rewrite\w*|rename\w*|refactor\w*|tidy\w*|fill\w*|explain\w*|improve\w*|identif\w*|enumerat\w*|collect\w*|select\w*|retriev\w*|show\w*|output\w*|return\w*|use)\b"
 );
 cached_regex!(
     goal_clause_re,
@@ -44,7 +44,7 @@ cached_regex!(
     // with meeting/notes/description/plan-family terms so "Summarize the
     // meeting notes." / "Write a product description ..." are Strong goals.
     deliverable_re,
-    r"(?i)(paragraph|absatz|article|artikel|text|string|function|bericht|report|email|zusammenfassung|summary|list|liste|sentence|satz|notes|notizen|meeting|protokoll|minutes|description|beschreibung|overview|überblick|plan|roadmap|report summary)"
+    r"(?i)(paragraph|absatz|article|artikel|text|string|function|bericht|report|email|zusammenfassung|summary|list|liste|sentence|satz|notes|notizen|meeting|protokoll|minutes|description|beschreibung|overview|überblick|plan|roadmap|report summary|release note|release notes|product description|checklist|guide|workflow|template|guideline|explanation|blog post|concept|training plan|invitation|feedback|code)"
 );
 cached_regex!(
     // F2 vague-goal regex: transform stems (summar/fass/summarize) added so a
