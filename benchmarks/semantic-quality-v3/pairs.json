@@ -1,0 +1,35 @@
+[
+  {
+    "name": "H1/H2 boilerplate-isolation",
+    "scope": "holdout",
+    "members": [
+      "v3-h-task-en-terse-excellent-001",
+      "v3-h-task-en-fair-boilerplate-noise-001"
+    ],
+    "expected_relation": "score(H2) - score(H1) <= 5",
+    "relation": "delta_le",
+    "threshold": 5
+  },
+  {
+    "name": "A1/A2 terse-dev",
+    "scope": "dev",
+    "members": [
+      "v3-task-en-terse-excellent-001",
+      "v3-task-de-terse-excellent-002"
+    ],
+    "expected_relation": "A1 >= A2 - 10",
+    "relation": "delta_ge",
+    "threshold": -10
+  },
+  {
+    "name": "G1/G2 ambiguity-dev",
+    "scope": "dev",
+    "members": [
+      "v3-task-en-ambiguous-task-001",
+      "v3-task-de-ambiguous-task-002"
+    ],
+    "expected_relation": "within 15 points",
+    "relation": "band_within",
+    "threshold": 15
+  }
+]

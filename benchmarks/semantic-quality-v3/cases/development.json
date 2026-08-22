@@ -1,0 +1,668 @@
+[
+  {
+    "id": "v3-task-en-terse-excellent-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Extract the invoice number and due date from the document below. Return them as JSON with keys invoice_number and due_date.\n\n{{document}}",
+    "pair": "A1",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-terse-excellent-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Extrahiere die Rechnungsnummer und das Fälligkeitsdatum aus dem folgenden Dokument. Gib sie als JSON mit den Schlüsseln rechnungsnummer und faelligkeitsdatum zurück.\n\n{{dokument}}",
+    "pair": "A2",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-terse-excellent-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Translate the product label below into French. Preserve the brand name. Return only the translation.\n\n{{label}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-terse-excellent-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Fertige eine französische Fassung des Etiketts unten an. Der Markenname bleibt unverändert. Antworte ausschließlich mit der Fassung.\n\n{{etikett}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-terse-excellent-005",
+    "language": "en",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Summarize the outage report below in three bullet points. Return only the bullets.\n\n{{report}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-terse-excellent-006",
+    "language": "de",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Fasse den Störungsbericht unten in drei Stichpunkten zusammen. Gib nur die Stichpunkte zurück.\n\n{{bericht}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-terse-excellent-007",
+    "language": "en",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Classify the support ticket below as bug, feature_request, or question. Return only the label.\n\n{{ticket}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-good-natural-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-natural",
+    "provenance": "synthetic-v3",
+    "prompt": "Write a reply to the customer inquiry below. The customer ordered a headset that arrived with a cracked case and requests a replacement. Apologize, confirm the replacement will ship within two business days, and provide a return label for the damaged unit.\n\n{{inquiry}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-good-natural-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "good-natural",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe eine Antwort auf die Kundenanfrage unten. Der Kunde meldet einen Riss im Gehäuse des gelieferten Headsets und bittet um Ersatz. Entschuldige dich, bestätige den Versand des Ersatzes binnen zwei Werktagen und füge ein Rücksendeetikett für das defekte Gerät bei.\n\n{{anfrage}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-good-natural-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-natural",
+    "provenance": "synthetic-v3",
+    "prompt": "Draft a release note for version 2.4.0. The release adds dark mode, improves search speed by 30%, and fixes a crash when exporting large files. Mention the three points and thank the contributors.\n\n{{changelog}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-good-natural-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "good-natural",
+    "provenance": "synthetic-v3",
+    "prompt": "Verfasse eine kurze Produktbeschreibung für den neuen Rucksack. Er wiegt 800 Gramm, hat 28 Liter Volumen, ist wasserdicht und hat ein gepolstertes Laptopfach. Richte dich an Pendler.\n\n{{produktdaten}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-good-natural-005",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-natural",
+    "provenance": "synthetic-v3",
+    "prompt": "Explain the difference between unit tests and integration tests for a junior developer. Cover scope, speed, isolation, and when to use each. Keep it under 200 words.\n\n{{audience}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-good-natural-006",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-natural",
+    "provenance": "synthetic-v3",
+    "prompt": "Create a checklist for onboarding a new backend developer. Include repository setup, credential provisioning, architecture walkthrough, and first pull request. Return the checklist as markdown.\n\n{{team_setup}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-fair-incomplete-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Write a blog post about the new feature. Make it engaging.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-fair-incomplete-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe einen Blogbeitrag über das neue Feature. Er soll gut lesbar sein.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-fair-incomplete-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Summarize the meeting. Return the summary in a neat format.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-fair-incomplete-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Erstelle ein Konzept für die Veranstaltung. Beschreibe Ablauf und Zielgruppe.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-fair-incomplete-005",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Draft the quarterly update. Cover progress and risks.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-fair-incomplete-006",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Create a user guide for the mobile app. Include screenshots.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-fair-incomplete-007",
+    "language": "de",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe eine Einladung für das Sommerfest. Nenne Zeit und Ort.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-vague-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Do the thing better.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-vague-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Mach es einfach besser.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-vague-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Write something about our product. Make it nice.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-vague-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreib etwas über unser Produkt. Mach es gut.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-vague-005",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Create something useful for the team.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-vague-006",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Erstelle etwas Nützliches für das Team.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-vague-007",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Make a report about stuff. Include everything that matters.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-vague-008",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Erstelle einen Bericht über Dinge. Nimm alles Wichtige auf.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-vague-009",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Write a document that explains the concept. Keep it useful.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-vague-010",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe ein Dokument, das das Thema erklärt. Halte es nützlich.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-vague-011",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Prepare a presentation. It should be good.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-vague-012",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Bereite eine Präsentation vor. Sie soll gut sein.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-broken-buzzword-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-buzzword",
+    "provenance": "synthetic-v3",
+    "prompt": "Activate cross-functional empowerment through holistic thought leadership to orchestrate scalable paradigm shifts. Provide a synergistic deliverable with maximal impact.",
+    "adversarial_pattern": "buzzword-no-substance",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-broken-buzzword-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "broken-buzzword",
+    "provenance": "synthetic-v3",
+    "prompt": "Erschließe branchenführende Synergien durch holistische Hebelwirkung von Best Practices für ein umfassendes Rahmenwerk. Erziele exzellente, herausragende Weltklasse-Ergebnisse mit innovativer Spitzenleistung. Gib Output auf höchstem Niveau zurück.",
+    "adversarial_pattern": "buzzword-no-substance",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-broken-buzzword-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-buzzword",
+    "provenance": "synthetic-v3",
+    "prompt": "Mobilize disruptive innovation via holistic ecosystems to catalyze paradigm shifts. Deliver an impactful outcome through robust methodologies.",
+    "adversarial_pattern": "buzzword-no-substance",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-broken-buzzword-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "broken-buzzword",
+    "provenance": "synthetic-v3",
+    "prompt": "Nutze hochmoderne Synergien, um ganzheitliche Paradigmenwechsel durch erstklassige Best Practices zu treiben. Liefere umfassende Weltklasse-Exzellenz durch innovative robuste Lösungen.",
+    "adversarial_pattern": "buzzword-no-substance",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-broken-buzzword-005",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-buzzword",
+    "provenance": "synthetic-v3",
+    "prompt": "As a synergistic thought leader, deploy next-generation leverage of holistic ecosystems. Achieve unparalleled state-of-the-art excellence with comprehensive best-in-class frameworks.",
+    "adversarial_pattern": "buzzword-no-substance",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-broken-contradictory-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-contradictory",
+    "provenance": "synthetic-v3",
+    "prompt": "Write the summary in German. Write the same summary in English. Include a conclusion. Do not include a conclusion.",
+    "adversarial_pattern": "contradictory-requirements",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-broken-contradictory-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "broken-contradictory",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe die Zusammenfassung auf Deutsch. Schreibe die Zusammenfassung auf Englisch. Beginne mit dem Fazit. Ende mit dem Fazit.",
+    "adversarial_pattern": "contradictory-requirements",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-broken-contradictory-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-contradictory",
+    "provenance": "synthetic-v3",
+    "prompt": "Return only JSON. Return only plain text. Write in active voice. Write in passive voice.",
+    "adversarial_pattern": "contradictory-requirements",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-broken-contradictory-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "broken-contradictory",
+    "provenance": "synthetic-v3",
+    "prompt": "Gib nur YAML zurück. Gib nur XML zurück. Nenne keine Zahlen. Gib alle Zahlen lückenlos an.",
+    "adversarial_pattern": "contradictory-requirements",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-broken-contradictory-005",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-contradictory",
+    "provenance": "synthetic-v3",
+    "prompt": "Do not use the web. Web lookup is mandatory. Cite no sources. Cite all sources.",
+    "adversarial_pattern": "contradictory-requirements",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-fair-boilerplate-noise-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-boilerplate-noise",
+    "provenance": "synthetic-v3",
+    "prompt": "Write a product description for the wireless mouse. The mouse has ergonomic shape, silent clicks, and 18-month battery. Keep it under 100 words.\n\nCompliance note: handle this request under the standing privacy rules. Do not pass on personal details.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-fair-boilerplate-noise-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "fair-boilerplate-noise",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe eine Produktbeschreibung für die Funkmaus. Sie hat ergonomische Form, leise Tasten und 18 Monate Laufzeit. Halte dich unter 100 Wörtern.\n\nHinweis: Beachte die geltenden Datenschutzregeln. Gib keine personenbezogenen Daten weiter.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-fair-boilerplate-noise-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-boilerplate-noise",
+    "provenance": "synthetic-v3",
+    "prompt": "Summarize the customer feedback below in two sentences. Return only the summary.\n\n{{feedback}}\n\nPrivacy notice: do not include any personal identifiers in the response.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-fair-boilerplate-noise-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "fair-boilerplate-noise",
+    "provenance": "synthetic-v3",
+    "prompt": "Verdichte das Kundenfeedback unten auf zwei Sätze. Liefere nur die Verdichtung.\n\n{{feedback}}\n\nHinweis: Keine identifizierenden Angaben aufnehmen.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-repetitive-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-repetitive",
+    "provenance": "synthetic-v3",
+    "prompt": "You are a helpful assistant. You are a helpful assistant. You are a helpful assistant. You are a helpful assistant. Write a tagline for the new beverage. Write a tagline for the new beverage. Write a tagline for the new beverage.",
+    "adversarial_pattern": "repeated-role",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-repetitive-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-repetitive",
+    "provenance": "synthetic-v3",
+    "prompt": "Du bist ein hilfreicher Assistent. Du bist ein hilfreicher Assistent. Du bist ein hilfreicher Assistent. Schreibe einen Slogan für das neue Getränk. Schreibe einen Slogan für das neue Getränk.",
+    "adversarial_pattern": "repeated-role",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-repetitive-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-repetitive",
+    "provenance": "synthetic-v3",
+    "prompt": "You are an expert writer. You are an expert writer. You are an expert writer. Draft a headline for the campaign. Draft a headline for the campaign.",
+    "adversarial_pattern": "repeated-role",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-repetitive-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-repetitive",
+    "provenance": "synthetic-v3",
+    "prompt": "Du bist ein erfahrener Texter. Du bist ein erfahrener Texter. Schreibe eine Überschrift für die Kampagne. Schreibe eine Überschrift für die Kampagne.",
+    "adversarial_pattern": "repeated-role",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-good-coding-concrete-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-coding-concrete",
+    "provenance": "synthetic-v3",
+    "prompt": "Write a Python function that validates an ISBN-13 string. The function should strip hyphens, check length 13, verify the checksum via the standard weighting, and return True or False. Include a docstring and two examples.\n\n{{isbn_example}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-good-coding-concrete-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "good-coding-concrete",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe eine Python-Funktion, die eine IBAN auf Gültigkeit prüft. Sie soll Leerzeichen entfernen, die Länge je nach Ländercode prüfen und die Prüfziffer per Modulo 97 verifizieren. Füge einen Docstring und zwei Beispiele hinzu.\n\n{{iban_beispiel}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-good-coding-concrete-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-coding-concrete",
+    "provenance": "synthetic-v3",
+    "prompt": "Implement a TypeScript function that debounces a callback: it should delay execution by the given milliseconds and reset the timer on each call. Export the function and include a usage example.\n\n{{callback_spec}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-coding-vague-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-coding-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Write some code to handle the data.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-poor-coding-vague-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-coding-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe Code, der die Daten verarbeitet.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-poor-coding-vague-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-coding-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Create a program that does the thing with the input.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-good-agent-workflow-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-agent-workflow",
+    "provenance": "synthetic-v3",
+    "prompt": "Design an agent workflow that triages incoming support tickets: classify intent (billing, technical, general), assign priority (high if outage keyword, else medium), route to the correct queue, and draft an acknowledgement. Return the workflow as numbered steps with owners.\n\n{{ticket_sample}}",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-good-agent-workflow-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "good-agent-workflow",
+    "provenance": "synthetic-v3",
+    "prompt": "Entwirf einen Agenten-Workflow zur Bearbeitung von Reklamationen: Erfasse Grund, prüfe Garantie, entscheide über Ersatz oder Reparatur, und erstelle die Kundenantwort. Gib den Ablauf als nummerierte Schritte mit Zuständigkeiten zurück.\n\n{{reklamation}}",
+    "tags": []
+  },
+  {
+    "id": "v3-template-en-reusable-template-001",
+    "language": "en",
+    "kind": "template",
+    "stratum": "reusable-template",
+    "provenance": "synthetic-v3",
+    "prompt": "# Vorfallbericht\n\n- Date: {{date}}\n- Reporter: {{reporter}}\n- System: {{system}}\n\n## Summary\n{{summary}}\n\n## Impact\n{{impact}}\n\n## Timeline\n{{timeline}}\n\n## Resolution\n{{resolution}}\n\nFill each section. If a section has no content, write NOTHING.",
+    "tags": []
+  },
+  {
+    "id": "v3-template-de-reusable-template-002",
+    "language": "de",
+    "kind": "template",
+    "stratum": "reusable-template",
+    "provenance": "synthetic-v3",
+    "prompt": "# Besprechungsprotokoll\n\n- Datum: {{datum}}\n- Teilnehmer: {{teilnehmer}}\n- Moderator: {{moderator}}\n\n## Tagesordnung\n{{tagesordnung}}\n\n## Beschlüsse\n{{beschluesse}}\n\n## Aufgaben\n{{aufgaben}}\n\nErgänze jeden Block. Leere Blöcke mit NICHTS markieren.",
+    "tags": []
+  },
+  {
+    "id": "v3-template-en-reusable-template-003",
+    "language": "en",
+    "kind": "template",
+    "stratum": "reusable-template",
+    "provenance": "synthetic-v3",
+    "prompt": "# Freigabe-Prüfliste\n\n- Version: {{version}}\n- Tag: {{date}}\n- Verantwortlich: {{owner}}\n\n## Prüfungen\n{{tests}}\n\n## Risiken\n{{risks}}\n\n## Rückabwicklung\n{{rollback}}\n\nErgänze jeden Block. Leere Blöcke mit NOTHING kennzeichnen.",
+    "tags": []
+  },
+  {
+    "id": "v3-template-de-reusable-template-004",
+    "language": "de",
+    "kind": "template",
+    "stratum": "reusable-template",
+    "provenance": "synthetic-v3",
+    "prompt": "# Onboarding-Checkliste\n\n- Mitarbeiter: {{mitarbeiter}}\n- Abteilung: {{abteilung}}\n- Start: {{start}}\n\n## Zugänge\n{{zugaenge}}\n\n## Schulungen\n{{schulungen}}\n\nFülle jeden Bereich aus. Leere Bereiche mit NICHTS markieren.",
+    "tags": []
+  },
+  {
+    "id": "v3-template-en-reusable-template-005",
+    "language": "en",
+    "kind": "template",
+    "stratum": "reusable-template",
+    "provenance": "synthetic-v3",
+    "prompt": "# Handover Note\n\n- From: {{from}}\n- To: {{to}}\n- Date: {{date}}\n\n## Context\n{{context}}\n\n## Open Items\n{{open_items}}\n\n## Next Steps\n{{next_steps}}\n\nFill every field. Write NOTHING for empty fields.",
+    "tags": []
+  },
+  {
+    "id": "v3-guideline-en-guideline-001",
+    "language": "en",
+    "kind": "guideline",
+    "stratum": "guideline",
+    "provenance": "synthetic-v3",
+    "prompt": "# Kodex für Code-Prüfung\n\n- Begrenze Pull Requests auf 300 Zeilen.\n- Fordere zwei Freigaben vor dem Merge.\n- Beschreibe die Änderungen in der Summary.\n- Führe keine Merges bei fehlgeschlagenen Checks durch.",
+    "tags": []
+  },
+  {
+    "id": "v3-guideline-de-guideline-002",
+    "language": "de",
+    "kind": "guideline",
+    "stratum": "guideline",
+    "provenance": "synthetic-v3",
+    "prompt": "# Richtlinie für Kundengespräche\n\n- Begrüße den Kunden namentlich.\n- Wiederhole das Anliegen in eigenen Worten.\n- Biete eine Lösung oder einen nächsten Schritt an.\n- Dokumentiere das Gespräch im CRM.",
+    "tags": []
+  },
+  {
+    "id": "v3-guideline-en-guideline-003",
+    "language": "en",
+    "kind": "guideline",
+    "stratum": "guideline",
+    "provenance": "synthetic-v3",
+    "prompt": "# Writing Policy\n\n- Use plain language.\n- Keep paragraphs under four sentences.\n- Include a concrete example for every abstract claim.\n- Avoid jargon unless defined immediately.",
+    "tags": []
+  },
+  {
+    "id": "v3-guideline-de-guideline-004",
+    "language": "de",
+    "kind": "guideline",
+    "stratum": "guideline",
+    "provenance": "synthetic-v3",
+    "prompt": "# Sicherheitsrichtlinie für den Umgang mit Kundendaten\n\n- Speichere keine Passwörter im Klartext.\n- Protokolliere Zugriffe auf sensible Daten.\n- Lösche temporäre Exportdateien nach 24 Stunden.",
+    "tags": []
+  },
+  {
+    "id": "v3-guideline-en-guideline-005",
+    "language": "en",
+    "kind": "guideline",
+    "stratum": "guideline",
+    "provenance": "synthetic-v3",
+    "prompt": "# Leitfaden für Commit-Nachrichten\n\n- Beginne mit einem Verb im Imperativ.\n- Verweise auf das Ticket in der Fußzeile.\n- Halte den Betreff unter 60 Zeichen.\n- Erläutere das Warum, nicht nur das Was.",
+    "tags": []
+  },
+  {
+    "id": "v3-guideline-de-guideline-006",
+    "language": "de",
+    "kind": "guideline",
+    "stratum": "guideline",
+    "provenance": "synthetic-v3",
+    "prompt": "# Antwortstil für interne Berichte\n\n- Formuliere sachlich und präzise.\n- Nenne Quelle und Datum für jede Zahl.\n- Vermeide wertende Adjektive ohne Beleg.",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-ambiguous-task-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "ambiguous-task",
+    "provenance": "synthetic-v3",
+    "prompt": "Refine the draft to be more compelling. Focus on what matters most.",
+    "pair": "G1",
+    "tags": []
+  },
+  {
+    "id": "v3-task-de-ambiguous-task-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "ambiguous-task",
+    "provenance": "synthetic-v3",
+    "prompt": "Überarbeite den Entwurf so, dass er überzeugender wirkt. Konzentriere dich auf das Wesentliche.",
+    "pair": "G2",
+    "tags": []
+  },
+  {
+    "id": "v3-task-en-ambiguous-task-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "ambiguous-task",
+    "provenance": "synthetic-v3",
+    "prompt": "Strengthen the proposal. Make the value proposition clearer for the reader.",
+    "tags": []
+  }
+]

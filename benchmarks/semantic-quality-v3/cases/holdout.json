@@ -1,0 +1,227 @@
+[
+  {
+    "id": "v3-h-task-en-terse-excellent-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Extract the order ID and delivery date from the confirmation below. Return them as JSON with keys order_id and delivery_date.\n\n{{confirmation}}",
+    "pair": "H1",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-fair-boilerplate-noise-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-boilerplate-noise",
+    "provenance": "synthetic-v3",
+    "prompt": "Extract the order ID and delivery date from the confirmation below. Return them as JSON with keys order_id and delivery_date.\n\n{{confirmation}}\n\nCompliance note: handle this request under the standing privacy rules. Do not pass on personal details.",
+    "pair": "H2",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-de-terse-excellent-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "Extrahiere die Bestellnummer und das Lieferdatum aus der Bestätigung unten. Gib sie als JSON mit den Schlüsseln bestellnummer und lieferdatum zurück.\n\n{{bestaetigung}}",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-terse-excellent-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "terse-excellent",
+    "provenance": "synthetic-v3",
+    "prompt": "List the three action items and their owners from the notes below. Return one per line.\n\n{{meeting_notes}}",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-good-natural-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "good-natural",
+    "provenance": "synthetic-v3",
+    "prompt": "Compose a thank-you email to the interview candidate below. Mention the role (Data Analyst), appreciate the time, note the decision timeline (one week), and keep a warm tone.\n\n{{candidate}}",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-de-good-natural-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "good-natural",
+    "provenance": "synthetic-v3",
+    "prompt": "Verfasse eine Dankesmail an die Bewerberin unten. Nenne die Rolle (Data Analyst), danke für die Zeit, nenne die Entscheidungsfrist (eine Woche) und halte einen freundlichen Ton.\n\n{{bewerberin}}",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-fair-incomplete-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Create a training plan for the new hire. Cover the essentials.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-de-fair-incomplete-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Erstelle einen Trainingsplan für die neue Mitarbeiterin. Deck das Wesentliche ab.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-fair-incomplete-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "fair-incomplete",
+    "provenance": "synthetic-v3",
+    "prompt": "Write an article about sustainable packaging. Make it informative.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-poor-vague-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Just make it work somehow.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-de-poor-vague-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Mach es einfach irgendwie.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-poor-vague-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Fix the problem with the thing.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-de-poor-vague-004",
+    "language": "de",
+    "kind": "task",
+    "stratum": "poor-vague",
+    "provenance": "synthetic-v3",
+    "prompt": "Behebe das Problem mit der Sache.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-broken-buzzword-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-buzzword",
+    "provenance": "synthetic-v3",
+    "prompt": "Orchestrate disruptive synergy through holistic state-of-the-art paradigms. Deliver next-level cutting-edge excellence via robust scalable frameworks with world-class best practices.",
+    "adversarial_pattern": "buzzword-no-substance",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-de-broken-buzzword-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "broken-buzzword",
+    "provenance": "synthetic-v3",
+    "prompt": "Orchestriere disruptive Synergien durch holistische State-of-the-Art-Paradigmen. Liefere Next-Level exzellente Weltklasse-Ergebnisse durch robuste skalierbare Rahmenwerke mit Best Practices.",
+    "adversarial_pattern": "buzzword-no-substance",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-broken-buzzword-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-buzzword",
+    "provenance": "synthetic-v3",
+    "prompt": "Harness synergistic leverage of holistic cutting-edge ecosystems. Provide comprehensive world-class outstanding deliverables via innovative thought leadership.",
+    "adversarial_pattern": "buzzword-no-substance",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-broken-contradictory-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-contradictory",
+    "provenance": "synthetic-v3",
+    "prompt": "Start with the introduction. End with the introduction. Use metric units. Use imperial units.",
+    "adversarial_pattern": "contradictory-requirements",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-de-broken-contradictory-002",
+    "language": "de",
+    "kind": "task",
+    "stratum": "broken-contradictory",
+    "provenance": "synthetic-v3",
+    "prompt": "Schreibe in aktiver Form. Schreibe in passiver Form. Gib eine Zusammenfassung am Ende. Gib keine Zusammenfassung.",
+    "adversarial_pattern": "contradictory-requirements",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-broken-contradictory-003",
+    "language": "en",
+    "kind": "task",
+    "stratum": "broken-contradictory",
+    "provenance": "synthetic-v3",
+    "prompt": "Include all numbers. Exclude all numbers. Show your reasoning. Do not show your reasoning.",
+    "adversarial_pattern": "contradictory-requirements",
+    "tags": []
+  },
+  {
+    "id": "v3-h-task-en-poor-repetitive-001",
+    "language": "en",
+    "kind": "task",
+    "stratum": "poor-repetitive",
+    "provenance": "synthetic-v3",
+    "prompt": "You are a friendly helper. You are a friendly helper. You are a friendly helper. Draft an invitation for the team event. Draft an invitation for the team event.",
+    "adversarial_pattern": "repeated-role",
+    "tags": []
+  },
+  {
+    "id": "v3-h-template-en-reusable-template-001",
+    "language": "en",
+    "kind": "template",
+    "stratum": "reusable-template",
+    "provenance": "synthetic-v3",
+    "prompt": "# Projektvorschlag\n\n- Titel: {{title}}\n- Leitung: {{lead}}\n- Budget: {{budget}}\n\n## Ziele\n{{objectives}}\n\n## Ergebnisse\n{{deliverables}}\n\n## Zeitplan\n{{timeline}}\n\nFülle jeden Block. Leere Blöcke mit NOTHING markieren.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-template-de-reusable-template-002",
+    "language": "de",
+    "kind": "template",
+    "stratum": "reusable-template",
+    "provenance": "synthetic-v3",
+    "prompt": "# Projektantrag\n\n- Titel: {{titel}}\n- Leitung: {{leitung}}\n- Budget: {{budget}}\n\n## Ziele\n{{ziele}}\n\n## Ergebnisse\n{{ergebnisse}}\n\n## Zeitplan\n{{zeitplan}}\n\nErgänze jeden Block. Leere Blöcke mit NICHTS markieren.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-guideline-en-guideline-001",
+    "language": "en",
+    "kind": "guideline",
+    "stratum": "guideline",
+    "provenance": "synthetic-v3",
+    "prompt": "# Deployment Guidelines\n\n- Run the full test suite before tagging a release.\n- Document breaking changes in the changelog.\n- Require approval from the release manager.\n- Never force-push to shared branches.",
+    "tags": []
+  },
+  {
+    "id": "v3-h-guideline-de-guideline-002",
+    "language": "de",
+    "kind": "guideline",
+    "stratum": "guideline",
+    "provenance": "synthetic-v3",
+    "prompt": "# Leitfaden für E-Mail-Kommunikation\n\n- Beantworte Anfragen binnen eines Arbeitstages.\n- Formuliere Betreffzeilen präzise und aussagekräftig.\n- Hänge keine sensiblen Dokumente unverschlüsselt an.",
+    "tags": []
+  }
+]
