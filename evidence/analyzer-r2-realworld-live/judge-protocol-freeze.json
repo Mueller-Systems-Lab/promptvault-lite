@@ -1,0 +1,21 @@
+{
+  "RUBRIC_SHA256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "RUBRIC_PATH": "benchmarks/semantic-quality-v5/rubric.json",
+  "JUDGE_PROMPT_TEMPLATE_SHA256": "8058794557a1340ccac2d9f5250d66e67fd23b14bc5e3dcd0e7bb427670a6595",
+  "JUDGE_PROMPT_TEMPLATE_PATH": "judge_prompt_template.txt",
+  "OUTPUT_SCHEMA_SHA256": "6cafa2882b3fec930f5f8d5f8caeaf7a37feb216cf31825c02f4d2888d7d955a",
+  "OUTPUT_SCHEMA_PATH": "output_schema.json",
+  "ADJUDICATION_POLICY_SHA256": "c47ae5b98ef8e1df1473c1baf67d34ba2e08ceee80e83eebbd920acf635b3530",
+  "ADJUDICATION_POLICY_PATH": "adjudication_policy.txt",
+  "JUDGE_A_MODEL": "opencode/muse-spark-1.2-contributor-free",
+  "JUDGE_A_PROVIDER": "opencode",
+  "JUDGE_A_FAMILY": "muse (Meta)",
+  "JUDGE_B_MODEL": "opencode/mimo-v2.5-free",
+  "JUDGE_B_PROVIDER": "opencode",
+  "JUDGE_B_FAMILY": "mimo (Xiaomi)",
+  "JUDGE_C_MODEL": "opencode/hy3-free",
+  "JUDGE_C_PROVIDER": "opencode",
+  "JUDGE_C_FAMILY": "hy3 (Specialized)",
+  "BLINDNESS_ENFORCED": true,
+  "PROMPTVAULT_SCORES_NOT_SENT": true
+}

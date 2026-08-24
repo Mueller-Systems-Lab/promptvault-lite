@@ -1,0 +1,284 @@
+[
+  {
+    "id": "v4-task-en-terse-excellent-001",
+    "prompt": "Extract the invoice number and due date from the document below. Return them as JSON with keys invoice_number and due_date.\n\n{{document}}",
+    "gold_score": 92,
+    "gold_band": "EXCELLENT",
+    "judge_score": 100,
+    "judge_band": "EXCELLENT",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 100,
+      "quality_band": "EXCELLENT",
+      "fit_for_purpose": "YES",
+      "prompt_type": "Extraction",
+      "critical_issues": [],
+      "missing_information": [],
+      "confidence": 0.97
+    },
+    "elapsed_ms": 40171,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-task-de-good-natural-002",
+    "prompt": "Verfasse eine kurze Produktbeschreibung f\u00fcr den neuen Rucksack. Er wiegt 800 Gramm, hat 28 Liter Volumen, ist wasserdicht und hat ein gepolstertes Laptopfach. Richte dich an Pendler.\n\n{{produktdaten}}",
+    "gold_score": 84,
+    "gold_band": "GOOD",
+    "judge_score": 72,
+    "judge_band": "GOOD",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 72,
+      "quality_band": "GOOD",
+      "fit_for_purpose": "YES",
+      "prompt_type": "Task",
+      "critical_issues": [],
+      "missing_information": [
+        "{{produktdaten}} placeholder is undefined - executor cannot determine what data to include or how to resolve it",
+        "No explicit output format or length constraint for 'kurze Produktbeschreibung'"
+      ],
+      "confidence": 0.92
+    },
+    "elapsed_ms": 42595,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-task-en-fair-incomplete-001",
+    "prompt": "Create a training plan for the new hire. Cover the essentials.",
+    "gold_score": 59,
+    "gold_band": "FAIR",
+    "judge_score": 53,
+    "judge_band": "POOR",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 53,
+      "quality_band": "POOR",
+      "fit_for_purpose": "NO",
+      "prompt_type": "Task",
+      "critical_issues": [
+        "Goal lacks specificity - 'training plan' undefined scope, no success criteria",
+        "No context about new hire role, department, skills, or experience level",
+        "Output format entirely unspecified - no structure, length, or delivery format",
+        "Ambiguous scope - 'essatives' undefined, no timeline or depth specified",
+        "Multiple material decisions left open - executor must invent approach"
+      ],
+      "missing_information": [
+        "Role/position of the new hire",
+        "Department or team context",
+        "Required skills or knowledge areas",
+        "Training timeline and duration",
+        "Desired output format and structure",
+        "Company-specific onboarding requirements",
+        "Assessment or evaluation criteria"
+      ],
+      "confidence": 0.95
+    },
+    "elapsed_ms": 45515,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-task-en-poor-vague-001",
+    "prompt": "Just make it work somehow.",
+    "gold_score": 38,
+    "gold_band": "BROKEN",
+    "judge_score": 11,
+    "judge_band": "BROKEN",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 11,
+      "quality_band": "BROKEN",
+      "fit_for_purpose": "NO",
+      "prompt_type": "Task",
+      "critical_issues": [
+        "No goal defined \u2014 'make it work somehow' gives no verifiable objective",
+        "No context \u2014 what system, application, or component is referenced is entirely absent",
+        "No input specified",
+        "No output contract or success criteria",
+        "No actionable instructions \u2014 executor must invent everything",
+        "Semantically near-empty; essentially no faithful execution possible"
+      ],
+      "missing_information": [
+        "Goal/objective and definition of 'work'",
+        "Target system or application context",
+        "Success criteria or acceptance conditions",
+        "Input/output specifications",
+        "Any constraints or boundary conditions"
+      ],
+      "confidence": 0.98
+    },
+    "elapsed_ms": 44906,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-task-en-broken-contradictory-001",
+    "prompt": "Start with the introduction. End with the introduction. Use metric units. Use imperial units.",
+    "gold_score": 19,
+    "gold_band": "BROKEN",
+    "judge_score": 0,
+    "judge_band": "BROKEN",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 0,
+      "quality_band": "BROKEN",
+      "fit_for_purpose": "NO",
+      "prompt_type": "Other",
+      "critical_issues": [
+        "Direct contradiction: 'Use metric units' and 'Use imperial units' cannot both be satisfied",
+        "No actual task or deliverable is defined",
+        "Self-defeating instructions: 'Start with the introduction. End with the introduction.' with no document or content specified"
+      ],
+      "missing_information": [
+        "No task objective or goal stated",
+        "No input/content specified to work on",
+        "No output format or deliverable defined"
+      ],
+      "confidence": 0.95
+    },
+    "elapsed_ms": 40970,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-guideline-en-guideline-001",
+    "prompt": "# Deployment Guidelines\n\n- Run the full test suite before tagging a release.\n- Document breaking changes in the changelog.\n- Require approval from the release manager.\n- Never force-push to shared bra",
+    "gold_score": 86,
+    "gold_band": "EXCELLENT",
+    "judge_score": 76,
+    "judge_band": "GOOD",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 76,
+      "quality_band": "GOOD",
+      "fit_for_purpose": "YES",
+      "prompt_type": "Guideline",
+      "critical_issues": [],
+      "missing_information": [
+        "No project context specified (what system, team, or environment these guidelines apply to)"
+      ],
+      "confidence": 0.85
+    },
+    "elapsed_ms": 38877,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-template-en-reusable-template-001",
+    "prompt": "# Project Proposal\n\n- Title: {{title}}\n- Lead: {{lead}}\n- Budget: {{budget}}\n\n## Objectives\n{{objectives}}\n\n## Deliverables\n{{deliverables}}\n\n## Timeline\n{{timeline}}\n\nFill each block. Mark empty bloc",
+    "gold_score": 79,
+    "gold_band": "GOOD",
+    "judge_score": 91,
+    "judge_band": "EXCELLENT",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 91,
+      "quality_band": "EXCELLENT",
+      "fit_for_purpose": "YES",
+      "prompt_type": "Template",
+      "critical_issues": [],
+      "missing_information": [],
+      "confidence": 0.92
+    },
+    "elapsed_ms": 29628,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-task-en-broken-buzzword-001",
+    "prompt": "Orchestrate disruptive synergy through holistic state-of-the-art paradigms. Deliver next-level cutting-edge excellence via robust scalable frameworks with world-class best practices.",
+    "gold_score": 19,
+    "gold_band": "BROKEN",
+    "judge_score": 0,
+    "judge_band": "BROKEN",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 0,
+      "quality_band": "BROKEN",
+      "fit_for_purpose": "NO",
+      "prompt_type": "Task",
+      "critical_issues": [
+        "No goal or deliverable specified; prompt is a string of buzzwords with no concrete objective",
+        "No input defined; executor has no data or materials to work with",
+        "No output format, structure, or success criteria stated",
+        "No actionable steps or concrete verbs; 'orchestrate' and 'deliver' are vague without substance",
+        "Semantically empty; entire prompt is jargon without operational meaning",
+        "No context provided about domain, audience, system, or purpose"
+      ],
+      "missing_information": [
+        "What specific deliverable or outcome is expected",
+        "What inputs or data the executor needs",
+        "What domain, system, or context this applies to",
+        "What 'synergy', 'paradigms', or 'excellence' concretely mean here",
+        "What format the response should take",
+        "What constraints or quality criteria define success"
+      ],
+      "confidence": 0.99
+    },
+    "elapsed_ms": 36672,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-task-en-ambiguous-task-001",
+    "prompt": "Refine the draft to be more compelling. Focus on what matters most.",
+    "gold_score": 63,
+    "gold_band": "FAIR",
+    "judge_score": 54,
+    "judge_band": "POOR",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 54,
+      "quality_band": "POOR",
+      "fit_for_purpose": "NO",
+      "prompt_type": "Transformation",
+      "critical_issues": [
+        "Draft not provided",
+        "Goal is vague and success not observable",
+        "Output format not specified",
+        "Essential context missing (draft content, purpose, audience)"
+      ],
+      "missing_information": [
+        "The draft content",
+        "Purpose of the draft",
+        "Target audience",
+        "Criteria for 'compelling'",
+        "What 'matters most' refers to"
+      ],
+      "confidence": 0.9
+    },
+    "elapsed_ms": 51642,
+    "parse_msg": ""
+  },
+  {
+    "id": "v4-task-en-fair-boilerplate-noise-001",
+    "prompt": "Extract the order ID and delivery date from the confirmation below. Return them as JSON with keys order_id and delivery_date.\n\n{{confirmation}}\n\nCompliance note: handle this request under the standing",
+    "gold_score": 60,
+    "gold_band": "FAIR",
+    "judge_score": 84,
+    "judge_band": "GOOD",
+    "within_one": true,
+    "valid_schema": true,
+    "raw": {
+      "overall_score": 84,
+      "quality_band": "GOOD",
+      "fit_for_purpose": "YES",
+      "prompt_type": "Extraction",
+      "critical_issues": [],
+      "missing_information": [
+        "No fallback behavior specified if order_id or delivery_date cannot be extracted from the confirmation text"
+      ],
+      "recommended_improvements": [
+        "Clarify whether {{confirmation}} is a literal placeholder to be replaced with actual text before execution",
+        "Specify behavior when extraction fails or fields are missing (e.g., return null values, error message)",
+        "The compliance/privacy note is generic boilerplate; either make it specific to the extraction risk or remove it to reduce noise"
+      ],
+      "confidence": 0.88
+    },
+    "elapsed_ms": 38856,
+    "parse_msg": ""
+  }
+]
