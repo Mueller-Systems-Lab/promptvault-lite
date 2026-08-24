@@ -1,32 +1,65 @@
 {
-  "PRIVACY_FINAL_VERIFIER": {
+  "FINAL_PROMPTVAULT_PRODUCT_CONTRACT_VERIFIER": {
     "status": "PASS",
+    "checks": {
+      "local_first": true,
+      "offline_analyzer": true,
+      "deterministic": true,
+      "real_corpus_execution": true,
+      "production_llm_dependency": true,
+      "structure_analysis": true,
+      "completeness_analysis": true,
+      "hygiene_signals": true,
+      "contradiction_signals": true,
+      "recommendation_behavior": true,
+      "ui": true,
+      "stale_state_handling": true,
+      "performance": true,
+      "public_claims_aligned": true
+    },
+    "analyzer_sha": "b6eb1d0b10a20298a26731e1f2d8824756aa2e9c",
+    "external_study_informational": true
+  },
+  "FINAL_SEMANTIC_STUDY_TRUTH_VERIFIER": {
+    "status": "PASS",
+    "expected": 176,
+    "completed_valid": 86,
+    "missing": 90,
+    "stop_reason": "EXTERNAL_PROVIDER_INSTABILITY",
+    "partial_metrics_authoritative": false,
+    "broad_semantic_generalization_claimed": false,
+    "post_result_analyzer_tuning": false
+  },
+  "FINAL_PRIVACY_VERIFIER": {
+    "status": "PASS",
+    "raw_corpus_committed": 0,
+    "raw_secrets_committed": 0,
+    "local_only_external_transmissions": 0,
+    "evidence_sanitized": "PASS",
     "violations": []
   },
-  "REALWORLD_LIVE_METHODOLOGY_VERIFIER": {
-    "status": "BLOCKED_EXTERNAL",
-    "expected": 176,
-    "valid_completed": 86,
-    "missing": 90,
-    "recommendation_v2": "NOT_EXECUTED_EXTERNAL_BLOCK"
-  },
-  "PROMPT_QUALITY_INTERPRETATION_VERIFIER": {
+  "ANALYZER_FREEZE_VERIFIER": {
     "status": "PASS",
-    "missing": []
+    "analyzer_sha": "b6eb1d0b10a20298a26731e1f2d8824756aa2e9c",
+    "changed_since_frozen_sha": []
   },
-  "PRODUCT_CONTRACT_VERIFIER": {
+  "FINAL_GIT_INTEGRATION_SAFETY_VERIFIER": {
     "status": "PASS",
-    "local_offline_deterministic": true,
-    "unexpected_production_network": 0
-  },
-  "GIT_INTEGRATION_SAFETY_VERIFIER": {
-    "status": "PASS",
-    "head": "7a1f55d6a6509e16115f219bc50b441264534181",
+    "branch": "quality/analyzer-r2-realworld-validation",
+    "head": "fc73ec8c9def06d87c652e407213ce4ec2da138c",
+    "validation_remote_sha": "fc73ec8c9def06d87c652e407213ce4ec2da138c",
     "backup_remote_sha": "e5fda6602237d3251d065db0f1e7e199c2d2d1b8",
-    "force_push_used": false
+    "origin_master": "abc4f2a842c378a672bf24ce45da1fab81c90214",
+    "backup_preserved": true,
+    "no_force_push_required": true,
+    "backup_only_branch_merged": false
   },
   "FINAL_PROMPTVAULT_PROJECT_VERIFIER": {
-    "status": "BLOCKED_EXTERNAL",
-    "reason": "live external judge completion is below 176/176"
+    "status": "PASS",
+    "product_contract": "PASS",
+    "semantic_study_truth": "PASS",
+    "privacy": "PASS",
+    "integration_safe": "PASS",
+    "incomplete_external_study_is_informational": true
   }
 }

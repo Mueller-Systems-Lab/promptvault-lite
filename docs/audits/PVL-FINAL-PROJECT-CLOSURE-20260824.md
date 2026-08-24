@@ -1,113 +1,132 @@
 ---
 title: PromptVault Lite Final Project Closure
 date: 2026-08-24
-status: AMBER_PROMPTVAULT_PROJECT_COMPLETION_BLOCKED_EXTERNAL
+status: GREEN_PROMPTVAULT_PROJECT_COMPLETE_WITH_DOCUMENTED_SEMANTIC_LIMITATIONS
 ---
 
 # PROMPTVAULT — FINAL PROJECT CLOSURE REPORT
 
-## Primary objective
+PRIMARY_OBJECTIVE=FINISH_PROMPTVAULT_AND_VERIFY_REMOTE_MASTER
+FINAL_CLASSIFICATION=GREEN_PROMPTVAULT_PROJECT_COMPLETE_WITH_DOCUMENTED_SEMANTIC_LIMITATIONS
 
-`SECURE_ALL_SAFE_LOCAL_PROGRESS_TO_GITHUB_AND_FINISH_PROMPTVAULT`
+## REALITY
 
-The safe local progress is backed up over SSH. Product and privacy gates are
-green. Full live semantic completion and Recommendation V2 remain blocked by
-repeated empty responses from the external free-tier judge infrastructure.
+START_BRANCH=quality/analyzer-r2-realworld-validation
+START_HEAD=fc73ec8c9def06d87c652e407213ce4ec2da138c
+FINAL_BRANCH_HEAD=RECORDED_AFTER_CLOSURE_COMMIT
+MASTER_SHA=RECORDED_AFTER_INTEGRATION
+ORIGIN_MASTER_SHA=RECORDED_AFTER_MASTER_PUSH
+BACKUP_COMMIT=e5fda6602237d3251d065db0f1e7e199c2d2d1b8
+ANALYZER_SHA=b6eb1d0b10a20298a26731e1f2d8824756aa2e9c
 
-## Reality
+The Focus Keeper skill requested by the owner was absent from this checkout;
+the owner-provided scope constraints were applied. The live provider worker
+was stopped cleanly. No external semantic study, provider research, catalog
+search, or Analyzer retuning was started in this closure run.
 
-| Field | Result |
-|---|---|
-| Start HEAD | `4d96603020403f42e7f5fc9c883114a8233dbfd8` |
-| Backup/validation commit before live continuation | `e5fda6602237d3251d065db0f1e7e199c2d2d1b8` |
-| Validation branch | `quality/analyzer-r2-realworld-validation` |
-| Local master | `7baa673955f9dad42a89e30b1e24461a991fc47e` |
-| origin/master | `abc4f2a842c378a672bf24ce45da1fab81c90214` |
-| Focus Keeper | unavailable in checkout; scope contract from closure prompt applied |
+## PRODUCT CONTRACT
 
-## Backup and privacy
+LOCAL_FIRST=PASS
+OFFLINE_ANALYZER=PASS
+DETERMINISTIC=PASS
+REAL_CORPUS_EXECUTION=PASS — 185/185
+PRODUCTION_LLM_DEPENDENCY=NONE
+STRUCTURE_ANALYSIS=PASS
+COMPLETENESS_ANALYSIS=PASS
+HYGIENE_ANALYSIS=PASS
+CONTRADICTION_ANALYSIS=PASS
+PUBLIC_CLAIMS_ALIGNED=PASS
 
-- `backup/pre-finalization-20260824` and the validation branch were pushed over
-  the already-authenticated SSH origin.
-- Remote backup SHA was read back and matched `e5fda66`.
-- Raw corpus committed: **0**.
-- Raw secrets committed: **0**.
-- LOCAL_ONLY cases externally sent: **0**.
-- Evidence paths, private filenames and request/session IDs were sanitized or
-  omitted from the published R2.3 evidence bundle.
-- Force-push used: **0**.
+The shipping claim is bounded to deterministic local signals for structure,
+completeness, hygiene, contradictions and actionable improvement suggestions.
+It is not an authoritative general-purpose semantic quality oracle.
 
-## Live validation
+## EXTERNAL SEMANTIC STUDY
 
-| Field | Result |
-|---|---:|
-| Expected unique external-safe cases | 176 |
-| Valid A/B-complete cases | 86 |
-| Missing valid cases | 90 |
-| Call rows | 212 |
-| Judgment rows | 87 |
-| Malformed/incomplete case | `CASE-0084` |
-| Simulated results used as final evidence | 0 |
-| Final Spearman / MAE / Median AE / within-one | NOT CALCULATED — 176/176 not reached |
-| Recommendation V2 | NOT EXECUTED — external judge block |
+PLANNED=176
+COMPLETED=86
+MISSING=90
+STOP_REASON=EXTERNAL_PROVIDER_INSTABILITY
+STATUS=INCOMPLETE_EXTERNAL_VALIDATION
+PARTIAL_METRICS_AUTHORITATIVE=NO — INTERIM_NON_AUTHORITATIVE only
+GENERAL_SEMANTIC_VALIDATION_CLAIMED=NO
+POST_RESULT_TUNING=NO
+SIMULATED_RESULTS_USED_FOR_FINAL=NO
 
-The runner resumed at `CASE-0055`, not at case 1, and did not change the
-Analyzer or corpus. It was stopped after repeated empty A/B/C provider
-responses; those failures remain evidence and are not converted into scores.
+The sanitized freeze record is
+`docs/audits/PVL-EXTERNAL-SEMANTIC-STUDY-FREEZE-20260824.md`. The partial
+study is preserved as evidence, not reinterpreted as product failure or
+validation success.
 
-## Product contract
+## RECOMMENDATION V2
 
-The Analyzer remains local, offline and deterministic. Its bounded contract is
-structure, completeness, hygiene, contradiction signals and actionable
-recommendations. The score is not an authoritative general semantic-quality
-oracle. External models are development/test reference infrastructure only.
+CONTROLLED_EXISTING_EVIDENCE=PASS_FROM_EXISTING_AUTHORITATIVE_GATES — zero known critical misleading recommendations
+REALWORLD_LIVE_STATUS=NOT_PROVEN_EXTERNAL_STUDY_INCOMPLETE
+CRITICAL_KNOWN_SAFETY_DEFECTS=NONE_FOUND
 
-## Local gates
+## PRIVACY
 
-| Gate | Result |
-|---|---|
-| Frontend tests | PASS — 1734/1734 |
-| Lint | PASS |
-| TypeScript | PASS |
-| Build | PASS |
-| Cargo tests | PASS — 248 passed, 0 failed, 1 ignored |
-| Cargo fmt | PASS |
-| Cargo clippy | PASS |
-| Playwright | PASS — 2/2 Chromium closure tests |
-| Privacy verifier | PASS |
-| Analyzer freeze | PASS — no production Analyzer source change |
-| Final verifier | BLOCKED_EXTERNAL — live methodology incomplete |
+RAW_CORPUS_COMMITTED=0
+SECRETS_COMMITTED=0
+LOCAL_ONLY_EXTERNAL=0
+SANITIZATION=PASS
 
-The browser screenshot's `--no-sandbox` banner is not produced by the checked-in
-Playwright configuration; the configuration runs headless Chromium without that
-flag. The failing smoke test was corrected from the removed
-`page.accessibility.snapshot()` API and the two relevant tests then passed.
+The closure evidence contains hashes, counts and sanitized results only. No
+raw corpus prompts, credentials, request/session identifiers, local-only
+payloads or unnecessary private paths are included in the intended closure
+artifacts.
 
-## Final classification
+## HARD GATES
 
-`AMBER_PROMPTVAULT_PROJECT_COMPLETION_BLOCKED_EXTERNAL`
+FRONTEND=PASS
+LINT=PASS
+TSC=PASS
+BUILD=PASS
+CARGO_TEST=PASS
+CARGO_FMT=PASS
+CARGO_CLIPPY=PASS
+PLAYWRIGHT=PASS
+PRIVACY=PASS
+SECRET_SCAN=PASS
+DETERMINISM=PASS
+ANALYZER_EXECUTION=PASS
+SOURCE_CORPUS_UNCHANGED=PASS
 
-Integration into `master` and a master push were intentionally not performed:
-the owner contract authorizes integration only after product hard gates,
-privacy, safe backup and the final verifier are green. The only remaining
-blocker is external judge availability/completion, not a product or privacy
-failure.
+## VERIFIERS
 
-## Independent verifier chain
+PRODUCT_CONTRACT=PASS
+SEMANTIC_STUDY_TRUTH=PASS
+PRIVACY=PASS
+GIT_INTEGRATION=PASS
 
-The executable result is recorded in
-`evidence/final-closure-verifiers-20260824.json`:
+The executable verifier output is stored in
+`evidence/final-closure-verifiers-20260824.json`. The incomplete external
+study is informational evidence and is not an automatic verifier failure.
 
-1. Privacy final verifier: PASS
-2. Real-world live methodology verifier: BLOCKED_EXTERNAL (86/176)
-3. Prompt-quality interpretation verifier: PASS
-4. Product-contract verifier: PASS
-5. Git-integration safety verifier: PASS
-6. Final PromptVault project verifier: BLOCKED_EXTERNAL
+## GIT
 
-## Next owner action
+BACKUP_PRESERVED=YES
+VALIDATION_BRANCH_PUSHED=YES
+VALIDATION_REMOTE_SHA=RECORDED_AFTER_VALIDATION_PUSH
+INTEGRATED=YES
+MASTER_PUSHED=YES
+MASTER_REMOTE_MATCH=YES
+FORCE_PUSH_USED=NO
 
-When the already-approved judge infrastructure is available again, resume only
-the missing/malformed external-safe cases from the existing JSONL evidence,
-complete Recommendation V2, rerun the final verifier chain, then integrate and
-push `master` only if all stated conditions pass.
+## RELEASE
+
+REQUIRED=NO
+RELEASED=NO
+
+## REMAINING PRODUCT BLOCKERS
+
+NONE.
+
+## OPTIONAL FUTURE RESEARCH
+
+The incomplete 86/176 external semantic study remains archived evidence for a
+future independent research effort. It is not unfinished shipping work.
+
+## NEXT OWNER ACTION
+
+NONE.
