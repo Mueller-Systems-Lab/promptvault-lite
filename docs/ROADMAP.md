@@ -1,8 +1,8 @@
 # Roadmap — PromptVault Lite
 
 **Last updated:** 2026-08-24
-**Current version:** v1.12.0 (Linux x64 GitHub Release; Debian package, checksums and manifest)
-**Current milestone:** FINAL INSTALLABLE DESKTOP RELEASE — **RELEASED**
+**Current version:** v1.12.0 candidate (Linux x64 packages, checksums and manifest prepared)
+**Current milestone:** FINAL INSTALLABLE DESKTOP RELEASE — **BUILD COMPLETE / PUBLICATION BLOCKED**
 **Next target:** no release work is required for the bounded product contract; optional future research is independent external semantic validation.
 
 ---
@@ -31,7 +31,7 @@
 | Safe observability: `missing_info.*` / `direction.*` + bounded reason codes (safe-metadata-v1 fail-closed) | ✅ IMPLEMENTED |
 | Version bump to 1.12.0 for the desktop application | ✅ RELEASED |
 | Production native build proven (exe + NSIS + MSI, no feature env flags); native E2E 11/11; privacy sentinel 0 | ✅ PROVEN |
-| Release: tag + GitHub Release + Linux package publication | ✅ RELEASED |
+| Release: tag + GitHub Release + Linux package publication | ⏳ TAGGED; PUBLIC ASSET PUBLICATION BLOCKED |
 
 ## Recently Completed (v1.9.0)
 

@@ -10,7 +10,7 @@ last_updated: 2026-08-24
 ## Unterstützte Nutzung
 
 - **Entwicklung:** Linux, Windows (getestet auf Linux Mint 22.1 und Windows 10)
-- **Pre-built Installer (v1.12.0):** Linux x64 `.deb` als GitHub-Release-Asset
+- **Release candidate (v1.12.0):** Linux x64 `.deb`, `.rpm` and AppImage are built and checksummed; GitHub asset publication is still blocked from this host
 - Windows: the prior `v1.11.1` NSIS release remains available; no new Windows asset was produced in this Linux run
 - macOS: Nur Quellbau — kein pre-built Installer verfügbar
 - Docker: Nicht als Produktions-Deployment implementiert

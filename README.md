@@ -50,7 +50,7 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release & Publication Status
 
-**v1.12.0** is the current desktop release. It is local-first, offline-capable and deterministic, with bounded analysis of structure, completeness, hygiene and contradictions plus actionable improvement signals. Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
+**v1.12.0** is the final Linux release candidate. Its local-first, offline-capable and deterministic contract covers structure, completeness, hygiene and contradictions plus actionable improvement signals. The native packages are built and checksummed but are not publicly downloadable yet because GitHub asset publication is blocked on this host. Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
 
 | Platform | Asset |
 |---|---|
@@ -70,7 +70,7 @@ The existing `promptvault` CLI remains a separate Windows/NSIS release stream at
 
 ### Native App
 
-**Linux (v1.12.0):** download the `.deb` from the [v1.12.0 GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.12.0), then install it:
+**Linux (v1.12.0 candidate):** the `.deb`, `.rpm` and AppImage are prepared locally but are not publicly downloadable until the GitHub Release is published. Once published, install the `.deb` with:
 
 ```text
 # Debian/Ubuntu

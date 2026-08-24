@@ -19,9 +19,9 @@
 
 ---
 
-## v1.12.0 — FINAL INSTALLABLE DESKTOP RELEASE 🟢
+## v1.12.0 — FINAL INSTALLABLE DESKTOP RELEASE CANDIDATE 🟡
 
-**Status: RELEASED** — Linux x64 package, checksums and source-identity manifest are published. Windows `v1.12.0` and macOS installers were not produced on this Linux host; the immutable Windows `v1.11.1` release remains available.
+**Status: BUILD COMPLETE / PUBLICATION BLOCKED** — Linux x64 package, checksums and source-identity manifest are prepared. Windows `v1.12.0` and macOS installers were not produced on this Linux host; the immutable Windows `v1.11.1` release remains available.
 
 | Feature | Status | Evidence |
 | --- | --- | --- |
