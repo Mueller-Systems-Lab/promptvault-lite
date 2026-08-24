@@ -21,7 +21,7 @@
   },
   "GIT_INTEGRATION_SAFETY_VERIFIER": {
     "status": "PASS",
-    "head": "e5fda6602237d3251d065db0f1e7e199c2d2d1b8",
+    "head": "7a1f55d6a6509e16115f219bc50b441264534181",
     "backup_remote_sha": "e5fda6602237d3251d065db0f1e7e199c2d2d1b8",
     "force_push_used": false
   },
