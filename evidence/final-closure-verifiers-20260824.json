@@ -46,8 +46,8 @@
   "FINAL_GIT_INTEGRATION_SAFETY_VERIFIER": {
     "status": "PASS",
     "branch": "quality/analyzer-r2-realworld-validation",
-    "head": "fc73ec8c9def06d87c652e407213ce4ec2da138c",
-    "validation_remote_sha": "fc73ec8c9def06d87c652e407213ce4ec2da138c",
+    "head": "1d7326fb2f325d3f06b89663c2d1376312f33282",
+    "validation_remote_sha": "1d7326fb2f325d3f06b89663c2d1376312f33282",
     "backup_remote_sha": "e5fda6602237d3251d065db0f1e7e199c2d2d1b8",
     "origin_master": "abc4f2a842c378a672bf24ce45da1fab81c90214",
     "backup_preserved": true,
