@@ -1,13 +1,13 @@
 {
-  "ANALYZER_EXECUTION_SUCCESS_RATE": 100.0,
-  "MEAN_DURATION_MS": 859.2108108108108,
+  "ANALYZER_EXECUTION_SUCCESS_RATE": 100,
+  "MEAN_DURATION_MS": 1223.7783783783784,
   "TOTAL_ANALYSIS_ERRORS": 0,
   "TOTAL_ANALYZED_SUCCESSFULLY": 185,
-  "TOTAL_DURATION_MS": 158954,
+  "TOTAL_DURATION_MS": 226399,
   "TOTAL_PROMPTS_ATTEMPTED": 185,
   "results": [
     {
-      "ANALYSIS_DURATION_MS": 1894,
+      "ANALYSIS_DURATION_MS": 2773,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -58,13 +58,13 @@
       "ROUTING": "task",
       "SCORE": 27,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "1.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "e7bb5bbf8a65df8560627f957767d329f21a9d437a36acbc2c97489b434590e1",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 4056,
+      "ANALYSIS_DURATION_MS": 6489,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -115,13 +115,13 @@
       "ROUTING": "task",
       "SCORE": 25,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/10 Exit-Fähige Mobile-Game-Konzepte.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "18286e5f8d4b93ae2043404f703d5ad4c1edd00bfbb2f74cf21d6ec3d70d1f05",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 462,
+      "ANALYSIS_DURATION_MS": 707,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -169,13 +169,13 @@
       "ROUTING": "task",
       "SCORE": 68,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/ArcadeKitchen/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1c0d78a4b198ffe8264afd7149de5bcf0401c5ea7fb855666c888e44b22d2ed1",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 443,
+      "ANALYSIS_DURATION_MS": 690,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -223,13 +223,13 @@
       "ROUTING": "task",
       "SCORE": 69,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/BudgetCity/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d0d2d43ed7661391a45bc8c90c2ace56d7e198cdcd3c4fa9bc8916d9e6d7f6af",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 418,
+      "ANALYSIS_DURATION_MS": 621,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -276,13 +276,13 @@
       "ROUTING": "task",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/ChronoForge/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3b2a0c4b42d485a4f0f540af822ce95340eec2e8f0b47c75b77acdff9eddd59d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 457,
+      "ANALYSIS_DURATION_MS": 591,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -334,13 +334,13 @@
       "ROUTING": "task",
       "SCORE": 25,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/ColonyOS/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "aab8b23f310b2f43263e8b02e9449eff13536e172a1ba33f53e760c1a7ca5f12",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 523,
+      "ANALYSIS_DURATION_MS": 691,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -387,13 +387,13 @@
       "ROUTING": "task",
       "SCORE": 78,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/EchoMemory/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f03342516529ae20816c83b8308e1cb193b2570a801c4e719f6a8e63367e672d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 564,
+      "ANALYSIS_DURATION_MS": 760,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -440,13 +440,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/EmpireIdle/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "e20df80a731cce3ebd3a580abb61339b7860928e06cd45003297a3da2c95ec68",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 295,
+      "ANALYSIS_DURATION_MS": 474,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -492,13 +492,13 @@
       "ROUTING": "task",
       "SCORE": 84,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/FlowCut/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "07a59e90e76ea43c20ac0d90c03edf54bd7f70d9d55768e2e62cc32957186503",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 398,
+      "ANALYSIS_DURATION_MS": 717,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -545,13 +545,13 @@
       "ROUTING": "task",
       "SCORE": 78,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/SynapseRush/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "35f56004f22f3397224ab4d24c8a2e6cbaa032d1adbb2b5109b731077dd3761e",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 426,
+      "ANALYSIS_DURATION_MS": 720,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -598,13 +598,13 @@
       "ROUTING": "task",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/TileShift/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "865020bea98cef37a9266cb05f28942dde63616ea0199f305ad66ed7e106f1fe",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 362,
+      "ANALYSIS_DURATION_MS": 724,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -650,13 +650,13 @@
       "ROUTING": "task",
       "SCORE": 82,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/WillowPath/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "b3714b020a12ad1a3f3e955b0f4d5b7fd9d4c19032694695106324e144eed337",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 258,
+      "ANALYSIS_DURATION_MS": 356,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -703,13 +703,13 @@
       "ROUTING": "task",
       "SCORE": 78,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/positron-blueprint-template.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "fc4e1f7aee6f8a9667cff3c8e03238d311f2235b0106c13e97c536b443bf1ae3",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 629,
+      "ANALYSIS_DURATION_MS": 974,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -761,13 +761,13 @@
       "ROUTING": "task",
       "SCORE": 25,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "APP Blueprint/Die 5 SGB-Legal-Tech-Assets.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "6760857c6a87cda3f09ec838839f5a92ede813af51586dbd93f61b81f00790c9",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 637,
+      "ANALYSIS_DURATION_MS": 814,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -812,13 +812,13 @@
       "ROUTING": "task",
       "SCORE": 82,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "APP Blueprint/Formora.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "b7913aceb94d960057a302807f8a19ab60ad8546cfdd2d12ba7e093d474e3305",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1077,
+      "ANALYSIS_DURATION_MS": 1318,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -865,13 +865,13 @@
       "ROUTING": "task",
       "SCORE": 71,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "APP Blueprint/bescheid-buster-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "0f9e3eaa6f7311b7a1cbd335e7a037f4a5616813061aae652e6c12d2fbd9eed3",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1036,
+      "ANALYSIS_DURATION_MS": 1351,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -918,13 +918,13 @@
       "ROUTING": "task",
       "SCORE": 71,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "APP Blueprint/gdb-kombi-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "27c565b3bc568fd527de5abb500e08e96956552ebbd82e1d43d83bdea3b20731",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 907,
+      "ANALYSIS_DURATION_MS": 1282,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -971,13 +971,13 @@
       "ROUTING": "task",
       "SCORE": 71,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "APP Blueprint/pflege-waechter-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3f86607af815b88cebae72dc7e7e2a89f1f0d5efb71516054d7b51813c8fc0ad",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 871,
+      "ANALYSIS_DURATION_MS": 1458,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1026,13 +1026,13 @@
       "ROUTING": "task",
       "SCORE": 63,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "APP Blueprint/reha-recht-ai-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1676575cf0f581b4d0bf72861680c0ef2059d581ecf6381d9fb481d9d00c7686",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1130,
+      "ANALYSIS_DURATION_MS": 1590,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1079,13 +1079,13 @@
       "ROUTING": "task",
       "SCORE": 71,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "APP Blueprint/sozdoku-pro-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "5a45abd1b22dbab8530dca3934c3c94b7ad44f5dd8676d7d025548c8eed8a794",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 303,
+      "ANALYSIS_DURATION_MS": 567,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1132,13 +1132,13 @@
       "ROUTING": "task",
       "SCORE": 85,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Architekturparadigmen f__r autonome, selbstreparierende Systeme_ Integration von Flutter-Frontends und Rust-Backends.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "be49bc131b53ae9835d31819e4eeaba742c64db3eddcff82d3361dea8e940d6c",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 128,
+      "ANALYSIS_DURATION_MS": 224,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1190,13 +1190,13 @@
       "ROUTING": "task",
       "SCORE": 57,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Bauen/Der „Vibe Coding & Dev-Ready“ Master-Prompt.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "a1a954ee99e0d178dab97a55a7d6d447a78ea32e3c8e34f71763fb2782075207",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 3659,
+      "ANALYSIS_DURATION_MS": 5037,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1246,13 +1246,13 @@
       "ROUTING": "task",
       "SCORE": 34,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Bauen/Patrol CLI für Flutter-Android-Tests.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "64d31109c5b3fad93571f4212cec68afe250d67602ce4a7b9a0d956407ac685f",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 219,
+      "ANALYSIS_DURATION_MS": 327,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1294,13 +1294,13 @@
       "ROUTING": "task",
       "SCORE": 90,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Bauen/Prompt für KI-gestützte Flutter Debug-Implementation.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "7f66aa0bfa570ab0952ad089c602bbc71a21f5f4b0aee48e3ba18bf780004dbb",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 631,
+      "ANALYSIS_DURATION_MS": 927,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1340,13 +1340,13 @@
       "ROUTING": "guideline",
       "SCORE": 86,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Bauen/Spec-Driven Enterprise Delivery & QA Unit.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3ea6b3cb362af781e5dd2de107e2feef1ae5c5ebbed1376302ca1d2ac884604d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 3975,
+      "ANALYSIS_DURATION_MS": 6269,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1396,13 +1396,13 @@
       "ROUTING": "task",
       "SCORE": 26,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Bauen/Umfassender Forschungsbericht zur Automatisierung von End-to-End (E2E) Tests in Flutter-Anwendungen.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "ee839ebaf9e6d99bff77689360834f19a3761dd9f5a0501658d958c95763b5a7",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 378,
+      "ANALYSIS_DURATION_MS": 718,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1450,13 +1450,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Bauen/Vollständig headless Repair-Loop.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "e891507c1ee90abe38f7316be41a74b12e940c60ea814d89bc55640b8ad2caab",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 555,
+      "ANALYSIS_DURATION_MS": 832,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1502,13 +1502,13 @@
       "ROUTING": "task",
       "SCORE": 81,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Bauen/____ E2E Physical Test Strategy_-MietVisor.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "4a5be475d175e1fe357f9272e4c594e867b06c531264f255f83d7af01bc9c288",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 456,
+      "ANALYSIS_DURATION_MS": 707,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1556,13 +1556,13 @@
       "ROUTING": "guideline",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Bauen/gesamten Flutter-Quellcode auf testfreundliche E2E-KI-Automatisierung umzubauen.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "5c478a2ef02971f4dd03820baace942da89210d4ee6c8469c61ed6c23ced47fc",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 898,
+      "ANALYSIS_DURATION_MS": 1116,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1608,13 +1608,13 @@
       "ROUTING": "guideline",
       "SCORE": 30,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Blueprint ___ GitHub Issues Generator.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "a53b842b6224c44402f08995d963b9160a33d95ef4c820936fdc96d3a3860151",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 592,
+      "ANALYSIS_DURATION_MS": 718,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1657,13 +1657,13 @@
       "ROUTING": "guideline",
       "SCORE": 72,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Codebase_Analyse_Prompt_fuer_Reparaturanweisung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "4968bbd96c757e88c080d1edabd1ce53c4cad71d5736f79be099783e9429368b",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1106,
+      "ANALYSIS_DURATION_MS": 1568,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1705,13 +1705,13 @@
       "ROUTING": "task",
       "SCORE": 89,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Deep Research Funktion_ Funktionsweise und Details.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "cf687cf7704cffb34589723117db545ba651d2906078815d06397278dd80fcbc",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 953,
+      "ANALYSIS_DURATION_MS": 1293,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1751,13 +1751,13 @@
       "ROUTING": "guideline",
       "SCORE": 86,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Marktanalyse Deutschland 2026_ 5 hochrelevante Problemfelder und K__ufergruppen_vc2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "75310d6da528a8bef36a34192bf456a475babee31be05cd3d8d2f13abd27d6ab",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 707,
+      "ANALYSIS_DURATION_MS": 974,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1803,13 +1803,13 @@
       "ROUTING": "task",
       "SCORE": 82,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Marktanalyse Deutschland 2026_ Die 5 Millionen-Euro-Schmerzfelder_gemini.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "a7c9e530760f46e0fb7bee8850356fac034361ae84ec83b4dbd2f8ecd76f60e9",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1086,
+      "ANALYSIS_DURATION_MS": 1384,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1860,13 +1860,13 @@
       "ROUTING": "task",
       "SCORE": 26,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Marktanalyse Deutschland 2026_game_idee.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "beb125bdfd1db2af821b7252f22e6a735ae1f0b57b479fd5982695fc3dfd09bb",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 723,
+      "ANALYSIS_DURATION_MS": 1091,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1909,13 +1909,13 @@
       "ROUTING": "guideline",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/Codebase_Analyse_Prompt_fuer_Reparaturanweisung (1).md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "22053750096cc52f6e5973e258ea96d18729d3aa5ea5e86a670ecc10f69fd609",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 823,
+      "ANALYSIS_DURATION_MS": 1288,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -1961,13 +1961,13 @@
       "ROUTING": "task",
       "SCORE": 41,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Meta_Prompt/Issues_analysieren_1_von_2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "201bdb9b8da4f879bd8d691739619be4c06a4408ba4fe810c9380f508c05d1ed",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 515,
+      "ANALYSIS_DURATION_MS": 812,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2009,13 +2009,13 @@
       "ROUTING": "guideline",
       "SCORE": 88,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/Live Operations Pass .md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "475559ba51d670e544b28711b34abd92fd41f27a661418404e76a01b0a8cca7a",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 346,
+      "ANALYSIS_DURATION_MS": 518,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2058,13 +2058,13 @@
       "ROUTING": "guideline",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/Meta-Prompt für eine KI zur iterativen Projekt-Orchestrierung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "47aa3e5a279612c8e57a8bb20c9eeaca97590b4ea5314ffedb9664993b75f2e6",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 452,
+      "ANALYSIS_DURATION_MS": 752,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2107,13 +2107,13 @@
       "ROUTING": "guideline",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/Meta-Prompt für eine KI zur iterativen Projekt-Orchestrierung_v2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "339c80c83079172433070f7d137e9804df50bc65c79dbe24a1dc5749742ceecf",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 849,
+      "ANALYSIS_DURATION_MS": 1386,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2156,13 +2156,13 @@
       "ROUTING": "guideline",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1c3819ff7999fb52e11eadb323185dacc51a9c745ce80ca0c341fb84f0d6e719",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 885,
+      "ANALYSIS_DURATION_MS": 1158,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2205,13 +2205,13 @@
       "ROUTING": "guideline",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent_V2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "737f1abf70aae61b6499fb4f1060e9b5867d2cf32f766749c6e314f8f555451c",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 873,
+      "ANALYSIS_DURATION_MS": 1213,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2254,13 +2254,13 @@
       "ROUTING": "guideline",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent_V3.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "773eded01bee0d33c0610628d0c30707b3107375e82dbc5b2f8fb58e0d13b6e2",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 766,
+      "ANALYSIS_DURATION_MS": 1092,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2308,13 +2308,13 @@
       "ROUTING": "guideline",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Meta_Prompt/UNIVERSAL_OPENCODE_MCP_SETUP_PROMPT.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1c6f4cc6d44848f4bff449479a8c0345c585cf283788527f723b224bb44050dc",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 443,
+      "ANALYSIS_DURATION_MS": 700,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2356,13 +2356,13 @@
       "ROUTING": "task",
       "SCORE": 92,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/VOLLSTÄNDIGE_PROJEKT-ANALYSE_2_von_2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "4bcbafc31ba845efbb49d91d967837381385006c9da473d0bf728ac51a0bb2f3",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1854,
+      "ANALYSIS_DURATION_MS": 2608,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2410,13 +2410,13 @@
       "ROUTING": "guideline",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Meta_Prompt/blueprint_ai_coding_orchestrator.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "40978d6f1161e97b24c2d3e4150639f8ddcede2b301e6b040a9f782889c325a6",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 645,
+      "ANALYSIS_DURATION_MS": 853,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2465,13 +2465,13 @@
       "ROUTING": "guideline",
       "SCORE": 27,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Meta_Prompt/testloop.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d49e267879c8bce879bb4ecb154a3ccda1b6f864b6f574a178cb512930246440",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 235,
+      "ANALYSIS_DURATION_MS": 351,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2523,13 +2523,13 @@
       "ROUTING": "task",
       "SCORE": 31,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "Meta_Prompt/xxx/Maximale Token-Effizienz & Ausgabequalit__t.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "76014c345d4c580a3315006bf567a619de6eac35c5dfb5944ab53ea0947f0507",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 359,
+      "ANALYSIS_DURATION_MS": 492,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2572,13 +2572,13 @@
       "ROUTING": "guideline",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/xxx/Meta-Prompt f__r eine KI zur iterativen Projekt-Orchestrierung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "47aa3e5a279612c8e57a8bb20c9eeaca97590b4ea5314ffedb9664993b75f2e6",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 818,
+      "ANALYSIS_DURATION_MS": 1297,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2621,13 +2621,13 @@
       "ROUTING": "guideline",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/xxx/OPSX-basierter Development Orchestrator und KI-Engineering-Agent.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1c3819ff7999fb52e11eadb323185dacc51a9c745ce80ca0c341fb84f0d6e719",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1446,
+      "ANALYSIS_DURATION_MS": 2151,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2671,13 +2671,13 @@
       "ROUTING": "task",
       "SCORE": 84,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "Meta_Prompt/xxx/__vertikale_integration__.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d4d11727562f660b235e12d78b83a02e4d07bcd6dff91df7a85ee1ff4dac27ee",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 2014,
+      "ANALYSIS_DURATION_MS": 3336,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2719,13 +2719,13 @@
       "ROUTING": "guideline",
       "SCORE": 86,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "QA Execution Unit_v2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "bd223fd69763335808088a267b371d57f9e5ae353af5db4b95f623c6fe2ef8c4",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1797,
+      "ANALYSIS_DURATION_MS": 2499,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2774,13 +2774,13 @@
       "ROUTING": "guideline",
       "SCORE": 28,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "QA Execution Unit_v3.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "c2fd0c379fdce62d50aaf21ea2e05856b731546ee44b0d888558622911730441",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 2214,
+      "ANALYSIS_DURATION_MS": 3704,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2830,13 +2830,13 @@
       "ROUTING": "task",
       "SCORE": 28,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "QA Execution Unit_v4.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "e6b65645365a0e73533c1ff887e4e95b7e30adff43111f6d1fb0f0bfcdbf580f",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 3154,
+      "ANALYSIS_DURATION_MS": 4667,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2882,13 +2882,13 @@
       "ROUTING": "guideline",
       "SCORE": 30,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "QA Execution Unit_v5.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "cefd125ba36d7d9d8e83e2e139b1b900347f3fe4b15b4cc295c17a94a6aa0f74",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 865,
+      "ANALYSIS_DURATION_MS": 1157,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2934,13 +2934,13 @@
       "ROUTING": "guideline",
       "SCORE": 30,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "__Blueprint ___ GitHub Issues Generator__.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "6c048fddf46930aac28ed85e2de28cd827d47b03fb16e208ef6d290ac3262c7d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1298,
+      "ANALYSIS_DURATION_MS": 1744,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -2984,13 +2984,13 @@
       "ROUTING": "task",
       "SCORE": 84,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "__vertikale_integration__.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d4d11727562f660b235e12d78b83a02e4d07bcd6dff91df7a85ee1ff4dac27ee",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 515,
+      "ANALYSIS_DURATION_MS": 680,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3041,13 +3041,13 @@
       "ROUTING": "task",
       "SCORE": 32,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/Anleitung_Qwen_3.6_GTX1070_Deployment.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1026e4d30769219d670d55a9b107ebc94a11cd1c204e7f5bcbcc45e229490694",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 4367,
+      "ANALYSIS_DURATION_MS": 6717,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3096,13 +3096,13 @@
       "ROUTING": "task",
       "SCORE": 33,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/Gemma 4 auf GeForce 1070.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "a6704cd00e2dd2e3337d54f387faedaab121304569002d756dcc979c87918233",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 712,
+      "ANALYSIS_DURATION_MS": 962,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3146,13 +3146,13 @@
       "ROUTING": "task",
       "SCORE": 87,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/KI-ANLEITUNG.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "339c5f8eb12a4fb10e06bcaf2195c8b425b0c20ba37eab9e22dee16563850355",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 2440,
+      "ANALYSIS_DURATION_MS": 3637,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3200,13 +3200,13 @@
       "ROUTING": "task",
       "SCORE": 30,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/MASTER_DOKUMENTATION.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d938d069b7ffc88ddfde451ab1dd0ec70d0096d2cd5ba8d2908dc9748c5e8ae2",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 258,
+      "ANALYSIS_DURATION_MS": 341,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3250,13 +3250,13 @@
       "ROUTING": "task",
       "SCORE": 84,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/OpenCode_KI_Anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "2cb8dd54b2e44547fb951611ec9ac834335266d5e87efa7bfea8ebddc244d21f",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 401,
+      "ANALYSIS_DURATION_MS": 486,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3298,13 +3298,13 @@
       "ROUTING": "task",
       "SCORE": 92,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/Speckit_SDD_Anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "c9f0d597542d78dda3b851efac3dad7fde9becf80f754affd21a6730785e6544",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 3515,
+      "ANALYSIS_DURATION_MS": 5308,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3352,13 +3352,13 @@
       "ROUTING": "task",
       "SCORE": 33,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/Synthese und Implikationen für lokale KI-Deployments.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f4ac9b50bc3127079e31b393365c38b572f0a0452663ea37987a11c37934e4b5",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 383,
+      "ANALYSIS_DURATION_MS": 561,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3406,13 +3406,13 @@
       "ROUTING": "task",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/Vibe_Coding_Master_Framework.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "6b40e27234087aad75046aa3fe6d6606e064ef802ef9cc79311ff436b412ad9a",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 275,
+      "ANALYSIS_DURATION_MS": 433,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3454,13 +3454,13 @@
       "ROUTING": "guideline",
       "SCORE": 82,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/anleitung_analysieren.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "2455c94c083f17ef54fbb83ae46659fadf48336ac7947e52271ab5f7a4bdb584",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 821,
+      "ANALYSIS_DURATION_MS": 1156,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3502,13 +3502,13 @@
       "ROUTING": "guideline",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/anleitung_speckit_neu.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "806b1069c30cb5169c513b02da88b86a47bb44a87efa1e62cda11635617181bf",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 3926,
+      "ANALYSIS_DURATION_MS": 6309,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3558,13 +3558,13 @@
       "ROUTING": "task",
       "SCORE": 26,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/company/Ein Zero-Cost-Infrastrukturmodell auf Base L2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3b8554e8d4211f3e963f37db9537c03005f53495d15ee8fee3093778e9b6d60c",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 273,
+      "ANALYSIS_DURATION_MS": 341,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3616,13 +3616,13 @@
       "ROUTING": "task",
       "SCORE": 31,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/company/Maximale Token-Effizienz & Ausgabequalität.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "76014c345d4c580a3315006bf567a619de6eac35c5dfb5944ab53ea0947f0507",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 4649,
+      "ANALYSIS_DURATION_MS": 6979,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3674,13 +3674,13 @@
       "ROUTING": "task",
       "SCORE": 25,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/company/Strategische Frameworks für kryptoökonomische Einkommensmodelle ohne Startkapit.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "b15707f4957bdd83b94e0a420de201ffeb639c8c0f03cad64e90759e6307eb8b",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 3396,
+      "ANALYSIS_DURATION_MS": 4783,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3728,13 +3728,13 @@
       "ROUTING": "template",
       "SCORE": 27,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/company/Technische Machbarkeit und wirtschaftliches Potenzial eines autonomen Agentic-Finance-Setups im Edge-Computing.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1fc6e5e1789b05007fd926ce080e186e11f2dd7c7077095a481235ca82ac8a23",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 717,
+      "ANALYSIS_DURATION_MS": 989,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3782,13 +3782,13 @@
       "ROUTING": "task",
       "SCORE": 74,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/company/Zero-Human Company.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "5e5acb20718c303e908e02b5f8511b3d42fc1619596eb75a58d24e1d1640993a",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1127,
+      "ANALYSIS_DURATION_MS": 1580,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3838,13 +3838,13 @@
       "ROUTING": "task",
       "SCORE": 37,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/d hardwarebasierten Akkumulation von Ethereum.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f7f6b0125ed8cf0a1de949eaa773a4d83a408f423c8e327ca12d879951df1aaf",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 826,
+      "ANALYSIS_DURATION_MS": 987,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3895,13 +3895,13 @@
       "ROUTING": "task",
       "SCORE": 26,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/gemini-cli-anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "abe2480ed0c81b9a1dd9e2babe403ef1a8fed13683ead13a5ad795540dc24983",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 423,
+      "ANALYSIS_DURATION_MS": 639,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3948,13 +3948,13 @@
       "ROUTING": "task",
       "SCORE": 85,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/gemma4_einrichten_auf_geforce_1070.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3f7abcc9c340ecfb102ce489160347ebfd83ef10752edbe8052f0bcdcb089c88",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1153,
+      "ANALYSIS_DURATION_MS": 1732,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -3997,13 +3997,13 @@
       "ROUTING": "guideline",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/opencode-ki-anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "76c565dee3b782ce84707a4d6cd9e94dea52ec4ff749e87e7fce240ac2a76153",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1022,
+      "ANALYSIS_DURATION_MS": 1482,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4050,13 +4050,13 @@
       "ROUTING": "task",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/qwen_code_anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "36ce1c15ba3659dbf164df309ecedd7ea487f59c38a9ca6cf5a3bcf064e0091f",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1490,
+      "ANALYSIS_DURATION_MS": 1849,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4106,13 +4106,13 @@
       "ROUTING": "task",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/spec-kit-anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "52b0755d9eb6ac059488ba6e67d381867a33a85bae83af18db04c362e1f0beee",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 807,
+      "ANALYSIS_DURATION_MS": 1334,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4156,13 +4156,13 @@
       "ROUTING": "task",
       "SCORE": 85,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/speckit/blueprint-template.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "0806e294344599ff3b3dba5f1e9d51eb9fbe59df4dcf74ef634a0eabe7c02356",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1310,
+      "ANALYSIS_DURATION_MS": 1919,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4212,13 +4212,13 @@
       "ROUTING": "task",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "anleitungen/speckit/spec-kit-anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "52b0755d9eb6ac059488ba6e67d381867a33a85bae83af18db04c362e1f0beee",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 298,
+      "ANALYSIS_DURATION_MS": 469,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4260,13 +4260,13 @@
       "ROUTING": "task",
       "SCORE": 92,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "anleitungen/speckit_ki_agent_anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "fabe1388394bcb0bfb7e27c0140521bbb181f5dadd5ddd606f21af4c999481bb",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 2933,
+      "ANALYSIS_DURATION_MS": 4469,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4316,13 +4316,13 @@
       "ROUTING": "task",
       "SCORE": 25,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "app_conzepte_neuer_prompt.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "326f3e26698b66e2252df46febac937d2b04e3338e65564af71d7dc13802e851",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 6832,
+      "ANALYSIS_DURATION_MS": 9685,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4373,13 +4373,13 @@
       "ROUTING": "task",
       "SCORE": 25,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "app_ideen.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "543551644a3a167e03b3a777a20ca46ffee3e7c1de44c0fd97ee2893d7860467",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": true
     },
     {
-      "ANALYSIS_DURATION_MS": 433,
+      "ANALYSIS_DURATION_MS": 706,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4428,13 +4428,13 @@
       "ROUTING": "task",
       "SCORE": 58,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/BauAbnahme_Sign/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "5dd06c553a13479988cd53a871bc0ae4565fcf76ad26f0733c20d428f43f27fa",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 278,
+      "ANALYSIS_DURATION_MS": 441,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4485,13 +4485,13 @@
       "ROUTING": "task",
       "SCORE": 27,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "app_konzepte_neu/BescheidVault/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "9c5898ea4cafdf875ad2aeca4960a0ec88a46372df21a845bd95d4c8921b0d03",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 410,
+      "ANALYSIS_DURATION_MS": 411,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4535,13 +4535,13 @@
       "ROUTING": "task",
       "SCORE": 80,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/CrewTime_Proof_Bau_Handwerk/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "14fd38994e69eee9710359d46186b0e3f94c54499410d2fa946e86b1e17c6d6f",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 290,
+      "ANALYSIS_DURATION_MS": 454,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4587,13 +4587,13 @@
       "ROUTING": "task",
       "SCORE": 78,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/FlexLogbook_Industrie_SME/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "684be73990371dadbcd94067d88d7876bccee87042c2ba4bf06348c2e16790b9",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 351,
+      "ANALYSIS_DURATION_MS": 486,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4640,13 +4640,13 @@
       "ROUTING": "task",
       "SCORE": 74,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/HinweisKanal_LkSG/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "aa15f11eb8086cc60965c3cb59af428406f367c049388de0c4b018013659b2a5",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 227,
+      "ANALYSIS_DURATION_MS": 347,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4693,13 +4693,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/MeterConsent_Vault/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "af6017f65185ae8ec4ffb4185223e713d5d3fc8d5cd50a98b239f13d63598aee",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 423,
+      "ANALYSIS_DURATION_MS": 666,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4743,13 +4743,13 @@
       "ROUTING": "task",
       "SCORE": 82,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/PflegeLog_Offline/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "9763cbbf02f663c7d5f4b3288b0293bc84d3d8f8d3ab363c08622ad9f8da61fd",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 464,
+      "ANALYSIS_DURATION_MS": 640,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4797,13 +4797,13 @@
       "ROUTING": "task",
       "SCORE": 61,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/SchichtÜbergabe_Pro/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "a9bce89be645f33021f9e0876be337de408cef16937f0ad1b42bd09d5c51c65d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 320,
+      "ANALYSIS_DURATION_MS": 448,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4850,13 +4850,13 @@
       "ROUTING": "task",
       "SCORE": 75,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/SupplyChainEvidence_Lite/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "9c5f594c712dfbdd6c1a6740ef00f90f27849b0948287a944c32e48c5b5678bb",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 508,
+      "ANALYSIS_DURATION_MS": 683,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4905,13 +4905,13 @@
       "ROUTING": "task",
       "SCORE": 52,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "app_konzepte_neu/VollmachtFlow/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3c0e90d30512c195c8a5885eba1e1844982a175862dab44f82558d350df11f69",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 337,
+      "ANALYSIS_DURATION_MS": 453,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -4958,13 +4958,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/21_ai_competence_log/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "51f5d812e8ffcc42b182da2887f0b5a76e7850853faa334a3151ee1619aea818",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 282,
+      "ANALYSIS_DURATION_MS": 403,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5010,13 +5010,13 @@
       "ROUTING": "task",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/22_gwg_comply/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "588cba29c26d3d2f64eda020d494eb7aa4740983ee6322d7cb6427be95f1d708",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 355,
+      "ANALYSIS_DURATION_MS": 513,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5063,13 +5063,13 @@
       "ROUTING": "task",
       "SCORE": 78,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/23_gefaehrdungs_atlas/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "60d966256f84320dbb10396366915b93d761762dfa916b5cff01c894df149f6d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 350,
+      "ANALYSIS_DURATION_MS": 466,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5117,13 +5117,13 @@
       "ROUTING": "task",
       "SCORE": 74,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/24_lohn_nachweis/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "6406ac62b3fd10f9cf24635e5b2f6702d3b98a0b029de66ed816d4ced71b2f9f",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 373,
+      "ANALYSIS_DURATION_MS": 513,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5170,13 +5170,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/25_anerkennungs_manager/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "40d121bb93b009deb642f6fa4797bd04438db25f61e57552ccccba8a05baeb23",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 277,
+      "ANALYSIS_DURATION_MS": 337,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5223,13 +5223,13 @@
       "ROUTING": "task",
       "SCORE": 78,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/26_energie_pflicht/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "543d568a1a0167af3c9dc6b083131fdaa9fc75d43c8e400cf6b99bda6a1b28c3",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 315,
+      "ANALYSIS_DURATION_MS": 412,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5277,13 +5277,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/27_kasko_meldung/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "0651f75df7644da295397ae88c02c4d5a5b5843496b59a616c6e091fe10fff85",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 251,
+      "ANALYSIS_DURATION_MS": 315,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5331,13 +5331,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/28_steuer_vorlage/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3f8dc79dbb2383f45aab00249ef003be30cc6c5d31b261d61b5d8d6fc0de2fdc",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 287,
+      "ANALYSIS_DURATION_MS": 379,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5382,13 +5382,13 @@
       "ROUTING": "task",
       "SCORE": 80,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/29_pflege_abrechnung/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "2c6946e01843c55219f9d168d12e8de82ffc6349a08ebd1d07956a685ee256c1",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 418,
+      "ANALYSIS_DURATION_MS": 477,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5436,13 +5436,13 @@
       "ROUTING": "task",
       "SCORE": 71,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/30_foerdermittel_log/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "64139e982feb02275dbacfa85e3cdf58912b929a71fe217ca88af09b7d4e7d70",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 447,
+      "ANALYSIS_DURATION_MS": 590,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5488,13 +5488,13 @@
       "ROUTING": "task",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/31_compliance_core_rs/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "7618bea30ee363470c1e1f440c07b2eafa757ab2c0a13098b65c0d7cf3d58d55",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 469,
+      "ANALYSIS_DURATION_MS": 538,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5538,13 +5538,13 @@
       "ROUTING": "task",
       "SCORE": 82,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/32_nis2_desk/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "98caf87ea455f88f3d6a4e45cf3e972619d7dd61fd9ee56820518e065030fb1e",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 380,
+      "ANALYSIS_DURATION_MS": 471,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5592,13 +5592,13 @@
       "ROUTING": "task",
       "SCORE": 65,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/33_esrs_xbrl_app/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "6b3976fd0468ee6c27cff4f684a660a0cd462d02aa624d612e81064141d9d5d5",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 317,
+      "ANALYSIS_DURATION_MS": 504,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5647,13 +5647,13 @@
       "ROUTING": "task",
       "SCORE": 66,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/34_gobd_kernel_flutter/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f6d7358736b3ce5ce64c0c3838c30458fcf56f59915ada28d6e41d853b6d267d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 293,
+      "ANALYSIS_DURATION_MS": 412,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5695,13 +5695,13 @@
       "ROUTING": "task",
       "SCORE": 90,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/35_nis2_self_check/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "ce998692a364f38477dbcab63a9cd77c0ee9a88fb383fc986def950b1936f8f1",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 986,
+      "ANALYSIS_DURATION_MS": 1303,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5745,13 +5745,13 @@
       "ROUTING": "task",
       "SCORE": 85,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/36_ki_vo_auditor/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "eece8f37dffd875cc5f59a9a9fcfbcdfc96b9aea9e6f91cec291f19e3f730d07",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 323,
+      "ANALYSIS_DURATION_MS": 482,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5798,13 +5798,13 @@
       "ROUTING": "task",
       "SCORE": 75,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/37_mastr_bridge/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d6507db7e5469a0748c81fa5f8c0bf32b0d757be54fae81664f7294c83caaf5f",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 7212,
+      "ANALYSIS_DURATION_MS": 9379,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5855,13 +5855,13 @@
       "ROUTING": "task",
       "SCORE": 27,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprint3/app_ideen2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "733f6a434231b8f6ae9359e00d635849aa7042628348dc18d7c99f68beae5ae8",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": true
     },
     {
-      "ANALYSIS_DURATION_MS": 793,
+      "ANALYSIS_DURATION_MS": 1096,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5905,13 +5905,13 @@
       "ROUTING": "task",
       "SCORE": 85,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint3/blueprint-template.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f8d690c5b344219ece0104259b1b3f07d6926a54ab42c6a4cb682d98fb4b2877",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 282,
+      "ANALYSIS_DURATION_MS": 549,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -5959,13 +5959,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/01_FormFrei/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "229537334154080328fc1b8e425c215d42e8851c723257769e48f641b85afe41",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 400,
+      "ANALYSIS_DURATION_MS": 446,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6013,13 +6013,13 @@
       "ROUTING": "task",
       "SCORE": 71,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/02_SupplyTrace/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d3d595afd132e72645fc59ef998d4af43fd924d2f72ebfa8e8bbca9016b6b834",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 343,
+      "ANALYSIS_DURATION_MS": 393,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6066,13 +6066,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/03_PflegeDoc/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "cb8d84c6b01eb913a31203fdd64aecdbbffc417ae6dad810e52e46dd17bc9676",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 493,
+      "ANALYSIS_DURATION_MS": 620,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6119,13 +6119,13 @@
       "ROUTING": "task",
       "SCORE": 75,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/04_BauSign/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "c38a34a064eae975f2d02c3c0838e231e7244fe560186c2eb9857c7df042a21d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 496,
+      "ANALYSIS_DURATION_MS": 650,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6172,13 +6172,13 @@
       "ROUTING": "task",
       "SCORE": 77,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/05_GridFlex/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "695692147bbc4e448332c70eb7190f20514dbfceeec196c3f149f097fd62f472",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 450,
+      "ANALYSIS_DURATION_MS": 588,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6225,13 +6225,13 @@
       "ROUTING": "task",
       "SCORE": 75,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/06_HandwerkHR/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "af0ebf222e2dbd02f4b2073b70ee468035a801a80a889653e4de45b66497d17f",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 426,
+      "ANALYSIS_DURATION_MS": 578,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6278,13 +6278,13 @@
       "ROUTING": "task",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/07_AuditReady/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "947b8361c1ae8099d7faa7b11c3f429f8fc4f1fd3bdd3a3949aaf9205bed7039",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 388,
+      "ANALYSIS_DURATION_MS": 512,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6333,13 +6333,13 @@
       "ROUTING": "task",
       "SCORE": 65,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/08_CareMatch/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1bd2b408fdef4fcd6bc9b283dd17f937e71908aaad1eda149737db996abaaa2e",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 267,
+      "ANALYSIS_DURATION_MS": 380,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6388,13 +6388,13 @@
       "ROUTING": "task",
       "SCORE": 65,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/09_MeterProof/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "92a7ddd1fc55dab06ae685aa33d18b582f2d35520051d65e91816732332fbf53",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 391,
+      "ANALYSIS_DURATION_MS": 491,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6438,13 +6438,13 @@
       "ROUTING": "task",
       "SCORE": 84,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/10_BehördenBot/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "9cd770ed59eac78009ec3fc8239a6a524de759a13d0adb014076bbc7536b136d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 4673,
+      "ANALYSIS_DURATION_MS": 6454,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6494,13 +6494,13 @@
       "ROUTING": "task",
       "SCORE": 27,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprint4/app_ideen4.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "282d1dc81c49eb4ed8c12877c6ca393ccb452c5e8112ed0f801106fc0f9bd644",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 451,
+      "ANALYSIS_DURATION_MS": 407,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6549,13 +6549,13 @@
       "ROUTING": "task",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/memory_bank/activeContext.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "e22efb9b1553b2cf52018cdfaee4dacd704e05cd3ec3d35e1a49bd7562e46120",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 413,
+      "ANALYSIS_DURATION_MS": 476,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6605,13 +6605,13 @@
       "ROUTING": "task",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprint4/memory_bank/productContext.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "4042a580ecdae6b910881195db61d6cd550f7142e5fbab53f14f9e35f1a3717e",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 294,
+      "ANALYSIS_DURATION_MS": 386,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6662,13 +6662,13 @@
       "ROUTING": "task",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprint4/memory_bank/progress.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "73418abcbb383a162a9ec0b6552a5a6825c039e6b216cf10339494f63f939032",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 336,
+      "ANALYSIS_DURATION_MS": 440,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6720,13 +6720,13 @@
       "ROUTING": "task",
       "SCORE": 26,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprint4/memory_bank/projectBrief.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "4de527bba64e709405c4e31e5133a3db061a3a0a20bcda41f4cbc6ec5fe98622",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 345,
+      "ANALYSIS_DURATION_MS": 401,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6777,13 +6777,13 @@
       "ROUTING": "task",
       "SCORE": 57,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint4/memory_bank/systemPatterns.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "23536b20797124a2ce5dec3fe28fe588dac6818935ea5f1d9394689eee410497",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 324,
+      "ANALYSIS_DURATION_MS": 476,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6834,13 +6834,13 @@
       "ROUTING": "task",
       "SCORE": 28,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprint_verbessern.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "57cd1600d7ae4e3a6fde659b4bb66c7dc42145037f0fc751cdb8852f7b40cb58",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 521,
+      "ANALYSIS_DURATION_MS": 685,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6890,13 +6890,13 @@
       "ROUTING": "task",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprint_verbessern_v2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "0bc9ac74e06121ca3734ae3f053cd4d8a968f440d8ae62efbc15f70bda8155ef",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 1135,
+      "ANALYSIS_DURATION_MS": 1635,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -6945,13 +6945,13 @@
       "ROUTING": "task",
       "SCORE": 68,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/app_ideen3.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "711383c05691d72037eaa2a5c0b7c148fc2694f66ea4db7a14d235a117940316",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 411,
+      "ANALYSIS_DURATION_MS": 553,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7000,13 +7000,13 @@
       "ROUTING": "task",
       "SCORE": 63,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_01_buerosign/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "ad2d205cd6d0ca16c84fb69ff5fcd13ca54811b434db403c59e86172a32c8478",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 299,
+      "ANALYSIS_DURATION_MS": 443,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7048,13 +7048,13 @@
       "ROUTING": "task",
       "SCORE": 89,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_02_verwaltungspilot/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f2749032ad4ce485f3555ee76d9969b8ad8529c67de3ce9d101419ce11b3e922",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 380,
+      "ANALYSIS_DURATION_MS": 433,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7100,13 +7100,13 @@
       "ROUTING": "task",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_03_supplychainguard/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "10dd8abf95053cdd8810ae3995395b35b41038268f69b5f806f217fd3157856c",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 334,
+      "ANALYSIS_DURATION_MS": 391,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7154,13 +7154,13 @@
       "ROUTING": "task",
       "SCORE": 72,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_04_esgreporter/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "4d2d795698e1a2e7b05996160041133b4f814cf81716c2bed97a71a422931e88",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 374,
+      "ANALYSIS_DURATION_MS": 443,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7209,13 +7209,13 @@
       "ROUTING": "task",
       "SCORE": 67,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_05_caredoc/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "01b0c6a00155672a2f6f1cde52ad5e6de88d726647b170f86005657846fec4df",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 325,
+      "ANALYSIS_DURATION_MS": 439,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7259,13 +7259,13 @@
       "ROUTING": "task",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_06_shiftguard/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "b0810461513435d5f82831d75defbe79bbf88472002d1a9e1fe5aa19c8d7097b",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 341,
+      "ANALYSIS_DURATION_MS": 469,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7313,13 +7313,13 @@
       "ROUTING": "task",
       "SCORE": 72,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_07_handwerklog/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3782ee226460498be30e41afafb1bc060a52bd1da7c723d47239d0be6e208a1b",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 300,
+      "ANALYSIS_DURATION_MS": 445,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7365,13 +7365,13 @@
       "ROUTING": "task",
       "SCORE": 81,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_08_bausafe/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "2a4f86fa19c0f03352b046d400547b68f45c3e1f243bb4eb831d2b77ee69b8db",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 347,
+      "ANALYSIS_DURATION_MS": 434,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7419,13 +7419,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_09_flexenergy/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "ac55da2087fe6a8aa8d3f34629daf70368708022b8e19b56a270fdd416ebcf62",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 279,
+      "ANALYSIS_DURATION_MS": 319,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7474,13 +7474,13 @@
       "ROUTING": "task",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_10_metercomply/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "7a85b11eb2fa7f55f848d4d07c11866bd9bce7f3a76a870ec6746850bdbf268b",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 261,
+      "ANALYSIS_DURATION_MS": 348,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7527,13 +7527,13 @@
       "ROUTING": "task",
       "SCORE": 74,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/01-esg-core-engine/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "abb477470e55259947660c55770aac193a06e2ec2d4aad3fc8d76161fb0a61f4",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 306,
+      "ANALYSIS_DURATION_MS": 471,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7581,13 +7581,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/02-nis2-audit-node/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "da2ccffa58fa787daca8e925368d17916852cbc2cb2dafacda6b45d469da1257",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 381,
+      "ANALYSIS_DURATION_MS": 492,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7636,13 +7636,13 @@
       "ROUTING": "task",
       "SCORE": 31,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprints/03-voice-to-med-sdk/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "fd63a073527bf12cadd2fe45ed7b78d4a5b842b4b0b97f829bf8dfd9eec36941",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 295,
+      "ANALYSIS_DURATION_MS": 334,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7688,13 +7688,13 @@
       "ROUTING": "task",
       "SCORE": 85,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/04-zugferd-parser-x/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d47171b60f5c7253fd4989c1f88280bf99b61fca5399f4867fa2ab2b2d62b3f7",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 333,
+      "ANALYSIS_DURATION_MS": 314,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7741,13 +7741,13 @@
       "ROUTING": "task",
       "SCORE": 78,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/05-grid-balancer-api/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "6655d52b81f0a6587643e673217de0f6734b1133464dff9bf45abcb1a99ae07a",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 398,
+      "ANALYSIS_DURATION_MS": 450,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7795,13 +7795,13 @@
       "ROUTING": "task",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/06-eidas-b2b-vault/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "2050c4e8923a6973aced0333a21def53074fcddfd5741e2370910d7d94df839c",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 408,
+      "ANALYSIS_DURATION_MS": 532,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7850,13 +7850,13 @@
       "ROUTING": "task",
       "SCORE": 66,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/07-spatial-craft-ar/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "21f742b7d71286c6aa85ef0622669ace9a88434303714ea4ef7f7e2e9dc8ac5a",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 329,
+      "ANALYSIS_DURATION_MS": 395,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7903,13 +7903,13 @@
       "ROUTING": "task",
       "SCORE": 75,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/08-graph-scout-osint/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "30246d264a0f61aee664b0a16bb43b7db3f4d35a5e13911d9c09060c692ac725",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 405,
+      "ANALYSIS_DURATION_MS": 540,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -7956,13 +7956,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/09-tender-rag-local/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d1d402e2cf71df03bd1949dfe3a107cd714700c73b8f3befb068942aa430e0dc",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 258,
+      "ANALYSIS_DURATION_MS": 346,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8012,13 +8012,13 @@
       "ROUTING": "task",
       "SCORE": 61,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/10-haccp-sync-core/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f0d57d5234a24dbc365a24492417236b22977ad8ab0800c273ebd0719876eed4",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 393,
+      "ANALYSIS_DURATION_MS": 597,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8067,13 +8067,13 @@
       "ROUTING": "task",
       "SCORE": 64,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/11-sgb-xi-appeal-core/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "738b51c94f78b54521732f2643c2aa8df25b939252740ab7d927d43e79c78349",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 398,
+      "ANALYSIS_DURATION_MS": 485,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8122,13 +8122,13 @@
       "ROUTING": "task",
       "SCORE": 68,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/12-sgb-ii-lead-gen/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d09703da7772cdf6e8c3a73e50534009ee1a979b9d0a00cdd84663b5330c0b64",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 429,
+      "ANALYSIS_DURATION_MS": 544,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8177,13 +8177,13 @@
       "ROUTING": "task",
       "SCORE": 68,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/13-sgb-v-pdf-engine/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "747accef909db72692c0accd951edc750e33b02955a840646eaa4fd70e8c7c7e",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 429,
+      "ANALYSIS_DURATION_MS": 670,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8232,13 +8232,13 @@
       "ROUTING": "task",
       "SCORE": 63,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/14-gdb-graph-logic/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3dfed29abad93ec85934ccff03f11b5a6d20092c83647e70fd193f921db85bfa",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 481,
+      "ANALYSIS_DURATION_MS": 523,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8287,13 +8287,13 @@
       "ROUTING": "task",
       "SCORE": 61,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/15-sgb-xii-vault/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "81266ede30f6268291903e52cad3c347bb3acbb8f5aea7f9af5d22bf185f4a80",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 411,
+      "ANALYSIS_DURATION_MS": 481,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8342,13 +8342,13 @@
       "ROUTING": "task",
       "SCORE": 64,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/16-em-triage-ai/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "1d6b67804bbce17c69ee21cf0d8474813a0a35f87d1eff06852306ddc83aa21b",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 307,
+      "ANALYSIS_DURATION_MS": 442,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8398,13 +8398,13 @@
       "ROUTING": "task",
       "SCORE": 29,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprints/17-timeline-defender/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "b0d61e0a7d3c83c4e14af2818001532f6a2a1c272f76859e744c74ccf1c70471",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 324,
+      "ANALYSIS_DURATION_MS": 453,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8452,13 +8452,13 @@
       "ROUTING": "task",
       "SCORE": 66,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/18-budget-router-sgb/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "8db06abbb2b0136e1147f78f77198018d9255588acd3177a73d8cb83fbfe4689",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 315,
+      "ANALYSIS_DURATION_MS": 406,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8506,13 +8506,13 @@
       "ROUTING": "task",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/19-sgb-iii-ruleset/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "7ffb9e00a81ab01021ef5bbb038744a2a0dea38e651eb413eac9afb77d3c92c7",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 329,
+      "ANALYSIS_DURATION_MS": 414,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8561,13 +8561,13 @@
       "ROUTING": "task",
       "SCORE": 65,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints/20-geo-kita-engine/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "70f2d0246b289a4d51b77fe28d3eacfeb27fe643742e8c7b381874ae58d079f0",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 208,
+      "ANALYSIS_DURATION_MS": 274,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8615,13 +8615,13 @@
       "ROUTING": "task",
       "SCORE": 71,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/01_HandwerkSign/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "e0d565fef7463a2c16027e5041fe1a7316635791a10d2f8edf1b86ea8fa59ad2",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 337,
+      "ANALYSIS_DURATION_MS": 412,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8666,13 +8666,13 @@
       "ROUTING": "task",
       "SCORE": 77,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/02_PflegeDok+/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d8724f1146597f53dcec12c98ba53a1764314b3189214fe562374edbc7337ccb",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 353,
+      "ANALYSIS_DURATION_MS": 436,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8720,13 +8720,13 @@
       "ROUTING": "task",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/03_SupplyTrace/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "541bf4e6d4c214178c180bcec4a1040a101487796f18549b88d2c8265d49b18a",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 338,
+      "ANALYSIS_DURATION_MS": 506,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8775,13 +8775,13 @@
       "ROUTING": "task",
       "SCORE": 63,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/04_MeldePilot/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "856c4e50cf1d05901bfcdb4c2e3a7bc8c6657996f8b5cf005ff14fb4081ffe02",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 224,
+      "ANALYSIS_DURATION_MS": 362,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8828,13 +8828,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/05_EnergyCert/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "9dadb748f4533a6507302441e746a034190269eae3347cfa44433197efc58a99",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 324,
+      "ANALYSIS_DURATION_MS": 503,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8882,13 +8882,13 @@
       "ROUTING": "task",
       "SCORE": 72,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/06_BauCheck/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3c8ce0392891f7c1f92857f9d666cca9b7cce73f95be5f489a79d88a2205e87e",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 393,
+      "ANALYSIS_DURATION_MS": 519,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8935,13 +8935,13 @@
       "ROUTING": "task",
       "SCORE": 75,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/07_KassenPflicht/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "e8b6cc1a2d495c352d5d8258715055e30d27157b990ba4c0c766a44755a5205b",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 364,
+      "ANALYSIS_DURATION_MS": 513,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -8987,13 +8987,13 @@
       "ROUTING": "task",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/08_HRSignDesk/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "a7c67cc25e7bd809c20ed1b091ed1b96a7e023d9719b4446f160863d35fb9033",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 315,
+      "ANALYSIS_DURATION_MS": 430,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9040,13 +9040,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/09_SmartMeterGuard/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "be0810b82e0caa3a3c65f0eccfae75ee106a157283d1d2f6baa6cb643c6a4309",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 479,
+      "ANALYSIS_DURATION_MS": 774,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9093,13 +9093,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/10_NachweisVault/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3a8751ce7769ce442aac04f9dd0f49958b0bbfd61691a8c18e62a22ad4b6eb75",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 398,
+      "ANALYSIS_DURATION_MS": 645,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9148,13 +9148,13 @@
       "ROUTING": "task",
       "SCORE": 68,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/11_XRechnung.app/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "7a461e29f0c10d4668bc03290d4ba547ded5804a7076a03b56c7e6b5497220dc",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 340,
+      "ANALYSIS_DURATION_MS": 510,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9198,13 +9198,13 @@
       "ROUTING": "task",
       "SCORE": 81,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/12_ZeitAnker/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f6e300ffff7cdc09af9e98c1e26ce431f8c1d13670fce663d15ea3d82a4968d3",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 488,
+      "ANALYSIS_DURATION_MS": 712,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9250,13 +9250,13 @@
       "ROUTING": "task",
       "SCORE": 81,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/13_WhistleGuard/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f83c617d8664f9f160e1645ae02b64b665023142f9cca79bbd8d7623ea5c5cb3",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 421,
+      "ANALYSIS_DURATION_MS": 696,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9302,13 +9302,13 @@
       "ROUTING": "task",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/14_DSBDesk/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "f7a6121885f3113b1de80880af320dcbd53125ad2a0a216631b0be4abc7f8073",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 410,
+      "ANALYSIS_DURATION_MS": 503,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9355,13 +9355,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/15_AusbildungsNachweis/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "22ff9d5bfd9f8ef75f68a6e5f440a1d2ac899d541972d91cd3c623ec12c2f885",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 531,
+      "ANALYSIS_DURATION_MS": 659,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9409,13 +9409,13 @@
       "ROUTING": "task",
       "SCORE": 73,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/16_SicherheitsUnterweisung/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "e85cd2e4517bdaa3b131989b26a03dd4801d108c0b274ca05e70bdf479590180",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 492,
+      "ANALYSIS_DURATION_MS": 663,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9462,13 +9462,13 @@
       "ROUTING": "task",
       "SCORE": 76,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/17_PV-Nachweis/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "3af7493acdf7026f1d8e7294404a523538300e47e0ddbffb4c0ab11107bc1730",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 483,
+      "ANALYSIS_DURATION_MS": 638,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9514,13 +9514,13 @@
       "ROUTING": "task",
       "SCORE": 79,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/18_MietCompliance/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "80836a1286bbd1827e03a30448d8279fe4a368086adb8a9d7e8936baf7f3b8b9",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 440,
+      "ANALYSIS_DURATION_MS": 586,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9564,13 +9564,13 @@
       "ROUTING": "task",
       "SCORE": 81,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/19_GmbHProtokoll/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "fac0494c6c227d96b7bacd6cff4b9aebccc1813e47486ee850cc583099f5b5dc",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 440,
+      "ANALYSIS_DURATION_MS": 618,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9618,13 +9618,13 @@
       "ROUTING": "task",
       "SCORE": 70,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "blueprints2/20_FuhrparkCompliance/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "a79762709cd04bf64d59a5e6776ce7115fb3f153690b8e38ea26d8e2ec2f3034",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 6941,
+      "ANALYSIS_DURATION_MS": 9462,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9675,13 +9675,13 @@
       "ROUTING": "task",
       "SCORE": 25,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "blueprints2/app_ideen.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "543551644a3a167e03b3a777a20ca46ffee3e7c1de44c0fd97ee2893d7860467",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": true
     },
     {
-      "ANALYSIS_DURATION_MS": 1473,
+      "ANALYSIS_DURATION_MS": 1788,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9727,13 +9727,13 @@
       "ROUTING": "guideline",
       "SCORE": 30,
       "SIGNAL_POOR": true,
-      "SOURCE_FILE": "positron_combined_github_issues_generator_prompt.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "0dd823bd8cafacd208986f7f75b1e376c7b8e38d0b99072da8a2f5381312e484",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 597,
+      "ANALYSIS_DURATION_MS": 884,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9780,13 +9780,13 @@
       "ROUTING": "task",
       "SCORE": 75,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "positron_github_issues_prompt_erweiterung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "4e1cb454dc2a7a4830f350aa7005c0264c9dad772c518d75c465ad7edb4ad9c8",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false
     },
     {
-      "ANALYSIS_DURATION_MS": 256,
+      "ANALYSIS_DURATION_MS": 351,
       "ANALYSIS_ERROR": null,
       "APPLICABILITY": {
         "Actionability": true,
@@ -9828,7 +9828,7 @@
       "ROUTING": "guideline",
       "SCORE": 83,
       "SIGNAL_POOR": false,
-      "SOURCE_FILE": "prompt_analyse.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SOURCE_SHA256": "d320dd78e2f77e4d4a130410b7904a4be46f1333f26bf7e0cdf7665d6995022d",
       "TERSE_SUFFICIENT": false,
       "TRUNCATED": false

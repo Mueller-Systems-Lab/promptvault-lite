@@ -7,7 +7,7 @@
   "results": [
     {
       "CORPUS_CASE_ID": "CASE-0000",
-      "SOURCE_FILE": "1.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -16,7 +16,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0001",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/10 Exit-Fähige Mobile-Game-Konzepte.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -25,7 +25,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0002",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/ArcadeKitchen/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -34,7 +34,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0003",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/BudgetCity/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -43,7 +43,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0004",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/ChronoForge/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -52,7 +52,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0005",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/ColonyOS/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -61,7 +61,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0006",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/EchoMemory/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -70,7 +70,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0007",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/EmpireIdle/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -79,7 +79,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0008",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/FlowCut/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -88,7 +88,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0009",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/SynapseRush/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -97,7 +97,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0010",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/TileShift/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -106,7 +106,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0011",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/WillowPath/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -115,7 +115,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0012",
-      "SOURCE_FILE": "10 Exit-Fähige Mobile-Game-Konzepte/positron-blueprint-template.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -124,7 +124,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0013",
-      "SOURCE_FILE": "APP Blueprint/Die 5 SGB-Legal-Tech-Assets.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -133,7 +133,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0014",
-      "SOURCE_FILE": "APP Blueprint/Formora.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -142,7 +142,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0015",
-      "SOURCE_FILE": "APP Blueprint/bescheid-buster-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -151,7 +151,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0016",
-      "SOURCE_FILE": "APP Blueprint/gdb-kombi-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -160,7 +160,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0017",
-      "SOURCE_FILE": "APP Blueprint/pflege-waechter-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -169,7 +169,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0018",
-      "SOURCE_FILE": "APP Blueprint/reha-recht-ai-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -178,7 +178,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0019",
-      "SOURCE_FILE": "APP Blueprint/sozdoku-pro-blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -187,7 +187,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0020",
-      "SOURCE_FILE": "Architekturparadigmen f__r autonome, selbstreparierende Systeme_ Integration von Flutter-Frontends und Rust-Backends.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -196,7 +196,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0021",
-      "SOURCE_FILE": "Bauen/Der „Vibe Coding & Dev-Ready“ Master-Prompt.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -205,7 +205,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0022",
-      "SOURCE_FILE": "Bauen/Patrol CLI für Flutter-Android-Tests.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
       "PATTERN_CATEGORY": [
         "EMAIL"
@@ -214,7 +214,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0023",
-      "SOURCE_FILE": "Bauen/Prompt für KI-gestützte Flutter Debug-Implementation.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -223,7 +223,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0024",
-      "SOURCE_FILE": "Bauen/Spec-Driven Enterprise Delivery & QA Unit.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -232,7 +232,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0025",
-      "SOURCE_FILE": "Bauen/Umfassender Forschungsbericht zur Automatisierung von End-to-End (E2E) Tests in Flutter-Anwendungen.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
       "PATTERN_CATEGORY": [
         "EMAIL"
@@ -241,7 +241,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0026",
-      "SOURCE_FILE": "Bauen/Vollständig headless Repair-Loop.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
       "PATTERN_CATEGORY": [
         "SERVER_IP"
@@ -250,7 +250,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0027",
-      "SOURCE_FILE": "Bauen/____ E2E Physical Test Strategy_-MietVisor.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -259,7 +259,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0028",
-      "SOURCE_FILE": "Bauen/gesamten Flutter-Quellcode auf testfreundliche E2E-KI-Automatisierung umzubauen.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -268,7 +268,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0029",
-      "SOURCE_FILE": "Blueprint ___ GitHub Issues Generator.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -277,7 +277,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0030",
-      "SOURCE_FILE": "Codebase_Analyse_Prompt_fuer_Reparaturanweisung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -286,7 +286,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0031",
-      "SOURCE_FILE": "Deep Research Funktion_ Funktionsweise und Details.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -295,7 +295,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0032",
-      "SOURCE_FILE": "Marktanalyse Deutschland 2026_ 5 hochrelevante Problemfelder und K__ufergruppen_vc2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -304,7 +304,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0033",
-      "SOURCE_FILE": "Marktanalyse Deutschland 2026_ Die 5 Millionen-Euro-Schmerzfelder_gemini.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -313,7 +313,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0034",
-      "SOURCE_FILE": "Marktanalyse Deutschland 2026_game_idee.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -322,7 +322,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0035",
-      "SOURCE_FILE": "Meta_Prompt/Codebase_Analyse_Prompt_fuer_Reparaturanweisung (1).md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -331,7 +331,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0036",
-      "SOURCE_FILE": "Meta_Prompt/Issues_analysieren_1_von_2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -340,7 +340,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0037",
-      "SOURCE_FILE": "Meta_Prompt/Live Operations Pass .md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -349,7 +349,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0038",
-      "SOURCE_FILE": "Meta_Prompt/Meta-Prompt für eine KI zur iterativen Projekt-Orchestrierung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -358,7 +358,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0039",
-      "SOURCE_FILE": "Meta_Prompt/Meta-Prompt für eine KI zur iterativen Projekt-Orchestrierung_v2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -367,7 +367,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0040",
-      "SOURCE_FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -376,7 +376,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0041",
-      "SOURCE_FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent_V2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -385,7 +385,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0042",
-      "SOURCE_FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent_V3.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -394,7 +394,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0043",
-      "SOURCE_FILE": "Meta_Prompt/UNIVERSAL_OPENCODE_MCP_SETUP_PROMPT.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -403,7 +403,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0044",
-      "SOURCE_FILE": "Meta_Prompt/VOLLSTÄNDIGE_PROJEKT-ANALYSE_2_von_2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
       "PATTERN_CATEGORY": [
         "EMAIL"
@@ -412,7 +412,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0045",
-      "SOURCE_FILE": "Meta_Prompt/blueprint_ai_coding_orchestrator.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
       "PATTERN_CATEGORY": [
         "SERVER_IP"
@@ -421,7 +421,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0046",
-      "SOURCE_FILE": "Meta_Prompt/testloop.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -430,7 +430,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0047",
-      "SOURCE_FILE": "Meta_Prompt/xxx/Maximale Token-Effizienz & Ausgabequalit__t.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -439,7 +439,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0048",
-      "SOURCE_FILE": "Meta_Prompt/xxx/Meta-Prompt f__r eine KI zur iterativen Projekt-Orchestrierung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -448,7 +448,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0049",
-      "SOURCE_FILE": "Meta_Prompt/xxx/OPSX-basierter Development Orchestrator und KI-Engineering-Agent.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -457,7 +457,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0050",
-      "SOURCE_FILE": "Meta_Prompt/xxx/__vertikale_integration__.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -466,7 +466,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0051",
-      "SOURCE_FILE": "QA Execution Unit_v2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -475,7 +475,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0052",
-      "SOURCE_FILE": "QA Execution Unit_v3.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -484,7 +484,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0053",
-      "SOURCE_FILE": "QA Execution Unit_v4.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -493,7 +493,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0054",
-      "SOURCE_FILE": "QA Execution Unit_v5.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
       "PATTERN_CATEGORY": [
         "EMAIL"
@@ -502,7 +502,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0055",
-      "SOURCE_FILE": "__Blueprint ___ GitHub Issues Generator__.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -511,7 +511,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0056",
-      "SOURCE_FILE": "__vertikale_integration__.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -520,7 +520,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0057",
-      "SOURCE_FILE": "anleitungen/Anleitung_Qwen_3.6_GTX1070_Deployment.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -529,7 +529,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0058",
-      "SOURCE_FILE": "anleitungen/Gemma 4 auf GeForce 1070.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -538,7 +538,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0059",
-      "SOURCE_FILE": "anleitungen/KI-ANLEITUNG.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -547,7 +547,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0060",
-      "SOURCE_FILE": "anleitungen/MASTER_DOKUMENTATION.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -556,7 +556,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0061",
-      "SOURCE_FILE": "anleitungen/OpenCode_KI_Anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -565,7 +565,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0062",
-      "SOURCE_FILE": "anleitungen/Speckit_SDD_Anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -574,7 +574,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0063",
-      "SOURCE_FILE": "anleitungen/Synthese und Implikationen für lokale KI-Deployments.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -583,7 +583,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0064",
-      "SOURCE_FILE": "anleitungen/Vibe_Coding_Master_Framework.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -592,7 +592,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0065",
-      "SOURCE_FILE": "anleitungen/anleitung_analysieren.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -601,7 +601,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0066",
-      "SOURCE_FILE": "anleitungen/anleitung_speckit_neu.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -610,7 +610,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0067",
-      "SOURCE_FILE": "anleitungen/company/Ein Zero-Cost-Infrastrukturmodell auf Base L2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -619,7 +619,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0068",
-      "SOURCE_FILE": "anleitungen/company/Maximale Token-Effizienz & Ausgabequalität.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -628,7 +628,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0069",
-      "SOURCE_FILE": "anleitungen/company/Strategische Frameworks für kryptoökonomische Einkommensmodelle ohne Startkapit.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -637,7 +637,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0070",
-      "SOURCE_FILE": "anleitungen/company/Technische Machbarkeit und wirtschaftliches Potenzial eines autonomen Agentic-Finance-Setups im Edge-Computing.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -646,7 +646,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0071",
-      "SOURCE_FILE": "anleitungen/company/Zero-Human Company.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -655,7 +655,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0072",
-      "SOURCE_FILE": "anleitungen/d hardwarebasierten Akkumulation von Ethereum.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -664,7 +664,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0073",
-      "SOURCE_FILE": "anleitungen/gemini-cli-anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
       "PATTERN_CATEGORY": [
         "SERVER_IP"
@@ -673,7 +673,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0074",
-      "SOURCE_FILE": "anleitungen/gemma4_einrichten_auf_geforce_1070.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -682,7 +682,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0075",
-      "SOURCE_FILE": "anleitungen/opencode-ki-anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -691,7 +691,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0076",
-      "SOURCE_FILE": "anleitungen/qwen_code_anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -700,7 +700,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0077",
-      "SOURCE_FILE": "anleitungen/spec-kit-anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -709,7 +709,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0078",
-      "SOURCE_FILE": "anleitungen/speckit/blueprint-template.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "LOCAL_ONLY_REVIEW",
       "PATTERN_CATEGORY": [
         "PASSWORD_ASSIGN"
@@ -718,7 +718,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0079",
-      "SOURCE_FILE": "anleitungen/speckit/spec-kit-anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -727,7 +727,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0080",
-      "SOURCE_FILE": "anleitungen/speckit_ki_agent_anleitung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -736,7 +736,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0081",
-      "SOURCE_FILE": "app_conzepte_neuer_prompt.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -745,7 +745,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0082",
-      "SOURCE_FILE": "app_ideen.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -754,7 +754,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0083",
-      "SOURCE_FILE": "app_konzepte_neu/BauAbnahme_Sign/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -763,7 +763,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0084",
-      "SOURCE_FILE": "app_konzepte_neu/BescheidVault/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -772,7 +772,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0085",
-      "SOURCE_FILE": "app_konzepte_neu/CrewTime_Proof_Bau_Handwerk/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -781,7 +781,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0086",
-      "SOURCE_FILE": "app_konzepte_neu/FlexLogbook_Industrie_SME/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -790,7 +790,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0087",
-      "SOURCE_FILE": "app_konzepte_neu/HinweisKanal_LkSG/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -799,7 +799,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0088",
-      "SOURCE_FILE": "app_konzepte_neu/MeterConsent_Vault/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -808,7 +808,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0089",
-      "SOURCE_FILE": "app_konzepte_neu/PflegeLog_Offline/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -817,7 +817,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0090",
-      "SOURCE_FILE": "app_konzepte_neu/SchichtÜbergabe_Pro/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -826,7 +826,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0091",
-      "SOURCE_FILE": "app_konzepte_neu/SupplyChainEvidence_Lite/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -835,7 +835,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0092",
-      "SOURCE_FILE": "app_konzepte_neu/VollmachtFlow/konzept.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -844,7 +844,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0093",
-      "SOURCE_FILE": "blueprint3/21_ai_competence_log/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -853,7 +853,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0094",
-      "SOURCE_FILE": "blueprint3/22_gwg_comply/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -862,7 +862,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0095",
-      "SOURCE_FILE": "blueprint3/23_gefaehrdungs_atlas/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -871,7 +871,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0096",
-      "SOURCE_FILE": "blueprint3/24_lohn_nachweis/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -880,7 +880,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0097",
-      "SOURCE_FILE": "blueprint3/25_anerkennungs_manager/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -889,7 +889,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0098",
-      "SOURCE_FILE": "blueprint3/26_energie_pflicht/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -898,7 +898,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0099",
-      "SOURCE_FILE": "blueprint3/27_kasko_meldung/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -907,7 +907,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0100",
-      "SOURCE_FILE": "blueprint3/28_steuer_vorlage/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -916,7 +916,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0101",
-      "SOURCE_FILE": "blueprint3/29_pflege_abrechnung/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -925,7 +925,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0102",
-      "SOURCE_FILE": "blueprint3/30_foerdermittel_log/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -934,7 +934,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0103",
-      "SOURCE_FILE": "blueprint3/31_compliance_core_rs/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -943,7 +943,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0104",
-      "SOURCE_FILE": "blueprint3/32_nis2_desk/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -952,7 +952,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0105",
-      "SOURCE_FILE": "blueprint3/33_esrs_xbrl_app/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -961,7 +961,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0106",
-      "SOURCE_FILE": "blueprint3/34_gobd_kernel_flutter/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -970,7 +970,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0107",
-      "SOURCE_FILE": "blueprint3/35_nis2_self_check/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -979,7 +979,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0108",
-      "SOURCE_FILE": "blueprint3/36_ki_vo_auditor/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "LOCAL_ONLY_REVIEW",
       "PATTERN_CATEGORY": [
         "PASSWORD_ASSIGN"
@@ -988,7 +988,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0109",
-      "SOURCE_FILE": "blueprint3/37_mastr_bridge/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -997,7 +997,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0110",
-      "SOURCE_FILE": "blueprint3/app_ideen2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1006,7 +1006,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0111",
-      "SOURCE_FILE": "blueprint3/blueprint-template.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "LOCAL_ONLY_REVIEW",
       "PATTERN_CATEGORY": [
         "PASSWORD_ASSIGN"
@@ -1015,7 +1015,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0112",
-      "SOURCE_FILE": "blueprint4/01_FormFrei/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1024,7 +1024,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0113",
-      "SOURCE_FILE": "blueprint4/02_SupplyTrace/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1033,7 +1033,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0114",
-      "SOURCE_FILE": "blueprint4/03_PflegeDoc/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1042,7 +1042,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0115",
-      "SOURCE_FILE": "blueprint4/04_BauSign/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1051,7 +1051,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0116",
-      "SOURCE_FILE": "blueprint4/05_GridFlex/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1060,7 +1060,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0117",
-      "SOURCE_FILE": "blueprint4/06_HandwerkHR/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1069,7 +1069,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0118",
-      "SOURCE_FILE": "blueprint4/07_AuditReady/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1078,7 +1078,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0119",
-      "SOURCE_FILE": "blueprint4/08_CareMatch/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1087,7 +1087,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0120",
-      "SOURCE_FILE": "blueprint4/09_MeterProof/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1096,7 +1096,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0121",
-      "SOURCE_FILE": "blueprint4/10_BehördenBot/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1105,7 +1105,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0122",
-      "SOURCE_FILE": "blueprint4/app_ideen4.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
       "PATTERN_CATEGORY": [
         "SERVER_IP"
@@ -1114,7 +1114,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0123",
-      "SOURCE_FILE": "blueprint4/memory_bank/activeContext.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1123,7 +1123,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0124",
-      "SOURCE_FILE": "blueprint4/memory_bank/productContext.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1132,7 +1132,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0125",
-      "SOURCE_FILE": "blueprint4/memory_bank/progress.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1141,7 +1141,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0126",
-      "SOURCE_FILE": "blueprint4/memory_bank/projectBrief.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1150,7 +1150,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0127",
-      "SOURCE_FILE": "blueprint4/memory_bank/systemPatterns.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1159,7 +1159,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0128",
-      "SOURCE_FILE": "blueprint_verbessern.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1168,7 +1168,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0129",
-      "SOURCE_FILE": "blueprint_verbessern_v2.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1177,7 +1177,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0130",
-      "SOURCE_FILE": "blueprint_von_grok/app_ideen3.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1186,7 +1186,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0131",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_01_buerosign/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1195,7 +1195,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0132",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_02_verwaltungspilot/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1204,7 +1204,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0133",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_03_supplychainguard/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1213,7 +1213,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0134",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_04_esgreporter/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1222,7 +1222,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0135",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_05_caredoc/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1231,7 +1231,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0136",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_06_shiftguard/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1240,7 +1240,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0137",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_07_handwerklog/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1249,7 +1249,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0138",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_08_bausafe/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1258,7 +1258,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0139",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_09_flexenergy/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1267,7 +1267,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0140",
-      "SOURCE_FILE": "blueprint_von_grok/blueprint_10_metercomply/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1276,7 +1276,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0141",
-      "SOURCE_FILE": "blueprints/01-esg-core-engine/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1285,7 +1285,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0142",
-      "SOURCE_FILE": "blueprints/02-nis2-audit-node/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1294,7 +1294,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0143",
-      "SOURCE_FILE": "blueprints/03-voice-to-med-sdk/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1303,7 +1303,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0144",
-      "SOURCE_FILE": "blueprints/04-zugferd-parser-x/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1312,7 +1312,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0145",
-      "SOURCE_FILE": "blueprints/05-grid-balancer-api/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1321,7 +1321,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0146",
-      "SOURCE_FILE": "blueprints/06-eidas-b2b-vault/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1330,7 +1330,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0147",
-      "SOURCE_FILE": "blueprints/07-spatial-craft-ar/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1339,7 +1339,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0148",
-      "SOURCE_FILE": "blueprints/08-graph-scout-osint/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1348,7 +1348,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0149",
-      "SOURCE_FILE": "blueprints/09-tender-rag-local/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1357,7 +1357,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0150",
-      "SOURCE_FILE": "blueprints/10-haccp-sync-core/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1366,7 +1366,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0151",
-      "SOURCE_FILE": "blueprints/11-sgb-xi-appeal-core/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1375,7 +1375,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0152",
-      "SOURCE_FILE": "blueprints/12-sgb-ii-lead-gen/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1384,7 +1384,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0153",
-      "SOURCE_FILE": "blueprints/13-sgb-v-pdf-engine/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1393,7 +1393,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0154",
-      "SOURCE_FILE": "blueprints/14-gdb-graph-logic/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1402,7 +1402,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0155",
-      "SOURCE_FILE": "blueprints/15-sgb-xii-vault/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1411,7 +1411,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0156",
-      "SOURCE_FILE": "blueprints/16-em-triage-ai/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1420,7 +1420,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0157",
-      "SOURCE_FILE": "blueprints/17-timeline-defender/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1429,7 +1429,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0158",
-      "SOURCE_FILE": "blueprints/18-budget-router-sgb/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1438,7 +1438,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0159",
-      "SOURCE_FILE": "blueprints/19-sgb-iii-ruleset/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1447,7 +1447,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0160",
-      "SOURCE_FILE": "blueprints/20-geo-kita-engine/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1456,7 +1456,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0161",
-      "SOURCE_FILE": "blueprints2/01_HandwerkSign/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1465,7 +1465,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0162",
-      "SOURCE_FILE": "blueprints2/02_PflegeDok+/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1474,7 +1474,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0163",
-      "SOURCE_FILE": "blueprints2/03_SupplyTrace/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1483,7 +1483,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0164",
-      "SOURCE_FILE": "blueprints2/04_MeldePilot/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1492,7 +1492,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0165",
-      "SOURCE_FILE": "blueprints2/05_EnergyCert/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1501,7 +1501,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0166",
-      "SOURCE_FILE": "blueprints2/06_BauCheck/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1510,7 +1510,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0167",
-      "SOURCE_FILE": "blueprints2/07_KassenPflicht/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1519,7 +1519,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0168",
-      "SOURCE_FILE": "blueprints2/08_HRSignDesk/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1528,7 +1528,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0169",
-      "SOURCE_FILE": "blueprints2/09_SmartMeterGuard/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1537,7 +1537,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0170",
-      "SOURCE_FILE": "blueprints2/10_NachweisVault/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1546,7 +1546,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0171",
-      "SOURCE_FILE": "blueprints2/11_XRechnung.app/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1555,7 +1555,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0172",
-      "SOURCE_FILE": "blueprints2/12_ZeitAnker/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1564,7 +1564,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0173",
-      "SOURCE_FILE": "blueprints2/13_WhistleGuard/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1573,7 +1573,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0174",
-      "SOURCE_FILE": "blueprints2/14_DSBDesk/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1582,7 +1582,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0175",
-      "SOURCE_FILE": "blueprints2/15_AusbildungsNachweis/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1591,7 +1591,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0176",
-      "SOURCE_FILE": "blueprints2/16_SicherheitsUnterweisung/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1600,7 +1600,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0177",
-      "SOURCE_FILE": "blueprints2/17_PV-Nachweis/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1609,7 +1609,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0178",
-      "SOURCE_FILE": "blueprints2/18_MietCompliance/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1618,7 +1618,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0179",
-      "SOURCE_FILE": "blueprints2/19_GmbHProtokoll/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1627,7 +1627,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0180",
-      "SOURCE_FILE": "blueprints2/20_FuhrparkCompliance/blueprint.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1636,7 +1636,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0181",
-      "SOURCE_FILE": "blueprints2/app_ideen.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1645,7 +1645,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0182",
-      "SOURCE_FILE": "positron_combined_github_issues_generator_prompt.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1654,7 +1654,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0183",
-      "SOURCE_FILE": "positron_github_issues_prompt_erweiterung.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"
@@ -1663,7 +1663,7 @@
     },
     {
       "CORPUS_CASE_ID": "CASE-0184",
-      "SOURCE_FILE": "prompt_analyse.md",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
       "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
       "PATTERN_CATEGORY": [
         "NONE"

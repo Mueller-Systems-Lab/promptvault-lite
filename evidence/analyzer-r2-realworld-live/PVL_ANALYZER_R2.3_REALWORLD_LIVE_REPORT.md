@@ -87,7 +87,7 @@ Targets for GREEN:
 - Raw secrets transmitted: 0 / PASS
 - Local-only transmitted: 0 / PASS (CASE-0078,0108,0111 with PASSWORD_ASSIGN never sent, verified via privacy-scan + live-call filter)
 - Redacted: 8 cases with semantics-preserving redaction (<EMAIL>, <SERVER_IP>) — 7/8 verified content changed and placeholder present, CASE-0122 over-classification (no IP literal, no leak, WARNING not block), in-memory redaction (no temp file outside repo) procedural WARNING but no exfiltration.
-- Raw corpus not committed (outside repo /home/xxammaxx/Dokumente/Promps, git ls-files 0 hits, evidence only hashes)
+- Raw corpus not committed (outside repo <HOME> git ls-files 0 hits, evidence only hashes)
 - SANITIZATION_SEMANTICS_PRESERVED: PASS (with warnings)
 - Overall PRIVACY: PASS
 
