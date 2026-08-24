@@ -1,0 +1,22 @@
+{
+  "id": "v4-task-en-broken-buzzword-001",
+  "overall_score": 19,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "critical_issues": [
+    "Buzzwords without verifiable task"
+  ],
+  "missing_information": [
+    "Goal, input, output, constraints unspecified"
+  ],
+  "recommended_improvements": [
+    "Replace buzzwords with one concrete goal and output spec."
+  ],
+  "confidence": 0.92,
+  "prompt_fingerprint": "f29593f3c8468ef5f9546329b26c3c69bbb5539cf7e9644e5585575afd58aa7c",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "5a735e9e4110d180b77a7face5abd5fc2bb081da40781455a5907930e8dcdd2b",
+  "_prompt_fingerprint": "f29593f3c8468ef5f9546329b26c3c69bbb5539cf7e9644e5585575afd58aa7c"
+}

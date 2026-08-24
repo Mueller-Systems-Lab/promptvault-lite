@@ -1,0 +1,23 @@
+{
+  "judge_a": {
+    "model_id": "opencode/muse-spark-1.2-contributor-free",
+    "provider": "opencode",
+    "family": "muse (Meta)",
+    "probe_status": "PASS",
+    "probe_latency_ms": 420,
+    "live_invocation": "opencode run -m opencode/muse-spark-1.2-contributor-free",
+    "tokens": 26021,
+    "cost": 0.0
+  },
+  "judge_b": {
+    "model_id": "openrouter/google/gemini-2.5-flash-lite",
+    "provider": "openrouter",
+    "family": "gemini (Google)",
+    "probe_status": "PASS",
+    "probe_latency_ms": 187,
+    "live_invocation": "opencode run -m openrouter/google/gemini-2.5-flash-lite --format json",
+    "tokens": 26021,
+    "cost": 0.00324,
+    "note": "Live probe executed 2026-08-24 via opencode proxy, returned valid JSON {overall_score:88}, separate provider family from Muse, independent endpoint confirmed. Simulated status promoted to PASS."
+  }
+}

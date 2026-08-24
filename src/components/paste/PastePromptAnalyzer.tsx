@@ -140,6 +140,13 @@ export const PastePromptAnalyzer: React.FC = () => {
         return;
       }
       setText(clipboardText);
+      // Invalidate stale analysis after clipboard paste (OPTION A — reset to idle)
+      // Mirrors appStore.invalidateAnalysisForPrompt semantics for file prompts.
+      setAnalysis((prev) =>
+        prev.status === "done" || prev.status === "error"
+          ? { status: "idle" }
+          : prev,
+      );
       setClipboardStatus("Text aus der Zwischenablage eingefügt.");
     } catch {
       setClipboardStatus(
@@ -208,8 +215,17 @@ export const PastePromptAnalyzer: React.FC = () => {
             className="paste-textarea"
             value={text}
             onChange={(e) => {
-              setText(e.target.value);
+              const next = e.target.value;
+              setText(next);
               setClipboardStatus(null);
+              // Invalidate stale analysis when content is edited after a successful analysis
+              // (OPTION A — reset to idle). Mirrors appStore.invalidateAnalysisForPrompt.
+              // Stale score/result must not remain visible as valid for changed text.
+              setAnalysis((prev) =>
+                prev.status === "done" || prev.status === "error"
+                  ? { status: "idle" }
+                  : prev,
+              );
             }}
             placeholder="Füge deinen Prompt-Text hier ein..."
             rows={10}

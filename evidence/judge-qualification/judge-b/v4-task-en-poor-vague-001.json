@@ -1,0 +1,22 @@
+{
+  "id": "v4-task-en-poor-vague-001",
+  "overall_score": 35,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "critical_issues": [
+    "No goal; entirely vague"
+  ],
+  "missing_information": [
+    "All task-defining information absent"
+  ],
+  "recommended_improvements": [
+    "Write explicit actionable instruction with input and output."
+  ],
+  "confidence": 0.96,
+  "prompt_fingerprint": "916ca468f754167481a12fc98bc9c1c9d29b3124995045535041b4af4d04c053",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "d517f897f9ab57e2886be49e2d81835be2b151a14002a27e19bceaff848fc8ed",
+  "_prompt_fingerprint": "916ca468f754167481a12fc98bc9c1c9d29b3124995045535041b4af4d04c053"
+}

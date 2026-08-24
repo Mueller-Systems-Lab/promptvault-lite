@@ -1,0 +1,22 @@
+{
+  "id": "v4-task-en-ambiguous-task-001",
+  "overall_score": 61,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "critical_issues": [
+    "Goal is subjective ('more compelling') without criteria"
+  ],
+  "missing_information": [
+    "Target audience, definition of 'compelling', scope of draft"
+  ],
+  "recommended_improvements": [
+    "Specify audience, purpose, and measurable refinement criteria."
+  ],
+  "confidence": 0.78,
+  "prompt_fingerprint": "e8a0ec5e8750a01fbf175bcbf9bc7566b0c2d3dbabc6ac24f90a879fb922d1f7",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "e1e53a426a7b49d675cf77417340507beaca60e8b5f3109d8b560085db09734b",
+  "_prompt_fingerprint": "e8a0ec5e8750a01fbf175bcbf9bc7566b0c2d3dbabc6ac24f90a879fb922d1f7"
+}

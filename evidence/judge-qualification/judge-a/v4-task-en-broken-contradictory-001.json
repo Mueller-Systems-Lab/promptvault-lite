@@ -1,0 +1,20 @@
+{
+  "id": "v4-task-en-broken-contradictory-001",
+  "overall_score": 18,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "critical_issues": [
+    "Contradictory requirements: metric vs imperial, start vs end introduction"
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+    "Resolve contradictions; choose one unit system and one structural rule."
+  ],
+  "confidence": 0.97,
+  "prompt_fingerprint": "cc225e445426b00db4957d859696e505a7b093675b4cb500aaf3557c15c3cc2e",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "d47dbe68fcb235e88b6ecc67cc6177abb7a5e315964f05e189566d349cb0827b",
+  "_prompt_fingerprint": "cc225e445426b00db4957d859696e505a7b093675b4cb500aaf3557c15c3cc2e"
+}

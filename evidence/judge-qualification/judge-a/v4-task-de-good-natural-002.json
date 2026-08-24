@@ -1,0 +1,20 @@
+{
+  "id": "v4-task-de-good-natural-002",
+  "overall_score": 82,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "critical_issues": [],
+  "missing_information": [
+    "Specific output format not enforced but implied product description"
+  ],
+  "recommended_improvements": [
+    "Add explicit output length or structure (e.g., bullet points or max words) for stronger determinism."
+  ],
+  "confidence": 0.88,
+  "prompt_fingerprint": "735978dead44d925183219d9e7abf6ba7907019a4c533f4b6fab3652de979c78",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "7f23b345207ac30a07486ef4c126add77a30de362c4f402e3273740002a7fc14",
+  "_prompt_fingerprint": "735978dead44d925183219d9e7abf6ba7907019a4c533f4b6fab3652de979c78"
+}

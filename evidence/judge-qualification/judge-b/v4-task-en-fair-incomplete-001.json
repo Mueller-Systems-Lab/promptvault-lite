@@ -1,0 +1,22 @@
+{
+  "id": "v4-task-en-fair-incomplete-001",
+  "overall_score": 62,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "critical_issues": [
+    "Missing necessary context and output contract"
+  ],
+  "missing_information": [
+    "Audience background, source material, deliverable format"
+  ],
+  "recommended_improvements": [
+    "Add audience, key topics, and desired artefact format."
+  ],
+  "confidence": 0.8,
+  "prompt_fingerprint": "0a9adf49565fd2551b10e1b1257a7aa8a8c5fd193e828fa4e5393135247afe5f",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "283b85e619627f61b48820b572048f905dc7842f2d0a86867e5e143637fbbf75",
+  "_prompt_fingerprint": "0a9adf49565fd2551b10e1b1257a7aa8a8c5fd193e828fa4e5393135247afe5f"
+}

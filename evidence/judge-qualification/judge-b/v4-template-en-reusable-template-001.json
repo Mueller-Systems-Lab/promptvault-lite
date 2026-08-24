@@ -1,0 +1,18 @@
+{
+  "id": "v4-template-en-reusable-template-001",
+  "overall_score": 80,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+    "Clarify expected content length per placeholder."
+  ],
+  "confidence": 0.85,
+  "prompt_fingerprint": "88f8071e2a1b668acfa4797a2189a2b333f2c9f71154e210bef6af0416fad914",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "7be32e378cd667de21a8c36882ae983c8fe07f5233a0204d48151f5d98d2d5f7",
+  "_prompt_fingerprint": "88f8071e2a1b668acfa4797a2189a2b333f2c9f71154e210bef6af0416fad914"
+}

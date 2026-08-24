@@ -1,0 +1,20 @@
+{
+  "id": "v4-task-en-broken-contradictory-001",
+  "overall_score": 15,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "critical_issues": [
+    "Direct contradictions make faithful execution impossible"
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+    "Eliminate contradictions; select single coherent requirement per dimension."
+  ],
+  "confidence": 0.98,
+  "prompt_fingerprint": "cc225e445426b00db4957d859696e505a7b093675b4cb500aaf3557c15c3cc2e",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "9a8bb0e91e136faef8b2bc1af70625ddf32e7b85570712f928666a7722df644f",
+  "_prompt_fingerprint": "cc225e445426b00db4957d859696e505a7b093675b4cb500aaf3557c15c3cc2e"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "v4-guideline-en-guideline-001",
+  "overall_score": 88,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+    "Add non-goals or escalation path for exceptions."
+  ],
+  "confidence": 0.9,
+  "prompt_fingerprint": "612ad6b6015621ff42a9f73fd3b416e92e1b561db01ca8d7170d1fc8410dc79f",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "b433488a8e37d087d18487f43d8a4a8c5f2f94448bfff1288b69fcdcc1c76d85",
+  "_prompt_fingerprint": "612ad6b6015621ff42a9f73fd3b416e92e1b561db01ca8d7170d1fc8410dc79f"
+}

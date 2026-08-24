@@ -1,0 +1,33 @@
+{
+  "execution_id": "r23-1755895952",
+  "start_time": "2026-08-22T17:32:32+02:00",
+  "branch": "quality/analyzer-r2-verification-closure",
+  "master_head": "7baa6739",
+  "r2_head": "7d173344",
+  "r2_1_head": "16e1f44f",
+  "r2_2_head": "0af4afd3",
+  "r23_candidate": "0af4afd3",
+  "benchmarks": {
+    "v5_present": true,
+    "dev_cases": 110,
+    "holdout_cases": 40,
+    "v5_holdout_sealed": true
+  },
+  "working_tree": {
+    "modified_files": [
+      "src-tauri/src/analysis/quality.rs",
+      "src-tauri/src/analysis/r2/features.rs",
+      "src-tauri/src/analysis/r2/recommendations.rs"
+    ],
+    "untracked_files": [
+      "benchmarks/semantic-quality-v5/",
+      "tests/e2e/visual-r23-analysis.spec.ts",
+      "tests/e2e/visual-r23-capture.spec.ts",
+      "scripts/lib/github-mcp-probe.mjs",
+      "scripts/__tests__/github-mcp-probe.test.mjs",
+      "snapshot-ignore",
+      "snapshot-unused.md",
+      "snapshot.txt"
+    ]
+  }
+}
