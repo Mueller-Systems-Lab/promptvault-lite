@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """Version consistency check.
 
-Asserts that every canonical version source in the repository reports the
-same release version. Used as a pre-release gate to prevent version drift
-(e.g. Desktop 1.8.0 vs CLI 1.9.0 vs manifest 1.9.0).
+Asserts that canonical version sources agree within their release stream.
+The desktop application and the Windows-only CLI may intentionally have
+different versions when the current host cannot produce the CLI's native
+Windows installer.
 
 Usage:
     python scripts/check_version_consistency.py [expected-version]
 
-Without an argument the expected version is derived from
-``tools/promptvault-cli/pyproject.toml`` (``project.version``) instead of a
-hardcoded literal, so the default can never go stale at the next bump. An
-explicit CLI argument overrides the derived default.
+Without an argument the expected desktop version is derived from
+``package.json``. An explicit CLI argument overrides the desktop expectation;
+the separate CLI expectation is always derived from its own ``pyproject.toml``.
 
 Exit code 0 when all sources agree, non-zero otherwise.
 """
@@ -24,10 +24,13 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-SOURCES = {
+DESKTOP_SOURCES = {
     "package.json": REPO_ROOT / "package.json",
     "src-tauri/Cargo.toml": REPO_ROOT / "src-tauri" / "Cargo.toml",
     "src-tauri/tauri.conf.json": REPO_ROOT / "src-tauri" / "tauri.conf.json",
+}
+
+CLI_SOURCES = {
     "tools/promptvault-cli/pyproject.toml": REPO_ROOT
     / "tools"
     / "promptvault-cli"
@@ -68,7 +71,13 @@ def read_version(path: Path) -> str:
 
 
 def _default_expected_version() -> str:
-    """Derive the expected version from the CLI's canonical pyproject.toml."""
+    """Derive the expected version from the desktop package.json."""
+    package = REPO_ROOT / "package.json"
+    return json.loads(package.read_text())["version"]
+
+
+def _default_cli_expected_version() -> str:
+    """Derive the expected version for the separate CLI release stream."""
     pyproject = REPO_ROOT / "tools" / "promptvault-cli" / "pyproject.toml"
     return tomllib.loads(pyproject.read_text())["project"]["version"]
 
@@ -77,19 +86,27 @@ def main() -> int:
     expected = sys.argv[1] if len(sys.argv) > 1 else _default_expected_version()
     failures: list[str] = []
     versions: dict[str, str] = {}
-    for label, path in SOURCES.items():
+    # The desktop application and the Windows-only native-installer CLI are
+    # intentionally separate release streams.  A Linux desktop release must
+    # not claim that an unbuilt Windows installer exists for the same version.
+    sources = {**DESKTOP_SOURCES, **CLI_SOURCES}
+    cli_expected = _default_cli_expected_version()
+    for label, path in sources.items():
         try:
             versions[label] = read_version(path)
         except Exception as e:
             failures.append(f"{label}: could not read ({e})")
             continue
-        if versions[label] != expected:
-            failures.append(f"{label}: {versions[label]} (expected {expected})")
+        group_expected = expected if label in DESKTOP_SOURCES else cli_expected
+        if versions[label] != group_expected:
+            failures.append(f"{label}: {versions[label]} (expected {group_expected})")
 
     print(f"VERSION CONSISTENCY (expected {expected})")
     for label, version in versions.items():
-        marker = "PASS" if version == expected else "FAIL"
-        print(f"  [{marker}] {label}: {version}")
+        group_expected = expected if label in DESKTOP_SOURCES else cli_expected
+        marker = "PASS" if version == group_expected else "FAIL"
+        stream = "desktop" if label in DESKTOP_SOURCES else "cli"
+        print(f"  [{marker}] {stream} {label}: {version}")
 
     if failures:
         print("VERSION_CONSISTENCY: FAIL")

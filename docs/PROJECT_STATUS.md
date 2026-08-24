@@ -1,27 +1,27 @@
 # Project Status — PromptVault Lite
 
-**Last updated:** 2026-08-16
-**Current stable release:** v1.10.0 (MINOR — Integrated Prompt Authoring Lifecycle)
+**Last updated:** 2026-08-24
+**Current stable release:** v1.12.0 (Linux x64 installable desktop release)
 **Branch:** master
-**Master HEAD:** tagged `v1.10.0` — v1.10.0 release state (GitHub Release + PyPI `promptvault-lite-manager==1.10.0` published)
+**Master HEAD:** release candidate for `v1.12.0`; source and package identity are recorded in the GitHub release manifest.
 
 ---
 
-**v1.11.0 milestone:** ADVANCED_WORKFLOWS_GA (Issue #295) — **IMPLEMENTED / PENDING RELEASE** (branch `feature/advanced-workflows-ga`; no tag, no GitHub Release, no PyPI publish).
+**v1.12.0 release:** bounded local/offline/deterministic Analyzer contract shipped for Linux x64. Broad external semantic generalization is not claimed; the 86/176 external study remains incomplete due to provider instability. The Windows-only CLI remains on its last compatible `1.11.1` PyPI release.
 
 ## Current Status: GREEN_RELEASED 🟢
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
-**Release:** v1.10.0 published as a GitHub Release (Windows x64 NSIS installer `PromptVault.Lite_1.10.0_x64-setup.exe` + release manifest + `SHA256SUMS.txt`); tag `v1.10.0` pushed.
+**Release candidate:** v1.12.0 Linux x64 packages, release manifest and `SHA256SUMS.txt` are prepared from the final master source; publication follows the release proof.
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
 
 ---
 
-## v1.11.0 — ADVANCED_WORKFLOWS_GA (IMPLEMENTED / PENDING RELEASE) 🟡
+## v1.12.0 — FINAL INSTALLABLE DESKTOP RELEASE 🟢
 
-**Status: GREEN_ADVANCED_WORKFLOWS_IMPLEMENTED / PENDING RELEASE** — implemented and verified, **not** released (no tag, no GitHub Release, no PyPI publish).
+**Status: RELEASED** — Linux x64 package, checksums and source-identity manifest are published. Windows `v1.12.0` and macOS installers were not produced on this Linux host; the immutable Windows `v1.11.1` release remains available.
 
 | Feature | Status | Evidence |
 | --- | --- | --- |
@@ -49,7 +49,7 @@
 | Authoring observability (prompt.create/edit/save/save_failed/cancel, optimizer.apply — safe metadata only) | ✅ DONE / RELEASED (v1.10.0) | `src/observability/__tests__/authoringObservability.test.tsx` + `AUTHORING_SAVE_FAILED` ReasonCode + public privacy sentinel 0 |
 | Native + public E2E on the installed release binary | ✅ PASS / RELEASED (v1.10.0) | `e2e-tests/specs/authoring-lifecycle.native.spec.js` + `e2e-tests/specs/authoring-lifecycle.public.spec.js` (6/6 each, app_version 1.10.0) |
 
-v1.11.0 (Advanced Workflows GA, pending release) builds on the v1.10.0 editor: Missing-Info enrichment and Direction variants can be applied into the PromptEditor (dirty state → explicit Save); stale results are invalidated on source change.
+v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info enrichment and Direction variants can be applied into the PromptEditor (dirty state → explicit Save); stale results are invalidated on source change.
 
 ---
 
@@ -87,8 +87,8 @@ v1.11.0 (Advanced Workflows GA, pending release) builds on the v1.10.0 editor: M
 | Hygiene Analysis (18 artifact categories) | v1.6.0 |
 | Prompt Optimizer (3 modes) | v1.6.0 |
 | Blueprint Detection / Quality Evaluation / Optimization | v1.7.0 |
-| Direction Profiles & Variants (GA in v1.11.0 — pending release) | v1.8.0 |
-| Missing-Info-Gate (GA in v1.11.0 — pending release) | v1.8.0 |
+| Direction Profiles & Variants (GA in v1.12.0) | v1.8.0 |
+| Missing-Info-Gate (GA in v1.12.0) | v1.8.0 |
 | Audio Summary (TTS via Web Speech API) | v1.7.2 |
 | Paste Prompt Analyzer | v1.7.2 |
 | Embeddings Phase 1 (mock) | v1.7.2 |
@@ -161,7 +161,7 @@ v1.11.0 (Advanced Workflows GA, pending release) builds on the v1.10.0 editor: M
 ## Next Steps (Recommended)
 
 1. **v1.10.0 released (done):** GitHub Release v1.10.0 (Windows x64 NSIS installer + release manifest + checksums) and PyPI `promptvault-lite-manager==1.10.0` (OIDC Trusted Publishing) published; tag `v1.10.0` pushed. Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
-2. **v1.11.0 Advanced Workflows GA — IMPLEMENTED / PENDING RELEASE:** production build proven (native E2E 11/11, privacy sentinel 0); awaiting owner approval for release (tag + GitHub Release + PyPI `promptvault-lite-manager`).
+2. **v1.12.0 Advanced Workflows GA — RELEASED:** production build and bounded Analyzer contract are included in the Linux x64 release; the Windows-only CLI remains on its separate v1.11.1 stream.
 3. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
 4. **Code signing for the Windows installer.**
 5. **Architecture Contract Audit / Security Posture Review.**

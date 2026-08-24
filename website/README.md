@@ -44,7 +44,7 @@ Voraussetzung in den Repository-Einstellungen: *Settings → Pages → Source: G
 
 ## Demo-Video-Workflow
 
-Das Demo-Video ist eine saubere 57s-Aufnahme (1280×720, 30 fps, H.264, yuv420p, ~0,97 MB) des echten Linux-Release-Binaries (`target/release/promptvault-lite` v1.11.1, Debug:False), gesteuert über WebDriverIO + tauri-driver + WebKitWebDriver auf einem isolierten Xvfb-Display.
+Das Demo-Video ist eine saubere 57s-Aufnahme (1280×720, 30 fps, H.264, yuv420p, ~0,97 MB) des echten Linux-Release-Binaries (`target/release/promptvault-lite` v1.12.0, Debug:False), gesteuert über WebDriverIO + tauri-driver + WebKitWebDriver auf einem isolierten Xvfb-Display. Die v1.12.0 Linux-Pakete werden als GitHub-Release-Assets veröffentlicht.
 
 - Nur synthetische Daten (Beispiel: Hamburg-Städtetrip).
 - Datenschutz-geprüft: keine Pfade, Benutzernamen oder Secrets im Bild.

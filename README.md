@@ -4,7 +4,7 @@
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and structure-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.11.1-blue)
+![Release](https://img.shields.io/badge/release-v1.12.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
@@ -36,9 +36,9 @@ It is built for people who collect, write and refine many prompts — especially
 - **Structural Quality & Hygiene Analysis** — assess prompt structure and completeness (clarity, role, goal, context, output format, reusability — applied where relevant); detect contamination such as secrets, private paths and evidence clutter
 - **Prompt Context Evaluation** — measure how well a prompt carries its own context
 - **Blueprint Detection** — detect prompt blueprints, hybrids and architecture-like agent instructions (10-dimension quality evaluation)
-- **Advanced Workflows GA** — Missing Info and Direction/Variants are available by default in the standard production build (v1.11.0, implemented — pending release; no Developer Mode required, no build-time feature flag)
-- **Missing Info** — dynamic pre-optimization questionnaire that identifies information gaps and lets you answer, skip or assume before optimization (v1.11.0 GA)
-- **Direction Profiles & Variants** — generate optimization variants in different directions, compare them and apply the best one into the editor (v1.11.0 GA)
+- **Advanced Workflows GA** — Missing Info and Direction/Variants are available by default in the standard production build (v1.12.0)
+- **Missing Info** — dynamic pre-optimization questionnaire that identifies information gaps and lets you answer, skip or assume before optimization (v1.12.0)
+- **Direction Profiles & Variants** — generate optimization variants in different directions, compare them and apply the best one into the editor (v1.12.0)
 - **Prompt Optimization** — deterministic local optimization (conservative/balanced/aggressive)
 - **Admin Observability** — read-only runtime diagnostics with trace/span correlation and reason codes
 - **Local TTS** — local speech output for prompt summaries (Piper neural / spd-say / espeak-ng / Web Speech fallback), no cloud TTS
@@ -50,19 +50,19 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release & Publication Status
 
-**v1.10.0** is the current released version (tagged and published as a GitHub Release; MINOR — Integrated Prompt Authoring Lifecycle). The in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability) is released: public native + CLI install/update proofs PASS, authoring lifecycle E2E 6/6 PASS on the installed release binary.
-
-**v1.11.0 (Advanced Workflows GA) is implemented — pending release.** Missing Info and Direction/Variants are available by default in the standard production build: no Developer Mode required, no build-time feature flag. The old env gates `PROMPTVAULT_MISSING_INFO_GATE` / `PROMPTVAULT_DIRECTION_PROFILES` are removed from the product — a production build can never be disabled via environment (regression-proven; a dev-only troubleshooting override remains). A production native build (1.11.0) is proven: native production E2E 11/11 PASS, privacy sentinel 0. No tag, no GitHub Release, no PyPI publish yet.
+**v1.12.0** is the current desktop release. It is local-first, offline-capable and deterministic, with bounded analysis of structure, completeness, hygiene and contradictions plus actionable improvement signals. Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
 
 | Platform | Asset |
 |---|---|
-| Windows x64 | `PromptVault.Lite_1.10.0_x64-setup.exe` (NSIS installer) |
+| Linux x64 | `PromptVault.Lite_1.12.0_amd64.deb` (Debian package) |
+| Linux x64 | `PromptVault Lite-1.12.0-1.x86_64.rpm` (RPM package) |
+| Linux x64 | `PromptVault Lite_1.12.0_amd64.AppImage` (portable package) |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
 
-The Windows installer is **unsigned** — Windows SmartScreen may show an "Unknown publisher" warning. Linux `.deb`/`.rpm` remain available for v1.8.0; macOS is not pre-built.
+Windows `v1.12.0` and macOS installers are not produced in this Linux-only release run. The prior Windows `v1.11.1` release remains immutable; Windows SmartScreen may show an "Unknown publisher" warning.
 
-The `promptvault` CLI (v1.10.0) installs and manages the native app. Its Python distribution `promptvault-lite-manager` (1.10.0) is **published on PyPI** and installable with `uv tool install promptvault-lite-manager`.
+The existing `promptvault` CLI remains a separate Windows/NSIS release stream at `1.11.1`; it is not used by the Linux installer path.
 
 ---
 
@@ -70,16 +70,11 @@ The `promptvault` CLI (v1.10.0) installs and manages the native app. Its Python 
 
 ### Native App
 
-**Windows (v1.10.0):** download `PromptVault.Lite_1.10.0_x64-setup.exe` from the [latest GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.10.0) and run it. The installer is unsigned — Windows SmartScreen may show an "Unknown publisher" warning.
-
-**Linux (v1.8.0):** download and install the `.deb` or `.rpm` from the v1.8.0 GitHub Release.
+**Linux (v1.12.0):** download the `.deb` from the [v1.12.0 GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.12.0), then install it:
 
 ```text
 # Debian/Ubuntu
-sudo dpkg -i PromptVault.Lite_1.8.0_amd64.deb
-
-# Fedora/RHEL
-sudo rpm -i PromptVault.Lite-1.8.0-1.x86_64.rpm
+sudo apt install ./PromptVault.Lite_1.12.0_amd64.deb
 ```
 
 ### Developer / source build
@@ -94,7 +89,7 @@ pnpm tauri build    # production build
 
 ### CLI / uv tool
 
-`promptvault-lite-manager` (executable `promptvault`) is a Python CLI that installs and manages the **native** PromptVault Desktop App. It resolves the public release manifest from the GitHub Release, verifies installer SHA-256 and size (fail-closed), and installs silently.
+The Windows-only `promptvault-lite-manager==1.11.1` CLI remains available on PyPI. Linux users should install the published `.deb` directly; the CLI does not yet install Linux packages.
 
 ```bash
 # Install the CLI as a uv tool from PyPI
@@ -238,7 +233,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Stable public release (v1.10.0, GitHub Release with a Windows x64 installer). The `promptvault` CLI is published on PyPI as `promptvault-lite-manager` (1.10.0). In-app prompt authoring is released. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`. v1.11.0 (Advanced Workflows GA — Missing Info and Direction/Variants) is implemented and pending release; both features are available by default in the standard production build.
+Stable public desktop release: v1.12.0 (GitHub Release with Linux x64 packages). The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

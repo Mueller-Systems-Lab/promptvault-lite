@@ -5,9 +5,9 @@
 This is the Python CLI installer for [PromptVault Lite](https://github.com/xxammaxx/promptvault-lite),
 a local prompt-management system with quality and hygiene analysis.
 
-> **Publication status:** The `v1.9.1` GitHub Release (Windows installer + release
+> **Publication status:** The `v1.11.1` GitHub Release (Windows installer + release
 > manifest + checksums) is published. The Python distribution
-> `promptvault-lite-manager==1.9.1` is **published on PyPI** — install it with
+> `promptvault-lite-manager==1.11.1` is **published on PyPI** — install it with
 > `uv tool install promptvault-lite-manager`.
 
 ### Installation

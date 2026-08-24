@@ -19,6 +19,10 @@ Zwei Ebenen sind strikt zu trennen:
 
 ## Publikationsstatus
 
+The CLI is a separate Windows/NSIS-only release stream. Its last compatible
+published version is `1.11.1`; the Linux `v1.12.0` desktop package is installed
+directly from the GitHub release and is not resolved by this CLI.
+
 - **GitHub Release / Tag `v1.11.1`:** `PUBLISHED` — Windows-x64-NSIS-Installer, Release-Manifest und `SHA256SUMS.txt`.
 - **PyPI:** `PUBLISHED` — `promptvault-lite-manager==1.11.1` ist öffentlich installierbar:
 

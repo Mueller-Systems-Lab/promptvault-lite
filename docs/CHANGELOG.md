@@ -1,10 +1,29 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.11.1
+version: 1.12.0
 ---
 
 # Changelog
+
+## v1.12.0 — Bounded Offline Analyzer Release
+
+**Status: RELEASE CANDIDATE** — Linux x64 packages are built from the final
+master source. The release preserves the local-first, offline and deterministic
+Analyzer contract for structure, completeness, hygiene, contradictions and
+actionable improvement signals. External semantic generalization is not
+claimed; the development study remains incomplete because of provider
+instability. Windows and macOS packages are not produced in this Linux run.
+
+### Release readiness
+
+- Advanced Workflows GA is included in the standard production build.
+- Stale analysis is invalidated after prompt edits and re-analysis remains
+  deterministic.
+- Privacy evidence remains sanitized and no production LLM dependency or
+  external semantic-study runtime is included.
+- Linux installation assets, checksums and a source-identity manifest are
+  published with the GitHub release.
 
 ## v1.11.1 — Patch: Release/Version-Test-Contract-Reparatur (PATCH)
 

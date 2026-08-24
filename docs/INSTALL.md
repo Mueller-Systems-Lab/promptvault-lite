@@ -1,8 +1,8 @@
 ---
 title: Installation
 description: Installationsanleitung für PromptVault Lite.
-version: 1.9.1
-last_updated: 2026-08-13
+version: 1.12.0
+last_updated: 2026-08-24
 ---
 
 # Installation
@@ -10,8 +10,8 @@ last_updated: 2026-08-13
 ## Unterstützte Nutzung
 
 - **Entwicklung:** Linux, Windows (getestet auf Linux Mint 22.1 und Windows 10)
-- **Pre-built Installer (v1.9.1):** Windows x64 NSIS-Installer als GitHub-Release-Asset
-- **Pre-built Installer (v1.8.0):** Linux `.deb` und `.rpm` als GitHub-Release-Assets
+- **Pre-built Installer (v1.12.0):** Linux x64 `.deb` als GitHub-Release-Asset
+- Windows: the prior `v1.11.1` NSIS release remains available; no new Windows asset was produced in this Linux run
 - macOS: Nur Quellbau — kein pre-built Installer verfügbar
 - Docker: Nicht als Produktions-Deployment implementiert
 
@@ -41,27 +41,21 @@ pnpm tauri build
 
 ## Native App (pre-built)
 
-### Windows (v1.9.1)
-
-Lade `PromptVault.Lite_1.9.1_x64-setup.exe` aus dem [v1.9.1 GitHub Release](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.9.1) herunter und führe es aus. Der Installer ist derzeit **unsigned** — Windows SmartScreen zeigt eine Warnung an.
-
-Checksummen liegen im Release als `SHA256SUMS.txt` bei.
-
-### Linux (v1.8.0)
+### Linux (v1.12.0)
 
 ```text
 # Debian/Ubuntu
-sudo dpkg -i PromptVault.Lite_1.8.0_amd64.deb
+sudo apt install ./PromptVault.Lite_1.12.0_amd64.deb
 
-# Fedora/RHEL
-sudo rpm -i PromptVault.Lite-1.8.0-1.x86_64.rpm
+# Fedora/RHEL (if using the RPM asset)
+sudo rpm -i 'PromptVault Lite-1.12.0-1.x86_64.rpm'
 ```
 
 Checksummen liegen im Release als `SHA256SUMS.txt` bei.
 
 ## CLI / uv tool
 
-`promptvault-lite-manager` (Einstiegspunkt `promptvault`) installiert und verwaltet die native Desktop-App. **PyPI-publiziert** (v1.9.1):
+`promptvault-lite-manager` (Einstiegspunkt `promptvault`) ist ein separater Windows/NSIS-only Installer-Stream. Die letzte kompatible PyPI-Version ist `1.11.1`:
 
 ```bash
 uv tool install promptvault-lite-manager
@@ -81,7 +75,7 @@ Voraussetzungen: Python >= 3.11 und [uv](https://docs.astral.sh/uv/). Vollständ
 4. Führe `pnpm install` aus.
 5. Starte mit `pnpm start`.
 
-**Pre-built Installer:** Ein Windows x64 NSIS-Installer (`PromptVault.Lite_1.9.1_x64-setup.exe`) ist als v1.9.1-Release-Asset veröffentlicht. Der Installer ist derzeit unsigned — Windows SmartScreen zeigt eine Warnung an. Kein Code-Signing-Zertifikat vorhanden.
+**Pre-built Installer:** Der Windows x64 NSIS-Installer `PromptVault.Lite_1.11.1_x64-setup.exe` ist als [v1.11.1-Release-Asset](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.11.1) veröffentlicht. Der Installer ist unsigned — Windows SmartScreen zeigt eine Warnung an.
 
 ## Linux
 
