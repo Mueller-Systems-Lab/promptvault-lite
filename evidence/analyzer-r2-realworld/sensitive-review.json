@@ -1,0 +1,23 @@
+{
+  "SENSITIVE_CASE_COUNT": 3,
+  "LOCAL_ONLY_CASES": [
+    {
+      "CASE_ID": "CASE-0078",
+      "FILE": "anleitungen/speckit/blueprint-template.md",
+      "SCORE": 85,
+      "BAND": "EXCELLENT"
+    },
+    {
+      "CASE_ID": "CASE-0108",
+      "FILE": "blueprint3/36_ki_vo_auditor/blueprint.md",
+      "SCORE": 85,
+      "BAND": "EXCELLENT"
+    },
+    {
+      "CASE_ID": "CASE-0111",
+      "FILE": "blueprint3/blueprint-template.md",
+      "SCORE": 85,
+      "BAND": "EXCELLENT"
+    }
+  ]
+}

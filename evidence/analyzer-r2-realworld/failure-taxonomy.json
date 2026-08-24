@@ -1,0 +1,64 @@
+{
+  "taxonomy": {
+    "ROUTING_FAILURE": [],
+    "FALSE_HIGH": [
+      {
+        "CASE_ID": "CASE-0076",
+        "DESCRIPTION": "Score >=80 with contradictions but no critical conflict; needs human review",
+        "SEVERITY": "MEDIUM",
+        "REPRODUCIBILITY": "DETERMINISTIC",
+        "ROOT_CAUSE_HYPOTHESIS": "Conflict weight 3 may be insufficient to penalize guideline-like template; recommendation may be appropriate"
+      }
+    ],
+    "FALSE_LOW": [],
+    "CONTRADICTION_MISS": [],
+    "ARTIFACT_DETECTION_FAILURE": [
+      {
+        "CASE_ID": "CASE-0027",
+        "DESCRIPTION": "Shell/code artifact present but scored GOOD/EXCELLENT",
+        "SEVERITY": "MEDIUM",
+        "REPRODUCIBILITY": "DETERMINISTIC",
+        "ROOT_CAUSE_HYPOTHESIS": "Legitimate technical context vs contamination not distinguished; e.g., blueprint instructions containing shell examples"
+      }
+    ],
+    "RECOMMENDATION_IRRELEVANT": [],
+    "RECOMMENDATION_MISLEADING": [],
+    "LANGUAGE_ASYMMETRY": [],
+    "TEMPLATE_FAILURE": [],
+    "GUIDELINE_FAILURE": [],
+    "CODING_FAILURE": [],
+    "LONG_PROMPT_FAILURE": [
+      {
+        "CASE_ID": "CASE-0110",
+        "DESCRIPTION": ">100K chars truncated to 100K; score 27 reflects truncation implications, 7s runtime",
+        "SEVERITY": "LOW",
+        "REPRODUCIBILITY": "DETERMINISTIC",
+        "ROOT_CAUSE_HYPOTHESIS": "Truncation at 100K bounds regex but may cut critical context; P95 3659ms indicates cost"
+      }
+    ],
+    "PARSER_FAILURE": [],
+    "UI_FAILURE": []
+  },
+  "counts": {
+    "ROUTING_FAILURE": 0,
+    "FALSE_HIGH": 1,
+    "FALSE_LOW": 0,
+    "CONTRADICTION_MISS": 0,
+    "ARTIFACT_DETECTION_FAILURE": 1,
+    "RECOMMENDATION_IRRELEVANT": 0,
+    "RECOMMENDATION_MISLEADING": 0,
+    "LANGUAGE_ASYMMETRY": 0,
+    "TEMPLATE_FAILURE": 0,
+    "GUIDELINE_FAILURE": 0,
+    "CODING_FAILURE": 0,
+    "LONG_PROMPT_FAILURE": 1,
+    "PARSER_FAILURE": 0,
+    "UI_FAILURE": 0
+  },
+  "severity_totals": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 2,
+    "LOW": 1
+  }
+}

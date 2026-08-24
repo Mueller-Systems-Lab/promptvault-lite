@@ -1,0 +1,18 @@
+{
+  "id": "v4-template-en-reusable-template-001",
+  "overall_score": 78,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+    "Document placeholder types and mark optional vs required fields."
+  ],
+  "confidence": 0.87,
+  "prompt_fingerprint": "88f8071e2a1b668acfa4797a2189a2b333f2c9f71154e210bef6af0416fad914",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "54e027194552dd12d34d6b7e4faaaf4a27d8dcc8f851621e9d600ba2cb3cb03b",
+  "_prompt_fingerprint": "88f8071e2a1b668acfa4797a2189a2b333f2c9f71154e210bef6af0416fad914"
+}

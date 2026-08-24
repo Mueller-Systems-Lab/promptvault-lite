@@ -1,0 +1,22 @@
+{
+  "id": "v4-task-en-fair-incomplete-001",
+  "overall_score": 58,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "critical_issues": [
+    "No source context or audience specified"
+  ],
+  "missing_information": [
+    "Target role details, input materials, desired output format"
+  ],
+  "recommended_improvements": [
+    "Specify training scope, audience, duration, and output structure."
+  ],
+  "confidence": 0.82,
+  "prompt_fingerprint": "0a9adf49565fd2551b10e1b1257a7aa8a8c5fd193e828fa4e5393135247afe5f",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "e0f17fea3ed2e342ab0d6ec8aa54e8533f6170440e275460f6dd854672e73dcb",
+  "_prompt_fingerprint": "0a9adf49565fd2551b10e1b1257a7aa8a8c5fd193e828fa4e5393135247afe5f"
+}

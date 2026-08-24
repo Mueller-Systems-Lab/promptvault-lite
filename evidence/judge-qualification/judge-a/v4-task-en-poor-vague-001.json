@@ -1,0 +1,22 @@
+{
+  "id": "v4-task-en-poor-vague-001",
+  "overall_score": 32,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "critical_issues": [
+    "No discernible goal; no actionable verb"
+  ],
+  "missing_information": [
+    "Goal, context, input, output contract, constraints all absent"
+  ],
+  "recommended_improvements": [
+    "Define explicit goal and deliverable with inputs and output format."
+  ],
+  "confidence": 0.95,
+  "prompt_fingerprint": "916ca468f754167481a12fc98bc9c1c9d29b3124995045535041b4af4d04c053",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "4914bb87d6ab4210e8f5d5d81c3e3d07beaae910f870bd91796519bb1f5fabd0",
+  "_prompt_fingerprint": "916ca468f754167481a12fc98bc9c1c9d29b3124995045535041b4af4d04c053"
+}

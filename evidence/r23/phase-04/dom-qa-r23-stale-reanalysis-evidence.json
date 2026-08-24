@@ -1,0 +1,60 @@
+{
+  "phase": "R2.3 Phase 4 — DOM stale-state fix",
+  "component": "src/components/paste/PastePromptAnalyzer.tsx",
+  "branch": "quality/analyzer-r2-verification-closure",
+  "platform": "linux",
+  "design_choice": "OPTION A — reset analysis to idle on edit (mirrors appStore.invalidateAnalysisForPrompt)",
+  "bug_description": "PastePromptAnalyzer retained analysis status=done after textarea edit, so stale score/result remained visible against changed prompt text",
+  "stale_state": "PASS",
+  "reanalysis": "PASS",
+  "console_errors": 0,
+  "external_network_requests": 0,
+  "APP_DOM_QA": "PASS",
+  "files_edited": [
+    "src/components/paste/PastePromptAnalyzer.tsx"
+  ],
+  "files_untouched": [
+    "src-tauri/src/analysis/r2/*"
+  ],
+  "playwright_spec": "tests/e2e/dom-qa-r23-stale-reanalysis.spec.ts",
+  "red_test_output_summary": "FAIL before fix: STALE-STATE BUG: old analysis for prompt A remains visible after editing to prompt B. Results visible=true, idleVisible=false, staleBadge=false, footer=\"191 Zeichen\" vs prompt B length 210. expect toBeFalsy Received true at tests/e2e/dom-qa-r23-stale-reanalysis.spec.ts:164",
+  "green_test_output_summary": "PASS after fix: 2 passed (stale result must be invalidated after edit — then re-analysis updates + app start shows Direktanalyse entry and idle hint) on chromium, 9.7s + 1.3s",
+  "console_logs": {
+    "errors": [],
+    "warnings_filtered": ["[vite] allowed"],
+    "total_unexpected_errors": 0
+  },
+  "network_logs": {
+    "external_requests": [],
+    "allowed_only": ["http://localhost:1420/*", "ws://localhost:1420/*", "data:", "about:", "blob:", "mock-asset://"],
+    "total_external": 0
+  },
+  "verification_flow": {
+    "app_start": "PASS — .app-container visible, Direktanalyse button visible, textarea idle hint visible",
+    "enter_prompt_A": "PASS — PROMPT_A 191 chars filled",
+    "analyze_A": "PASS — .paste-results visible, Klassifikation visible, Prompt & Context Engineering visible, overall_score visible, criteria .context-mini-score visible, footer length visible",
+    "edit_prompt_B": "PASS — textarea filled with PROMPT_B 210 chars, old .paste-results hidden, .paste-idle visible, no stale authoritative score",
+    "reanalyze_B": "PASS — .paste-results visible again, new footer length 210 chars, not equal to old 191, idle hidden, criteria visible",
+    "no_stale_value_remains": "PASS"
+  },
+  "gates": {
+    "pnpm_test": "PASS — 76 test files, 1734 tests passed",
+    "pnpm_lint": "PASS — eslint 0 warnings",
+    "pnpm_exec_tsc_noEmit": "PASS — no errors",
+    "git_diff_check": "PASS — no whitespace errors",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy": "PASS — -D warnings, 0 errors",
+    "pnpm_build": "PASS — vite build succeeded, 550KB chunk",
+    "playwright_dom_qa": "PASS — 2/2"
+  },
+  "diff": "src/components/paste/PastePromptAnalyzer.tsx: textarea onChange now invalidates stale analysis (setAnalysis idle when prev done/error) + handlePasteFromClipboard same invalidation. Mirrors appStore.invalidateAnalysisForPrompt. No analyzer scoring touched.",
+  "evidence_path": "evidence/r23/phase-04/dom-qa-r23-stale-reanalysis-evidence.json",
+  "timestamp": "2026-08-23T22:45:00Z",
+  "reproducibility": {
+    "command_red": "pnpm exec playwright test tests/e2e/dom-qa-r23-stale-reanalysis.spec.ts --project=chromium",
+    "command_green": "pnpm exec playwright test tests/e2e/dom-qa-r23-stale-reanalysis.spec.ts --project=chromium",
+    "headless": true,
+    "browser": "chromium",
+    "linux_only": true
+  }
+}

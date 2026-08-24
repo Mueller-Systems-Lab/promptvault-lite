@@ -1,0 +1,150 @@
+{
+  "version": "1.0.0",
+  "name": "promptvault-semantic-reference-rubric",
+  "overall_score": "round(mean(applicable criterion scores) * 10), range 0-100; N/A criteria excluded from denominator",
+  "bands": {
+    "EXCELLENT": { "min": 85, "label": "excellent" },
+    "GOOD": { "min": 70, "max": 84 },
+    "FAIR": { "min": 55, "max": 69 },
+    "POOR": { "min": 40, "max": 54 },
+    "BROKEN": { "max": 39 }
+  },
+  "fit_for_purpose": { "YES": ["EXCELLENT", "GOOD"], "PARTIAL": ["FAIR"], "NO": ["POOR", "BROKEN"] },
+  "na_policy": "A criterion is N/A only when it cannot apply to the prompt. Every N/A must be justified. N/A is never used to avoid a difficult judgement. When SAFETY/PRIVACY is N/A but the prompt carries irrelevant safety boilerplate, the penalty is absorbed by SIGNAL-TO-NOISE and CONSTRAINT RELEVANCE (no double counting).",
+  "core_criteria": {
+    "GOAL_CLARITY": {
+      "anchors": {
+        "10": "Single, explicit, verifiable goal; executor knows exactly what to deliver and when it is done",
+        "7": "Clear goal; minor imprecision or implicit success check",
+        "5": "Goal recognizable but vague; success not observable",
+        "3": "Goal only hinted; several plausible readings",
+        "0": "No goal; stream of intention without a deliverable"
+      },
+      "na": "never"
+    },
+    "NECESSARY_CONTEXT": {
+      "anchors": {
+        "10": "All context the task depends on is present; self-contained",
+        "7": "One minor gap; executor proceeds on a reasonable default",
+        "5": "One needed fact missing (audience, system, data source) forcing an assumption",
+        "3": "Multiple critical gaps; executor must guess the substance",
+        "0": "Task references context that is entirely absent"
+      },
+      "na": "genuinely self-contained tasks (e.g. translate this paragraph)"
+    },
+    "INPUT_DEFINITION": {
+      "anchors": {
+        "10": "Input explicitly provided or named (embedded text, file, labeled placeholder); boundary unambiguous",
+        "7": "Input named but boundary fuzzy",
+        "5": "Input implied; executor infers it from examples",
+        "3": "Input location ambiguous among candidates",
+        "0": "No input identified although the task requires data"
+      },
+      "na": "tasks requiring no external input (pure ideation); used sparingly"
+    },
+    "OUTPUT_CONTRACT": {
+      "anchors": {
+        "10": "Format + structure + content boundaries fully specified",
+        "7": "Format specified; some structure open",
+        "5": "Output implied without a format",
+        "3": "Output direction only; vehicle unspecified",
+        "0": "No statement of what the response should be"
+      },
+      "na": "response format genuinely open by intent without impairing the task (rare)"
+    },
+    "CONSTRAINT_RELEVANCE": {
+      "anchors": {
+        "10": "Every stated constraint is relevant and operational",
+        "7": "Constraints relevant; one vague or low-value",
+        "5": "Mix of relevant and generic/boilerplate; one trivial conflict",
+        "3": "Constraints mostly boilerplate/irrelevant; boundary blurry",
+        "0": "Constraints absent though needed, or irrelevant constraints dominate"
+      },
+      "na": "constraints genuinely not needed and none stated"
+    },
+    "INTERNAL_CONSISTENCY": {
+      "anchors": {
+        "10": "No conflicts; all elements agree",
+        "7": "One near-conflict a competent executor resolves consistently",
+        "5": "One real contradiction (e.g. write in German + translate to English)",
+        "3": "Multiple contradictions; incompatible tasks",
+        "0": "Self-defeating; cannot be executed as written"
+      },
+      "na": "never"
+    },
+    "ACTIONABILITY": {
+      "anchors": {
+        "10": "Concrete verbs, ordered steps or a single atomic action; no material decisions left open",
+        "7": "One material decision open but low-risk",
+        "5": "Several decisions open; executor chooses meaningfully",
+        "3": "Executor must invent the core approach or substance",
+        "0": "Not actionable; no faithful execution possible"
+      },
+      "na": "never"
+    },
+    "AMBIGUITY_CONTROL": {
+      "anchors": {
+        "10": "Each instruction admits exactly one reading in context",
+        "7": "Minor wording ambiguity with evident intended reading",
+        "5": "Real ambiguity in a non-trivial directive",
+        "3": "Several instructions admit conflicting readings",
+        "0": "Meaning collapses; semantically empty"
+      },
+      "na": "never"
+    },
+    "FIT_FOR_PURPOSE_COMPLETENESS": {
+      "anchors": {
+        "10": "Complete for purpose; nothing missing, nothing extraneous",
+        "7": "Complete; one component under-specified",
+        "5": "One genuinely required component missing",
+        "3": "Several required components missing",
+        "0": "Purpose unachievable; essential components absent"
+      },
+      "na": "never"
+    },
+    "SIGNAL_TO_NOISE": {
+      "anchors": {
+        "10": "Every sentence advances the task",
+        "7": "Minor boilerplate that does not impair parsing",
+        "5": "Noticeable filler; ~30% non-task text",
+        "3": "Mostly filler; task buried",
+        "0": "Noise dominates; task signal negligible"
+      },
+      "na": "never"
+    }
+  },
+  "conditional_criteria": {
+    "SAFETY_PRIVACY_BOUNDARIES": {
+      "anchors": {
+        "10": "Sensitive task (PII, secrets, irreversible actions) has explicit relevant boundaries; harmless task states none and needs none",
+        "7": "Boundaries present and relevant; one gap",
+        "5": "Boundaries generic; loosely tied to actual risks",
+        "3": "Boundaries unrelated to the task, or missing where clearly needed",
+        "0": "High-risk task with no boundaries, or boundaries that mislead"
+      },
+      "na": "no sensitive domain involved and boundaries have no bearing (most benign tasks). Generic safety boilerplate on harmless tasks is NOT rewarded here; penalized under SIGNAL_TO_NOISE / CONSTRAINT_RELEVANCE."
+    },
+    "REUSABILITY": {
+      "anchors": {
+        "10": "Cleanly parameterized, invariant instructions, documented adaptation points",
+        "7": "Reusable with light editing; one parameter implicit",
+        "5": "Semi-reusable; hardcoded values mixed with placeholders",
+        "3": "Single-use in practice; placeholders incomplete or ambiguous",
+        "0": "Intended as a template but nothing is parameterized"
+      },
+      "na": "genuine one-off tasks (most task prompts). Applicable to reusable-template and guideline strata."
+    }
+  },
+  "output_schema": {
+    "id": "case id",
+    "overall_score": "0-100 integer",
+    "quality_band": "EXCELLENT|GOOD|FAIR|POOR|BROKEN",
+    "fit_for_purpose": "YES|PARTIAL|NO",
+    "criteria": "map criterion -> 0-10 score or string N/A",
+    "critical_issues": "string[]",
+    "missing_information": "string[]",
+    "recommended_improvements": "string[]",
+    "confidence": "0.0-1.0"
+  },
+  "malformed_response_policy": "Reject malformed responses. Do not silently repair judge output."
+}

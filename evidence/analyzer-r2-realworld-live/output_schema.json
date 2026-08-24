@@ -1,0 +1,9 @@
+{
+  "overall_score": "integer 0-100",
+  "quality_band": "EXCELLENT|GOOD|FAIR|POOR|BROKEN",
+  "fit_for_purpose": "YES|PARTIAL|NO",
+  "prompt_type": "string",
+  "critical_issues": ["string"],
+  "missing_information": ["string"],
+  "confidence": "float 0.0-1.0"
+}

@@ -1,0 +1,802 @@
+[
+  {
+    "CASE_ID": "CASE-0001",
+    "R2_SCORE": 25,
+    "JUDGE_A": 58,
+    "JUDGE_B": 63,
+    "AVG_JUDGE": 60.5,
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/10 Exit-F\u00e4hige Mobile-Game-Konzepte.md"
+  },
+  {
+    "CASE_ID": "CASE-0004",
+    "R2_SCORE": 79,
+    "JUDGE_A": 69,
+    "JUDGE_B": 78,
+    "AVG_JUDGE": 73.5,
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/ChronoForge/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0006",
+    "R2_SCORE": 78,
+    "JUDGE_A": 75,
+    "JUDGE_B": 68,
+    "AVG_JUDGE": 71.5,
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/EchoMemory/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0007",
+    "R2_SCORE": 76,
+    "JUDGE_A": 68,
+    "JUDGE_B": 77,
+    "AVG_JUDGE": 72.5,
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/EmpireIdle/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0009",
+    "R2_SCORE": 78,
+    "JUDGE_A": 77,
+    "JUDGE_B": 75,
+    "AVG_JUDGE": 76.0,
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/SynapseRush/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0010",
+    "R2_SCORE": 79,
+    "JUDGE_A": 68,
+    "JUDGE_B": 70,
+    "AVG_JUDGE": 69.0,
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/TileShift/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0011",
+    "R2_SCORE": 82,
+    "JUDGE_A": 71,
+    "JUDGE_B": 75,
+    "AVG_JUDGE": 73.0,
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/WillowPath/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0012",
+    "R2_SCORE": 78,
+    "JUDGE_A": 77,
+    "JUDGE_B": 72,
+    "AVG_JUDGE": 74.5,
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/positron-blueprint-template.md"
+  },
+  {
+    "CASE_ID": "CASE-0013",
+    "R2_SCORE": 25,
+    "JUDGE_A": 52,
+    "JUDGE_B": 45,
+    "AVG_JUDGE": 48.5,
+    "FILE": "APP Blueprint/Die 5 SGB-Legal-Tech-Assets.md"
+  },
+  {
+    "CASE_ID": "CASE-0014",
+    "R2_SCORE": 82,
+    "JUDGE_A": 65,
+    "JUDGE_B": 52,
+    "AVG_JUDGE": 58.5,
+    "FILE": "APP Blueprint/Formora.md"
+  },
+  {
+    "CASE_ID": "CASE-0016",
+    "R2_SCORE": 71,
+    "JUDGE_A": 79,
+    "JUDGE_B": 67,
+    "AVG_JUDGE": 73.0,
+    "FILE": "APP Blueprint/gdb-kombi-blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0021",
+    "R2_SCORE": 57,
+    "JUDGE_A": 57,
+    "JUDGE_B": 65,
+    "AVG_JUDGE": 61.0,
+    "FILE": "Bauen/Der \u201eVibe Coding & Dev-Ready\u201c Master-Prompt.md"
+  },
+  {
+    "CASE_ID": "CASE-0024",
+    "R2_SCORE": 86,
+    "JUDGE_A": 86,
+    "JUDGE_B": 73,
+    "AVG_JUDGE": 79.5,
+    "FILE": "Bauen/Spec-Driven Enterprise Delivery & QA Unit.md"
+  },
+  {
+    "CASE_ID": "CASE-0027",
+    "R2_SCORE": 81,
+    "JUDGE_A": 53,
+    "JUDGE_B": 52,
+    "AVG_JUDGE": 52.5,
+    "FILE": "Bauen/____ E2E Physical Test Strategy_-MietVisor.md"
+  },
+  {
+    "CASE_ID": "CASE-0029",
+    "R2_SCORE": 30,
+    "JUDGE_A": 76,
+    "JUDGE_B": 74,
+    "AVG_JUDGE": 75.0,
+    "FILE": "Blueprint ___ GitHub Issues Generator.md"
+  },
+  {
+    "CASE_ID": "CASE-0031",
+    "R2_SCORE": 89,
+    "JUDGE_A": 52,
+    "JUDGE_B": 59,
+    "AVG_JUDGE": 55.5,
+    "FILE": "Deep Research Funktion_ Funktionsweise und Details.md"
+  },
+  {
+    "CASE_ID": "CASE-0032",
+    "R2_SCORE": 86,
+    "JUDGE_A": 85,
+    "JUDGE_B": 88,
+    "AVG_JUDGE": 86.5,
+    "FILE": "Marktanalyse Deutschland 2026_ 5 hochrelevante Problemfelder und K__ufergruppen_vc2.md"
+  },
+  {
+    "CASE_ID": "CASE-0033",
+    "R2_SCORE": 82,
+    "JUDGE_A": 72,
+    "JUDGE_B": 63,
+    "AVG_JUDGE": 67.5,
+    "FILE": "Marktanalyse Deutschland 2026_ Die 5 Millionen-Euro-Schmerzfelder_gemini.md"
+  },
+  {
+    "CASE_ID": "CASE-0034",
+    "R2_SCORE": 26,
+    "JUDGE_A": 67,
+    "JUDGE_B": 51,
+    "AVG_JUDGE": 59.0,
+    "FILE": "Marktanalyse Deutschland 2026_game_idee.md"
+  },
+  {
+    "CASE_ID": "CASE-0037",
+    "R2_SCORE": 88,
+    "JUDGE_A": 81,
+    "JUDGE_B": 80,
+    "AVG_JUDGE": 80.5,
+    "FILE": "Meta_Prompt/Live Operations Pass .md"
+  },
+  {
+    "CASE_ID": "CASE-0038",
+    "R2_SCORE": 83,
+    "JUDGE_A": 88,
+    "JUDGE_B": 85,
+    "AVG_JUDGE": 86.5,
+    "FILE": "Meta_Prompt/Meta-Prompt f\u00fcr eine KI zur iterativen Projekt-Orchestrierung.md"
+  },
+  {
+    "CASE_ID": "CASE-0039",
+    "R2_SCORE": 83,
+    "JUDGE_A": 78,
+    "JUDGE_B": 89,
+    "AVG_JUDGE": 83.5,
+    "FILE": "Meta_Prompt/Meta-Prompt f\u00fcr eine KI zur iterativen Projekt-Orchestrierung_v2.md"
+  },
+  {
+    "CASE_ID": "CASE-0041",
+    "R2_SCORE": 73,
+    "JUDGE_A": 88,
+    "JUDGE_B": 88,
+    "AVG_JUDGE": 88.0,
+    "FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent_V2.md"
+  },
+  {
+    "CASE_ID": "CASE-0042",
+    "R2_SCORE": 73,
+    "JUDGE_A": 77,
+    "JUDGE_B": 65,
+    "AVG_JUDGE": 71.0,
+    "FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent_V3.md"
+  },
+  {
+    "CASE_ID": "CASE-0043",
+    "R2_SCORE": 29,
+    "JUDGE_A": 84,
+    "JUDGE_B": 90,
+    "AVG_JUDGE": 87.0,
+    "FILE": "Meta_Prompt/UNIVERSAL_OPENCODE_MCP_SETUP_PROMPT.md"
+  },
+  {
+    "CASE_ID": "CASE-0046",
+    "R2_SCORE": 27,
+    "JUDGE_A": 93,
+    "JUDGE_B": 88,
+    "AVG_JUDGE": 90.5,
+    "FILE": "Meta_Prompt/testloop.md"
+  },
+  {
+    "CASE_ID": "CASE-0047",
+    "R2_SCORE": 31,
+    "JUDGE_A": 72,
+    "JUDGE_B": 71,
+    "AVG_JUDGE": 71.5,
+    "FILE": "Meta_Prompt/xxx/Maximale Token-Effizienz & Ausgabequalit__t.md"
+  },
+  {
+    "CASE_ID": "CASE-0048",
+    "R2_SCORE": 83,
+    "JUDGE_A": 85,
+    "JUDGE_B": 81,
+    "AVG_JUDGE": 83.0,
+    "FILE": "Meta_Prompt/xxx/Meta-Prompt f__r eine KI zur iterativen Projekt-Orchestrierung.md"
+  },
+  {
+    "CASE_ID": "CASE-0049",
+    "R2_SCORE": 70,
+    "JUDGE_A": 88,
+    "JUDGE_B": 71,
+    "AVG_JUDGE": 79.5,
+    "FILE": "Meta_Prompt/xxx/OPSX-basierter Development Orchestrator und KI-Engineering-Agent.md"
+  },
+  {
+    "CASE_ID": "CASE-0051",
+    "R2_SCORE": 86,
+    "JUDGE_A": 77,
+    "JUDGE_B": 72,
+    "AVG_JUDGE": 74.5,
+    "FILE": "QA Execution Unit_v2.md"
+  },
+  {
+    "CASE_ID": "CASE-0055",
+    "R2_SCORE": 30,
+    "JUDGE_A": 87,
+    "JUDGE_B": 78,
+    "AVG_JUDGE": 82.5,
+    "FILE": "__Blueprint ___ GitHub Issues Generator__.md"
+  },
+  {
+    "CASE_ID": "CASE-0056",
+    "R2_SCORE": 84,
+    "JUDGE_A": 82,
+    "JUDGE_B": 85,
+    "AVG_JUDGE": 83.5,
+    "FILE": "__vertikale_integration__.md"
+  },
+  {
+    "CASE_ID": "CASE-0058",
+    "R2_SCORE": 33,
+    "JUDGE_A": 67,
+    "JUDGE_B": 72,
+    "AVG_JUDGE": 69.5,
+    "FILE": "anleitungen/Gemma 4 auf GeForce 1070.md"
+  },
+  {
+    "CASE_ID": "CASE-0060",
+    "R2_SCORE": 30,
+    "JUDGE_A": 89,
+    "JUDGE_B": 77,
+    "AVG_JUDGE": 83.0,
+    "FILE": "anleitungen/MASTER_DOKUMENTATION.md"
+  },
+  {
+    "CASE_ID": "CASE-0062",
+    "R2_SCORE": 92,
+    "JUDGE_A": 86,
+    "JUDGE_B": 82,
+    "AVG_JUDGE": 84.0,
+    "FILE": "anleitungen/Speckit_SDD_Anleitung.md"
+  },
+  {
+    "CASE_ID": "CASE-0063",
+    "R2_SCORE": 33,
+    "JUDGE_A": 62,
+    "JUDGE_B": 50,
+    "AVG_JUDGE": 56.0,
+    "FILE": "anleitungen/Synthese und Implikationen f\u00fcr lokale KI-Deployments.md"
+  },
+  {
+    "CASE_ID": "CASE-0067",
+    "R2_SCORE": 26,
+    "JUDGE_A": 63,
+    "JUDGE_B": 73,
+    "AVG_JUDGE": 68.0,
+    "FILE": "anleitungen/company/Ein Zero-Cost-Infrastrukturmodell auf Base L2.md"
+  },
+  {
+    "CASE_ID": "CASE-0068",
+    "R2_SCORE": 31,
+    "JUDGE_A": 59,
+    "JUDGE_B": 75,
+    "AVG_JUDGE": 67.0,
+    "FILE": "anleitungen/company/Maximale Token-Effizienz & Ausgabequalit\u00e4t.md"
+  },
+  {
+    "CASE_ID": "CASE-0069",
+    "R2_SCORE": 25,
+    "JUDGE_A": 68,
+    "JUDGE_B": 55,
+    "AVG_JUDGE": 61.5,
+    "FILE": "anleitungen/company/Strategische Frameworks f\u00fcr krypto\u00f6konomische Einkommensmodelle ohne Startkapit.md"
+  },
+  {
+    "CASE_ID": "CASE-0070",
+    "R2_SCORE": 27,
+    "JUDGE_A": 68,
+    "JUDGE_B": 62,
+    "AVG_JUDGE": 65.0,
+    "FILE": "anleitungen/company/Technische Machbarkeit und wirtschaftliches Potenzial eines autonomen Agentic-Finance-Setups im Edge-Computing.md"
+  },
+  {
+    "CASE_ID": "CASE-0071",
+    "R2_SCORE": 74,
+    "JUDGE_A": 84,
+    "JUDGE_B": 87,
+    "AVG_JUDGE": 85.5,
+    "FILE": "anleitungen/company/Zero-Human Company.md"
+  },
+  {
+    "CASE_ID": "CASE-0072",
+    "R2_SCORE": 37,
+    "JUDGE_A": 73,
+    "JUDGE_B": 56,
+    "AVG_JUDGE": 64.5,
+    "FILE": "anleitungen/d hardwarebasierten Akkumulation von Ethereum.md"
+  },
+  {
+    "CASE_ID": "CASE-0074",
+    "R2_SCORE": 85,
+    "JUDGE_A": 66,
+    "JUDGE_B": 70,
+    "AVG_JUDGE": 68.0,
+    "FILE": "anleitungen/gemma4_einrichten_auf_geforce_1070.md"
+  },
+  {
+    "CASE_ID": "CASE-0075",
+    "R2_SCORE": 79,
+    "JUDGE_A": 79,
+    "JUDGE_B": 87,
+    "AVG_JUDGE": 83.0,
+    "FILE": "anleitungen/opencode-ki-anleitung.md"
+  },
+  {
+    "CASE_ID": "CASE-0076",
+    "R2_SCORE": 83,
+    "JUDGE_A": 92,
+    "JUDGE_B": 80,
+    "AVG_JUDGE": 86.0,
+    "FILE": "anleitungen/qwen_code_anleitung.md"
+  },
+  {
+    "CASE_ID": "CASE-0077",
+    "R2_SCORE": 29,
+    "JUDGE_A": 76,
+    "JUDGE_B": 87,
+    "AVG_JUDGE": 81.5,
+    "FILE": "anleitungen/spec-kit-anleitung.md"
+  },
+  {
+    "CASE_ID": "CASE-0079",
+    "R2_SCORE": 29,
+    "JUDGE_A": 86,
+    "JUDGE_B": 82,
+    "AVG_JUDGE": 84.0,
+    "FILE": "anleitungen/speckit/spec-kit-anleitung.md"
+  },
+  {
+    "CASE_ID": "CASE-0080",
+    "R2_SCORE": 92,
+    "JUDGE_A": 86,
+    "JUDGE_B": 71,
+    "AVG_JUDGE": 78.5,
+    "FILE": "anleitungen/speckit_ki_agent_anleitung.md"
+  },
+  {
+    "CASE_ID": "CASE-0081",
+    "R2_SCORE": 25,
+    "JUDGE_A": 67,
+    "JUDGE_B": 69,
+    "AVG_JUDGE": 68.0,
+    "FILE": "app_conzepte_neuer_prompt.md"
+  },
+  {
+    "CASE_ID": "CASE-0082",
+    "R2_SCORE": 25,
+    "JUDGE_A": 76,
+    "JUDGE_B": 66,
+    "AVG_JUDGE": 71.0,
+    "FILE": "app_ideen.md"
+  },
+  {
+    "CASE_ID": "CASE-0085",
+    "R2_SCORE": 80,
+    "JUDGE_A": 67,
+    "JUDGE_B": 73,
+    "AVG_JUDGE": 70.0,
+    "FILE": "app_konzepte_neu/CrewTime_Proof_Bau_Handwerk/konzept.md"
+  },
+  {
+    "CASE_ID": "CASE-0092",
+    "R2_SCORE": 52,
+    "JUDGE_A": 78,
+    "JUDGE_B": 73,
+    "AVG_JUDGE": 75.5,
+    "FILE": "app_konzepte_neu/VollmachtFlow/konzept.md"
+  },
+  {
+    "CASE_ID": "CASE-0093",
+    "R2_SCORE": 76,
+    "JUDGE_A": 75,
+    "JUDGE_B": 80,
+    "AVG_JUDGE": 77.5,
+    "FILE": "blueprint3/21_ai_competence_log/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0094",
+    "R2_SCORE": 83,
+    "JUDGE_A": 70,
+    "JUDGE_B": 55,
+    "AVG_JUDGE": 62.5,
+    "FILE": "blueprint3/22_gwg_comply/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0096",
+    "R2_SCORE": 74,
+    "JUDGE_A": 60,
+    "JUDGE_B": 74,
+    "AVG_JUDGE": 67.0,
+    "FILE": "blueprint3/24_lohn_nachweis/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0098",
+    "R2_SCORE": 78,
+    "JUDGE_A": 59,
+    "JUDGE_B": 71,
+    "AVG_JUDGE": 65.0,
+    "FILE": "blueprint3/26_energie_pflicht/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0099",
+    "R2_SCORE": 73,
+    "JUDGE_A": 68,
+    "JUDGE_B": 57,
+    "AVG_JUDGE": 62.5,
+    "FILE": "blueprint3/27_kasko_meldung/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0105",
+    "R2_SCORE": 65,
+    "JUDGE_A": 74,
+    "JUDGE_B": 83,
+    "AVG_JUDGE": 78.5,
+    "FILE": "blueprint3/33_esrs_xbrl_app/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0107",
+    "R2_SCORE": 90,
+    "JUDGE_A": 67,
+    "JUDGE_B": 82,
+    "AVG_JUDGE": 74.5,
+    "FILE": "blueprint3/35_nis2_self_check/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0110",
+    "R2_SCORE": 27,
+    "JUDGE_A": 74,
+    "JUDGE_B": 62,
+    "AVG_JUDGE": 68.0,
+    "FILE": "blueprint3/app_ideen2.md"
+  },
+  {
+    "CASE_ID": "CASE-0113",
+    "R2_SCORE": 71,
+    "JUDGE_A": 84,
+    "JUDGE_B": 70,
+    "AVG_JUDGE": 77.0,
+    "FILE": "blueprint4/02_SupplyTrace/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0114",
+    "R2_SCORE": 76,
+    "JUDGE_A": 67,
+    "JUDGE_B": 63,
+    "AVG_JUDGE": 65.0,
+    "FILE": "blueprint4/03_PflegeDoc/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0115",
+    "R2_SCORE": 75,
+    "JUDGE_A": 72,
+    "JUDGE_B": 56,
+    "AVG_JUDGE": 64.0,
+    "FILE": "blueprint4/04_BauSign/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0117",
+    "R2_SCORE": 75,
+    "JUDGE_A": 67,
+    "JUDGE_B": 68,
+    "AVG_JUDGE": 67.5,
+    "FILE": "blueprint4/06_HandwerkHR/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0119",
+    "R2_SCORE": 65,
+    "JUDGE_A": 78,
+    "JUDGE_B": 65,
+    "AVG_JUDGE": 71.5,
+    "FILE": "blueprint4/08_CareMatch/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0123",
+    "R2_SCORE": 70,
+    "JUDGE_A": 60,
+    "JUDGE_B": 66,
+    "AVG_JUDGE": 63.0,
+    "FILE": "blueprint4/memory_bank/activeContext.md"
+  },
+  {
+    "CASE_ID": "CASE-0124",
+    "R2_SCORE": 29,
+    "JUDGE_A": 67,
+    "JUDGE_B": 67,
+    "AVG_JUDGE": 67.0,
+    "FILE": "blueprint4/memory_bank/productContext.md"
+  },
+  {
+    "CASE_ID": "CASE-0125",
+    "R2_SCORE": 29,
+    "JUDGE_A": 44,
+    "JUDGE_B": 38,
+    "AVG_JUDGE": 41.0,
+    "FILE": "blueprint4/memory_bank/progress.md"
+  },
+  {
+    "CASE_ID": "CASE-0126",
+    "R2_SCORE": 26,
+    "JUDGE_A": 67,
+    "JUDGE_B": 83,
+    "AVG_JUDGE": 75.0,
+    "FILE": "blueprint4/memory_bank/projectBrief.md"
+  },
+  {
+    "CASE_ID": "CASE-0127",
+    "R2_SCORE": 57,
+    "JUDGE_A": 56,
+    "JUDGE_B": 69,
+    "AVG_JUDGE": 62.5,
+    "FILE": "blueprint4/memory_bank/systemPatterns.md"
+  },
+  {
+    "CASE_ID": "CASE-0128",
+    "R2_SCORE": 28,
+    "JUDGE_A": 74,
+    "JUDGE_B": 77,
+    "AVG_JUDGE": 75.5,
+    "FILE": "blueprint_verbessern.md"
+  },
+  {
+    "CASE_ID": "CASE-0129",
+    "R2_SCORE": 29,
+    "JUDGE_A": 86,
+    "JUDGE_B": 79,
+    "AVG_JUDGE": 82.5,
+    "FILE": "blueprint_verbessern_v2.md"
+  },
+  {
+    "CASE_ID": "CASE-0131",
+    "R2_SCORE": 63,
+    "JUDGE_A": 76,
+    "JUDGE_B": 77,
+    "AVG_JUDGE": 76.5,
+    "FILE": "blueprint_von_grok/blueprint_01_buerosign/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0132",
+    "R2_SCORE": 89,
+    "JUDGE_A": 78,
+    "JUDGE_B": 69,
+    "AVG_JUDGE": 73.5,
+    "FILE": "blueprint_von_grok/blueprint_02_verwaltungspilot/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0134",
+    "R2_SCORE": 72,
+    "JUDGE_A": 77,
+    "JUDGE_B": 81,
+    "AVG_JUDGE": 79.0,
+    "FILE": "blueprint_von_grok/blueprint_04_esgreporter/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0135",
+    "R2_SCORE": 67,
+    "JUDGE_A": 70,
+    "JUDGE_B": 85,
+    "AVG_JUDGE": 77.5,
+    "FILE": "blueprint_von_grok/blueprint_05_caredoc/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0136",
+    "R2_SCORE": 83,
+    "JUDGE_A": 72,
+    "JUDGE_B": 83,
+    "AVG_JUDGE": 77.5,
+    "FILE": "blueprint_von_grok/blueprint_06_shiftguard/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0137",
+    "R2_SCORE": 72,
+    "JUDGE_A": 79,
+    "JUDGE_B": 78,
+    "AVG_JUDGE": 78.5,
+    "FILE": "blueprint_von_grok/blueprint_07_handwerklog/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0138",
+    "R2_SCORE": 81,
+    "JUDGE_A": 68,
+    "JUDGE_B": 69,
+    "AVG_JUDGE": 68.5,
+    "FILE": "blueprint_von_grok/blueprint_08_bausafe/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0140",
+    "R2_SCORE": 70,
+    "JUDGE_A": 81,
+    "JUDGE_B": 65,
+    "AVG_JUDGE": 73.0,
+    "FILE": "blueprint_von_grok/blueprint_10_metercomply/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0142",
+    "R2_SCORE": 73,
+    "JUDGE_A": 78,
+    "JUDGE_B": 79,
+    "AVG_JUDGE": 78.5,
+    "FILE": "blueprints/02-nis2-audit-node/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0144",
+    "R2_SCORE": 85,
+    "JUDGE_A": 81,
+    "JUDGE_B": 74,
+    "AVG_JUDGE": 77.5,
+    "FILE": "blueprints/04-zugferd-parser-x/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0145",
+    "R2_SCORE": 78,
+    "JUDGE_A": 80,
+    "JUDGE_B": 65,
+    "AVG_JUDGE": 72.5,
+    "FILE": "blueprints/05-grid-balancer-api/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0147",
+    "R2_SCORE": 66,
+    "JUDGE_A": 62,
+    "JUDGE_B": 71,
+    "AVG_JUDGE": 66.5,
+    "FILE": "blueprints/07-spatial-craft-ar/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0150",
+    "R2_SCORE": 61,
+    "JUDGE_A": 77,
+    "JUDGE_B": 81,
+    "AVG_JUDGE": 79.0,
+    "FILE": "blueprints/10-haccp-sync-core/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0155",
+    "R2_SCORE": 61,
+    "JUDGE_A": 73,
+    "JUDGE_B": 72,
+    "AVG_JUDGE": 72.5,
+    "FILE": "blueprints/15-sgb-xii-vault/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0157",
+    "R2_SCORE": 29,
+    "JUDGE_A": 61,
+    "JUDGE_B": 65,
+    "AVG_JUDGE": 63.0,
+    "FILE": "blueprints/17-timeline-defender/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0158",
+    "R2_SCORE": 66,
+    "JUDGE_A": 73,
+    "JUDGE_B": 58,
+    "AVG_JUDGE": 65.5,
+    "FILE": "blueprints/18-budget-router-sgb/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0159",
+    "R2_SCORE": 70,
+    "JUDGE_A": 68,
+    "JUDGE_B": 62,
+    "AVG_JUDGE": 65.0,
+    "FILE": "blueprints/19-sgb-iii-ruleset/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0160",
+    "R2_SCORE": 65,
+    "JUDGE_A": 67,
+    "JUDGE_B": 57,
+    "AVG_JUDGE": 62.0,
+    "FILE": "blueprints/20-geo-kita-engine/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0162",
+    "R2_SCORE": 77,
+    "JUDGE_A": 65,
+    "JUDGE_B": 71,
+    "AVG_JUDGE": 68.0,
+    "FILE": "blueprints2/02_PflegeDok+/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0165",
+    "R2_SCORE": 76,
+    "JUDGE_A": 64,
+    "JUDGE_B": 61,
+    "AVG_JUDGE": 62.5,
+    "FILE": "blueprints2/05_EnergyCert/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0166",
+    "R2_SCORE": 72,
+    "JUDGE_A": 67,
+    "JUDGE_B": 63,
+    "AVG_JUDGE": 65.0,
+    "FILE": "blueprints2/06_BauCheck/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0167",
+    "R2_SCORE": 75,
+    "JUDGE_A": 69,
+    "JUDGE_B": 56,
+    "AVG_JUDGE": 62.5,
+    "FILE": "blueprints2/07_KassenPflicht/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0170",
+    "R2_SCORE": 76,
+    "JUDGE_A": 88,
+    "JUDGE_B": 72,
+    "AVG_JUDGE": 80.0,
+    "FILE": "blueprints2/10_NachweisVault/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0171",
+    "R2_SCORE": 68,
+    "JUDGE_A": 73,
+    "JUDGE_B": 81,
+    "AVG_JUDGE": 77.0,
+    "FILE": "blueprints2/11_XRechnung.app/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0174",
+    "R2_SCORE": 79,
+    "JUDGE_A": 68,
+    "JUDGE_B": 60,
+    "AVG_JUDGE": 64.0,
+    "FILE": "blueprints2/14_DSBDesk/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0180",
+    "R2_SCORE": 70,
+    "JUDGE_A": 78,
+    "JUDGE_B": 78,
+    "AVG_JUDGE": 78.0,
+    "FILE": "blueprints2/20_FuhrparkCompliance/blueprint.md"
+  },
+  {
+    "CASE_ID": "CASE-0182",
+    "R2_SCORE": 30,
+    "JUDGE_A": 79,
+    "JUDGE_B": 72,
+    "AVG_JUDGE": 75.5,
+    "FILE": "positron_combined_github_issues_generator_prompt.md"
+  },
+  {
+    "CASE_ID": "CASE-0183",
+    "R2_SCORE": 75,
+    "JUDGE_A": 77,
+    "JUDGE_B": 67,
+    "AVG_JUDGE": 72.0,
+    "FILE": "positron_github_issues_prompt_erweiterung.md"
+  }
+]

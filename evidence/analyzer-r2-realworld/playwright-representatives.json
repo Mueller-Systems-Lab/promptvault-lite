@@ -1,0 +1,50 @@
+{
+  "coding": {
+    "CASE_ID": "CASE-0000",
+    "FILE": "1.md",
+    "SCORE": 27,
+    "LENGTH": 12336
+  },
+  "low_score": {
+    "CASE_ID": "CASE-0000",
+    "FILE": "1.md",
+    "SCORE": 27,
+    "LENGTH": 12336
+  },
+  "long": {
+    "CASE_ID": "CASE-0001",
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/10 Exit-F\u00e4hige Mobile-Game-Konzepte.md",
+    "SCORE": 25,
+    "LENGTH": 69475
+  },
+  "medium": {
+    "CASE_ID": "CASE-0002",
+    "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/ArcadeKitchen/blueprint.md",
+    "SCORE": 68,
+    "LENGTH": 4124
+  },
+  "high_score": {
+    "CASE_ID": "CASE-0020",
+    "FILE": "Architekturparadigmen f__r autonome, selbstreparierende Systeme_ Integration von Flutter-Frontends und Rust-Backends.md",
+    "SCORE": 85,
+    "LENGTH": 3495
+  },
+  "guideline": {
+    "CASE_ID": "CASE-0024",
+    "FILE": "Bauen/Spec-Driven Enterprise Delivery & QA Unit.md",
+    "SCORE": 86,
+    "LENGTH": 6558
+  },
+  "template": {
+    "CASE_ID": "CASE-0070",
+    "FILE": "anleitungen/company/Technische Machbarkeit und wirtschaftliches Potenzial eines autonomen Agentic-Finance-Setups im Edge-Computing.md",
+    "SCORE": 27,
+    "LENGTH": 32664
+  },
+  "short": {
+    "CASE_ID": "CASE-0125",
+    "FILE": "blueprint4/memory_bank/progress.md",
+    "SCORE": 29,
+    "LENGTH": 299
+  }
+}

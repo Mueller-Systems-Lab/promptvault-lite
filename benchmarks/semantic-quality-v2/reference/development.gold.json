@@ -1,0 +1,1872 @@
+[
+ {
+  "id": "s2-task-en-terse-excellent-001",
+  "overall_score": 96,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Email body content is deferred to the {{email_body}} placeholder (by design for a reusable template)"
+  ],
+  "recommended_improvements": [
+   "Optionally state whether the tone constraint applies to salutations/closings too",
+   "None material; optionally note how to handle source-language detection if the email contains mixed-language segments."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-en-terse-excellent-002",
+  "overall_score": 98,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": "N/A",
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "No changes required; self-contained, single-atomic summarization task",
+   "The 'two sentences' rule is the only structural constraint; fully sufficient for the task."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-en-terse-excellent-003",
+  "overall_score": 98,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Source text supplied via {{contact_text}} placeholder (intended input boundary)"
+  ],
+  "recommended_improvements": [
+   "Optionally define accepted phone number formats if strict schema parsing is required",
+   "Specify how to handle phone-number format variations (e.g., international prefixes, separators) if the source format is uncontrolled."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-terse-excellent-004",
+  "overall_score": 98,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": "N/A",
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "No changes required; the desired tone degree is the only minor open point",
+   "'Formal tone' is slightly interpretive but the intended reading is evident; no change required."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-de-terse-excellent-005",
+  "overall_score": 96,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 10,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Email body content is deferred to the {{email_body}} placeholder (by design for a reusable template)"
+  ],
+  "recommended_improvements": [
+   "Optionally state whether the tone constraint applies to salutations/closings too",
+   "None material."
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-de-terse-excellent-006",
+  "overall_score": 98,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": "N/A",
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "The categories are mostly exclusive; a tie-break rule (e.g., prefer Reklamation when a defect is reported) would fully close the small overlap between Reklamation and Anfrage",
+   "Category boundaries (complaint vs. consultation request) can overlap; a tie-break rule would remove the only residual ambiguity."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-de-terse-excellent-007",
+  "overall_score": 96,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": "N/A",
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Clarify what counts as a 'short reason' (one clause? one phrase?) and whether reasons should be inside the date output or separate",
+   "Clarify what counts as a 'short reason' and whether reasons must be the same phrase as in the source or a paraphrase."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-good-natural-001",
+  "overall_score": 88,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 7,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Changelog URL is referenced ('link to the changelog') but never provided; the executor must invent a placeholder or guess"
+  ],
+  "missing_information": [
+   "Changelog URL/link target",
+   "Changelog link URL is not provided; the writer must fabricate or placeholder it."
+  ],
+  "recommended_improvements": [
+   "Provide the changelog URL or explicitly instruct to insert a placeholder link",
+   "Provide the changelog URL or instruct to use a placeholder; specify the product/brand name if it should appear."
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "s2-task-en-good-natural-002",
+  "overall_score": 84,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 6,
+   "INPUT_DEFINITION": 5,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The checkout-refactor pull request (its diff) is referenced but not embedded or linked in the prompt; as a standalone text the reviewer has nothing to review"
+  ],
+  "missing_information": [
+   "PR diff or link; the payment-retry code under review",
+   "The pull request itself is referenced but not attached or linked, so the reviewer must assume access to it."
+  ],
+  "recommended_improvements": [
+   "Attach the PR diff/link or note that it is provided in the conversation context",
+   "Attach or link the PR (or its diff), and state how much reasoning should precede the final verdict."
+  ],
+  "confidence": 0.8
+ },
+ {
+  "id": "s2-task-de-good-natural-003",
+  "overall_score": 82,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": 5,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "The attached survey file's contents are not in the prompt text (acceptable if the attachment genuinely travels with the request)",
+   "The survey file is referenced as an attachment but its contents are not present in the prompt."
+  ],
+  "recommended_improvements": [
+   "Attach the survey data or inline its key figures so the prompt is self-contained",
+   "Ensure the attachment is actually supplied; clarify whether 'biggest criticisms' means most frequent or most severe."
+  ],
+  "confidence": 0.8
+ },
+ {
+  "id": "s2-task-de-good-natural-004",
+  "overall_score": 78,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": 4,
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 8,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 7,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Sprint-review results: completed items, delayed items + reasons, target release date",
+   "Sprint review outcomes/notes, release date, project scope."
+  ],
+  "recommended_improvements": [
+   "Supply the sprint-review facts, or explicitly state that they must come from conversation context rather than being invented",
+   "Attach sprint notes or a transcript; otherwise the substance of the summary is invented, which risks hallucinated facts for a management update."
+  ],
+  "confidence": 0.8
+ },
+ {
+  "id": "s2-task-en-fair-incomplete-001",
+  "overall_score": 59,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": 5,
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": 5,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 5,
+   "AMBIGUITY_CONTROL": 7,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Audience ('for the board') implies an executive-style summary, but no length, focus, tone, or format is specified"
+  ],
+  "missing_information": [
+   "The attached report content; desired summary length and focus (e.g., risks, decisions, recommendations)",
+   "Report content (attachment), desired length/structure, level of detail expected by the board."
+  ],
+  "recommended_improvements": [
+   "Inline or name the report; specify length and what the board needs to act on",
+   "Attach the report, specify a format (e.g., bullet summary), length, and the decisions/key points the board cares about."
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "s2-task-en-fair-incomplete-002",
+  "overall_score": 54,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 3,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 5,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 7,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No announcement topic, company, audience, or key message is given; the writer must invent the entire substance of the press release."
+  ],
+  "missing_information": [
+   "The news being announced, company/product identity, target date and audience, desired length/quotes",
+   "What news/announcement, company/brand, target audience, quotes, length."
+  ],
+  "recommended_improvements": [
+   "Provide the underlying news and audience, and state desired structure/length",
+   "Supply the announcement details and audience, and add constraints (length, tone, required elements such as a headline and quote)."
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "s2-task-en-fair-incomplete-003",
+  "overall_score": 55,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 7,
+   "NECESSARY_CONTEXT": 4,
+   "INPUT_DEFINITION": 3,
+   "OUTPUT_CONTRACT": 6,
+   "CONSTRAINT_RELEVANCE": 4,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 4,
+   "AMBIGUITY_CONTROL": 5,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": 4,
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Source and target systems are undefined; no schemas, mapping rules, or language are given, so the executor must invent the core approach"
+  ],
+  "missing_information": [
+   "Source/target schemas and systems, field mappings, language/stack, error-handling and rollback behavior",
+   "Source and target DB/schema, field mapping, transformation rules, language/runtime, and data-integrity requirements."
+  ],
+  "recommended_improvements": [
+   "Specify the systems, schemas, mapping rules, language, and how PII in customer records must be handled",
+   "Provide schema details and mapping, state the target platform, and add boundary constraints (idempotency, test on a subset, no PII logging) since customer records are involved."
+  ],
+  "confidence": 0.7
+ },
+ {
+  "id": "s2-task-de-fair-incomplete-004",
+  "overall_score": 52,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 6,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 3,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 4,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 5,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Project goal, scope, constraints, stakeholders, and any existing requirement notes",
+   "Project scope/goal, domain, stakeholders, functional/non-functional requirements, target structure."
+  ],
+  "recommended_improvements": [
+   "Provide project context or instruct the executor to gather requirements before drafting",
+   "Describe the project and provide any available inputs (requirements, notes); specify the required document structure."
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "s2-task-de-fair-incomplete-005",
+  "overall_score": 57,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 7,
+   "NECESSARY_CONTEXT": 4,
+   "INPUT_DEFINITION": 4,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 5,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 5,
+   "AMBIGUITY_CONTROL": 6,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": 4,
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "The contract draft source text is named but not provided, so the translation cannot be performed from the prompt alone; target language is only implied (German) and never stated"
+  ],
+  "missing_information": [
+   "The contract draft content; explicit target language; confidentiality expectations",
+   "Source contract text, target language, terminology/legal-precision expectations."
+  ],
+  "recommended_improvements": [
+   "Inline the contract or attach it; state the target language explicitly; flag the document as confidential",
+   "State the target language and attach the contract; note whether legal terminology should be preserved or localized."
+  ],
+  "confidence": 0.8
+ },
+ {
+  "id": "s2-task-en-poor-vague-001",
+  "overall_score": 45,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 4,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 3,
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 4,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Recipient, topic, purpose, and tone are all unspecified; every material decision is left to the executor"
+  ],
+  "missing_information": [
+   "Customer identity/relationship, the email's purpose, tone, and any key content",
+   "Email purpose/type, topic/content, customer context, tone, length."
+  ],
+  "recommended_improvements": [
+   "Specify who the customer is, why the email is being sent, the tone, and the required content",
+   "Specify the email's purpose (e.g., onboarding, follow-up), topic, recipient, tone, and any required content elements."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-poor-vague-002",
+  "overall_score": 42,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 4,
+   "NECESSARY_CONTEXT": 2,
+   "INPUT_DEFINITION": 3,
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 8,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "'The concept' refers to nothing; the prompt is non-executable without naming a concept, audience, depth, and format"
+  ],
+  "missing_information": [
+   "Which concept, target audience, required depth, and output format",
+   "Which concept, for what audience, at what depth/format."
+  ],
+  "recommended_improvements": [
+   "Name the concept and audience; specify depth and desired output form",
+   "Name the concept, the audience, the intended depth, and an output format (e.g., a short explanation with an example)."
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-poor-vague-003",
+  "overall_score": 15,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 0,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 0,
+   "CONSTRAINT_RELEVANCE": 0,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 1,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No referent for 'it' — the object to be improved is entirely unidentified",
+   "'Better' is undefined: no direction, criterion, or target state",
+   "No deliverable is specified"
+  ],
+  "missing_information": [
+   "The artifact/text to improve",
+   "The current state and the desired direction of improvement",
+   "Success criteria",
+   "Output format",
+   "What the 'it' actually is",
+   "The improvement goal/direction and success criteria",
+   "Any source material or data"
+  ],
+  "recommended_improvements": [
+   "Name the exact object to change",
+   "State what 'better' means concretely (clarity, brevity, correctness, etc.)",
+   "Specify the deliverable and success check",
+   "Name the artifact and attach/provide it",
+   "State the concrete improvement goal and observable success criteria",
+   "Specify the expected output format"
+  ],
+  "confidence": 0.97
+ },
+ {
+  "id": "s2-task-en-poor-vague-004",
+  "overall_score": 37,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 3,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No subject/topic for the report",
+   "No audience or purpose stated",
+   "No data source or input identified"
+  ],
+  "missing_information": [
+   "Report topic",
+   "Audience and purpose",
+   "Data/source of facts",
+   "Structure, length, format",
+   "Report topic and subject matter",
+   "Target audience and purpose",
+   "Expected length, structure, and format"
+  ],
+  "recommended_improvements": [
+   "Specify the report subject and scope",
+   "Name the audience and decision it supports",
+   "Add length/structure expectations",
+   "State the report topic and the audience",
+   "Specify length, structure, and delivery format",
+   "Provide or name the data source"
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-en-poor-vague-005",
+  "overall_score": 40,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 4,
+   "NECESSARY_CONTEXT": 4,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No topic or content specified for the presentation",
+   "Deliverable vehicle ('presentation' = slides?) and structure open",
+   "Purpose of the meeting segment unknown"
+  ],
+  "missing_information": [
+   "Presentation topic and key messages",
+   "Slide count or time budget",
+   "Audience detail beyond 'team'",
+   "Output format/tool",
+   "Presentation topic and key message",
+   "Number of slides and deck format/tool",
+   "Content source or outline"
+  ],
+  "recommended_improvements": [
+   "State the presentation topic and goal",
+   "Define slide count and structure",
+   "Name the audience and delivery context",
+   "Define the topic and the decision/message the deck must support",
+   "Specify slide count and format (e.g., PPTX, PDF)",
+   "Provide source material or a required outline"
+  ],
+  "confidence": 0.93
+ },
+ {
+  "id": "s2-task-en-poor-vague-006",
+  "overall_score": 21,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 0,
+   "CONSTRAINT_RELEVANCE": 0,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No subject or domain for the requested advice",
+   "Executor must invent the entire substance",
+   "No indication of the advice format (steps, options, pros/cons)"
+  ],
+  "missing_information": [
+   "The situation or decision needing advice",
+   "Context, options already considered, constraints",
+   "Desired depth and format",
+   "The situation/topic the advice should address",
+   "The desired type and scope of advice",
+   "Any relevant constraints or preferences"
+  ],
+  "recommended_improvements": [
+   "Describe the decision or problem",
+   "Add constraints and prior considerations",
+   "Specify the desired format and depth",
+   "Describe the specific situation needing advice",
+   "State the question to be answered and the decision context",
+   "Specify the expected form of the response"
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-de-poor-vague-007",
+  "overall_score": 40,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 4,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 2,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No information about the app: what it does, its USP, its target users",
+   "Tone, length and channel for the ad copy unspecified"
+  ],
+  "missing_information": [
+   "App functionality and key features",
+   "Target audience and USPs",
+   "Tone, length, and publication channel",
+   "App name, features, and unique selling point",
+   "Target audience and platform/channel",
+   "Desired tone, length, and delivery format"
+  ],
+  "recommended_improvements": [
+   "Describe the app and its value proposition",
+   "Name the target audience",
+   "Specify tone, length, and channel",
+   "Briefly describe the app and its USPs",
+   "Name the target audience and channel",
+   "Specify tone, length, and required CTAs"
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "s2-task-de-poor-vague-008",
+  "overall_score": 38,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 3,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No book is identified — 'das Buch' has no referent",
+   "No content, opinion direction, or rating format specified"
+  ],
+  "missing_information": [
+   "Book title and author",
+   "Reading context / intended assessment",
+   "Review format (stars, prose, length)",
+   "Which book is to be reviewed (title/author)",
+   "Review audience and purpose",
+   "Length, rating system, or structure"
+  ],
+  "recommended_improvements": [
+   "Name the book",
+   "Specify what aspects to evaluate",
+   "Define the review format and length",
+   "Name the book or attach the source material",
+   "State the review audience and purpose",
+   "Specify length and required structure (e.g., rating, pros/cons)"
+  ],
+  "confidence": 0.93
+ },
+ {
+  "id": "s2-task-de-poor-vague-009",
+  "overall_score": 28,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Which concept? No subject is named",
+   "No target comprehension level or depth"
+  ],
+  "missing_information": [
+   "The concept to explain",
+   "Audience knowledge level",
+   "Desired depth and format",
+   "Which concept is to be explained",
+   "Audience and required level of detail",
+   "Format and length of the explanation"
+  ],
+  "recommended_improvements": [
+   "Name the concept",
+   "Specify the audience and desired depth",
+   "Define the output format",
+   "Name the specific concept",
+   "State the audience and target depth",
+   "Specify the expected response format"
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-de-poor-vague-010",
+  "overall_score": 37,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 3,
+   "NECESSARY_CONTEXT": 3,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 3,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No report topic or audience",
+   "No input/data for the report content"
+  ],
+  "missing_information": [
+   "Report subject",
+   "Audience and purpose",
+   "Structure and length",
+   "Report topic and subject matter",
+   "Target audience and purpose",
+   "Expected length, structure, and format"
+  ],
+  "recommended_improvements": [
+   "Specify the report topic and scope",
+   "Name the audience and purpose",
+   "Define structure and length",
+   "State the report topic and the audience",
+   "Specify length, structure, and delivery format",
+   "Provide or name the data source"
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-de-poor-vague-011",
+  "overall_score": 47,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 6,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": 3,
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 0,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 5,
+   "AMBIGUITY_CONTROL": 5,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No meeting content or status data to present",
+   "No slide count, format, or tool specified",
+   "Audience implied (weekly status meeting) but no presentation goal"
+  ],
+  "missing_information": [
+   "Project/status information to present",
+   "Slide count and structure",
+   "Format/tool and time budget",
+   "Status data / project content to cover",
+   "Number of slides and deck format/tool",
+   "Key message or decision the deck must support"
+  ],
+  "recommended_improvements": [
+   "Provide the status data or its source",
+   "Define slide count and structure",
+   "Specify output format",
+   "Provide the status data or topics to cover",
+   "Specify slide count and format (e.g., PPTX, PDF)",
+   "Define the message the presentation must deliver"
+  ],
+  "confidence": 0.93
+ },
+ {
+  "id": "s2-task-de-poor-vague-012",
+  "overall_score": 21,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 1,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 1,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 1,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 1,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No text is provided to improve",
+   "'Verbessere' is undefined — no improvement direction or criteria",
+   "No deliverable/format specified"
+  ],
+  "missing_information": [
+   "The source text",
+   "Improvement goals and criteria",
+   "Output format",
+   "The actual text to improve",
+   "What aspect to improve and to what standard",
+   "Expected output format (inline edit, rewritten, annotated)"
+  ],
+  "recommended_improvements": [
+   "Provide the text",
+   "State what should be improved and how success is measured",
+   "Specify the deliverable",
+   "Attach or provide the text",
+   "Specify the improvement goals and criteria",
+   "State the output format for the improved version"
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-en-broken-buzzword-001",
+  "overall_score": 23,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 4,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 2,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No actual task: no subject, no deliverable content defined",
+   "Impossible instruction to present the answer 'simultaneously' as JSON, CSV, and Markdown",
+   "Non-operational constraints ('100% correctness/completeness/precision') that cannot be verified"
+  ],
+  "missing_information": [
+   "The subject matter of the task",
+   "Input data",
+   "A single, unambiguous output format",
+   "Concrete, checkable success criteria",
+   "The actual task or question",
+   "Subject matter and any input data",
+   "Content requirements beyond format"
+  ],
+  "recommended_improvements": [
+   "State the actual task and its subject",
+   "Choose one output format",
+   "Replace quality buzzwords with measurable requirements",
+   "Replace all quality superlatives with the real task statement",
+   "Specify a single target format or a clear mapping",
+   "Define the content and any input data"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-broken-buzzword-002",
+  "overall_score": 23,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 4,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 2,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No task substance — no subject or deliverable content",
+   "Three competing output formats demanded for one answer",
+   "Buzzword-heavy 'maximum quality/100% accuracy' constraints are unenforceable and empty"
+  ],
+  "missing_information": [
+   "Subject matter",
+   "Input data",
+   "Chosen output format",
+   "Operational success criteria",
+   "The actual task or deliverable subject",
+   "Any input data or source",
+   "Content and acceptance criteria beyond formats"
+  ],
+  "recommended_improvements": [
+   "Define the real task",
+   "Pick one output format",
+   "Specify concrete, verifiable requirements",
+   "State the real deliverable instead of role-praising the executor",
+   "Pick one output format or define format-per-purpose",
+   "Provide input data and concrete success criteria"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-de-broken-buzzword-001",
+  "overall_score": 23,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 4,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 2,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Keine eigentliche Aufgabe — Subjekt und Deliverable fehlen",
+   "Gleichzeitige Ausgabe als JSON, CSV und Markdown ist nicht erfüllbar",
+   "'100 % Korrektheit/Vollständigkeit' sind nicht operationale Floskeln"
+  ],
+  "missing_information": [
+   "Thema der Aufgabe",
+   "Eingabedaten",
+   "Ein eindeutiges Ausgabeformat",
+   "Überprüfbare Erfolgskriterien",
+   "Eigentliche Aufgabe bzw. Fragestellung",
+   "Fachlicher Gegenstand und Eingabedaten",
+   "Inhaltliche Anforderungen jenseits der Formate"
+  ],
+  "recommended_improvements": [
+   "Die eigentliche Aufgabe konkret benennen",
+   "Ein Ausgabeformat festlegen",
+   "Qualitätsfloskeln durch messbare Anforderungen ersetzen",
+   "Tatsächliche Aufgabe statt Superlative formulieren",
+   "Ein Ausgabeformat wählen oder klar zuordnen",
+   "Eingabedaten und konkrete Erfolgskriterien angeben"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-de-broken-buzzword-002",
+  "overall_score": 23,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 1,
+   "INPUT_DEFINITION": 1,
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 4,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 2,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 2,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Kein inhaltlicher Auftrag — keine fachliche Zielsetzung",
+   "Drei konkurrierende Ausgabeformate für eine Antwort",
+   "Best-in-Class/Exzellenz-Formulierungen ohne Substanz und Prüfbarkeit"
+  ],
+  "missing_information": [
+   "Aufgabeninhalt",
+   "Eingabedaten",
+   "Gewähltes Ausgabeformat",
+   "Operationale Anforderungen",
+   "Eigentliche Aufgabe bzw. Deliverable",
+   "Eingabedaten oder Quelle",
+   "Inhaltliche Kriterien jenseits der Formate"
+  ],
+  "recommended_improvements": [
+   "Die reale Aufgabe definieren",
+   "Ein Ausgabeformat wählen",
+   "Konkrete, verifizierbare Anforderungen nennen",
+   "Konkrete Aufgabenstellung statt Rollenlob angeben",
+   "Ein Ausgabeformat festlegen oder je Zweck definieren",
+   "Eingabedaten und nachprüfbare Akzeptanzkriterien nennen"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-broken-contradictory-001",
+  "overall_score": 38,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 6,
+   "INPUT_DEFINITION": 5,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 1,
+   "ACTIONABILITY": 5,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Self-defeating constraint pair: 'never mention the budget' vs 'always include the budget breakdown'",
+   "Contradiction: 'under 50 words' vs 'cover every detail exhaustively'",
+   "Ambiguous: write in German AND translate to English in a single description",
+   "Budget constraints are irrelevant to a wireless speaker description"
+  ],
+  "missing_information": [
+   "Speaker features and specifications",
+   "Target audience and tone",
+   "Clarification on the budget contradiction and language outcome",
+   "Product details/specs for the wireless speaker",
+   "Target audience and selling angle",
+   "Resolution of the contradictory requirements"
+  ],
+  "recommended_improvements": [
+   "Decide on a single target language or explicitly sequence write-then-translate",
+   "Reconcile the word limit with the completeness demand",
+   "Remove or resolve the budget contradiction",
+   "Provide the product details",
+   "Remove the irrelevant and self-defeating budget constraints",
+   "Pick one language or explicitly structure the deliverable (description + translation)",
+   "Replace 'exhaustive under 50 words' with a realistic length bound and scope"
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "s2-task-en-broken-contradictory-002",
+  "overall_score": 37,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 4,
+   "INPUT_DEFINITION": 3,
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 2,
+   "ACTIONABILITY": 4,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 6,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Three mutually exclusive output formats demanded (JSON, CSV, Markdown)",
+   "Direct contradiction: answer all questions AND answer none of the questions",
+   "Contradiction: do not use technical terms but explain all technical details",
+   "No status content provided"
+  ],
+  "missing_information": [
+   "The status information to report",
+   "A single chosen output format",
+   "Resolution of the 'answer all/answer none' directive",
+   "Status data or the questions to answer",
+   "Which single output format to use",
+   "What counts as a technical term for this audience"
+  ],
+  "recommended_improvements": [
+   "Select one output format",
+   "Remove the answer all/none contradiction",
+   "Clarify the terminology policy",
+   "Provide the status content or its source",
+   "Resolve the answer/not-answer contradiction",
+   "Pick one output format or define format-per-section",
+   "Clarify the technical-term policy and provide the actual status data"
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "s2-task-de-broken-contradictory-001",
+  "overall_score": 38,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 6,
+   "INPUT_DEFINITION": 5,
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": 1,
+   "INTERNAL_CONSISTENCY": 1,
+   "ACTIONABILITY": 5,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Selbstwiderspruch: 'Budget niemals erwähnen' vs 'immer die komplette Budgetaufschlüsselung angeben'",
+   "Widerspruch: 'kurz fassen' vs 'jedes Detail ausführlich erklären'",
+   "Deutsch UND Englisch in einer Produktbeschreibung gefordert",
+   "Budgetvorgaben sind für eine Tastaturbeschreibung irrelevant"
+  ],
+  "missing_information": [
+   "Tastatur-Features und Spezifikationen",
+   "Zielgruppe und Tonfall",
+   "Auflösung des Sprach- und Budgetwiderspruchs",
+   "Details/Spezifikationen der kabellosen Tastatur",
+   "Zielgruppe und Verkaufsargumente",
+   "Auflösung der widersprüchlichen Anforderungen"
+  ],
+  "recommended_improvements": [
+   "Eine Zielsprache festlegen oder schreiben-dann-übersetzen explizit sequenzieren",
+   "Wortlimit und Vollständigkeitsforderung vereinbaren",
+   "Budget-Widerspruch beseitigen",
+   "Produktdetails angeben",
+   "Widersprüchliche und irrelevante Budgetvorgaben entfernen",
+   "Eine Sprache wählen oder Lieferumfang (Beschreibung + Übersetzung) explizit trennen",
+   "Realistische Längenbegrenzung mit klarem Umfang statt 'kurz und ausführlich'"
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "s2-task-de-broken-contradictory-002",
+  "overall_score": 37,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 5,
+   "NECESSARY_CONTEXT": 4,
+   "INPUT_DEFINITION": 3,
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 2,
+   "ACTIONABILITY": 4,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+   "SIGNAL_TO_NOISE": 6,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Drei sich ausschließende Ausgabeformate verlangt (JSON, CSV, Markdown)",
+   "Direkter Widerspruch: alle Fragen beantworten UND keine der Fragen beantworten",
+   "Widerspruch: keine Fachwörter verwenden, aber jede technische Besonderheit erklären",
+   "Keine Statusinhalte vorhanden"
+  ],
+  "missing_information": [
+   "Die zu berichtenden Statusinformationen",
+   "Ein eindeutiges Ausgabeformat",
+   "Auflösung der Frage-Weisung",
+   "Statusdaten bzw. die zu beantwortenden Fragen",
+   "Welches Ausgabeformat tatsächlich verwendet werden soll",
+   "Definition von 'Fachwörtern' für die Zielgruppe"
+  ],
+  "recommended_improvements": [
+   "Ein Ausgabeformat wählen",
+   "Widerspruch bei den Fragen entfernen",
+   "Terminologie-Regel klären",
+   "Statusinhalte bzw. deren Quelle angeben",
+   "Den Beantwortungs-Widerspruch auflösen",
+   "Ein Ausgabeformat wählen oder pro Abschnitt zuordnen",
+   "Fachwort-Politik klären und die eigentlichen Statusdaten liefern"
+  ],
+  "confidence": 0.92
+ },
+ {
+  "id": "s2-task-en-fair-boilerplate-noise-001",
+  "overall_score": 83,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 8,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "Irrelevant generic data-protection safety notice attached to a benign recipe-generation task; it is pure noise, not a boundary."
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Remove the safety boilerplate entirely.",
+   "Optionally constrain the recipe (serving count, cooking time) to strengthen the output contract.",
+   "Remove the safety notice entirely for a clean task"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-de-fair-boilerplate-noise-001",
+  "overall_score": 75,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": "N/A",
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 6,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 5,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Drop the irrelevant data-protection notice.",
+   "Optionally specify length (lines, rhyme, tone) to tighten the output contract.",
+   "Delete the safety notice; optionally specify poem form, length, or tone"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-poor-repetitive-001",
+  "overall_score": 64,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 7,
+   "NECESSARY_CONTEXT": 7,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 6,
+   "CONSTRAINT_RELEVANCE": "N/A",
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 7,
+   "AMBIGUITY_CONTROL": 6,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 7,
+   "SIGNAL_TO_NOISE": 3,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Target audience and desired brand tone for the energy drink.",
+   "Product/brand details for the energy drink",
+   "Number of taglines and desired length/style"
+  ],
+  "recommended_improvements": [
+   "State the role once.",
+   "Give one clear imperative and add audience/tone constraints.",
+   "State the instruction once with a single role",
+   "Specify the output contract (e.g. three one-line taglines) and product context"
+  ],
+  "confidence": 0.8
+ },
+ {
+  "id": "s2-task-de-poor-repetitive-001",
+  "overall_score": 60,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "criteria": {
+   "GOAL_CLARITY": 7,
+   "NECESSARY_CONTEXT": 6,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 5,
+   "CONSTRAINT_RELEVANCE": "N/A",
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 7,
+   "AMBIGUITY_CONTROL": 6,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 6,
+   "SIGNAL_TO_NOISE": 3,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "What the product is and who it targets.",
+   "Product details and brand context",
+   "Number of slogans and any style/length expectations"
+  ],
+  "recommended_improvements": [
+   "Remove role repetition, state the imperative once, and add audience/brand constraints.",
+   "Keep one role and one instruction; define the output contract explicitly"
+  ],
+  "confidence": 0.8
+ },
+ {
+  "id": "s2-task-en-good-coding-concrete-001",
+  "overall_score": 98,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 10,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Exact function name and handling of the single-octet \"0\" edge case under the no-leading-zeros rule"
+  ],
+  "recommended_improvements": [
+   "Tighten the leading-zero rule (e.g. clarify that the single octet '0' is allowed; '01' is not) to remove the only wording ambiguity.",
+   "Pin the function signature and clarify whether \"0\" counts as having a leading zero"
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-de-poor-coding-vague-001",
+  "overall_score": 24,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 3,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": 0,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 0,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No code is provided, so 'the bug' is unidentifiable and the task cannot be executed.",
+   "No expected behavior or error symptom stated; the executor must invent the entire substance."
+  ],
+  "missing_information": [
+   "The code itself.",
+   "The failing behavior or error message.",
+   "Expected output after the fix.",
+   "The code itself",
+   "The error message or symptom",
+   "Expected vs actual behavior"
+  ],
+  "recommended_improvements": [
+   "Embed the buggy code, describe the observed failure, and state the acceptance criterion.",
+   "Embed or attach the code, describe the failing behavior, and state the expected output"
+  ],
+  "confidence": 0.95
+ },
+ {
+  "id": "s2-task-en-good-agent-workflow-001",
+  "overall_score": 92,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 8,
+   "INPUT_DEFINITION": 9,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 9,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Implicitly assumes input.txt exists in the working directory (reasonable default).",
+   "Assumes input.txt exists and does not define behavior if the file is missing"
+  ],
+  "recommended_improvements": [
+   "State the expected working directory or path convention for input.txt/output.txt.",
+   "Clarify whether step 1's 'list its lines' output needs to be printed or is only a checkpoint.",
+   "State a default action for a missing/unreadable input.txt"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-template-en-reusable-template-001",
+  "overall_score": 90,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 9,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 8,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "No example of the 'nothing' marker convention beyond the literal instruction (minor).",
+   "No hint about the intended content depth of each section (e.g. bullet vs prose)"
+  ],
+  "recommended_improvements": [
+   "Clarify whether empty sections should contain the literal word NOTHING or be left blank.",
+   "Add a one-line instruction on expected content format per section"
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "s2-template-en-reusable-template-002",
+  "overall_score": 90,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 9,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 8,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "The 'Owner Commitments (owner, due date)' inline hint is slightly terse but resolvable."
+  ],
+  "recommended_improvements": [
+   "Add a one-line example for Owner Commitments format if multiple commitments are expected.",
+   "Clarify the expected format of agenda entries (e.g. one bullet per topic)"
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "s2-template-de-reusable-template-001",
+  "overall_score": 90,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 9,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 8,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "No guidance on expected content depth per field"
+  ],
+  "recommended_improvements": [
+   "Clarify whether an empty field should contain the literal word NICHTS or be left blank.",
+   "Add brief format guidance per field (e.g. one line vs short paragraph)"
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "s2-template-de-reusable-template-002",
+  "overall_score": 90,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 9,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 9,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 8,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 9,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+   "Same as other templates: specify literal-NICHTS vs blank convention for empty sections.",
+   "Clarify expected granularity of the retrospective sections"
+  ],
+  "confidence": 0.85
+ },
+ {
+  "id": "s2-guideline-en-guideline-001",
+  "overall_score": 94,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 8,
+   "OUTPUT_CONTRACT": 10,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 8
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "The reviewed pull request is the implied input; the guideline does not name how it is supplied (minor).",
+   "Reviewer target is implied (human PR reviewer) rather than stated"
+  ],
+  "recommended_improvements": [
+   "Define 'main risk' more concretely or provide an example summary line.",
+   "State who applies the guideline if the target audience matters"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-guideline-en-guideline-002",
+  "overall_score": 44,
+  "quality_band": "POOR",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 4,
+   "NECESSARY_CONTEXT": 4,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 3,
+   "CONSTRAINT_RELEVANCE": 3,
+   "INTERNAL_CONSISTENCY": 6,
+   "ACTIONABILITY": 4,
+   "AMBIGUITY_CONTROL": 4,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 5
+  },
+  "critical_issues": [
+   "Instructions are platitudes ('make good decisions') with no domain, audience, or observable success criterion.",
+   "'Always professional' vs 'sometimes friendly' creates a soft near-contradiction with no resolution guidance."
+  ],
+  "missing_information": [
+   "What domain/situations the guideline governs.",
+   "Any concrete operational rules.",
+   "Domain or scope the behavior rules apply to",
+   "Any observable acceptance criteria"
+  ],
+  "recommended_improvements": [
+   "Specify the context and turn each rule into a verifiable behavior with an example.",
+   "Replace platitudes with specific, testable behaviors and a defined scope"
+  ],
+  "confidence": 0.8
+ },
+ {
+  "id": "s2-guideline-de-guideline-001",
+  "overall_score": 94,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 8,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 10,
+   "INTERNAL_CONSISTENCY": 10,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 9,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 9
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Input (the customer question being answered) is implied rather than named (minor).",
+   "Channel context is generic; some rules may need per-channel tuning"
+  ],
+  "recommended_improvements": [
+   "Optionally add an example of a compliant vs non-compliant reply to illustrate the 'result-first' rule.",
+   "Optionally note channel-specific exceptions (e.g. chat vs email)"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-guideline-de-guideline-002",
+  "overall_score": 34,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 4,
+   "NECESSARY_CONTEXT": 5,
+   "INPUT_DEFINITION": "N/A",
+   "OUTPUT_CONTRACT": 4,
+   "CONSTRAINT_RELEVANCE": 2,
+   "INTERNAL_CONSISTENCY": 1,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 3,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+   "SIGNAL_TO_NOISE": 7,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": 4
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Conflict-resolution precedence among the rules.",
+   "The domain the style rules apply to.",
+   "Scope and target audience for the style rules"
+  ],
+  "recommended_improvements": [
+   "Remove the contradictory pairs and add a precedence rule for any residual tensions.",
+   "Reconcile or delete the quote-the-guideline rule.",
+   "Remove the contradictory pairs and keep one coherent style directive per dimension"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-ambiguous-task-001",
+  "overall_score": 19,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 0,
+   "CONSTRAINT_RELEVANCE": 0,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 6,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No data source, no data-processing instruction, and no recipient definition",
+   "\"Handle\" and \"right people\" admit essentially any reading; not executable"
+  ],
+  "missing_information": [
+   "Which data and where it lives.",
+   "What 'handle' means (validate, transform, aggregate?).",
+   "Who the 'right people' are and by what criterion they are selected.",
+   "Which data and where it comes from",
+   "What processing should be applied",
+   "Who the recipients are and by what channel"
+  ],
+  "recommended_improvements": [
+   "Name the data source, the exact processing step, the recipient selection rule, and any privacy constraints.",
+   "Name the data source, specify the transformation, and define recipient selection criteria"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-de-ambiguous-task-001",
+  "overall_score": 19,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "criteria": {
+   "GOAL_CLARITY": 2,
+   "NECESSARY_CONTEXT": 0,
+   "INPUT_DEFINITION": 0,
+   "OUTPUT_CONTRACT": 0,
+   "CONSTRAINT_RELEVANCE": 0,
+   "INTERNAL_CONSISTENCY": 8,
+   "ACTIONABILITY": 2,
+   "AMBIGUITY_CONTROL": 1,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+   "SIGNAL_TO_NOISE": 6,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [
+   "No data source, no processing instruction, and no recipient definition",
+   "\"Bearbeite\" and \"richtigen Leute\" are non-actionable without context"
+  ],
+  "missing_information": [
+   "Data source, processing operation, recipient criterion, and privacy constraints.",
+   "Which data and where it comes from",
+   "What processing should be applied",
+   "Who the recipients are and by what channel"
+  ],
+  "recommended_improvements": [
+   "Specify the data, the exact processing step, the recipient rule, and any data-protection boundaries.",
+   "Name the data source, specify the transformation, and define recipient selection criteria"
+  ],
+  "confidence": 0.9
+ },
+ {
+  "id": "s2-task-en-unusual-valid-001",
+  "overall_score": 94,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "criteria": {
+   "GOAL_CLARITY": 10,
+   "NECESSARY_CONTEXT": 9,
+   "INPUT_DEFINITION": 10,
+   "OUTPUT_CONTRACT": 9,
+   "CONSTRAINT_RELEVANCE": 9,
+   "INTERNAL_CONSISTENCY": 9,
+   "ACTIONABILITY": 10,
+   "AMBIGUITY_CONTROL": 8,
+   "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+   "SIGNAL_TO_NOISE": 10,
+   "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+   "REUSABILITY": "N/A"
+  },
+  "critical_issues": [],
+  "missing_information": [
+   "Minor: 'one bullet per user-visible change' leaves a small judgment call about which commits are user-visible (e.g. the refactor)."
+  ],
+  "recommended_improvements": [
+   "Clarify whether the refactor commit should be treated as user-visible or skipped.",
+   "Optionally clarify how refactor commits that drop a user-visible endpoint map to the breaking group"
+  ],
+  "confidence": 0.9
+ }
+]

@@ -1,0 +1,291 @@
+[
+ {
+  "id": "s2-h-task-en-terse-excellent-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "extraction",
+   "inline-input",
+   "output-contract"
+  ],
+  "pair": "H1",
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "List the two decisions and the one follow-up from the brief below as three separate lines:\n\n\"The crew agreed to extend the trial period to six weeks, chose the Tuesday launch slot, and asked the finance team to confirm the refund cap.\""
+ },
+ {
+  "id": "s2-h-task-de-terse-excellent-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "terse-excellent",
+  "tags": [
+   "terse",
+   "excellent",
+   "summarization",
+   "placeholder",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Kürze die folgende Kurznachricht auf höchstens 20 Wörter. Gib ausschließlich die gekürzte Fassung zurück:\n\n{{nachricht}}"
+ },
+ {
+  "id": "s2-h-task-en-good-natural-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "good-natural",
+  "tags": [
+   "good",
+   "natural",
+   "no-headings",
+   "team",
+   "audience",
+   "length"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Write a short message to the engineering team explaining why feature work is paused next week: the on-call rotation is thin and the incident backlog needs clearing. Name the two highest-priority incidents, ask everyone to update their tickets by Friday, and keep it under 150 words."
+ },
+ {
+  "id": "s2-h-task-en-fair-incomplete-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "fair-incomplete",
+  "tags": [
+   "fair",
+   "incomplete",
+   "missing-context",
+   "documentation"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Write an onboarding guide for the new tool."
+ },
+ {
+  "id": "s2-h-task-de-fair-incomplete-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "fair-incomplete",
+  "tags": [
+   "fair",
+   "incomplete",
+   "missing-context",
+   "dokumentation"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Erstelle die technische Dokumentation für die neue Schnittstelle."
+ },
+ {
+  "id": "s2-h-task-en-poor-vague-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "resume"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Improve my resume."
+ },
+ {
+  "id": "s2-h-task-de-poor-vague-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-vague",
+  "tags": [
+   "poor",
+   "vague",
+   "website"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Erstelle einen Beitrag für die Website."
+ },
+ {
+  "id": "s2-h-task-en-broken-buzzword-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "broken-buzzword",
+  "tags": [
+   "broken",
+   "keyword-stuffed",
+   "buzzword",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": "buzzword-no-substance",
+  "provenance": "synthetic-v2",
+  "prompt": "You are a world-class thought leader with unmatched vision. Produce a game-changing, cutting-edge solution that is holistic, premium-grade, and truly innovative. Drive a paradigm shift through deep synergy and precise execution. The result must exceed expectations, be 10x better, and stay beyond criticism. Return the outcome as a report, a table, and a slide deck. Deep synergy. Constant innovation. Broad impact."
+ },
+ {
+  "id": "s2-h-task-de-broken-buzzword-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "broken-buzzword",
+  "tags": [
+   "broken",
+   "keyword-stuffed",
+   "buzzword",
+   "output-contract"
+  ],
+  "pair": null,
+  "adversarial_pattern": "buzzword-no-substance",
+  "provenance": "synthetic-v2",
+  "prompt": "Visionärer Berater mit revolutionärem Anspruch. Liefere eine wegweisende, zukunftsorientierte Lösung, die ganzheitlich, marktführend und disruptiv ist. Verlasse dich auf maximale Synergie und agile Spitzenleistung. Die Lieferung soll herausragend, innovativ und über jeden Zweifel erhaben sein. Liefere die Antwort als YAML-Datei, als Tabellenkalkulation und als Folienpräsentation. Maximale Synergie. Maximale Innovation. Maximale Wirkung."
+ },
+ {
+  "id": "s2-h-task-en-broken-contradictory-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "broken-contradictory",
+  "tags": [
+   "broken",
+   "contradictory",
+   "output-contract",
+   "format"
+  ],
+  "pair": null,
+  "adversarial_pattern": "contradictory-requirements",
+  "provenance": "synthetic-v2",
+  "prompt": "Summarize the meeting notes. Answer in German. Return only English. Output only JSON. Explain your reasoning in prose."
+ },
+ {
+  "id": "s2-h-task-de-broken-contradictory-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "broken-contradictory",
+  "tags": [
+   "broken",
+   "contradictory",
+   "output-contract",
+   "format"
+  ],
+  "pair": null,
+  "adversarial_pattern": "contradictory-requirements",
+  "provenance": "synthetic-v2",
+  "prompt": "Erstelle den Projektbericht. Beginne mit dem Fazit. Ende mit dem Fazit. Schreibe in aktiver Form. Schreibe in passiver Form. Nenne keine konkreten Zahlen. Gib alle Kennzahlen exakt an."
+ },
+ {
+  "id": "s2-h-task-en-fair-boilerplate-noise-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "fair-boilerplate-noise",
+  "tags": [
+   "fair",
+   "boilerplate",
+   "noise",
+   "safety",
+   "extraction"
+  ],
+  "pair": "H2",
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "List the two decisions and the one follow-up from the brief below as three separate lines:\n\n\"The crew agreed to extend the trial period to six weeks, chose the Tuesday launch slot, and asked the finance team to confirm the refund cap.\"\n\nHouse rule: answer only from the material supplied above. Do not mention real individuals or internal facts, and stay within the scope of this request."
+ },
+ {
+  "id": "s2-h-task-de-poor-repetitive-001",
+  "language": "de",
+  "kind": "task",
+  "stratum": "poor-repetitive",
+  "tags": [
+   "poor",
+   "repetitive",
+   "role-stuffing"
+  ],
+  "pair": null,
+  "adversarial_pattern": "repeated-role",
+  "provenance": "synthetic-v2",
+  "prompt": "Du bist unser führender Redakteur. Deine Aufgabe ist ein fesselnder Leitartikel für die Firmenzeitschrift. Ein fesselnder Leitartikel für die Firmenzeitschrift, das ist deine Aufgabe. Deine Aufgabe: ein fesselnder Leitartikel für die Firmenzeitschrift. Noch einmal: Deine Aufgabe ist ein fesselnder Leitartikel für die Firmenzeitschrift."
+ },
+ {
+  "id": "s2-h-template-en-reusable-template-001",
+  "language": "en",
+  "kind": "template",
+  "stratum": "reusable-template",
+  "tags": [
+   "template",
+   "feature-kickoff",
+   "reusable",
+   "placeholders"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "# Feature Kickoff Brief\n\n- Feature: {{feature_title}}\n- Product lead: {{product_lead}}\n- Target release: {{release_version}}\n\n## Problem Statement\n{{problem_statement}}\n\n## Success Criteria\n{{success_criteria}}\n\n## Scope\nIn scope: {{in_scope}}\nOut of scope: {{out_of_scope}}\n\n## Unknowns\n{{unknowns}}\n\nComplete each block. Unfilled blocks are marked with NOTHING."
+ },
+ {
+  "id": "s2-h-template-de-reusable-template-001",
+  "language": "de",
+  "kind": "template",
+  "stratum": "reusable-template",
+  "tags": [
+   "template",
+   "kunden-onboarding",
+   "reusable",
+   "placeholders"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "# Kunden-Onboarding\n\n- Kunde: {{kundenname}}\n- Ansprechpartner: {{ansprechpartner}}\n- Startdatum: {{startdatum}}\n\n## Verifizierte Schritte\n{{verifizierte_schritte}}\n\n## Offene Punkte\n{{offene_punkte}}\n\n## Nächster Termin\n{{naechster_termin}}\n\nErgänze alle Abschnitte. Leere Felder füllst du mit NICHTS aus."
+ },
+ {
+  "id": "s2-h-guideline-en-guideline-001",
+  "language": "en",
+  "kind": "guideline",
+  "stratum": "guideline",
+  "tags": [
+   "guideline",
+   "good",
+   "commit-message",
+   "rules"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "# Commit Message Policy\n\nCommit messages must describe what changed and why. Each commit message has a subject under 72 characters, a blank line, and a body that explains the motivation. Reference the ticket number in the subject. Do not paste diff fragments into the message. Never force-push to shared branches. Mark incompatible changes in the footer. Combine preparatory commits before merging."
+ },
+ {
+  "id": "s2-h-guideline-de-guideline-001",
+  "language": "de",
+  "kind": "guideline",
+  "stratum": "guideline",
+  "tags": [
+   "guideline",
+   "mediocre",
+   "widerspruechlich",
+   "meeting-kultur"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "# Meeting-Kultur\n\n## Regeln\n1. Halte jedes Meeting kurz.\n2. Reserviere bei Bedarf ausreichend Zeit für offene Diskussionen.\n3. Sende die Einladung mit Agenda.\n4. Bespreche wichtige Punkte offen.\n5. Entscheide schnell.\n6. Prüfe jede Entscheidung sorgfältig.\n7. Nenne keine Namen.\n8. Nenne Namen, wenn du Verantwortung klärst."
+ },
+ {
+  "id": "s2-h-task-en-ambiguous-task-001",
+  "language": "en",
+  "kind": "task",
+  "stratum": "ambiguous-task",
+  "tags": [
+   "ambiguous",
+   "fair",
+   "follow-up"
+  ],
+  "pair": null,
+  "adversarial_pattern": null,
+  "provenance": "synthetic-v2",
+  "prompt": "Take care of this as soon as you can and keep me posted."
+ }
+]

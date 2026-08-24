@@ -1,0 +1,79 @@
+[
+  {
+    "pair_id": "P1-COMPLETE-vs-INCOMPLETE-001",
+    "family_id": "P1",
+    "split": "development",
+    "case_a": "v5-task-en-terse-excellent-004",
+    "case_b": "v5-task-en-fair-incomplete-003",
+    "semantic_relation": "COMPLETE > INCOMPLETE",
+    "expected_direction": "A_GT_B",
+    "construction_rationale": "P1 COMPLETE > INCOMPLETE: A is terse-excellent with explicit goal, input and output contract (Extract invoice number/due_date as JSON); B is fair-incomplete training plan with no context/input/output specifics. Same evaluator sensitivity to completeness ensures A must score higher. Language: EN/EN, margin validated >=5 on blind reference.",
+    "pairwise_v2": true
+  },
+  {
+    "pair_id": "P2-CLEAR-vs-AMBIGUOUS-001",
+    "family_id": "P2",
+    "split": "development",
+    "case_a": "v5-task-de-terse-excellent-002",
+    "case_b": "v5-task-de-ambiguous-task-001",
+    "semantic_relation": "CLEAR > AMBIGUOUS",
+    "expected_direction": "A_GT_B",
+    "construction_rationale": "P2 CLEAR > AMBIGUOUS: A has unambiguous classification task with explicit label set and placeholder boundary (Klassifiziere Feedback -> Label); B is deliberately vague 'Überarbeite den Entwurf für mehr Überzeugungskraft' with no goal/input/output. Tests AMBIGUITY_CONTROL/GOAL_CLARITY. Language DE/DE, reference margin >=5.",
+    "pairwise_v2": true
+  },
+  {
+    "pair_id": "P3-COHERENT-vs-CONTRADICTORY-001",
+    "family_id": "P3",
+    "split": "development",
+    "case_a": "v5-task-de-terse-excellent-003",
+    "case_b": "v5-task-de-broken-contradictory-001",
+    "semantic_relation": "COHERENT > CONTRADICTORY",
+    "expected_direction": "A_GT_B",
+    "construction_rationale": "P3 COHERENT > CONTRADICTORY: A is coherent translation task (preserve brand, return translation); B contains direct contradictions (only YAML vs only XML, active vs passive, no numbers vs include metrics). Tests INTERNAL_CONSISTENCY. DE/DE, reference margin >=5.",
+    "pairwise_v2": true
+  },
+  {
+    "pair_id": "P4-TERSE_GOOD-vs-VERBOSE_BAD-001",
+    "family_id": "P4",
+    "split": "development",
+    "case_a": "v5-task-en-terse-excellent-002",
+    "case_b": "v5-task-en-gaming-001",
+    "semantic_relation": "TERSE_GOOD > VERBOSE_BAD",
+    "expected_direction": "A_GT_B",
+    "construction_rationale": "P4 TERSE_GOOD > VERBOSE_BAD: A is minimal excellent translation with clear output discipline; B is padded/verbose gaming (expert-level expertise, best practices, zero-shot, chain-of-thought, return JSON/Markdown/CSV, 100% correct) with no actionable task. Tests SIGNAL_TO_NOISE / constraint relevance. EN/EN, reference margin >=5.",
+    "pairwise_v2": true
+  },
+  {
+    "pair_id": "P5-COMPLETE_GUIDELINE-vs-VAGUE_GUIDELINE-001",
+    "family_id": "P5",
+    "split": "development",
+    "case_a": "v5-guideline-de-guideline-001",
+    "case_b": "v5-task-de-poor-vague-001",
+    "semantic_relation": "COMPLETE_GUIDELINE > VAGUE_GUIDELINE",
+    "expected_direction": "A_GT_B",
+    "construction_rationale": "P5 COMPLETE_GUIDELINE > VAGUE_GUIDELINE: A is complete guideline (Schreibstil-Leitfaden + Review-Richtlinie with concrete imperative rules: concrete nouns, avoid jargon, 3-sentence paragraphs, flag ambiguous terms); B is vague single sentence 'Mache den Text besser.' with no scope/rules/applicability. Tests guideline completeness vs vagueness. DE/DE, reference margin >=5.",
+    "pairwise_v2": true
+  },
+  {
+    "pair_id": "P6-RELEVANT_CONTEXT-vs-IRRELEVANT_CONTEXT-001",
+    "family_id": "P6",
+    "split": "development",
+    "case_a": "v5-task-de-good-natural-001",
+    "case_b": "v5-task-de-boilerplate-001",
+    "semantic_relation": "RELEVANT_CONTEXT > IRRELEVANT_CONTEXT",
+    "expected_direction": "A_GT_B",
+    "construction_rationale": "P6 RELEVANT_CONTEXT > IRRELEVANT_CONTEXT: A contains relevant necessary context (headset cracked, 2-day replacement, return label) that enables action; B appends irrelevant safety boilerplate (personal data, data protection regulation, secret keys) to a simple recipe task, diluting signal. Tests NECESSARY_CONTEXT / SIGNAL_TO_NOISE. DE/DE, reference margin >=5.",
+    "pairwise_v2": true
+  },
+  {
+    "pair_id": "P7-REAL_CONSTRAINT-vs-BOILERPLATE-001",
+    "family_id": "P7",
+    "split": "development",
+    "case_a": "v5-task-en-coding-001",
+    "case_b": "v5-task-de-boilerplate-001",
+    "semantic_relation": "REAL_CONSTRAINT > BOILERPLATE",
+    "expected_direction": "A_GT_B",
+    "construction_rationale": "P7 REAL_CONSTRAINT > BOILERPLATE: A states real operational constraints (ignore case/punctuation, sorted-by-frequency dict) tightly coupled to task; B carries generic boilerplate constraints unrelated to apple cake. Tests CONSTRAINT_RELEVANCE vs generic filler. Cross-lingual EN/DE to show language-invariant, reference margin >=5.",
+    "pairwise_v2": true
+  }
+]

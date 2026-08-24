@@ -1,0 +1,22 @@
+{
+  "id": "v4-task-en-ambiguous-task-001",
+  "overall_score": 58,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "critical_issues": [
+    "Ambiguous directive admits multiple readings"
+  ],
+  "missing_information": [
+    "Draft context, target improvement axes"
+  ],
+  "recommended_improvements": [
+    "Specify what 'more compelling' means (e.g., clarity, persuasion, concision) and for whom."
+  ],
+  "confidence": 0.75,
+  "prompt_fingerprint": "e8a0ec5e8750a01fbf175bcbf9bc7566b0c2d3dbabc6ac24f90a879fb922d1f7",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "4515372df82b07e74a53346d1d54d9bf2c261f039d1e61e69098b3cda30b9dbe",
+  "_prompt_fingerprint": "e8a0ec5e8750a01fbf175bcbf9bc7566b0c2d3dbabc6ac24f90a879fb922d1f7"
+}

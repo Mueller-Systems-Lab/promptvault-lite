@@ -1,0 +1,20 @@
+{
+  "id": "v4-task-en-fair-boilerplate-noise-001",
+  "overall_score": 62,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "critical_issues": [
+    "Boilerplate reduces signal-to-noise"
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+    "Strip generic compliance note; keep only task-relevant constraints."
+  ],
+  "confidence": 0.79,
+  "prompt_fingerprint": "cf06bb6c9dfa060593835edc991fc9116a098d93bc6e8764dfc474e51848eeb7",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "061340c93b4dbced52fc850bb99a14d952b537bdd83a6ea75aa0032fa6415cc4",
+  "_prompt_fingerprint": "cf06bb6c9dfa060593835edc991fc9116a098d93bc6e8764dfc474e51848eeb7"
+}

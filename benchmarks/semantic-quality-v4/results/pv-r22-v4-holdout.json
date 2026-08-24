@@ -1,0 +1,2595 @@
+{
+  "count": 30,
+  "engine": "promptvault-lite (Rust) evaluate_prompt + analyze_hygiene",
+  "label": "r22-v4-holdout",
+  "results": [
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "terse-excellent",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-terse-excellent-001",
+      "missing_sections": [],
+      "overall_score": 96,
+      "pair": "H1",
+      "prompt": "Extract the invoice number and due date from the document below. Return them as JSON with keys invoice_number and due_date.\n\n{{document}}",
+      "recommendations": []
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "de",
+      "expected_stratum": "terse-excellent",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-de-terse-excellent-001",
+      "missing_sections": [],
+      "overall_score": 94,
+      "pair": null,
+      "prompt": "Extrahiere die Rechnungsnummer und das Fälligkeitsdatum aus dem Dokument unten. Gib sie als JSON mit den Schlüsseln rechnungsnummer und faelligkeitsdatum zurück.\n\n{{dokument}}",
+      "recommendations": []
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "terse-excellent",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-terse-excellent-002",
+      "missing_sections": [],
+      "overall_score": 91,
+      "pair": null,
+      "prompt": "Translate the product label below into French. Preserve the brand name. Return only the translation.\n\n{{label}}",
+      "recommendations": []
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 8,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "good-natural",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-good-natural-001",
+      "missing_sections": [
+        "Ausgabeformat"
+      ],
+      "overall_score": 87,
+      "pair": null,
+      "prompt": "Write a reply to the customer inquiry below. The customer ordered a headset that arrived with a cracked case and requests a replacement. Apologize, confirm the replacement will ship within two business days, and provide a return label for the damaged unit.\n\n{{inquiry}}",
+      "recommendations": [
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "de",
+      "expected_stratum": "good-natural",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-de-good-natural-001",
+      "missing_sections": [
+        "Ausgabeformat"
+      ],
+      "overall_score": 88,
+      "pair": null,
+      "prompt": "Schreibe eine Antwort auf die Kundenanfrage unten. Der Kunde meldet einen Riss im Gehäuse des gelieferten Headsets und bittet um Ersatz. Entschuldige dich, bestätige den Versand des Ersatzes binnen zwei Werktagen und füge ein Rücksendeetikett für das defekte Gerät bei.\n\n{{anfrage}}",
+      "recommendations": [
+        "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 6,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 3,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 3,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 2,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 5,
+          "weight": 0.14285714285714285
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 6,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "fair-incomplete",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-fair-incomplete-001",
+      "missing_sections": [
+        "Eingabendefinition",
+        "Ausgabeformat",
+        "Qualitätsanforderungen"
+      ],
+      "overall_score": 44,
+      "pair": null,
+      "prompt": "Create a training plan for the new hire. Cover the essentials.",
+      "recommendations": [
+        "Define inputs with placeholders: Expected input: {{INPUT}}.",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Add acceptance criteria: the result must satisfy the following checks: [CRITERIA]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 6,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "de",
+      "expected_stratum": "fair-incomplete",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-de-fair-incomplete-001",
+      "missing_sections": [
+        "Ausgabeformat"
+      ],
+      "overall_score": 87,
+      "pair": null,
+      "prompt": "Erstelle einen Trainingsplan für die neue Mitarbeiterin. Deck das Wesentliche ab.",
+      "recommendations": [
+        "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 6,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "fair-incomplete",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-fair-incomplete-002",
+      "missing_sections": [
+        "Ausgabeformat"
+      ],
+      "overall_score": 80,
+      "pair": null,
+      "prompt": "Write an article about sustainable packaging. Make it informative.",
+      "recommendations": [
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "poor-vague",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-poor-vague-001",
+      "missing_sections": [
+        "Zieldefinition",
+        "Vorgehensbeschreibung",
+        "Ausgabeformat",
+        "Qualitätsanforderungen"
+      ],
+      "overall_score": 29,
+      "pair": null,
+      "prompt": "Just make it work somehow.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Add the missing context: the task references [fact] that is not supplied."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "de",
+      "expected_stratum": "poor-vague",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-de-poor-vague-001",
+      "missing_sections": [
+        "Zieldefinition",
+        "Vorgehensbeschreibung",
+        "Ausgabeformat",
+        "Qualitätsanforderungen"
+      ],
+      "overall_score": 29,
+      "pair": null,
+      "prompt": "Mach es einfach irgendwie.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Add the missing context: the task references [fact] that is not supplied."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "poor-vague",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-poor-vague-002",
+      "missing_sections": [
+        "Zieldefinition",
+        "Kontextqualität",
+        "Vorgehensbeschreibung",
+        "Ausgabeformat",
+        "Qualitätsanforderungen"
+      ],
+      "overall_score": 27,
+      "pair": null,
+      "prompt": "Make it nice.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Add the missing context: the task references [fact] that is not supplied."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "de",
+      "expected_stratum": "poor-vague",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-de-poor-vague-002",
+      "missing_sections": [
+        "Zieldefinition",
+        "Kontextqualität",
+        "Vorgehensbeschreibung",
+        "Ausgabeformat",
+        "Qualitätsanforderungen"
+      ],
+      "overall_score": 26,
+      "pair": null,
+      "prompt": "Mach es gut.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Add the missing context: the task references [fact] that is not supplied."
+      ]
+    },
+    {
+      "adversarial_pattern": "buzzword-no-substance",
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "broken-buzzword",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-broken-buzzword-001",
+      "missing_sections": [
+        "Vorgehensbeschreibung",
+        "Ausgabeformat",
+        "Qualitätsanforderungen"
+      ],
+      "overall_score": 31,
+      "pair": null,
+      "prompt": "Orchestrate disruptive synergy through holistic state-of-the-art paradigms. Deliver next-level cutting-edge excellence via robust scalable frameworks with world-class best practices.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Add the missing context: the task references [fact] that is not supplied."
+      ]
+    },
+    {
+      "adversarial_pattern": "buzzword-no-substance",
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "de",
+      "expected_stratum": "broken-buzzword",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-de-broken-buzzword-001",
+      "missing_sections": [
+        "Vorgehensbeschreibung",
+        "Ausgabeformat",
+        "Qualitätsanforderungen"
+      ],
+      "overall_score": 31,
+      "pair": null,
+      "prompt": "Orchestriere disruptive Synergien durch holistische State-of-the-Art-Paradigmen. Liefere Next-Level exzellente Weltklasse-Ergebnisse durch robuste skalierbare Rahmenwerke mit Best Practices.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Add the missing context: the task references [fact] that is not supplied."
+      ]
+    },
+    {
+      "adversarial_pattern": "buzzword-no-substance",
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "broken-buzzword",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-broken-buzzword-002",
+      "missing_sections": [
+        "Vorgehensbeschreibung",
+        "Ausgabeformat"
+      ],
+      "overall_score": 32,
+      "pair": null,
+      "prompt": "Harness synergistic leverage of holistic cutting-edge ecosystems. Provide comprehensive world-class outstanding deliverables via innovative thought leadership.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Add the missing context: the task references [fact] that is not supplied."
+      ]
+    },
+    {
+      "adversarial_pattern": "contradictory-requirements",
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "broken-contradictory",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-broken-contradictory-001",
+      "missing_sections": [
+        "Zieldefinition",
+        "Vorgehensbeschreibung",
+        "Ausgabeformat",
+        "Qualitätsanforderungen"
+      ],
+      "overall_score": 20,
+      "pair": null,
+      "prompt": "Start with the introduction. End with the introduction. Use metric units. Use imperial units.",
+      "recommendations": [
+        "Resolve the contradiction between \"Start with the introduction\" and \"End with the introduction\": choose one mandate.",
+        "Resolve the contradiction between \"Use metric units\" and \"Use imperial units\": choose one mandate.",
+        "State an explicit goal: Your task is to achieve [goal]."
+      ]
+    },
+    {
+      "adversarial_pattern": "contradictory-requirements",
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "de",
+      "expected_stratum": "broken-contradictory",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-de-broken-contradictory-001",
+      "missing_sections": [
+        "Kontextqualität",
+        "Vorgehensbeschreibung"
+      ],
+      "overall_score": 23,
+      "pair": null,
+      "prompt": "Schreibe in aktiver Form. Schreibe in passiver Form. Gib eine Zusammenfassung am Ende. Gib keine Zusammenfassung.",
+      "recommendations": [
+        "Resolve the contradiction between \"Schreibe in aktiver Form\" and \"Schreibe in passiver Form\": choose one mandate.",
+        "Resolve the contradiction between \"Gib eine Zusammenfassung am Ende\" and \"Gib keine Zusammenfassung\": choose one mandate.",
+        "State an explicit goal: Your task is to achieve [goal]."
+      ]
+    },
+    {
+      "adversarial_pattern": "contradictory-requirements",
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 1,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 2,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 3,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 3,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 2,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "broken-contradictory",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-broken-contradictory-002",
+      "missing_sections": [
+        "Zieldefinition",
+        "Kontextqualität",
+        "Eingabendefinition",
+        "Vorgehensbeschreibung",
+        "Ausgabeformat",
+        "Wiederverwendbarkeit"
+      ],
+      "overall_score": 18,
+      "pair": null,
+      "prompt": "Include all numbers. Exclude all numbers. Show your reasoning. Do not show your reasoning.",
+      "recommendations": [
+        "Resolve the contradiction between \"Include all numbers\" and \"Exclude all numbers\": choose one mandate.",
+        "Resolve the contradiction between \"Show your reasoning\" and \"Do not show your reasoning\": choose one mandate.",
+        "State an explicit goal: Your task is to achieve [goal]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 4,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 4,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "fair-boilerplate-noise",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-fair-boilerplate-noise-001",
+      "missing_sections": [],
+      "overall_score": 89,
+      "pair": null,
+      "prompt": "Extract the order ID and delivery date from the confirmation below. Return them as JSON with keys order_id and delivery_date.\n\n{{confirmation}}\n\nCompliance note: handle this request under the standing privacy rules. Do not pass on personal details.",
+      "recommendations": [
+        "Add acceptance criteria: the result must satisfy the following checks: [CRITERIA]."
+      ]
+    },
+    {
+      "adversarial_pattern": "repeated-role",
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 4,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 5,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 6,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "poor-repetitive",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-poor-repetitive-001",
+      "missing_sections": [
+        "Zieldefinition",
+        "Ausgabeformat"
+      ],
+      "overall_score": 64,
+      "pair": null,
+      "prompt": "You are a friendly helper. You are a friendly helper. You are a friendly helper. Draft an invitation for the team event. Draft an invitation for the team event.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2].",
+        "Replace the generic role with a concrete one: You are a [role] with [expertise]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "template",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Scope/Zweck",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Regel-Spezifität",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Constraint-Klarheit",
+          "score": 4,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Anwendbarkeit",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Output-Disziplin",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Konsistenz/Struktur",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "template",
+      "expected_language": "en",
+      "expected_stratum": "reusable-template",
+      "guideline_routed": true,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-template-en-reusable-template-001",
+      "missing_sections": [
+        "Sicherheitsgrenzen"
+      ],
+      "overall_score": 80,
+      "pair": null,
+      "prompt": "# Project Proposal\n\n- Title: {{title}}\n- Lead: {{lead}}\n- Budget: {{budget}}\n\n## Objectives\n{{objectives}}\n\n## Deliverables\n{{deliverables}}\n\n## Timeline\n{{timeline}}\n\nFill each block. Mark empty blocks with NOTHING.",
+      "recommendations": [
+        "Add acceptance criteria: the result must satisfy the following checks: [CRITERIA]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "template",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Scope/Zweck",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Regel-Spezifität",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Constraint-Klarheit",
+          "score": 4,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Anwendbarkeit",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Output-Disziplin",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Konsistenz/Struktur",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "template",
+      "expected_language": "de",
+      "expected_stratum": "reusable-template",
+      "guideline_routed": true,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-template-de-reusable-template-001",
+      "missing_sections": [
+        "Sicherheitsgrenzen"
+      ],
+      "overall_score": 72,
+      "pair": null,
+      "prompt": "# Projektvorschlag\n\n- Titel: {{titel}}\n- Leitung: {{leitung}}\n- Budget: {{budget}}\n\n## Ziele\n{{ziele}}\n\n## Ergebnisse\n{{ergebnisse}}\n\n## Zeitplan\n{{zeitplan}}\n\nFülle jeden Block. Leere Blöcke mit NICHTS markieren.",
+      "recommendations": [
+        "Add acceptance criteria: the result must satisfy the following checks: [CRITERIA]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "guideline",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Scope/Zweck",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Regel-Spezifität",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Constraint-Klarheit",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Anwendbarkeit",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Output-Disziplin",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Konsistenz/Struktur",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 6,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "guideline",
+      "expected_language": "en",
+      "expected_stratum": "guideline",
+      "guideline_routed": true,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-guideline-en-guideline-001",
+      "missing_sections": [
+        "Sicherheitsgrenzen"
+      ],
+      "overall_score": 76,
+      "pair": null,
+      "prompt": "# Deployment Guidelines\n\n- Run the full test suite before tagging a release.\n- Document breaking changes in the changelog.\n- Require approval from the release manager.\n- Never force-push to shared branches.",
+      "recommendations": []
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "guideline",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Scope/Zweck",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Regel-Spezifität",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Constraint-Klarheit",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Anwendbarkeit",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Output-Disziplin",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Konsistenz/Struktur",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 6,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "guideline",
+      "expected_language": "de",
+      "expected_stratum": "guideline",
+      "guideline_routed": true,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-guideline-de-guideline-001",
+      "missing_sections": [
+        "Sicherheitsgrenzen"
+      ],
+      "overall_score": 76,
+      "pair": null,
+      "prompt": "# Leitfaden für E-Mail-Kommunikation\n\n- Beantworte Anfragen binnen eines Arbeitstages.\n- Formuliere Betreffzeilen präzise und aussagekräftig.\n- Hänge keine sensiblen Dokumente unverschlüsselt an.",
+      "recommendations": []
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 6,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "ambiguous-task",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-ambiguous-task-001",
+      "missing_sections": [
+        "Zieldefinition",
+        "Ausgabeformat"
+      ],
+      "overall_score": 70,
+      "pair": null,
+      "prompt": "Refine the draft to be more compelling. Focus on what matters most.",
+      "recommendations": [
+        "State an explicit goal: Your task is to achieve [goal].",
+        "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 1,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 1,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 8,
+          "weight": 0.16666666666666666
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 6,
+          "weight": 0.0
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "de",
+      "expected_stratum": "ambiguous-task",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 0,
+        "warning": 0
+      },
+      "hygiene_score": 100,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-de-ambiguous-task-001",
+      "missing_sections": [
+        "Zieldefinition",
+        "Ausgabeformat"
+      ],
+      "overall_score": 69,
+      "pair": null,
+      "prompt": "Überarbeite den Entwurf so, dass er überzeugender wirkt. Konzentriere dich auf das Wesentliche.",
+      "recommendations": [
+        "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+        "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+      ]
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "translation",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-translation-001",
+      "missing_sections": [],
+      "overall_score": 91,
+      "pair": null,
+      "prompt": "Translate the following text into English. Preserve tone and meaning. Return only the translation:\n\n{{source_text}}",
+      "recommendations": []
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "summarization",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-summarization-001",
+      "missing_sections": [],
+      "overall_score": 93,
+      "pair": null,
+      "prompt": "Summarize the article below in three sentences. State only the key points, no commentary:\n\n{{article}}",
+      "recommendations": []
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "extraction",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-extraction-001",
+      "missing_sections": [],
+      "overall_score": 95,
+      "pair": null,
+      "prompt": "Extract all email addresses and phone numbers from the following text. Return them as a JSON object with keys \"emails\" and \"phones\":\n\n{{document}}",
+      "recommendations": []
+    },
+    {
+      "adversarial_pattern": null,
+      "content_kind": "task",
+      "criteria": [
+        {
+          "max_score": 10,
+          "name": "Rollendefinition",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Zieldefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Kontextqualität",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Eingabendefinition",
+          "score": 10,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Vorgehensbeschreibung",
+          "score": 8,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Ausgabeformat",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Qualitätsanforderungen",
+          "score": 7,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Sicherheitsgrenzen",
+          "score": 2,
+          "weight": 0.0
+        },
+        {
+          "max_score": 10,
+          "name": "Klarheit",
+          "score": 9,
+          "weight": 0.125
+        },
+        {
+          "max_score": 10,
+          "name": "Wiederverwendbarkeit",
+          "score": 9,
+          "weight": 0.125
+        }
+      ],
+      "expected_kind": "task",
+      "expected_language": "en",
+      "expected_stratum": "classification",
+      "guideline_routed": false,
+      "hygiene_artifact_counts": {
+        "critical": 0,
+        "info": 1,
+        "warning": 0
+      },
+      "hygiene_score": 97,
+      "hygiene_status": "clean",
+      "id": "v4-h-task-en-classification-001",
+      "missing_sections": [],
+      "overall_score": 91,
+      "pair": null,
+      "prompt": "Classify the support ticket below as bug, feature_request, or question. Return only the label.\n\n{{ticket}}",
+      "recommendations": []
+    }
+  ],
+  "split": "holdout"
+}

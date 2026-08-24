@@ -1,0 +1,17 @@
+FINGERPRINTS
+Branch: quality/analyzer-r2-verification-closure
+HEAD: 0af4afd3e38abe6aef8c15f13b055cc18a1b68c0
+Cargo.toml profile.release:
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
+Files:
+1ec20a00e1f5bf60ebd93d1eefb3852386f9ab37571d1a3ffcf81ceb0712454f  Cargo.toml
+6a0859c5cb4d4d4d4fdc78070019593a4e242042d86d09c401d456969aa56bf2  src-tauri/Cargo.toml
+ebda8516d20ef5368bb10b5b63ce1042117ddfd75017481c40ec278725a876ba  src-tauri/tests/perf_check.rs
+---
+rustc 1.97.1 (8bab26f4f 2026-07-14)
+cargo 1.97.1 (c980f4866 2026-06-30)
+Mo 24. Aug 06:24:40 UTC 2026

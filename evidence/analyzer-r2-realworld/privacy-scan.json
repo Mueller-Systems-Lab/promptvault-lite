@@ -1,0 +1,1674 @@
+{
+  "counts": {
+    "SAFE_FOR_EXTERNAL_REVIEW": 174,
+    "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION": 8,
+    "LOCAL_ONLY_REVIEW": 3
+  },
+  "results": [
+    {
+      "CORPUS_CASE_ID": "CASE-0000",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0001",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0002",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0003",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0004",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0005",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0006",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0007",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0008",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0009",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0010",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0011",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0012",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0013",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0014",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0015",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0016",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0017",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0018",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0019",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0020",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0021",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0022",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
+      "PATTERN_CATEGORY": [
+        "EMAIL"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0023",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0024",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0025",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
+      "PATTERN_CATEGORY": [
+        "EMAIL"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0026",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
+      "PATTERN_CATEGORY": [
+        "SERVER_IP"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0027",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0028",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0029",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0030",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0031",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0032",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0033",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0034",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0035",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0036",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0037",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0038",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0039",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0040",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0041",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0042",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0043",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0044",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
+      "PATTERN_CATEGORY": [
+        "EMAIL"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0045",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
+      "PATTERN_CATEGORY": [
+        "SERVER_IP"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0046",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0047",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0048",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0049",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0050",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0051",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0052",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0053",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0054",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
+      "PATTERN_CATEGORY": [
+        "EMAIL"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0055",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0056",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0057",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0058",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0059",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0060",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0061",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0062",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0063",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0064",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0065",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0066",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0067",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0068",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0069",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0070",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0071",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0072",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0073",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
+      "PATTERN_CATEGORY": [
+        "SERVER_IP"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0074",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0075",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0076",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0077",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0078",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "LOCAL_ONLY_REVIEW",
+      "PATTERN_CATEGORY": [
+        "PASSWORD_ASSIGN"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0079",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0080",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0081",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0082",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0083",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0084",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0085",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0086",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0087",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0088",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0089",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0090",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0091",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0092",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0093",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0094",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0095",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0096",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0097",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0098",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0099",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0100",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0101",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0102",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0103",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0104",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0105",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0106",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0107",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0108",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "LOCAL_ONLY_REVIEW",
+      "PATTERN_CATEGORY": [
+        "PASSWORD_ASSIGN"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0109",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0110",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0111",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "LOCAL_ONLY_REVIEW",
+      "PATTERN_CATEGORY": [
+        "PASSWORD_ASSIGN"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0112",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0113",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0114",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0115",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0116",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0117",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0118",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0119",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0120",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0121",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0122",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_AFTER_SEMANTICS_PRESERVING_REDACTION",
+      "PATTERN_CATEGORY": [
+        "SERVER_IP"
+      ],
+      "REDACTION_REQUIRED": true
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0123",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0124",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0125",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0126",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0127",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0128",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0129",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0130",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0131",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0132",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0133",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0134",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0135",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0136",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0137",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0138",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0139",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0140",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0141",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0142",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0143",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0144",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0145",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0146",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0147",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0148",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0149",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0150",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0151",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0152",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0153",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0154",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0155",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0156",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0157",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0158",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0159",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0160",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0161",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0162",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0163",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0164",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0165",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0166",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0167",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0168",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0169",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0170",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0171",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0172",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0173",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0174",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0175",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0176",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0177",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0178",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0179",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0180",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0181",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0182",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0183",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    },
+    {
+      "CORPUS_CASE_ID": "CASE-0184",
+      "SOURCE_FILE": "<PRIVATE_FILE>",
+      "SECRET_CLASS": "SAFE_FOR_EXTERNAL_REVIEW",
+      "PATTERN_CATEGORY": [
+        "NONE"
+      ],
+      "REDACTION_REQUIRED": false
+    }
+  ]
+}

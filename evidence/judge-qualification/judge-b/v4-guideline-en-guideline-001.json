@@ -1,0 +1,18 @@
+{
+  "id": "v4-guideline-en-guideline-001",
+  "overall_score": 85,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+    "Consider adding rationale or examples for each guideline."
+  ],
+  "confidence": 0.89,
+  "prompt_fingerprint": "612ad6b6015621ff42a9f73fd3b416e92e1b561db01ca8d7170d1fc8410dc79f",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "38a8d7d83cfc846e9139bdf7368e9a20a648946ce4a10491f30ee55cd7556376",
+  "_prompt_fingerprint": "612ad6b6015621ff42a9f73fd3b416e92e1b561db01ca8d7170d1fc8410dc79f"
+}

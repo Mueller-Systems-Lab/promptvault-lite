@@ -1,0 +1,1193 @@
+{
+  "counts": {
+    "EMPTY": 3,
+    "TEXT_PROMPT_CANDIDATE": 185,
+    "NON_PROMPT_TEXT": 2,
+    "UNSUPPORTED_FORMAT": 1,
+    "BINARY_NON_PROMPT": 6
+  },
+  "details": [
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 1,
+      "CLASS": "EMPTY"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 16710,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 20461,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 9081,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": "",
+      "FILE_SIZE": 1,
+      "CLASS": "EMPTY"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".py",
+      "FILE_SIZE": 23585,
+      "CLASS": "NON_PROMPT_TEXT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 24050,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 43983,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 8661,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md#",
+      "FILE_SIZE": 10386,
+      "CLASS": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3839,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 22389,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 20502,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 12336,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 55856,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 116831,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 18503,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 27366,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 27568,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 7741,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 38870,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 11320,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4245,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3495,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 38305,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 5081,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 6558,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 7587,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 1,
+      "CLASS": "EMPTY"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 40456,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2035,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4213,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 1516,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 42313,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2450,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2701,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 1877,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2715,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 1941,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2530,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2811,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2374,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2670,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2805,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2767,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 1962,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2562,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2740,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2782,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2465,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2788,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2009,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2832,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2395,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 19964,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 17399,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 9116,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 18352,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 18946,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 8213,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 17919,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 15457,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 141339,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3118,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3040,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2300,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2163,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2465,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2310,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3229,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2418,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2291,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3024,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3098,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3108,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2125,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2274,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2532,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3015,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 19804,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 69475,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 866,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3923,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3963,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4034,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4422,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4436,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4124,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4119,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4126,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4325,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4078,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 116831,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3288,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2129,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2085,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2120,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2063,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3296,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3066,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3397,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3303,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2117,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3096,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3433,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3277,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3577,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3287,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3451,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3332,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3554,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2063,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3251,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 72667,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2983,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 1119,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 299,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 924,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 539,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 1009,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3102,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3127,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2567,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2563,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3078,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2713,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2998,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2508,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3024,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 11905,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3031,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2964,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2381,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3054,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2920,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".json",
+      "FILE_SIZE": 69,
+      "CLASS": "NON_PROMPT_TEXT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2816,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2839,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2878,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2700,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2866,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 27491,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 14010,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 10281,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".pdf",
+      "FILE_SIZE": 233985,
+      "CLASS": "BINARY_NON_PROMPT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 42052,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 7478,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 5508,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 49874,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3847,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".pdf",
+      "FILE_SIZE": 132093,
+      "CLASS": "BINARY_NON_PROMPT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 32762,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2932,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 20257,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3075,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 20602,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".pdf",
+      "FILE_SIZE": 118696,
+      "CLASS": "BINARY_NON_PROMPT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 3491,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".pdf",
+      "FILE_SIZE": 99221,
+      "CLASS": "BINARY_NON_PROMPT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4799,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 4169,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 16219,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 36084,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 41140,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 9777,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 32664,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2423,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 27491,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 15449,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".pdf",
+      "FILE_SIZE": 118696,
+      "CLASS": "BINARY_NON_PROMPT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".pdf",
+      "FILE_SIZE": 70446,
+      "CLASS": "BINARY_NON_PROMPT"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 17807,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 18348,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 5423,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 13622,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 10697,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 17081,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 15164,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 8956,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 16050,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 30020,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 10005,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 8547,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 24050,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 5423,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 13622,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2423,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2670,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2705,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2539,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2642,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2704,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2812,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2696,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2525,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2690,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    },
+    {
+      "RELATIVE_PATH": "<PRIVATE_FILE>",
+      "EXTENSION": ".md",
+      "FILE_SIZE": 2759,
+      "CLASS": "TEXT_PROMPT_CANDIDATE"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "MIN_SCORE": 25,
+  "MAX_SCORE": 92,
+  "MEAN": 64.43783783783783,
+  "MEDIAN": 73,
+  "P10": 28,
+  "P25": 57,
+  "P75": 79,
+  "P90": 84,
+  "BANDS": {
+    "POOR": 43,
+    "GOOD": 92,
+    "EXCELLENT": 45,
+    "FAIR": 5
+  },
+  "ROUTINGS": {
+    "task": 158,
+    "guideline": 26,
+    "template": 1
+  },
+  "TYPES": {
+    "Coding": 107,
+    "guideline": 26,
+    "Extraction": 4,
+    "Agent Workflow": 7,
+    "Analysis": 21,
+    "General Task": 16,
+    "template": 1,
+    "Transformation": 1,
+    "Planning": 2
+  },
+  "LANGS": {
+    "German": 185
+  },
+  "LENGTH_BUCKETS": {
+    "<=500": 1,
+    "501-2K": 9,
+    "2K-10K": 121,
+    "10K-50K": 48,
+    "50K-100K": 3,
+    ">100K": 3
+  },
+  "DIR_MEANS": {
+    "(root)": 51.333333333333336,
+    "10 Exit-F\u00e4hige Mobile-Game-Konzepte": 68.41666666666667,
+    "APP Blueprint": 64.85714285714286,
+    "Bauen": 59.5,
+    "Meta_Prompt": 64.9375,
+    "anleitungen": 56.416666666666664,
+    "app_konzepte_neu": 66,
+    "blueprint3": 74.52631578947368,
+    "blueprint4": 61.125,
+    "blueprint_von_grok": 74.27272727272727,
+    "blueprints": 65.2,
+    "blueprints2": 72.57142857142857
+  },
+  "FALSE_HIGH_CANDIDATES": 1,
+  "FALSE_LOW_CANDIDATES": 44,
+  "SLOWEST": [
+    {
+      "id": "CASE-0110",
+      "file": "blueprint3/app_ideen2.md",
+      "ms": 7212
+    },
+    {
+      "id": "CASE-0181",
+      "file": "blueprints2/app_ideen.md",
+      "ms": 6941
+    },
+    {
+      "id": "CASE-0082",
+      "file": "app_ideen.md",
+      "ms": 6832
+    },
+    {
+      "id": "CASE-0122",
+      "file": "blueprint4/app_ideen4.md",
+      "ms": 4673
+    },
+    {
+      "id": "CASE-0069",
+      "file": "anleitungen/company/Strategische Frameworks f\u00fcr krypto\u00f6konomische Einkommensmodelle ohne Startkapit.md",
+      "ms": 4649
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+warning: output filename collision at /media/xxammaxx/software/promptvault-lite/target/release/deps/libpromptvault_lite_lib.a
+  |
+  = note: the lib target `promptvault_lite_lib` in package `promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)` has the same output filename as the lib target `promptvault_lite_lib` in package `promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)`
+  = note: this may become a hard error in the future; see <https://github.com/rust-lang/cargo/issues/6313>
+  = help: consider changing their names to be unique or compiling them separately
+warning: output filename collision at /media/xxammaxx/software/promptvault-lite/target/release/deps/libpromptvault_lite_lib.so
+  |
+  = note: the lib target `promptvault_lite_lib` in package `promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)` has the same output filename as the lib target `promptvault_lite_lib` in package `promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)`
+  = note: this may become a hard error in the future; see <https://github.com/rust-lang/cargo/issues/6313>
+  = help: consider changing their names to be unique or compiling them separately
+warning: output filename collision at /media/xxammaxx/software/promptvault-lite/target/release/deps/libpromptvault_lite_lib.so.dwp
+  |
+  = note: the lib target `promptvault_lite_lib` in package `promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)` has the same output filename as the lib target `promptvault_lite_lib` in package `promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)`
+  = note: this may become a hard error in the future; see <https://github.com/rust-lang/cargo/issues/6313>
+  = help: consider changing their names to be unique or compiling them separately
+warning: output filename collision at /media/xxammaxx/software/promptvault-lite/target/release/deps/libpromptvault_lite_lib.rlib
+  |
+  = note: the lib target `promptvault_lite_lib` in package `promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)` has the same output filename as the lib target `promptvault_lite_lib` in package `promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)`
+  = note: this may become a hard error in the future; see <https://github.com/rust-lang/cargo/issues/6313>
+  = help: consider changing their names to be unique or compiling them separately
+   Compiling promptvault-lite v1.11.1 (/media/xxammaxx/software/promptvault-lite/src-tauri)
+    Finished `release` profile [optimized] target(s) in 7m 02s
+     Running tests/perf_check.rs (target/release/deps/perf_check-c2caea0a68445b8c)
+
+running 1 test
+short p50 (after warmup): 21ms (runs: [21, 21, 21, 25, 28])
+medium p50: 29ms (runs: [26, 27, 29, 37, 48])
+large p50: 232ms (runs: [231, 232, 258])
+100K p50: 512ms (runs: [471, 512, 547])
+test perf_check ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.75s
+

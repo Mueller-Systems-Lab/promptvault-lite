@@ -1,0 +1,4780 @@
+[
+  {
+    "id": "v3-task-en-terse-excellent-001",
+    "overall_score": 100,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-terse-excellent-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-terse-excellent-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 100,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-terse-excellent-002",
+    "overall_score": 100,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-terse-excellent-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-terse-excellent-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 100,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-terse-excellent-003",
+    "overall_score": 100,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-terse-excellent-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-terse-excellent-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 100,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-terse-excellent-004",
+    "overall_score": 100,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-terse-excellent-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-terse-excellent-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 100,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-terse-excellent-005",
+    "overall_score": 100,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-terse-excellent-005",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-terse-excellent-005",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 100,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-terse-excellent-006",
+    "overall_score": 100,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-terse-excellent-006",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-terse-excellent-006",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 100,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-terse-excellent-007",
+    "overall_score": 100,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [],
+    "missing_information": [],
+    "recommended_improvements": [],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-terse-excellent-007",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-terse-excellent-007",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 100,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-good-natural-001",
+    "overall_score": 90,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 6,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Output format and tone left open (no email/letter format, no length or tone guidance)."
+    ],
+    "missing_information": [
+      "Reply medium/format",
+      "Tone and length expectations"
+    ],
+    "recommended_improvements": [
+      "Specify output format (e.g. email body, markdown)",
+      "Specify reply format (e.g. email), professional tone, and desired length."
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 83,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-good-natural-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 97,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-good-natural-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 90,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-good-natural-002",
+    "overall_score": 90,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 6,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Output format and tone left open."
+    ],
+    "missing_information": [
+      "Ton und Länge",
+      "Antwortformat (E-Mail/Brief)"
+    ],
+    "recommended_improvements": [
+      "Ausgabeformat spezifizieren",
+      "Format (z.B. E-Mail), Tonfall und Länge festlegen."
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 83,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-good-natural-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 97,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-good-natural-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 90,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-good-natural-003",
+    "overall_score": 88,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": 8,
+      "OUTPUT_CONTRACT": 6,
+      "CONSTRAINT_RELEVANCE": 9,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+      "SIGNAL_TO_NOISE": 9,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "'Thank the contributors' with no contributor names supplied.",
+      "{{changelog}} placeholder is redundant with inline release details, adding noise."
+    ],
+    "missing_information": [
+      "Contributor identities",
+      "Release note format/length"
+    ],
+    "recommended_improvements": [
+      "Remove redundant placeholder or align it with actual changelog source; supply contributor names or generalize the thanks.",
+      "Specify output format (markdown, plain text, HTML)"
+    ],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 78,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-good-natural-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 97,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-good-natural-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 19 band_diff 1 fit YES vs YES",
+        "resolved_by": null,
+        "final_score": 88,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-good-natural-004",
+    "overall_score": 88,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": 8,
+      "OUTPUT_CONTRACT": 6,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+      "SIGNAL_TO_NOISE": 9,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "{{produktdaten}} placeholder is redundant with inline specs.",
+      "Output format/length left open."
+    ],
+    "missing_information": [
+      "Optional further product details",
+      "Produktbeschreibung Länge/Format"
+    ],
+    "recommended_improvements": [
+      "Ausgabeformat spezifizieren",
+      "Drop redundant placeholder or point it at the real source; specify length/format."
+    ],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 79,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-good-natural-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 97,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-good-natural-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 18 band_diff 1 fit YES vs YES",
+        "resolved_by": null,
+        "final_score": 88,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-good-natural-005",
+    "overall_score": 89,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": 7,
+      "OUTPUT_CONTRACT": 8,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 9,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "{{audience}} placeholder is redundant (audience already stated as junior developer)."
+    ],
+    "missing_information": [
+      "Optional examples or existing material to ground the explanation"
+    ],
+    "recommended_improvements": [
+      "Clarify what {{audience}} placeholder contains",
+      "Remove redundant placeholder; the 200-word and topic constraints are good—keep them."
+    ],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 81,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-good-natural-005",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 97,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-good-natural-005",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 16 band_diff 1 fit YES vs YES",
+        "resolved_by": null,
+        "final_score": 89,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-good-natural-006",
+    "overall_score": 91,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": 8,
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 9,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "{{team_setup}} placeholder is redundant with the explicitly listed checklist items.",
+      "Depth/detail per checklist item unspecified."
+    ],
+    "missing_information": [
+      "Team-specific tooling/repo details referenced by setup"
+    ],
+    "recommended_improvements": [
+      "Remove redundant placeholder or bind it to real setup docs; clarify desired detail level."
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 82,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-good-natural-006",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-good-natural-006",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 18 band_diff 1 fit YES vs YES",
+        "resolved_by": null,
+        "final_score": 91,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-fair-incomplete-001",
+    "overall_score": 52,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 6,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 6,
+      "AMBIGUITY_CONTROL": 4,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No input placeholder or feature details provided",
+      "Subject 'the new feature' has no referent; the feature content is entirely absent.",
+      "'Make it engaging' is generic and unverifiable.",
+      "Goal vague — which new feature?"
+    ],
+    "missing_information": [
+      "Audience",
+      "Feature details or input placeholder",
+      "Target audience",
+      "Desired length/format",
+      "Output format"
+    ],
+    "recommended_improvements": [
+      "Add word/length constraint",
+      "Specify output format",
+      "Provide the feature via a {{feature}} placeholder; specify audience, length, and angle.",
+      "Add {{feature}} or {{details}} placeholder with feature specifics",
+      "Specify target audience"
+    ],
+    "confidence": 0.89,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 55,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-en-fair-incomplete-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 50,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-fair-incomplete-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 5 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 52,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-fair-incomplete-002",
+    "overall_score": 52,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 6,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 6,
+      "AMBIGUITY_CONTROL": 4,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "'das neue Feature' hat keinen Bezug; Inhalt fehlt vollständig.",
+      "'gut lesbar' ist generisch und nicht überprüfbar.",
+      "Kein Input-Placeholder oder Feature-Details angegeben",
+      "Ziel vage — welches Feature?"
+    ],
+    "missing_information": [
+      "Welches Feature und dessen Details",
+      "Gewünschte Länge",
+      "Zielgruppe",
+      "Länge/Format",
+      "Feature-Details oder Input-Placeholder"
+    ],
+    "recommended_improvements": [
+      "Input-Placeholder für Feature-Details hinzufügen",
+      "Zielgruppe spezifizieren",
+      "Ausgabeformat festlegen",
+      "Längenbegrenzung angeben",
+      "Feature über {{feature}} einfügen; Zielgruppe, Länge und Schwerpunkt angeben."
+    ],
+    "confidence": 0.89,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 55,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-de-fair-incomplete-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 50,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-fair-incomplete-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 5 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 52,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-fair-incomplete-003",
+    "overall_score": 56,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 6,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 6,
+      "CONSTRAINT_RELEVANCE": 6,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 6,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "'Neat format' is vague and unverifiable.",
+      "No input placeholder for meeting content",
+      "Which meeting?",
+      "No meeting content or source provided."
+    ],
+    "missing_information": [
+      "Meeting transcript/notes",
+      "Audience",
+      "Specific format beyond 'neat'",
+      "Meeting content or placeholder",
+      "Summary length and structure"
+    ],
+    "recommended_improvements": [
+      "Supply meeting notes via {{meeting}}; define summary length and structure (e.g. bullets, sections).",
+      "Specify target audience",
+      "Add {{meeting_notes}} or {{transcript}} placeholder",
+      "Define 'neat format' (bullets, sections, etc.)"
+    ],
+    "confidence": 0.89,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 60,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-en-fair-incomplete-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 52,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-fair-incomplete-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 8 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 56,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-fair-incomplete-004",
+    "overall_score": 58,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 6,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 6,
+      "CONSTRAINT_RELEVANCE": 7,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 6,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "'die Veranstaltung' has no referent; event details absent.",
+      "Ablauf/Zielgruppe requested but no event context to base them on.",
+      "Kein Input-Placeholder für Veranstaltungsdetails",
+      "Welche Veranstaltung?"
+    ],
+    "missing_information": [
+      "Existing constraints or goals",
+      "Veranstaltungsdetails oder Input-Placeholder",
+      "Zielgruppe",
+      "Event topic, date, scope",
+      "Ausgabeformat"
+    ],
+    "recommended_improvements": [
+      "Provide event brief via {{event}}; specify concept length and required sections.",
+      "Ausgabeformat festlegen",
+      "Zielgruppe spezifizieren",
+      "Input-Placeholder für Veranstaltungsdetails hinzufügen"
+    ],
+    "confidence": 0.89,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 63,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-de-fair-incomplete-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 52,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-fair-incomplete-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 11 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 58,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-fair-incomplete-005",
+    "overall_score": 56,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 6,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 2,
+      "OUTPUT_CONTRACT": 6,
+      "CONSTRAINT_RELEVANCE": 7,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 6,
+      "AMBIGUITY_CONTROL": 5,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No input placeholder for progress/risks data",
+      "Which quarter and business unit unspecified.",
+      "No quarter, metrics, or progress/risk data provided.",
+      "Which quarter? Which project?"
+    ],
+    "missing_information": [
+      "Quarter and source data (progress, risks)",
+      "Audience",
+      "Audience and length",
+      "Output format",
+      "Project/quarter context or placeholder"
+    ],
+    "recommended_improvements": [
+      "Specify project name and quarter",
+      "Define output format",
+      "Supply data via {{data}}; name the quarter, audience, and desired length/format.",
+      "Add {{data}} or {{progress_report}} placeholder"
+    ],
+    "confidence": 0.89,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 61,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-en-fair-incomplete-005",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 52,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-fair-incomplete-005",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 9 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 56,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-fair-incomplete-006",
+    "overall_score": 66,
+    "quality_band": "FAIR",
+    "fit_for_purpose": "PARTIAL",
+    "criteria": {
+      "GOAL_CLARITY": 6,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 6,
+      "CONSTRAINT_RELEVANCE": 8,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 7,
+      "AMBIGUITY_CONTROL": 6,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 5,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No identification of which mobile app or what its features/content are",
+      "No source or method for screenshots identified",
+      "Target audience and scope unknown",
+      "Screenshot requirement cannot be met without app access or assets",
+      "Which mobile app is unspecified"
+    ],
+    "missing_information": [
+      "Audience and guide scope/depth",
+      "Target audience",
+      "Source of screenshots or UI access",
+      "App name or description",
+      "Desired scope/depth of guide"
+    ],
+    "recommended_improvements": [
+      "State whether screenshots are to be described, sourced, or generated",
+      "Name the specific app",
+      "Define the target audience",
+      "Clarify how screenshots are obtained or provided",
+      "Specify scope and depth of the guide"
+    ],
+    "confidence": 0.91,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 67,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-en-fair-incomplete-006",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 66,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "mimo-v3-task-en-fair-incomplete-006",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 66,
+        "final_band": "FAIR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-fair-incomplete-007",
+    "overall_score": 71,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 6,
+      "NECESSARY_CONTEXT": 5,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 7,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 6,
+      "AMBIGUITY_CONTROL": 6,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 6,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Target audience unspecified",
+      "Which Sommerfest is unspecified",
+      "Time and place are demanded but never supplied, forcing fabrication",
+      "Actual time and place values not provided"
+    ],
+    "missing_information": [
+      "Event date and time",
+      "Tone or style guidance",
+      "Tone and length of invitation",
+      "Target recipients",
+      "Host/organizer and RSVP details"
+    ],
+    "recommended_improvements": [
+      "State organizer, dress code, or RSVP info if relevant",
+      "Specify who the invitation is for",
+      "Provide event date, time, and venue",
+      "Provide or reference the specific time and venue",
+      "Optionally specify tone (formal/casual)"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 69,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-de-fair-incomplete-007",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 73,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-fair-incomplete-007",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 4 band_diff 1 fit PARTIAL vs YES",
+        "resolved_by": null,
+        "final_score": 71,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-vague-001",
+    "overall_score": 18,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 0,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 0,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 5,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Semantically empty",
+      "No identifiable goal or deliverable",
+      "No actionable instruction; executor must invent everything",
+      "No subject, context, or action specified",
+      "'The thing' has no referent; goal, input, and success are all undefined"
+    ],
+    "missing_information": [
+      "Any domain or context",
+      "What 'better' means",
+      "What 'the thing' refers to",
+      "What 'better' means / success criteria",
+      "What 'the thing' is"
+    ],
+    "recommended_improvements": [
+      "Provide context about the domain and current state",
+      "Specify input and expected output format",
+      "Define what 'better' means concretely",
+      "Specify the object of improvement",
+      "Name the object/task and the desired improvement with measurable criteria"
+    ],
+    "confidence": 0.97,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 26,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-poor-vague-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 10,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-vague-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 16 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 18,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-vague-002",
+    "overall_score": 18,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 0,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 0,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 5,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Semantically empty",
+      "'Es' has no referent; nothing actionable or verifiable",
+      "All substance must be invented by executor",
+      "No identifiable goal or deliverable",
+      "No subject, context, or action specified"
+    ],
+    "missing_information": [
+      "Definition of 'besser'",
+      "What 'es' refers to",
+      "Context and output format",
+      "Was 'besser' konkret bedeutet",
+      "Was 'es' sich bezieht"
+    ],
+    "recommended_improvements": [
+      "Das Verbessungsobjekt benennen",
+      "Define input and output",
+      "Identify the subject and the concrete improvement with criteria",
+      "Definition von 'besser' liefern",
+      "Kontext über aktuelle Situation und Ziel"
+    ],
+    "confidence": 0.97,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 26,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-poor-vague-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 10,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-vague-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 16 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 18,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-vague-003",
+    "overall_score": 40,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 3,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 3,
+      "AMBIGUITY_CONTROL": 3,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No format or structure specified",
+      "Product not identified",
+      "'Make it nice' is non-operational filler",
+      "'Our product' unnamed; deliverable type and angle undefined",
+      "Nice is an empty quality adjective"
+    ],
+    "missing_information": [
+      "Which product",
+      "What aspects to cover",
+      "Target audience",
+      "Output format",
+      "Desired artifact (ad, blog, specs) and audience"
+    ],
+    "recommended_improvements": [
+      "Specify the content focus and audience",
+      "Define the output format (blog post, ad copy, etc.)",
+      "Name the product and specify artifact type, audience, and key points",
+      "Name the product and its key features",
+      "Replace 'nice' with concrete quality criteria"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 39,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-poor-vague-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-vague-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 40,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-vague-004",
+    "overall_score": 40,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 3,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 3,
+      "AMBIGUITY_CONTROL": 3,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Gut ist ein leerer Qualitätsbegriff",
+      "'Unser Produkt' unnamed; no artifact type or angle",
+      "Produkt nicht identifiziert",
+      "Kein Format oder Struktur spezifiziert",
+      "'Mach es gut' non-operational"
+    ],
+    "missing_information": [
+      "Product identity and details",
+      "Welches Produkt",
+      "Zielgruppe",
+      "Quality definition",
+      "Artifact type, audience, key messages"
+    ],
+    "recommended_improvements": [
+      "Ausgabeformat festlegen",
+      "Inhaltsfokus und Zielgruppe definieren",
+      "Produkt benennen und Schlüsselmerkmale angeben",
+      "Specify product, artifact, audience, and concrete success criteria"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 39,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-poor-vague-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-vague-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 40,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-vague-005",
+    "overall_score": 40,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 3,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 3,
+      "AMBIGUITY_CONTROL": 3,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Something is undefined",
+      "Team not identified",
+      "'Something useful' gives no deliverable, audience, or domain",
+      "'Team' unspecified; success unobservable",
+      "Useful is subjective and non-operational"
+    ],
+    "missing_information": [
+      "Team identity and context",
+      "Format and success measure",
+      "Which team and its needs",
+      "What type of deliverable",
+      "Context for usefulness"
+    ],
+    "recommended_improvements": [
+      "Specify the deliverable type",
+      "Define what useful means in this context",
+      "Identify the team and their current challenge",
+      "Define the artifact, owning team, and concrete usefulness criteria"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 39,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-poor-vague-005",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-vague-005",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 40,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-vague-006",
+    "overall_score": 40,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 3,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 3,
+      "AMBIGUITY_CONTROL": 3,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "'Team' undefined; unverifiable",
+      "Etwas ist nicht definiert",
+      "Team nicht identifiziert",
+      "'Etwas Nützliches' defines no deliverable or domain",
+      "Nützlich ist subjektiv und nicht operationalisierbar"
+    ],
+    "missing_information": [
+      "Artifact type and team purpose",
+      "Kontext für Nützlichkeit",
+      "Welches Team und seine Bedürfnisse",
+      "Format and success measure",
+      "Team identity"
+    ],
+    "recommended_improvements": [
+      "Specify artifact, team, and usefulness criteria",
+      "Lieferobjekt-Art spezifizieren",
+      "Team und aktuelle Herausforderung benennen",
+      "Definition von Nützlichkeit in diesem Kontext"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 39,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-poor-vague-006",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-vague-006",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 40,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-vague-007",
+    "overall_score": 42,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 3,
+      "AMBIGUITY_CONTROL": 3,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No audience or purpose specified",
+      "'Everything that matters' is meaningless and unverifiable",
+      "Everything that matters is circular and non-operational",
+      "'Stuff' has no referent; report scope undefined",
+      "About stuff provides no subject"
+    ],
+    "missing_information": [
+      "Report purpose and scope",
+      "Structure requirements",
+      "Required sections, data sources, audience",
+      "Subject matter",
+      "Report audience"
+    ],
+    "recommended_improvements": [
+      "Define the report subject",
+      "Identify audience and purpose",
+      "Name the report topic and required sections/sources",
+      "Replace 'everything that matters' with explicit scope",
+      "Specify required sections or structure"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-poor-vague-007",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 43,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-vague-007",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 42,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-vague-008",
+    "overall_score": 42,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 3,
+      "AMBIGUITY_CONTROL": 3,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Kein Publikum oder Zweck angegeben",
+      "'Dinge' undefined; report scope absent",
+      "Über Dinge liefert kein Thema",
+      "Alles Wichtige ist zirkulär und nicht operationalisierbar",
+      "'Alles Wichtige' unverifiable"
+    ],
+    "missing_information": [
+      "Sections, audience, length",
+      "Zielgruppe",
+      "Thema des Berichts",
+      "Zweck und Umfang",
+      "Strukturanforderungen"
+    ],
+    "recommended_improvements": [
+      "Specify topic, sections, and sources; define scope concretely",
+      "Zielgruppe und Zweck angeben",
+      "Berichtsthema definieren",
+      "Erforderliche Abschnitte oder Struktur spezifizieren"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-poor-vague-008",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 43,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-vague-008",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 42,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-vague-009",
+    "overall_score": 44,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 4,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 4,
+      "AMBIGUITY_CONTROL": 4,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No target audience or document type specified",
+      "The concept is unspecified",
+      "'Keep it useful' non-operational",
+      "Useful is a vague quality constraint",
+      "'The concept' unnamed; document purpose vague"
+    ],
+    "missing_information": [
+      "Document format and length",
+      "Which concept and audience",
+      "Target audience",
+      "Document structure and length",
+      "Level of technical detail"
+    ],
+    "recommended_improvements": [
+      "Specify format (short doc, whitepaper, etc.)",
+      "Replace 'useful' with concrete aims",
+      "Define the audience and their knowledge level",
+      "Name the concept, audience, and required sections",
+      "Name the concept to be explained"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-poor-vague-009",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 48,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-vague-009",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 44,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-vague-010",
+    "overall_score": 44,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 4,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 4,
+      "AMBIGUITY_CONTROL": 4,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Kein Zielgruppe oder Dokumenttyp angegeben",
+      "'Halte es nützlich' non-operational",
+      "Nützlich ist ein vager Qualitätsbegriff",
+      "'Das Thema' unnamed; purpose vague",
+      "Das Thema ist nicht spezifiziert"
+    ],
+    "missing_information": [
+      "Technisches Detailliveau",
+      "Topic and audience",
+      "Structure and length",
+      "Dokumentformat und -umfang",
+      "Welches Thema"
+    ],
+    "recommended_improvements": [
+      "Name topic and audience; set concrete document goals",
+      "Format spezifizieren (kurzes Dokument, Whitepaper, etc.)",
+      "Zielgruppe und deren Wissensstand definieren",
+      "Das zu erklärende Thema benennen"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-poor-vague-010",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 48,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-vague-010",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 44,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-vague-011",
+    "overall_score": 42,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 3,
+      "AMBIGUITY_CONTROL": 3,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No topic or subject specified",
+      "Good is a non-operational quality constraint",
+      "No audience, occasion, or format specified",
+      "'It should be good' non-operational",
+      "Presentation topic and audience undefined"
+    ],
+    "missing_information": [
+      "Key messages and format",
+      "Target audience",
+      "Number of slides or duration",
+      "Topic, audience, slide count",
+      "Occasion or context"
+    ],
+    "recommended_improvements": [
+      "Specify topic, audience, and slide structure",
+      "Define the presentation topic",
+      "Specify length and format",
+      "Identify the audience and occasion",
+      "Replace 'good' with concrete quality bars"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-poor-vague-011",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 43,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-vague-011",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 42,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-vague-012",
+    "overall_score": 42,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 3,
+      "INPUT_DEFINITION": 3,
+      "OUTPUT_CONTRACT": 5,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 3,
+      "AMBIGUITY_CONTROL": 3,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 3,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Topic and audience undefined",
+      "Gut ist ein nicht-operationalisierbarer Qualitätsbegriff",
+      "Kein Thema oder Inhalt spezifiziert",
+      "'Sie soll gut sein' non-operational",
+      "Kein Publikum, Anlass oder Format angegeben"
+    ],
+    "missing_information": [
+      "Präsentationsthema",
+      "Zielgruppe",
+      "Anzahl der Folien oder Dauer",
+      "Anlass oder Kontext",
+      "Key messages"
+    ],
+    "recommended_improvements": [
+      "Präsentationsthema definieren",
+      "Specify topic, audience, structure; set concrete quality criteria",
+      "Umfang und Format spezifizieren",
+      "Zielgruppe und Anlass angeben"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 41,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-poor-vague-012",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 43,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-vague-012",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 42,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-broken-buzzword-001",
+    "overall_score": 12,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 0,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 0,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 0,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 0,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Pure buzzword string with no executable goal, input, or output",
+      "Semantically empty; no actionable instruction",
+      "Meaning collapses; no faithful execution possible",
+      "Entirely composed of management buzzwords",
+      "No identifiable task or deliverable"
+    ],
+    "missing_information": [
+      "Any concrete task definition",
+      "Any subject or domain",
+      "Actual task and deliverable",
+      "Any concrete instruction or data",
+      "Any measurable output"
+    ],
+    "recommended_improvements": [
+      "Replace buzzwords with concrete task description",
+      "State a real goal, input, and output format with operational verbs",
+      "Specify subject, audience, and deliverable format",
+      "Define what should actually be produced"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 10,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-broken-buzzword-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 13,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-broken-buzzword-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 12,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-broken-buzzword-002",
+    "overall_score": 12,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 0,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 0,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 0,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 0,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Besteht ausschließlich aus Management-Buzzwords",
+      "Keine Aufgabe oder Lieferobjekt erkennbar",
+      "Semantically empty; unfaithfully executable",
+      "Buzzword pile with no executable goal, input, or output",
+      "Semantisch leer; keine umsetzbare Anweisung"
+    ],
+    "missing_information": [
+      "Jegliche konkrete Aufgabenbeschreibung",
+      "Concrete instructions",
+      "Real task and deliverable",
+      "Jedes messbare Ergebnis",
+      "Beliebiges Thema oder Domäne"
+    ],
+    "recommended_improvements": [
+      "Thema, Publikum und Lieferformat angeben",
+      "Definieren, was tatsächlich produziert werden soll",
+      "Buzzwords durch konkrete Aufgabenbeschreibung ersetzen",
+      "Define an actual goal, input, and output with operational language"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 10,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-broken-buzzword-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 13,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-broken-buzzword-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 12,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-broken-buzzword-003",
+    "overall_score": 12,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 0,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 0,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 0,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 0,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Meaning collapses entirely",
+      "Semantically empty; no actionable instruction",
+      "Entirely composed of management buzzwords",
+      "No identifiable task or deliverable",
+      "Buzzword string, no executable task or deliverable"
+    ],
+    "missing_information": [
+      "Any concrete task definition",
+      "Any subject or domain",
+      "Concrete instructions or data",
+      "Real task and deliverable",
+      "Any measurable output"
+    ],
+    "recommended_improvements": [
+      "Replace buzzwords with concrete task description",
+      "Specify subject, audience, and deliverable format",
+      "Define what should actually be produced",
+      "State a real goal, input, and output format"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 10,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-broken-buzzword-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 13,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-broken-buzzword-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 12,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-broken-buzzword-004",
+    "overall_score": 12,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 0,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 0,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 0,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 0,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Besteht ausschließlich aus Management-Buzzwords",
+      "Semantically empty",
+      "Keine Aufgabe oder Lieferobjekt erkennbar",
+      "Buzzword pile, no executable task or deliverable",
+      "Semantisch leer; keine umsetzbare Anweisung"
+    ],
+    "missing_information": [
+      "Jegliche konkrete Aufgabenbeschreibung",
+      "Concrete instructions",
+      "Real task and deliverable",
+      "Jedes messbare Ergebnis",
+      "Beliebiges Thema oder Domäne"
+    ],
+    "recommended_improvements": [
+      "Thema, Publikum und Lieferformat angeben",
+      "Definieren, was tatsächlich produziert werden soll",
+      "Buzzwords durch konkrete Aufgabenbeschreibung ersetzen",
+      "Define an actual goal, input, and output with operational language"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 10,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-broken-buzzword-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 13,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-broken-buzzword-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 12,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-broken-buzzword-005",
+    "overall_score": 4,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 0,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": "N/A",
+      "OUTPUT_CONTRACT": 0,
+      "CONSTRAINT_RELEVANCE": 0,
+      "INTERNAL_CONSISTENCY": 7,
+      "ACTIONABILITY": 0,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 0,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No identifiable goal — pure buzzword soup with no deliverable",
+      "No action possible — semantically empty",
+      "No deliverable or task is specified; pure buzzword string",
+      "No input, output, or success criterion defined"
+    ],
+    "missing_information": [
+      "What output is expected",
+      "What task should be performed",
+      "Any concrete task, subject, audience, or output format",
+      "Any concrete subject matter"
+    ],
+    "recommended_improvements": [
+      "State a single clear action with a verifiable deliverable",
+      "Replace buzzwords with a concrete goal, the object of work, and an output specification",
+      "Remove all filler buzzwords"
+    ],
+    "confidence": 0.97,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 8,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-broken-buzzword-005",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 0,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-broken-buzzword-005",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 4,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-broken-contradictory-001",
+    "overall_score": 12,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 0,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 5,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Output format unspecified",
+      "No source material supplied to summarize",
+      "Self-defeating: include a conclusion AND do not include a conclusion",
+      "Contradictory requirements: include conclusion AND do not include conclusion",
+      "Contradictory requirements: write in German AND English simultaneously"
+    ],
+    "missing_information": [
+      "Source text to be summarized",
+      "Resolution of language and conclusion contradictions",
+      "What subject the summary should cover",
+      "Which contradiction to resolve"
+    ],
+    "recommended_improvements": [
+      "Remove contradictory instructions",
+      "Specify the topic of the summary",
+      "Pick one language and one stance on the conclusion",
+      "Provide the source text"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 20,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-broken-contradictory-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 5,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-broken-contradictory-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 12,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-broken-contradictory-002",
+    "overall_score": 18,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 3,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 3,
+      "INTERNAL_CONSISTENCY": 2,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Contradictory: write summary in German AND English",
+      "Contradictory language requirement: German AND English",
+      "Contradictory: begin with conclusion AND end with conclusion — self-contradictory structural instruction",
+      "No source text provided to summarize"
+    ],
+    "missing_information": [
+      "Single target language decision",
+      "Subject of the summary",
+      "Source text"
+    ],
+    "recommended_improvements": [
+      "Supply source material",
+      "Remove contradictory structural directives",
+      "Resolve language contradiction — pick one",
+      "Choose one language; if both needed, specify separate sections"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 30,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-broken-contradictory-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 5,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-broken-contradictory-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 25 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 18,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-broken-contradictory-003",
+    "overall_score": 10,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 0,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 5,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No task goal stated whatsoever — only contradictory constraints",
+      "Contradictory output formats: JSON AND plain text",
+      "Contradictory output format: only JSON AND only plain text",
+      "Contradictory voice: active AND passive",
+      "No actual content task defined"
+    ],
+    "missing_information": [
+      "A single output format and voice",
+      "Any task or deliverable",
+      "The content/subject to produce"
+    ],
+    "recommended_improvements": [
+      "State a clear task goal first",
+      "Choose one format (JSON or text) and one voice",
+      "State the deliverable content",
+      "Remove contradictory constraints"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 20,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-broken-contradictory-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 0,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-broken-contradictory-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 20 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 10,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-broken-contradictory-004",
+    "overall_score": 10,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 0,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 5,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No task goal stated",
+      "Contradictory format: only YAML AND only XML",
+      "Contradictory output formats: YAML AND XML",
+      "Contradictory data rule: name no numbers AND give all numbers",
+      "No subject/data to render provided"
+    ],
+    "missing_information": [
+      "The data or subject to output",
+      "A single format and number rule",
+      "Any task or deliverable"
+    ],
+    "recommended_improvements": [
+      "Pick one serialization format",
+      "Remove contradictory constraints",
+      "State a clear task",
+      "Decide whether numbers are required"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 20,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-broken-contradictory-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 0,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-broken-contradictory-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 20 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 10,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-broken-contradictory-005",
+    "overall_score": 10,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 2,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 0,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 5,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Contradictory sourcing: no web AND web mandatory",
+      "No task goal stated",
+      "Contradictory: cite no sources AND cite all sources",
+      "Contradictory: do not use the web AND web lookup is mandatory",
+      "Contradictory citation: cite no sources AND cite all sources"
+    ],
+    "missing_information": [
+      "The actual task to perform",
+      "Any task or deliverable",
+      "A single sourcing and citation policy"
+    ],
+    "recommended_improvements": [
+      "Resolve sourcing and citation to one consistent policy",
+      "Resolve web/source contradictions",
+      "State a clear task",
+      "State the real task"
+    ],
+    "confidence": 0.98,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 20,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-broken-contradictory-005",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 0,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-broken-contradictory-005",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 20 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 10,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-fair-boilerplate-noise-001",
+    "overall_score": 72,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 8,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 8,
+      "OUTPUT_CONTRACT": 7,
+      "CONSTRAINT_RELEVANCE": 4,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 8,
+      "AMBIGUITY_CONTROL": 8,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+      "SIGNAL_TO_NOISE": 5,
+      "SAFETY_PRIVACY_BOUNDARIES": 3,
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Irrelevant privacy/compliance boilerplate on a benign product-description task",
+      "Privacy/compliance note is boilerplate irrelevant to a product description task — adds noise",
+      "No target audience or tone specified"
+    ],
+    "missing_information": [
+      "No placeholders for product variants or brand voice",
+      "Target audience/tone (optional)"
+    ],
+    "recommended_improvements": [
+      "Optionally add audience and tone for sharper output",
+      "Remove irrelevant privacy boilerplate for a product description task",
+      "Remove the privacy boilerplate"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 75,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-fair-boilerplate-noise-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 70,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-fair-boilerplate-noise-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 72,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-fair-boilerplate-noise-002",
+    "overall_score": 72,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 8,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 8,
+      "OUTPUT_CONTRACT": 7,
+      "CONSTRAINT_RELEVANCE": 4,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 8,
+      "AMBIGUITY_CONTROL": 8,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+      "SIGNAL_TO_NOISE": 5,
+      "SAFETY_PRIVACY_BOUNDARIES": 3,
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No audience/tone specified",
+      "Datenschutz-Hinweis is boilerplate irrelevant to product description",
+      "Irrelevant data-protection boilerplate on a benign product task"
+    ],
+    "missing_information": [
+      "No brand voice or tone guidance",
+      "Target audience/tone (optional)"
+    ],
+    "recommended_improvements": [
+      "Drop the datenschutz boilerplate",
+      "Add audience/tone if desired",
+      "Remove irrelevant privacy note"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 75,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-fair-boilerplate-noise-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 70,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-fair-boilerplate-noise-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 72,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-fair-boilerplate-noise-003",
+    "overall_score": 78,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 8,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 9,
+      "OUTPUT_CONTRACT": 8,
+      "CONSTRAINT_RELEVANCE": 6,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": 7,
+      "REUSABILITY": 7
+    },
+    "critical_issues": [
+      "Privacy notice is somewhat relevant but borderline boilerplate for a summary task",
+      "Privacy notice is relevant but could be more specific about what counts as an identifier"
+    ],
+    "missing_information": [
+      "Definition of 'personal identifiers' (minor)",
+      "None material"
+    ],
+    "recommended_improvements": [
+      "Keep the privacy constraint; optionally exemplify forbidden identifiers",
+      "Privacy note is marginally relevant — could be tighter"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 84,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-fair-boilerplate-noise-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 72,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-fair-boilerplate-noise-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 78,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-fair-boilerplate-noise-004",
+    "overall_score": 78,
+    "quality_band": "GOOD",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 8,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 9,
+      "OUTPUT_CONTRACT": 8,
+      "CONSTRAINT_RELEVANCE": 6,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 8,
+      "SIGNAL_TO_NOISE": 6,
+      "SAFETY_PRIVACY_BOUNDARIES": 7,
+      "REUSABILITY": 7
+    },
+    "critical_issues": [
+      "Privacy hint marginally relevant but adds some noise",
+      "Privacy note relevant but could specify identifier examples"
+    ],
+    "missing_information": [
+      "None material",
+      "Examples of forbidden identifiers (minor)"
+    ],
+    "recommended_improvements": [
+      "Tighten privacy constraint to be more specific",
+      "Keep the Hinweis; optionally give identifier examples"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 84,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-fair-boilerplate-noise-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 72,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-fair-boilerplate-noise-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 78,
+        "final_band": "GOOD"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-repetitive-001",
+    "overall_score": 46,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 7,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 7,
+      "OUTPUT_CONTRACT": 4,
+      "CONSTRAINT_RELEVANCE": 4,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 7,
+      "AMBIGUITY_CONTROL": 7,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 2,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No specification of which beverage the tagline is for",
+      "No output format specified",
+      "Heavy repetitive filler ('You are a helpful assistant' x4, task x3) buries the real instruction",
+      "Severe repetition — role statement repeated 4x, task repeated 3x",
+      "No context about what the beverage is"
+    ],
+    "missing_information": [
+      "Product details of the new beverage",
+      "Beverage details, target audience, tone, output format"
+    ],
+    "recommended_improvements": [
+      "Add beverage specifics (name, positioning, audience)",
+      "Remove all repetition",
+      "Remove repeated role/task lines",
+      "Add product context and output format"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 61,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-en-poor-repetitive-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 30,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-repetitive-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 31 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 46,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-repetitive-002",
+    "overall_score": 46,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 7,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 7,
+      "OUTPUT_CONTRACT": 4,
+      "CONSTRAINT_RELEVANCE": 4,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 7,
+      "AMBIGUITY_CONTROL": 7,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 2,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No product context",
+      "No detail on the beverage for the slogan",
+      "Role repeated 3x, task repeated 2x — massive noise",
+      "Repetitive filler reduces signal-to-noise"
+    ],
+    "missing_information": [
+      "Getränkedetails, Zielgruppe, Ausgabeformat",
+      "Beverage product details"
+    ],
+    "recommended_improvements": [
+      "Eliminate repetition, add context",
+      "Provide product context",
+      "Remove repeated lines"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 63,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-de-poor-repetitive-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 30,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-repetitive-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 33 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 46,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-repetitive-003",
+    "overall_score": 46,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 7,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 7,
+      "OUTPUT_CONTRACT": 4,
+      "CONSTRAINT_RELEVANCE": 4,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 7,
+      "AMBIGUITY_CONTROL": 7,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 2,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Campaign context missing",
+      "Repetitive role/task lines add no value",
+      "No campaign context",
+      "Role repeated 3x, task repeated 2x"
+    ],
+    "missing_information": [
+      "Campaign details, brand, audience, tone",
+      "Campaign subject and goals"
+    ],
+    "recommended_improvements": [
+      "Remove repetition, add campaign context",
+      "Add campaign brief",
+      "Drop repetitions"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 63,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-en-poor-repetitive-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 30,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-repetitive-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 33 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 46,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-repetitive-004",
+    "overall_score": 48,
+    "quality_band": "POOR",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 7,
+      "NECESSARY_CONTEXT": 4,
+      "INPUT_DEFINITION": 7,
+      "OUTPUT_CONTRACT": 4,
+      "CONSTRAINT_RELEVANCE": 5,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 7,
+      "AMBIGUITY_CONTROL": 7,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 4,
+      "SIGNAL_TO_NOISE": 2,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Role repeated 2x, task repeated 2x",
+      "Some repetition of role and task lines",
+      "No campaign context",
+      "Campaign context missing"
+    ],
+    "missing_information": [
+      "Kampagnendetails, Marke, Zielgruppe",
+      "Campaign subject and goals"
+    ],
+    "recommended_improvements": [
+      "Remove duplicate lines",
+      "Remove repetition, add context",
+      "Provide campaign brief"
+    ],
+    "confidence": 0.93,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 65,
+        "band": "FAIR",
+        "fit_for_purpose": "PARTIAL",
+        "raw_ref": "hy3-v3-task-de-poor-repetitive-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 30,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-repetitive-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 35 band_diff 1 fit PARTIAL vs NO",
+        "resolved_by": null,
+        "final_score": 48,
+        "final_band": "POOR"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-good-coding-concrete-001",
+    "overall_score": 90,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 9,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 8,
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Example placeholder value unclear without actual content"
+    ],
+    "missing_information": [
+      "None material — well-specified"
+    ],
+    "recommended_improvements": [
+      "Optionally pin the ISBN-13 weighting formula explicitly for zero ambiguity",
+      "Minor: specify what isbn_example contains"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 92,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-good-coding-concrete-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 87,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-good-coding-concrete-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 90,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-good-coding-concrete-002",
+    "overall_score": 90,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 9,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 8,
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Placeholder content unspecified"
+    ],
+    "missing_information": [
+      "None material"
+    ],
+    "recommended_improvements": [
+      "Minor: clarify placeholder content",
+      "Optionally specify expected country-code length handling"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 92,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-good-coding-concrete-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 87,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-good-coding-concrete-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 90,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-good-coding-concrete-003",
+    "overall_score": 90,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 9,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 8,
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Placeholder content unspecified"
+    ],
+    "missing_information": [
+      "None material"
+    ],
+    "recommended_improvements": [
+      "Optionally specify initial leading/trailing call behavior",
+      "Minor: clarify placeholder"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 92,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-good-coding-concrete-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 87,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-good-coding-concrete-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 90,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-coding-vague-001",
+    "overall_score": 20,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 0,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 0,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "'The data' is never defined, so no faithful execution is possible",
+      "No language, structure, or handling requirements given",
+      "No specific data, language, or task defined",
+      "No success criteria",
+      "Executor must invent everything"
+    ],
+    "missing_information": [
+      "What the data is and its shape",
+      "Target language and output form",
+      "What 'handle' means (parse, validate, transform, store)",
+      "What data, what language, what kind of handling, what output format"
+    ],
+    "recommended_improvements": [
+      "Specify the operation and output format/language",
+      "Specify data type, programming language, expected behavior, and output format",
+      "Name the data source/schema"
+    ],
+    "confidence": 0.97,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 26,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-poor-coding-vague-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 15,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-coding-vague-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 20,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-poor-coding-vague-002",
+    "overall_score": 20,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 2,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No actionable instructions beyond 'write code'",
+      "No input defined — no data source specified",
+      "No verifiable goal — what data? what processing?",
+      "Goal semantically empty: 'die Daten' is entirely undefined",
+      "No output contract"
+    ],
+    "missing_information": [
+      "Processing logic",
+      "Programming language",
+      "Target language/runtime",
+      "Data type/source",
+      "Data source and schema"
+    ],
+    "recommended_improvements": [
+      "Specify data input type and source",
+      "Specify target language and output format",
+      "Name the input dataset and its schema",
+      "Define what 'verarbeiten' means concretely (parse, transform, aggregate)",
+      "Declare output format and language"
+    ],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 35,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-poor-coding-vague-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 5,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-poor-coding-vague-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 30 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 20,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-poor-coding-vague-003",
+    "overall_score": 18,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 2,
+      "NECESSARY_CONTEXT": 0,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 2,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 0,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 0,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "'the input' references nothing concrete",
+      "'the thing' is semantically empty — no goal defined",
+      "No output format specified",
+      "Not executable as written",
+      "'the thing' and 'the input' collapse meaning to noise"
+    ],
+    "missing_information": [
+      "Target language/output format",
+      "Language/runtime",
+      "Input definition and source",
+      "What the program should do",
+      "Desired output format"
+    ],
+    "recommended_improvements": [
+      "Replace 'the thing' with the concrete operation",
+      "Define the task explicitly",
+      "Specify the program's language and contract",
+      "Specify output contract",
+      "Name and provide the input"
+    ],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 32,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-poor-coding-vague-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 5,
+        "band": "BROKEN",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-poor-coding-vague-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 27 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 18,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-good-agent-workflow-001",
+    "overall_score": 94,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 7
+    },
+    "critical_issues": [
+      "'correct queue' is slightly open but resolvable from intent classes"
+    ],
+    "missing_information": [
+      "Sample ticket template placeholder {{ticket_sample}} not populated but acceptable as template"
+    ],
+    "recommended_improvements": [
+      "Optionally name the target queues per intent to fully close ambiguity",
+      "Minor: could specify priority escalation edge cases"
+    ],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 99,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-en-good-agent-workflow-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 90,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-en-good-agent-workflow-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 94,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-good-agent-workflow-002",
+    "overall_score": 94,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 7
+    },
+    "critical_issues": [
+      "'Kundenantwort' format slightly open but evidently a draft text"
+    ],
+    "missing_information": [
+      "Decision criteria for warranty could be more explicit",
+      "{{reklamation}} placeholder not populated but acceptable"
+    ],
+    "recommended_improvements": [
+      "Clarify replacement vs repair decision rules",
+      "Add warranty threshold specifics",
+      "Optionally specify the customer-response channel/format"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 99,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-task-de-good-agent-workflow-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 88,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-task-de-good-agent-workflow-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 94,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-template-en-reusable-template-001",
+    "overall_score": 91,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 10
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "Language mismatch: header is German but prompt is English",
+      "NOHING instruction ambiguous — does it mean leave blank or write literal 'NOTHING'?"
+    ],
+    "recommended_improvements": [
+      "Clarify whether empty means omit section or write NOTHING",
+      "Align header language with prompt language"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-template-en-reusable-template-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 82,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-template-en-reusable-template-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 18 band_diff 1 fit YES vs YES",
+        "resolved_by": null,
+        "final_score": 91,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-template-de-reusable-template-002",
+    "overall_score": 92,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 10
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "NICHTS instruction slightly ambiguous — write literal or leave blank?"
+    ],
+    "recommended_improvements": [
+      "Clarify empty-field convention"
+    ],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-template-de-reusable-template-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 85,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-template-de-reusable-template-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 92,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-template-en-reusable-template-003",
+    "overall_score": 86,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 9,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 6,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 8,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 10
+    },
+    "critical_issues": [
+      "Placeholder naming mixes languages",
+      "Language inconsistency: header/metadata in German, instruction language in English mixed with German terms",
+      "German instruction 'Leere Blöcke mit NOTHING kennzeichnen' mixes English token into German body"
+    ],
+    "missing_information": [
+      "Language alignment needed"
+    ],
+    "recommended_improvements": [
+      "Standardize to one language",
+      "Clarify NOTHING vs NICHTS convention",
+      "Use 'NICHTS' instead of 'NOTHING' for consistency"
+    ],
+    "confidence": 0.92,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 97,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-template-en-reusable-template-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 75,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-template-en-reusable-template-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 22 band_diff 1 fit YES vs YES",
+        "resolved_by": null,
+        "final_score": 86,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-template-de-reusable-template-004",
+    "overall_score": 92,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 10
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "Minor: could define scope of 'Zugänge' (system access, physical access, etc.)"
+    ],
+    "recommended_improvements": [
+      "Clarify what 'Zugänge' covers"
+    ],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-template-de-reusable-template-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 85,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-template-de-reusable-template-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 92,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-template-en-reusable-template-005",
+    "overall_score": 91,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": 10,
+      "OUTPUT_CONTRACT": 10,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 10
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "NOHING convention slightly ambiguous"
+    ],
+    "recommended_improvements": [
+      "Clarify empty-field convention"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-template-en-reusable-template-005",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 82,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-template-en-reusable-template-005",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 18 band_diff 1 fit YES vs YES",
+        "resolved_by": null,
+        "final_score": 91,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-guideline-en-guideline-001",
+    "overall_score": 89,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 9,
+      "NECESSARY_CONTEXT": 8,
+      "INPUT_DEFINITION": "N/A",
+      "OUTPUT_CONTRACT": 8,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 9,
+      "AMBIGUITY_CONTROL": 9,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 9,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 8
+    },
+    "critical_issues": [
+      "Language mismatch: guideline title in German, content in mixed German/English"
+    ],
+    "missing_information": [
+      "Language standardization"
+    ],
+    "recommended_improvements": [
+      "Align all text to one language"
+    ],
+    "confidence": 0.94,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-guideline-en-guideline-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 78,
+        "band": "GOOD",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-guideline-en-guideline-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 22 band_diff 1 fit YES vs YES",
+        "resolved_by": null,
+        "final_score": 89,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-guideline-de-guideline-002",
+    "overall_score": 94,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": "N/A",
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 8
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "Minor: could specify CRM field names or format"
+    ],
+    "recommended_improvements": [
+      "Add CRM documentation format guidance"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-guideline-de-guideline-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 88,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-guideline-de-guideline-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 94,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-guideline-en-guideline-003",
+    "overall_score": 94,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": "N/A",
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 8
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "Could specify audience or document type"
+    ],
+    "recommended_improvements": [
+      "Add target audience context"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-guideline-en-guideline-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 88,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-guideline-en-guideline-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 94,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-guideline-de-guideline-004",
+    "overall_score": 96,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 10,
+      "INPUT_DEFINITION": "N/A",
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": 10,
+      "REUSABILITY": 8
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "Minor: could specify which logging system"
+    ],
+    "recommended_improvements": [
+      "Reference specific audit trail system"
+    ],
+    "confidence": 0.96,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-guideline-de-guideline-004",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 92,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-guideline-de-guideline-004",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 96,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-guideline-en-guideline-005",
+    "overall_score": 94,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": "N/A",
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 8
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "Could specify ticket system format"
+    ],
+    "recommended_improvements": [
+      "Add ticket reference format example"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-guideline-en-guideline-005",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 88,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-guideline-en-guideline-005",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 94,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-guideline-de-guideline-006",
+    "overall_score": 94,
+    "quality_band": "EXCELLENT",
+    "fit_for_purpose": "YES",
+    "criteria": {
+      "GOAL_CLARITY": 10,
+      "NECESSARY_CONTEXT": 9,
+      "INPUT_DEFINITION": "N/A",
+      "OUTPUT_CONTRACT": 9,
+      "CONSTRAINT_RELEVANCE": 10,
+      "INTERNAL_CONSISTENCY": 10,
+      "ACTIONABILITY": 10,
+      "AMBIGUITY_CONTROL": 10,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 10,
+      "SIGNAL_TO_NOISE": 10,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": 8
+    },
+    "critical_issues": [],
+    "missing_information": [
+      "Could specify report template or sections"
+    ],
+    "recommended_improvements": [
+      "Add reference to report structure"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 100,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "hy3-v3-guideline-de-guideline-006",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 88,
+        "band": "EXCELLENT",
+        "fit_for_purpose": "YES",
+        "raw_ref": "mimo-v3-guideline-de-guideline-006",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "AGREE_DEFAULT",
+        "disagreement_reason": null,
+        "resolved_by": null,
+        "final_score": 94,
+        "final_band": "EXCELLENT"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-ambiguous-task-001",
+    "overall_score": 34,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 4,
+      "NECESSARY_CONTEXT": 1,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 4,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 4,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "'what matters most' is undefined — subjective with no criteria",
+      "No output format specified",
+      "'more compelling' and 'what matters most' are unobservable success checks",
+      "Cannot execute without source text",
+      "No draft provided — reference to 'the draft' is unresolvable"
+    ],
+    "missing_information": [
+      "Target audience",
+      "The draft text",
+      "Output format",
+      "Success criteria for 'compelling'",
+      "Definition of audience and desired impact"
+    ],
+    "recommended_improvements": [
+      "Define 'compelling' with measurable criteria",
+      "Specify audience and desired tone",
+      "Define what 'compelling' means for this reader",
+      "Embed or name the draft",
+      "State concrete revision actions"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 46,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-ambiguous-task-001",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 22,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-ambiguous-task-001",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 24 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 34,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-de-ambiguous-task-002",
+    "overall_score": 34,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 4,
+      "NECESSARY_CONTEXT": 1,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 4,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 4,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "Cannot be executed without source material",
+      "Entwurf not provided",
+      "'das Wesentliche' is subjective with no criteria",
+      "'überzeugender' and 'Wesentliche' lack observable criteria",
+      "No draft provided — 'den Entwurf' references nothing"
+    ],
+    "missing_information": [
+      "Criteria for 'wesentlich'",
+      "The draft to revise",
+      "Target audience",
+      "The draft text",
+      "Output format"
+    ],
+    "recommended_improvements": [
+      "Define relevance criteria",
+      "Give concrete revision directives",
+      "Provide the draft",
+      "Specify output format",
+      "Include the draft"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 46,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-de-ambiguous-task-002",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 22,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-de-ambiguous-task-002",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 24 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 34,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  },
+  {
+    "id": "v3-task-en-ambiguous-task-003",
+    "overall_score": 36,
+    "quality_band": "BROKEN",
+    "fit_for_purpose": "NO",
+    "criteria": {
+      "GOAL_CLARITY": 4,
+      "NECESSARY_CONTEXT": 1,
+      "INPUT_DEFINITION": 0,
+      "OUTPUT_CONTRACT": 2,
+      "CONSTRAINT_RELEVANCE": 4,
+      "INTERNAL_CONSISTENCY": 8,
+      "ACTIONABILITY": 2,
+      "AMBIGUITY_CONTROL": 4,
+      "FIT_FOR_PURPOSE_COMPLETENESS": 2,
+      "SIGNAL_TO_NOISE": 8,
+      "SAFETY_PRIVACY_BOUNDARIES": "N/A",
+      "REUSABILITY": "N/A"
+    },
+    "critical_issues": [
+      "No proposal provided — 'the proposal' is unresolvable",
+      "'value proposition clearer' has no measurable check",
+      "Cannot execute without source text",
+      "Proposal to strengthen is absent",
+      "'clearer for the reader' — which reader? what is clear enough?"
+    ],
+    "missing_information": [
+      "Reader profile and context",
+      "Clarity success criteria",
+      "The proposal text",
+      "Output format",
+      "Target reader profile"
+    ],
+    "recommended_improvements": [
+      "Define the reader and desired takeaway",
+      "Define reader persona",
+      "Embed the proposal",
+      "Specify what 'clearer' means concretely",
+      "Specify which value aspects to emphasize"
+    ],
+    "confidence": 0.95,
+    "provenance": {
+      "judge_a": {
+        "model_id": "opencode/hy3-free",
+        "provider_family": "hy3",
+        "score": 46,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "hy3-v3-task-en-ambiguous-task-003",
+        "prompt_fingerprint": "sha256-judge-hy3-v3"
+      },
+      "judge_b": {
+        "model_id": "opencode/mimo-v2.5-free",
+        "provider_family": "mimo",
+        "score": 25,
+        "band": "POOR",
+        "fit_for_purpose": "NO",
+        "raw_ref": "mimo-v3-task-en-ambiguous-task-003",
+        "prompt_fingerprint": "sha256-judge-mimo-v3"
+      },
+      "judge_c": null,
+      "adjudication": {
+        "rule_applied": "NEED_C",
+        "disagreement_reason": "diff 21 band_diff 0 fit NO vs NO",
+        "resolved_by": null,
+        "final_score": 36,
+        "final_band": "BROKEN"
+      },
+      "gold_revision": 1,
+      "generated_by": "verifier/benchmark-v3",
+      "timestamp": "2026-08-22T00:00:00Z"
+    }
+  }
+]

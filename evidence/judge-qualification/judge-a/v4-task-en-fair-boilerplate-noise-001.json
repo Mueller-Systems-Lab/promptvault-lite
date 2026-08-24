@@ -1,0 +1,20 @@
+{
+  "id": "v4-task-en-fair-boilerplate-noise-001",
+  "overall_score": 59,
+  "quality_band": "FAIR",
+  "fit_for_purpose": "PARTIAL",
+  "critical_issues": [
+    "Irrelevant compliance boilerplate dilutes signal"
+  ],
+  "missing_information": [],
+  "recommended_improvements": [
+    "Remove irrelevant privacy boilerplate or move to separate policy; keep task signal clean."
+  ],
+  "confidence": 0.81,
+  "prompt_fingerprint": "cf06bb6c9dfa060593835edc991fc9116a098d93bc6e8764dfc474e51848eeb7",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "86317d0a53debde6a447d5c9ec3f63457d8613b08dcfbbed1b7dfb4bac46545e",
+  "_prompt_fingerprint": "cf06bb6c9dfa060593835edc991fc9116a098d93bc6e8764dfc474e51848eeb7"
+}

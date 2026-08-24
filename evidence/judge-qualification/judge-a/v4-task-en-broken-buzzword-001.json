@@ -1,0 +1,22 @@
+{
+  "id": "v4-task-en-broken-buzzword-001",
+  "overall_score": 22,
+  "quality_band": "BROKEN",
+  "fit_for_purpose": "NO",
+  "critical_issues": [
+    "Buzzword-stuffed with no actionable goal or deliverable"
+  ],
+  "missing_information": [
+    "Concrete task, inputs, output format, success criteria"
+  ],
+  "recommended_improvements": [
+    "Replace boilerplate with single verifiable goal and explicit output contract."
+  ],
+  "confidence": 0.93,
+  "prompt_fingerprint": "f29593f3c8468ef5f9546329b26c3c69bbb5539cf7e9644e5585575afd58aa7c",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "c6251ea295716405e71ab80ba0ed124c607f9801be792ffea76e15d6ca5a2b07",
+  "_prompt_fingerprint": "f29593f3c8468ef5f9546329b26c3c69bbb5539cf7e9644e5585575afd58aa7c"
+}

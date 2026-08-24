@@ -1,0 +1,7 @@
+ADJUDICATION POLICY v1.0:
+Invoke Judge C if ANY:
+- abs(score_A - score_B) >15
+- band distance >1 (band order: BROKEN=0, POOR=1, FAIR=2, GOOD=3, EXCELLENT=4)
+- fit_for_purpose disagreement (YES vs PARTIAL/NO, or PARTIAL vs NO)
+- critical issue disagreement (one lists non-empty critical_issues, other empty, or disjoint semantics)
+Judge C receives PROMPT+RUBRIC only, blind to A/B results. Reference = median or adjudicated selection per protocol.

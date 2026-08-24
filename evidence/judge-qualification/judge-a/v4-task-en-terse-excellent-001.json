@@ -1,0 +1,18 @@
+{
+  "id": "v4-task-en-terse-excellent-001",
+  "overall_score": 94,
+  "quality_band": "EXCELLENT",
+  "fit_for_purpose": "YES",
+  "critical_issues": [],
+  "missing_information": [],
+  "recommended_improvements": [
+    "None required; prompt is already minimal and precise."
+  ],
+  "confidence": 0.96,
+  "prompt_fingerprint": "00a40cac28729a1ce545d97eefce23aa7c27d423f54a1679fb2737eedc1caf1d",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "opencode/muse-spark-1.2-contributor-free",
+  "_result_fingerprint": "95db1099272aae4dffd1544878ce2065ded26b245e5e7876aa138dbd96355fa2",
+  "_prompt_fingerprint": "00a40cac28729a1ce545d97eefce23aa7c27d423f54a1679fb2737eedc1caf1d"
+}

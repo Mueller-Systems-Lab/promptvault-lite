@@ -1,0 +1,20 @@
+{
+  "id": "v4-task-de-good-natural-002",
+  "overall_score": 80,
+  "quality_band": "GOOD",
+  "fit_for_purpose": "YES",
+  "critical_issues": [],
+  "missing_information": [
+    "Exact output format open"
+  ],
+  "recommended_improvements": [
+    "Define output format (e.g., 80-120 words, bullet structure) for consistency."
+  ],
+  "confidence": 0.86,
+  "prompt_fingerprint": "735978dead44d925183219d9e7abf6ba7907019a4c533f4b6fab3652de979c78",
+  "rubric_version": "1.0.0",
+  "rubric_sha256": "a28642a871ffe40726ac0f9e778cb366b7c8fdbe66d1a18c1e3341741364eda3",
+  "judge_model": "openrouter/google/gemini-2.5-flash-lite",
+  "_result_fingerprint": "de85fcf64b11c66bd28e770ee11fa1288d642805c55686768abbe9184222a38e",
+  "_prompt_fingerprint": "735978dead44d925183219d9e7abf6ba7907019a4c533f4b6fab3652de979c78"
+}

@@ -3,6 +3,15 @@
 
 Usage: python3 scripts/semantic_quality_metrics.py <pv-results.json> <gold.json> <cases.json> [--split cal|hold]
 Computes all benchmark metrics from the real-engine results vs the reference gold.
+
+Methodology protocol (fail-closed):
+- The results artifact must carry a `split` header ("development" | "holdout"
+  | "calibration"); old mixed v2 artifacts (development+holdout combined)
+  are refused.
+- Contrast pairs are derived from the `pair` field of the case file, not from
+  a hardcoded list. A pair declared in the case file whose member is missing
+  from results or gold is marked NOT_EVALUATED and forces the non-zero exit
+  flag `pair_checks_complete: false`. Pairs are never silently skipped.
 """
 import json
 import sys
@@ -74,9 +83,89 @@ def spearman(xs, ys):
     return num / (dx * dy)
 
 
+def load_pv_results(pv_path):
+    """Load results, enforcing the split-separation protocol."""
+    with open(pv_path) as f:
+        artifact = json.load(f)
+    if 'split' not in artifact:
+        sys.exit(f'REFUSED: {pv_path} has no "split" header '
+                 f'(old combined v2 artifacts are not accepted; re-run the runner per split).')
+    results = artifact['results']
+    return artifact, {r['id']: r for r in results}
+
+
+def evaluate_pair_checks(pv, gold, cases):
+    """Evaluate every contrast pair declared in the case file.
+
+    Fail-closed: a pair declared in the case file whose member is missing from
+    results or gold is NOT_EVALUATED and sets `pair_checks_complete` to false.
+    Returns (checks, complete, pair_members) where pair_members maps a pair
+    label (e.g. "A1") to its case id.
+    """
+    # group case ids by their declared pair (A1/A2, G1/G2, H1/H2, ...)
+    pairs = {}
+    for c in cases.values():
+        pr = c.get('pair')
+        if pr:
+            pairs.setdefault(pr, []).append(c['id'])
+
+    pair_members = {pr: ids[0] for pr, ids in pairs.items() if len(ids) == 1}
+
+    # group pair labels into pair groups (prefix before the trailing 1/2)
+    groups = {}
+    for pr in sorted(pairs):
+        stem = pr[:-1]
+        groups.setdefault(stem, []).append(pr)
+
+    checks = {}
+    complete = True
+    for stem, members in sorted(groups.items()):
+        ids = [i for pr in members for i in pairs[pr]]
+        label = f'{stem} ({",".join(sorted(members))})'
+        missing = [i for i in ids if i not in pv or i not in gold]
+        if len(ids) < 2 or missing:
+            checks[label] = 'NOT_EVALUATED'
+            if missing:
+                checks[f'{stem} missing members'] = missing
+            complete = False
+            continue
+
+        scores = {i: pv[i]['overall_score'] for i in ids}
+        # pair semantics by stem (v1 + v2 contracts)
+        if stem == 'A':
+            # A1 terse-good >= A2 (DE/EN terse-good symmetry)
+            checks[label] = scores[pairs['A1'][0]] >= scores[pairs['A2'][0]]
+        elif stem == 'B':
+            # B2 coherent > B1 keyword-stuffed
+            checks[label] = scores[pairs['B2'][0]] > scores[pairs['B1'][0]]
+        elif stem == 'C':
+            # C2 vs C1 cosmetic gain <= 10
+            checks[label] = abs(scores[pairs['C2'][0]] - scores[pairs['C1'][0]]) <= 10
+        elif stem == 'D':
+            # D2 real context improves >= 20
+            checks[label] = scores[pairs['D2'][0]] - scores[pairs['D1'][0]] >= 20
+        elif stem == 'E':
+            # E1/E2 guideline vs task both reasonable (within 2 bands)
+            checks[label] = abs(scores[pairs['E1'][0]] - scores[pairs['E2'][0]]) <= 30
+        elif stem == 'F':
+            # F2 vs F1 safety boilerplate not inflating > 5
+            checks[label] = scores[pairs['F2'][0]] - scores[pairs['F1'][0]] <= 5
+        elif stem == 'G':
+            # G1/G2 ambiguity pair: within 1 band (score within 15 points)
+            checks[label] = abs(scores[pairs['G1'][0]] - scores[pairs['G2'][0]]) <= 15
+        elif stem == 'H':
+            # H1 terse-good vs H2 boilerplate-noise: appending a compliance
+            # guardrail must not inflate more than 5 points
+            checks[label] = scores[pairs['H2'][0]] - scores[pairs['H1'][0]] <= 5
+        else:
+            checks[label] = 'UNKNOWN_PAIR_SEMANTICS'
+            complete = False
+    return checks, complete, pair_members
+
+
 def main():
     pv_path, gold_path, cases_path = sys.argv[1], sys.argv[2], sys.argv[3]
-    pv = {r['id']: r for r in json.load(open(pv_path))['results']}
+    artifact, pv = load_pv_results(pv_path)
     gold = {g['id']: g for g in json.load(open(gold_path))}
     cases = {c['id']: c for c in json.load(open(cases_path))}
     ids = [i for i in cases if i in pv and i in gold]
@@ -98,17 +187,8 @@ def main():
     fh_rate = len(fh) / max(1, sum(1 for i in ids if gold[i]['quality_band'] in ('POOR', 'BROKEN')))
     fl_rate = len(fl) / max(1, sum(1 for i in ids if gold[i]['quality_band'] in ('GOOD', 'EXCELLENT')))
 
-    # contrast pairs
-    pair_members = {c['pair']: c['id'] for c in cases.values() if c.get('pair')}
-    pair_checks = {}
-    if all(p in pair_members for p in ['A1', 'A2', 'B1', 'B2', 'D1', 'D2', 'E1', 'E2', 'F1', 'F2']):
-        pair_checks['A (terse-good >= long-formal)'] = pv[pair_members['A1']]['overall_score'] >= pv[pair_members['A2']]['overall_score']
-        pair_checks['B (coherent > keyword-stuffed)'] = pv[pair_members['B2']]['overall_score'] > pv[pair_members['B1']]['overall_score']
-        pair_checks['D (real context improves)'] = pv[pair_members['D2']]['overall_score'] - pv[pair_members['D1']]['overall_score'] >= 20
-        pair_checks['E (guideline vs task both reasonable)'] = abs(pv[pair_members['E1']]['overall_score'] - pv[pair_members['E2']]['overall_score']) <= 30  # both should be within 2 bands
-        pair_checks['F (safety boilerplate not inflating >5)'] = pv[pair_members['F2']]['overall_score'] - pv[pair_members['F1']]['overall_score'] <= 5
-    if all(p in pair_members for p in ['C1', 'C2']):
-        pair_checks['C (cosmetic gain <=10)'] = abs(pv[pair_members['C2']]['overall_score'] - pv[pair_members['C1']]['overall_score']) <= 10
+    # contrast pairs — derived dynamically from the case file, fail-closed
+    pair_checks, pair_checks_complete, pair_members = evaluate_pair_checks(pv, gold, cases)
 
     # pairwise ordering accuracy over pairs-of-cases: contrast pairs + seeded random pairs
     rng = random.Random(20260819)
@@ -134,12 +214,28 @@ def main():
     ordering_acc = sum(1 for (i, j) in ordered if (pv[i]['overall_score'] > pv[j]['overall_score']) == (gold[i]['overall_score'] > gold[j]['overall_score'])) / len(ordered) if ordered else 0.0
 
     # guideline/task routing
+    # R2 engine records `content_kind` (guideline/template/task) per result so
+    # templates (which carry "Scope/Zweck" in R2) are not miscounted as
+    # guidelines. Legacy result files without `content_kind` fall back to the
+    # "Scope/Zweck" probe (`guideline_routed`).
     routed = {r['id']: r['guideline_routed'] for r in json.load(open(pv_path))['results']}
-    routing_ok = sum(1 for i in ids
-                     if (cases[i]['kind'] == 'guideline' and routed[i]) or (cases[i]['kind'] in ('task', 'template') and not routed[i]))
+    results_by_id = {r['id']: r for r in json.load(open(pv_path))['results']}
+    routing_ok = 0
+    for i in ids:
+        r = results_by_id.get(i, {})
+        if 'content_kind' in r:
+            engine_kind = r['content_kind']
+            expected = cases[i]['kind']
+            routing_ok += int(engine_kind == expected)
+        else:
+            ck = cases[i]['kind']
+            if (ck == 'guideline' and routed[i]) or (ck in ('task', 'template') and not routed[i]):
+                routing_ok += 1
     routing_acc = routing_ok / len(ids)
     guide_total = sum(1 for i in ids if cases[i]['kind'] == 'guideline')
-    guide_ok = sum(1 for i in ids if cases[i]['kind'] == 'guideline' and routed[i])
+    guide_ok = sum(1 for i in ids
+                   if cases[i]['kind'] == 'guideline' and
+                   results_by_id.get(i, {}).get('content_kind') == 'guideline')
 
     # missing-info precision/recall/FPR
     tp = fp = fn = tn = 0
@@ -229,6 +325,7 @@ def main():
 
     print(json.dumps({
         'n': len(ids),
+        'split': artifact.get('split'),
         'mae': round(mae, 2),
         'median_ae': round(med_ae, 2),
         'spearman': round(rho, 4),
@@ -239,6 +336,7 @@ def main():
         'false_low_cases': fl,
         'false_low_rate': round(fl_rate, 4),
         'pair_checks': pair_checks,
+        'pair_checks_complete': pair_checks_complete,
         'pairwise_ordering_acc': round(ordering_acc, 4),
         'pairwise_ordered_pairs': len(ordered),
         'routing_acc': round(routing_acc, 4),
@@ -256,6 +354,10 @@ def main():
         'terse_low_cases': terse_low,
         'terse_mean': round(terse_mean, 2),
     }, indent=1, ensure_ascii=False))
+    if not pair_checks_complete:
+        sys.exit(f'PAIR_CHECKS_INCOMPLETE: at least one declared pair could not be evaluated '
+                 f'(missing member in results/gold) — see pair_checks above. '
+                 f'Exit code 1 (fail-closed).')
 
 
 if __name__ == '__main__':

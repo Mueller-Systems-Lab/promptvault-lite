@@ -18,6 +18,13 @@ PromptVault Lite turns messy prompt folders into a structured, searchable and st
 
 PromptVault Lite scans local `.md`, `.markdown` and `.txt` prompt files, shows them in a desktop explorer, evaluates their structural quality (structure & completeness) and hygiene, detects blueprint-style prompts, and helps you optimize prompt structure in a deterministic, offline workflow.
 
+The Analyzer score is a bounded structural signal—not an authoritative general
+semantic-quality judgment. It primarily reflects structure, completeness,
+hygiene, contradiction signals and actionable deterministic recommendations;
+whether a prompt is genuinely suitable for its purpose remains a human review
+question. External models used during development are test/reference
+infrastructure only and are never a production dependency.
+
 It is built for people who collect, write and refine many prompts — especially agent prompts, project prompts, workflow prompts and reusable prompt blueprints.
 
 ---
