@@ -55,6 +55,7 @@ Die Analyse bewertet die **Struktur und Vollständigkeit** eines Prompts anhand 
 - Hoher Wert = der Prompt ist strukturell vollständig (Rolle, Ziel, Kontext, Eingaben, Vorgehen, Ausgabeformat, Qualitätsanforderungen, Sicherheitsgrenzen, Klarheit, Wiederverwendbarkeit werden anhand von Regeln geprüft, soweit sie für die Aufgabe relevant sind)
 - Nicht anwendbare Kriterien (z. B. Sicherheitsgrenzen bei einer harmlosen Übersetzung) fließen nicht in das Ergebnis ein
 - Die inhaltliche Prüfung (ob der Prompt inhaltlich sinnvoll, widerspruchsfrei und für den Zweck geeignet ist) bleibt Aufgabe des Menschen
+- Der Gesamt-Score ist kein autoritativer allgemeiner Semantik- oder Qualitätswert. Er ist ein lokales, offline und deterministisches Signal für Struktur, Vollständigkeit, Hygiene und erkannte Widersprüche; externe Modelle gehören ausschließlich zur Entwicklungs-/Testvalidierung und nicht zur Laufzeit.
 
 ### Hygieneanalyse
 

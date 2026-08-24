@@ -5,9 +5,10 @@ test('real-corpus smoke - paste analyzer', async ({ page }) => {
   // Start from root, check paste analyzer renders
   await page.goto('/');
   // The paste analyzer is in the UI? Try to find paste/prompt elements
-  // Use accessibility snapshot to locate
-  const snapshot = await page.accessibility.snapshot();
-  console.log(JSON.stringify(snapshot, null, 2).slice(0, 2000));
+  // Use stable DOM assertions; the removed page.accessibility API is not
+  // available in current Playwright releases.
+  const bodyText = await page.locator('body').innerText();
+  console.log(bodyText.slice(0, 2000));
   // Try to find Pasted prompt analyzer component
   await expect(page.locator('body')).toBeVisible();
   // Check no console errors initially

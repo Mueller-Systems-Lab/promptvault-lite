@@ -1,0 +1,32 @@
+{
+  "PRIVACY_FINAL_VERIFIER": {
+    "status": "PASS",
+    "violations": []
+  },
+  "REALWORLD_LIVE_METHODOLOGY_VERIFIER": {
+    "status": "BLOCKED_EXTERNAL",
+    "expected": 176,
+    "valid_completed": 86,
+    "missing": 90,
+    "recommendation_v2": "NOT_EXECUTED_EXTERNAL_BLOCK"
+  },
+  "PROMPT_QUALITY_INTERPRETATION_VERIFIER": {
+    "status": "PASS",
+    "missing": []
+  },
+  "PRODUCT_CONTRACT_VERIFIER": {
+    "status": "PASS",
+    "local_offline_deterministic": true,
+    "unexpected_production_network": 0
+  },
+  "GIT_INTEGRATION_SAFETY_VERIFIER": {
+    "status": "PASS",
+    "head": "e5fda6602237d3251d065db0f1e7e199c2d2d1b8",
+    "backup_remote_sha": "e5fda6602237d3251d065db0f1e7e199c2d2d1b8",
+    "force_push_used": false
+  },
+  "FINAL_PROMPTVAULT_PROJECT_VERIFIER": {
+    "status": "BLOCKED_EXTERNAL",
+    "reason": "live external judge completion is below 176/176"
+  }
+}
