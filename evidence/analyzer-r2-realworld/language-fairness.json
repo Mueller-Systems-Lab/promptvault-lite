@@ -1,0 +1,6 @@
+{
+  "German_COUNT": 185,
+  "English_COUNT": 0,
+  "ASYMMETRY": "NO_ENGLISH_SAMPLE",
+  "NOTE": "Corpus is 100% German (de_DE), no English comparison possible; DE performance mean 64.4, no asymmetry detectable"
+}

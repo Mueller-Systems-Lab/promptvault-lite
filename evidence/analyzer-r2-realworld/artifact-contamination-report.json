@@ -1,0 +1,461 @@
+{
+  "ARTIFACT_CASES": 55,
+  "CORRECTLY_DETECTED": 25,
+  "MISSED": 30,
+  "CASES": [
+    {
+      "CASE_ID": "CASE-0001",
+      "FILE": "10 Exit-F\u00e4hige Mobile-Game-Konzepte/10 Exit-F\u00e4hige Mobile-Game-Konzepte.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 25
+    },
+    {
+      "CASE_ID": "CASE-0014",
+      "FILE": "APP Blueprint/Formora.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 82
+    },
+    {
+      "CASE_ID": "CASE-0022",
+      "FILE": "Bauen/Patrol CLI f\u00fcr Flutter-Android-Tests.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "STACK_TRACE",
+        "CI_LOGS"
+      ],
+      "SCORE": 34
+    },
+    {
+      "CASE_ID": "CASE-0025",
+      "FILE": "Bauen/Umfassender Forschungsbericht zur Automatisierung von End-to-End (E2E) Tests in Flutter-Anwendungen.md",
+      "HITS": [
+        "MARKDOWN_CHATTER",
+        "CI_LOGS"
+      ],
+      "SCORE": 26
+    },
+    {
+      "CASE_ID": "CASE-0027",
+      "FILE": "Bauen/____ E2E Physical Test Strategy_-MietVisor.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 81
+    },
+    {
+      "CASE_ID": "CASE-0029",
+      "FILE": "Blueprint ___ GitHub Issues Generator.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 30
+    },
+    {
+      "CASE_ID": "CASE-0030",
+      "FILE": "Codebase_Analyse_Prompt_fuer_Reparaturanweisung.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "CI_LOGS"
+      ],
+      "SCORE": 72
+    },
+    {
+      "CASE_ID": "CASE-0033",
+      "FILE": "Marktanalyse Deutschland 2026_ Die 5 Millionen-Euro-Schmerzfelder_gemini.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 82
+    },
+    {
+      "CASE_ID": "CASE-0034",
+      "FILE": "Marktanalyse Deutschland 2026_game_idee.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 26
+    },
+    {
+      "CASE_ID": "CASE-0035",
+      "FILE": "Meta_Prompt/Codebase_Analyse_Prompt_fuer_Reparaturanweisung (1).md",
+      "HITS": [
+        "MARKDOWN_CHATTER",
+        "CI_LOGS"
+      ],
+      "SCORE": 83
+    },
+    {
+      "CASE_ID": "CASE-0036",
+      "FILE": "Meta_Prompt/Issues_analysieren_1_von_2.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "CI_LOGS"
+      ],
+      "SCORE": 41
+    },
+    {
+      "CASE_ID": "CASE-0037",
+      "FILE": "Meta_Prompt/Live Operations Pass .md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 88
+    },
+    {
+      "CASE_ID": "CASE-0038",
+      "FILE": "Meta_Prompt/Meta-Prompt f\u00fcr eine KI zur iterativen Projekt-Orchestrierung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 83
+    },
+    {
+      "CASE_ID": "CASE-0039",
+      "FILE": "Meta_Prompt/Meta-Prompt f\u00fcr eine KI zur iterativen Projekt-Orchestrierung_v2.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 83
+    },
+    {
+      "CASE_ID": "CASE-0040",
+      "FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 70
+    },
+    {
+      "CASE_ID": "CASE-0041",
+      "FILE": "Meta_Prompt/OPSX-basierter Development Orchestrator und KI-Engineering-Agent_V2.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 73
+    },
+    {
+      "CASE_ID": "CASE-0043",
+      "FILE": "Meta_Prompt/UNIVERSAL_OPENCODE_MCP_SETUP_PROMPT.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 29
+    },
+    {
+      "CASE_ID": "CASE-0045",
+      "FILE": "Meta_Prompt/blueprint_ai_coding_orchestrator.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 29
+    },
+    {
+      "CASE_ID": "CASE-0048",
+      "FILE": "Meta_Prompt/xxx/Meta-Prompt f__r eine KI zur iterativen Projekt-Orchestrierung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 83
+    },
+    {
+      "CASE_ID": "CASE-0049",
+      "FILE": "Meta_Prompt/xxx/OPSX-basierter Development Orchestrator und KI-Engineering-Agent.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 70
+    },
+    {
+      "CASE_ID": "CASE-0050",
+      "FILE": "Meta_Prompt/xxx/__vertikale_integration__.md",
+      "HITS": [
+        "CI_LOGS"
+      ],
+      "SCORE": 84
+    },
+    {
+      "CASE_ID": "CASE-0051",
+      "FILE": "QA Execution Unit_v2.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 86
+    },
+    {
+      "CASE_ID": "CASE-0052",
+      "FILE": "QA Execution Unit_v3.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 28
+    },
+    {
+      "CASE_ID": "CASE-0053",
+      "FILE": "QA Execution Unit_v4.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 28
+    },
+    {
+      "CASE_ID": "CASE-0054",
+      "FILE": "QA Execution Unit_v5.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 30
+    },
+    {
+      "CASE_ID": "CASE-0055",
+      "FILE": "__Blueprint ___ GitHub Issues Generator__.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 30
+    },
+    {
+      "CASE_ID": "CASE-0056",
+      "FILE": "__vertikale_integration__.md",
+      "HITS": [
+        "CI_LOGS"
+      ],
+      "SCORE": 84
+    },
+    {
+      "CASE_ID": "CASE-0057",
+      "FILE": "anleitungen/Anleitung_Qwen_3.6_GTX1070_Deployment.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 32
+    },
+    {
+      "CASE_ID": "CASE-0058",
+      "FILE": "anleitungen/Gemma 4 auf GeForce 1070.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "STACK_TRACE"
+      ],
+      "SCORE": 33
+    },
+    {
+      "CASE_ID": "CASE-0060",
+      "FILE": "anleitungen/MASTER_DOKUMENTATION.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 30
+    },
+    {
+      "CASE_ID": "CASE-0062",
+      "FILE": "anleitungen/Speckit_SDD_Anleitung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 92
+    },
+    {
+      "CASE_ID": "CASE-0063",
+      "FILE": "anleitungen/Synthese und Implikationen f\u00fcr lokale KI-Deployments.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 33
+    },
+    {
+      "CASE_ID": "CASE-0066",
+      "FILE": "anleitungen/anleitung_speckit_neu.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 83
+    },
+    {
+      "CASE_ID": "CASE-0073",
+      "FILE": "anleitungen/gemini-cli-anleitung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 26
+    },
+    {
+      "CASE_ID": "CASE-0075",
+      "FILE": "anleitungen/opencode-ki-anleitung.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 79
+    },
+    {
+      "CASE_ID": "CASE-0076",
+      "FILE": "anleitungen/qwen_code_anleitung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 83
+    },
+    {
+      "CASE_ID": "CASE-0077",
+      "FILE": "anleitungen/spec-kit-anleitung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 29
+    },
+    {
+      "CASE_ID": "CASE-0078",
+      "FILE": "anleitungen/speckit/blueprint-template.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 85
+    },
+    {
+      "CASE_ID": "CASE-0079",
+      "FILE": "anleitungen/speckit/spec-kit-anleitung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 29
+    },
+    {
+      "CASE_ID": "CASE-0080",
+      "FILE": "anleitungen/speckit_ki_agent_anleitung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 92
+    },
+    {
+      "CASE_ID": "CASE-0082",
+      "FILE": "app_ideen.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 25
+    },
+    {
+      "CASE_ID": "CASE-0108",
+      "FILE": "blueprint3/36_ki_vo_auditor/blueprint.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 85
+    },
+    {
+      "CASE_ID": "CASE-0110",
+      "FILE": "blueprint3/app_ideen2.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 27
+    },
+    {
+      "CASE_ID": "CASE-0111",
+      "FILE": "blueprint3/blueprint-template.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 85
+    },
+    {
+      "CASE_ID": "CASE-0120",
+      "FILE": "blueprint4/09_MeterProof/blueprint.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 65
+    },
+    {
+      "CASE_ID": "CASE-0121",
+      "FILE": "blueprint4/10_Beh\u00f6rdenBot/blueprint.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 84
+    },
+    {
+      "CASE_ID": "CASE-0122",
+      "FILE": "blueprint4/app_ideen4.md",
+      "HITS": [
+        "SHELL_LOGS",
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 27
+    },
+    {
+      "CASE_ID": "CASE-0124",
+      "FILE": "blueprint4/memory_bank/productContext.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 29
+    },
+    {
+      "CASE_ID": "CASE-0130",
+      "FILE": "blueprint_von_grok/app_ideen3.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 68
+    },
+    {
+      "CASE_ID": "CASE-0132",
+      "FILE": "blueprint_von_grok/blueprint_02_verwaltungspilot/blueprint.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 89
+    },
+    {
+      "CASE_ID": "CASE-0134",
+      "FILE": "blueprint_von_grok/blueprint_04_esgreporter/blueprint.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 72
+    },
+    {
+      "CASE_ID": "CASE-0140",
+      "FILE": "blueprint_von_grok/blueprint_10_metercomply/blueprint.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 70
+    },
+    {
+      "CASE_ID": "CASE-0181",
+      "FILE": "blueprints2/app_ideen.md",
+      "HITS": [
+        "MARKDOWN_CHATTER"
+      ],
+      "SCORE": 25
+    },
+    {
+      "CASE_ID": "CASE-0182",
+      "FILE": "positron_combined_github_issues_generator_prompt.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 30
+    },
+    {
+      "CASE_ID": "CASE-0183",
+      "FILE": "positron_github_issues_prompt_erweiterung.md",
+      "HITS": [
+        "SHELL_LOGS"
+      ],
+      "SCORE": 75
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "ANALYZER_SHA": "b6eb1d0b10a20298a26731e1f2d8824756aa2e9c",
+  "ANALYZER_SOURCE_FINGERPRINT_BEFORE": {
+    "src-tauri/src/analysis/r2/mod.rs": "f481f10823ab05257b3d1da28635cfab3839e9f4758157283131f72d43205157",
+    "src-tauri/src/analysis/r2/scoring.rs": "4d88660e53249351696046ebbfdf06822879cb01a0ba15a010d031811f291b3a",
+    "src-tauri/src/analysis/r2/features.rs": "1e0e7d4a493c951f88c636c0e2e57cb17587a51ce8b552e2fb90e7d3ec385923",
+    "src-tauri/src/analysis/r2/type_router.rs": "ecc7302855c81af6a4be4de60d1ee04c973b2189d34fe1b63b7ded223b810c36",
+    "src-tauri/src/analysis/r2/contradictions.rs": "da6006bd697a39a33ddcc167746cb5f426d0aded46e8b4aff5f84f5da5d5fef5",
+    "src-tauri/src/analysis/r2/recommendations.rs": "8d432dda56f3531ba1eed9cdc66f9934acc8833d1ce1d9a61a5bcefe7101f334"
+  }
+}

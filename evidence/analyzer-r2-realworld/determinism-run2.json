@@ -1,0 +1,406 @@
+{
+  "CASE-0013": {
+    "recs": [
+      "Löse den Widerspruch zwischen »Bürger verstehen das \"Beamtendeutsch\" nicht« und »Wenn du in Deutschland Apps im juristischen Bereich baust, kollidierst du sofort mit dem Rechtsdienstleistungsgesetz (RDG)«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}."
+    ],
+    "score": 25,
+    "type": "Coding"
+  },
+  "CASE-0014": {
+    "recs": [
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2].",
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 82,
+    "type": "Coding"
+  },
+  "CASE-0020": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Ersetze die generische Rollenangabe durch eine konkrete Rolle mit Expertise: Du bist ein [Rolle] mit [Expertise]."
+    ],
+    "score": 85,
+    "type": "Coding"
+  },
+  "CASE-0021": {
+    "recs": [
+      "Löse den Widerspruch zwischen »Erkläre kurz den wirtschaftlichen Schmerzpunkt« und »Formatierung: Nutze Markdown-Header für die Analyse und eine detaillierte Tabelle oder Liste für die 10 Ideen«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}."
+    ],
+    "score": 57,
+    "type": "Coding"
+  },
+  "CASE-0024": {
+    "recs": [],
+    "score": 86,
+    "type": "guideline"
+  },
+  "CASE-0025": {
+    "recs": [
+      "Löse den Widerspruch zwischen »Umfassender Forschungsbericht zur Automatisierung von End-to-End (E2E) Tests in Flutter-AnwendungenDer Marktkontext und die technologische Reife von Flutter im Jahr 2026Im Jahr 2026 hat sich die Landschaft der plattformübergreifenden App-Entwicklung tiefgreifend konsolidiert« und »Tests (in Maestro als \"Flows\" bezeichnet) werden nicht in einer Programmiersprache wie Dart oder JavaScript geschrieben, sondern in simplen, deklarativen YAML-Dateien«: entscheide dich für eine Vorgabe.",
+      "Löse den Widerspruch zwischen »Es ist entscheidend zu verstehen, dass traditionelle Flutter Keys (wie ValueKey) für Maestro unsichtbar sind, da die Flutter-Engine diese Keys nur intern für das State-Management nutzt und nicht an den Semantik-Baum des Betriebssystems übergibt« und »Erst durch diesen Trick können Cypress oder Playwright die Applikation \"sehen\"«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen."
+    ],
+    "score": 26,
+    "type": "Coding"
+  },
+  "CASE-0033": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen."
+    ],
+    "score": 82,
+    "type": "Coding"
+  },
+  "CASE-0034": {
+    "recs": [
+      "Löse den Widerspruch zwischen »Acquirer kaufen keine Ideen, sondern validierte Metriken« und »Monetarisierungsmetriken erforderlich«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}."
+    ],
+    "score": 26,
+    "type": "Coding"
+  },
+  "CASE-0036": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Ergänze den fehlenden Kontext: [Fakt] fehlt, damit die Aufgabe eigenständig ausführbar ist.",
+      "Strukturiere das Vorgehen: 1. Analysiere... 2. Implementiere... 3. Validiere..."
+    ],
+    "score": 41,
+    "type": "Coding"
+  },
+  "CASE-0037": {
+    "recs": [
+      "Ersetze die generische Rollenangabe durch eine konkrete Rolle mit Expertise: Du bist ein [Rolle] mit [Expertise]."
+    ],
+    "score": 88,
+    "type": "guideline"
+  },
+  "CASE-0046": {
+    "recs": [
+      "Löse den Widerspruch zwischen »secret« und »veröffentlich«: entscheide dich für eine Vorgabe.",
+      "Löse den Widerspruch zwischen »*Hinweis: Da du als KI-Agent operierst ohne direktes Dateisystem:*« und »- Erstelle Checklisten für manuelle Schritte«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen."
+    ],
+    "score": 27,
+    "type": "guideline"
+  },
+  "CASE-0047": {
+    "recs": [
+      "Löse den Widerspruch zwischen »Strukturierte Formate: Verwende für die Verarbeitung und Ausgabe deterministisch strukturierte Formate wie JSON, YAML, Markdown oder XML-Tags anstelle von unstrukturiertem Fließtext« und »Progressive Disclosure: Lade bei umfangreichen Datenmengen nicht alle Informationen sofort in den aktiven Kontext«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}."
+    ],
+    "score": 31,
+    "type": "Extraction"
+  },
+  "CASE-0050": {
+    "recs": [
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 84,
+    "type": "Coding"
+  },
+  "CASE-0051": {
+    "recs": [
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 86,
+    "type": "guideline"
+  },
+  "CASE-0053": {
+    "recs": [
+      "Löse den Widerspruch zwischen »| **E2E** | End-to-End | Vollständiger Testdurchlauf vom Start bis zum Ergebnis |« und »| API/Service-Calls | HTTP-Statuscode + Response | Status 2xx, keine Fehlerfelder |«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Ergänze den fehlenden Kontext: [Fakt] fehlt, damit die Aufgabe eigenständig ausführbar ist."
+    ],
+    "score": 28,
+    "type": "Analysis"
+  },
+  "CASE-0054": {
+    "recs": [
+      "Löse den Widerspruch zwischen »| **E2E** | End-to-End | Vollständiger Testdurchlauf vom Start bis zum Ergebnis |« und »| **Vollständige Dokumentation** | Käufer kann ohne Entwickler-Kontakt onboarden | `/docs` vollständig, `README«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Ergänze den fehlenden Kontext: [Fakt] fehlt, damit die Aufgabe eigenständig ausführbar ist."
+    ],
+    "score": 30,
+    "type": "guideline"
+  },
+  "CASE-0055": {
+    "recs": [
+      "Löse den Widerspruch zwischen »| Vollständigkeit | Alle Module aus dem Blueprint haben mindestens ein Issue oder sind explizit als nicht nötig markiert« und »| 8 | Ende-Markierung | Vollständiges Ende des Scripts mit `# === ENDE ===` markieren |«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Strukturiere das Vorgehen: 1. Analysiere... 2. Implementiere... 3. Validiere..."
+    ],
+    "score": 30,
+    "type": "guideline"
+  },
+  "CASE-0061": {
+    "recs": [
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 84,
+    "type": "Agent Workflow"
+  },
+  "CASE-0062": {
+    "recs": [],
+    "score": 92,
+    "type": "Coding"
+  },
+  "CASE-0064": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Ergänze Prüfkriterien: Das Ergebnis muss folgende Akzeptanzkriterien erfüllen: [KRITERIEN].",
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 70,
+    "type": "General Task"
+  },
+  "CASE-0070": {
+    "recs": [
+      "Löse den Widerspruch zwischen »In solchen Fällen generiert das Modell unaufhörlich <|think|>-Tokens, ohne zu einer finalen Entscheidung zu gelangen, was die Transaktion mangels Konfidenz blockiert« und »Darüber hinaus muss sichergestellt werden, dass das lokale Ollama-Modell permanent im Arbeitsspeicher gehalten wird (\"Warm-State\"), um die extrem langen Initialisierungszeiten von über einer Minute, die unweigerlich zu Timeouts führen, zu eliminieren«: entscheide dich für eine Vorgabe.",
+      "Löse den Widerspruch zwischen »Die Zuverlässigkeit von Modellen mit nur 4 Milliarden Parametern bei der Generierung verschachtelter JSON-Strukturen war in früheren Modellgenerationen oft unzureichend« und »Das Framework zwingt den KI-Agenten nicht dazu, private kryptographische Schlüssel direkt als Klartext zu manipulieren oder zu speichern«: entscheide dich für eine Vorgabe.",
+      "Löse den Widerspruch zwischen »wenn das LLM einen falschen Parameter in einem Lesebefehl oder einem Editiervorgang generiert) nicht sofort abbricht« und »Korrektur des opencode_local Adapters: Der Anwender muss den UI-Bug in Paperclip AI umgehen, indem er sicherstellt, dass die Modellkonfiguration strikt dem Format provider/model (z«: entscheide dich für eine Vorgabe."
+    ],
+    "score": 27,
+    "type": "template"
+  },
+  "CASE-0072": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 37,
+    "type": "Transformation"
+  },
+  "CASE-0076": {
+    "recs": [
+      "Löse den Widerspruch zwischen »| `/language output [lang]` | LLM-Ausgabesprache setzen (z« und »description: Kurze Beschreibung, was der Skill tut und wann er genutzt werden soll«: entscheide dich für eine Vorgabe.",
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 83,
+    "type": "Coding"
+  },
+  "CASE-0083": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2].",
+      "Ergänze den fehlenden Kontext: [Fakt] fehlt, damit die Aufgabe eigenständig ausführbar ist."
+    ],
+    "score": 58,
+    "type": "Coding"
+  },
+  "CASE-0090": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2].",
+      "Ergänze Prüfkriterien: Das Ergebnis muss folgende Akzeptanzkriterien erfüllen: [KRITERIEN]."
+    ],
+    "score": 61,
+    "type": "Coding"
+  },
+  "CASE-0091": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 75,
+    "type": "Coding"
+  },
+  "CASE-0092": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2].",
+      "Ergänze den fehlenden Kontext: [Fakt] fehlt, damit die Aufgabe eigenständig ausführbar ist."
+    ],
+    "score": 52,
+    "type": "Coding"
+  },
+  "CASE-0093": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 76,
+    "type": "Analysis"
+  },
+  "CASE-0094": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}."
+    ],
+    "score": 83,
+    "type": "Analysis"
+  },
+  "CASE-0107": {
+    "recs": [],
+    "score": 90,
+    "type": "General Task"
+  },
+  "CASE-0118": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 79,
+    "type": "Analysis"
+  },
+  "CASE-0120": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 65,
+    "type": "Coding"
+  },
+  "CASE-0121": {
+    "recs": [
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 84,
+    "type": "Analysis"
+  },
+  "CASE-0124": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 29,
+    "type": "Analysis"
+  },
+  "CASE-0127": {
+    "recs": [
+      "State an explicit goal: Your task is to achieve [goal].",
+      "Define inputs with placeholders: Expected input: {{INPUT}}.",
+      "Specify the output format: Answer in JSON with the fields [FIELD1, FIELD2]."
+    ],
+    "score": 57,
+    "type": "Coding"
+  },
+  "CASE-0129": {
+    "recs": [
+      "Löse den Widerspruch zwischen »**Format der Antwort in Phase 1:** Markdown, klar gegliedert, ohne unnötige Ausschmückung« und »| 2 | Kohärentes Markdown | Das Dokument muss als technisches Architekturdokument lesbar sein |«: entscheide dich für eine Vorgabe.",
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}."
+    ],
+    "score": 29,
+    "type": "Coding"
+  },
+  "CASE-0130": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 68,
+    "type": "Coding"
+  },
+  "CASE-0132": {
+    "recs": [],
+    "score": 89,
+    "type": "General Task"
+  },
+  "CASE-0135": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Ergänze Prüfkriterien: Das Ergebnis muss folgende Akzeptanzkriterien erfüllen: [KRITERIEN]."
+    ],
+    "score": 67,
+    "type": "Coding"
+  },
+  "CASE-0136": {
+    "recs": [
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 83,
+    "type": "General Task"
+  },
+  "CASE-0144": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}."
+    ],
+    "score": 85,
+    "type": "Coding"
+  },
+  "CASE-0145": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Ergänze Prüfkriterien: Das Ergebnis muss folgende Akzeptanzkriterien erfüllen: [KRITERIEN]."
+    ],
+    "score": 78,
+    "type": "Coding"
+  },
+  "CASE-0148": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 75,
+    "type": "Analysis"
+  },
+  "CASE-0155": {
+    "recs": [
+      "Formuliere ein explizites Ziel: Deine Aufgabe ist es, [Ziel] zu erreichen.",
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 61,
+    "type": "Coding"
+  },
+  "CASE-0162": {
+    "recs": [
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2].",
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 77,
+    "type": "General Task"
+  },
+  "CASE-0165": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2]."
+    ],
+    "score": 76,
+    "type": "Analysis"
+  },
+  "CASE-0166": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2].",
+      "Ergänze Prüfkriterien: Das Ergebnis muss folgende Akzeptanzkriterien erfüllen: [KRITERIEN]."
+    ],
+    "score": 72,
+    "type": "Coding"
+  },
+  "CASE-0173": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}."
+    ],
+    "score": 81,
+    "type": "Coding"
+  },
+  "CASE-0176": {
+    "recs": [
+      "Definiere Eingaben mit Platzhaltern: Erwartete Eingabe: {{INPUT}}.",
+      "Spezifiziere das Ausgabeformat: Antworte im JSON-Format mit den Feldern [FELD1, FELD2].",
+      "Definiere Grenzen: gib keine personenbezogenen Daten aus und führe keine destruktiven Aktionen aus."
+    ],
+    "score": 73,
+    "type": "Coding"
+  },
+  "CASE-0181": {
+    "recs": [
+      "Löse den Widerspruch zwischen »Rust must handle all image manipulation to guarantee memory safety (no image buffer exploits)« und »- **Rust-Image-Processing:** Foto-EXIF-Manipulation (Stripping + kryptographischer Re-Stamp) muss memory-safe sein – C-basierte Alternativen haben historisch Buffer-Overflow-CVEs im EXIF-Parsing«: entscheide dich für eine Vorgabe.",
+      "Löse den Widerspruch zwischen »- **QES-Validierung:** Rust-Modul prüft Signaturzertifikate gegen die EU Trusted List (EUTL-XML-Feed) offline-fähig mit gecachtem Snapshot – kein Cloud-Call bei Prüfung« und »Rust core: (a) Deterministic risk scoring algorithm (tamper-proof, auditable), (b) Document hash chain (each uploaded document gets a BLAKE3 hash, chained in append-only log), (c) Local encryption of all business data (AES-256-GCM), (d) PDF generation with embedded hash for authenticity verification«: entscheide dich für eine Vorgabe.",
+      "Löse den Widerspruch zwischen »Ich erstelle nun das vollständige Strategiedokument« und »-9-Moat:** Vollständige On-device-Verarbeitung von Gesundheitsdaten – kein Wettbewerber mit Cloud-KI kann diesen Compliance-Status erreichen«: entscheide dich für eine Vorgabe."
+    ],
+    "score": 25,
+    "type": "Coding"
+  }
+}

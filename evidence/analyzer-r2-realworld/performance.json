@@ -1,0 +1,295 @@
+{
+  "TOTAL_CORPUS_RUNTIME_MS": 158954,
+  "MEAN_PER_PROMPT_MS": 859.2108108108108,
+  "P50_MS": 426,
+  "P95_MS": 3659,
+  "MIN_MS": 128,
+  "MAX_MS": 7212,
+  "SLOWEST": [
+    {
+      "ANALYSIS_DURATION_MS": 7212,
+      "ANALYSIS_ERROR": null,
+      "APPLICABILITY": {
+        "Actionability": true,
+        "Ambiguity": true,
+        "Completeness": true,
+        "Consistency": true,
+        "Constraint": true,
+        "Context": true,
+        "Goal": true,
+        "Input": true,
+        "Noise": true,
+        "Output": true,
+        "Reuse": true,
+        "Safety": true
+      },
+      "BAND": "POOR",
+      "CONTENT_LENGTH": 141339,
+      "CONTRADICTIONS": [
+        "CONFLICT_WEIGHT_12",
+        "CRITICAL_CONFLICT"
+      ],
+      "CONTRADICTION_WEIGHT": 12,
+      "CORPUS_CASE_ID": "CASE-0110",
+      "CRITERION_SCORES": {
+        "Ausgabeformat": 3,
+        "Eingabendefinition": 3,
+        "Klarheit": 3,
+        "Kontextqualit\u00e4t": 3,
+        "Qualit\u00e4tsanforderungen": 3,
+        "Rollendefinition": 2,
+        "Sicherheitsgrenzen": 3,
+        "Vorgehensbeschreibung": 3,
+        "Wiederverwendbarkeit": 2,
+        "Zieldefinition": 3
+      },
+      "HAS_CRITICAL_CONFLICT": true,
+      "LANGUAGE": "German",
+      "MISSING_INFORMATION": [
+        "Wiederverwendbarkeit"
+      ],
+      "PROMPT_TYPE": "Coding",
+      "RECOMMENDATIONS": [
+        "L\u00f6se den Widerspruch zwischen \u00bb| **R1: Markts\u00e4ttigung** | Kein Konzept in einem Segment mit \u22653 gut kapitalisierten deutschen Wettbewerbern | Nische mit <2 direkten Wettbewerbern oder klarer technischer Differenzierung durch Rust |\u00ab und \u00bbMinijobber und kurzfristig Besch\u00e4ftigte in Deutschland; Arbeitgeber m\u00fcssen Beginn, Ende und Dauer der t\u00e4glichen Arbeitszeit dokumentieren (\u00a717 MiLoG)\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bbwann welche Schulung stattfand \u2013 Rust-Hash-Kette ist manipulationssicher; kein nachtr\u00e4gliches Einf\u00fcgen von Schulungseintr\u00e4gen m\u00f6glich (kritisch f\u00fcr retroaktive Compliance-Versuche kurz vor Pr\u00fcfung)\u00ab und \u00bbCore UI: (1) Employee setup: type (Minijobber / kurzfristig / \u00a717-MiLoG-Pflichtbranche), hourly rate (auto-flag if below 13,90 \u20ac minimum), (2) Daily time tracking: quick start/stop per employee (clock-in/out for each day as required by \u00a717 MiLoG), (3) Monthly summary: total hours \u00d7 hourly rate, Minijob-Grenze check (\u20ac603/month auto-flag), overtime alert, (4) Zoll-ready export: \u00a717-MiLoG-compliant documentation per employee per month (exactly the format required for Zoll inspections), (5) GoBD-archive: all records immutable after month-end close with BLAKE3 hash and timestamp\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bb4 compliance scoring: rule engine checks coverage per role per AI system, (d) KI-VO risk classification engine: maps AI use cases to risk categories (Annex III lookup table)\u00ab und \u00bb- **\u00a75-ArbSchG-Ma\u00dfnahmen-Immutabilit\u00e4ts-Moat:** Technisch nicht backdatable \u2013 einziger Unfallhaftungs-Beweis, der vor BG-Regressgericht standh\u00e4lt\u00ab: entscheide dich f\u00fcr eine Vorgabe."
+      ],
+      "RECOMMENDATION_COUNT": 3,
+      "ROUTING": "task",
+      "SCORE": 27,
+      "SIGNAL_POOR": true,
+      "SOURCE_FILE": "blueprint3/app_ideen2.md",
+      "SOURCE_SHA256": "733f6a434231b8f6ae9359e00d635849aa7042628348dc18d7c99f68beae5ae8",
+      "TERSE_SUFFICIENT": false,
+      "TRUNCATED": true
+    },
+    {
+      "ANALYSIS_DURATION_MS": 6941,
+      "ANALYSIS_ERROR": null,
+      "APPLICABILITY": {
+        "Actionability": true,
+        "Ambiguity": true,
+        "Completeness": true,
+        "Consistency": true,
+        "Constraint": true,
+        "Context": true,
+        "Goal": true,
+        "Input": true,
+        "Noise": true,
+        "Output": true,
+        "Reuse": true,
+        "Safety": true
+      },
+      "BAND": "POOR",
+      "CONTENT_LENGTH": 116831,
+      "CONTRADICTIONS": [
+        "CONFLICT_WEIGHT_12"
+      ],
+      "CONTRADICTION_WEIGHT": 12,
+      "CORPUS_CASE_ID": "CASE-0181",
+      "CRITERION_SCORES": {
+        "Ausgabeformat": 3,
+        "Eingabendefinition": 3,
+        "Klarheit": 3,
+        "Kontextqualit\u00e4t": 3,
+        "Qualit\u00e4tsanforderungen": 3,
+        "Rollendefinition": 2,
+        "Sicherheitsgrenzen": 3,
+        "Vorgehensbeschreibung": 3,
+        "Wiederverwendbarkeit": 2,
+        "Zieldefinition": 1
+      },
+      "HAS_CRITICAL_CONFLICT": false,
+      "LANGUAGE": "German",
+      "MISSING_INFORMATION": [
+        "Zieldefinition",
+        "Wiederverwendbarkeit"
+      ],
+      "PROMPT_TYPE": "Coding",
+      "RECOMMENDATIONS": [
+        "L\u00f6se den Widerspruch zwischen \u00bbRust must handle all image manipulation to guarantee memory safety (no image buffer exploits)\u00ab und \u00bb- **Rust-Image-Processing:** Foto-EXIF-Manipulation (Stripping + kryptographischer Re-Stamp) muss memory-safe sein \u2013 C-basierte Alternativen haben historisch Buffer-Overflow-CVEs im EXIF-Parsing\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bb- **QES-Validierung:** Rust-Modul pr\u00fcft Signaturzertifikate gegen die EU Trusted List (EUTL-XML-Feed) offline-f\u00e4hig mit gecachtem Snapshot \u2013 kein Cloud-Call bei Pr\u00fcfung\u00ab und \u00bbRust core: (a) Deterministic risk scoring algorithm (tamper-proof, auditable), (b) Document hash chain (each uploaded document gets a BLAKE3 hash, chained in append-only log), (c) Local encryption of all business data (AES-256-GCM), (d) PDF generation with embedded hash for authenticity verification\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bbIch erstelle nun das vollst\u00e4ndige Strategiedokument\u00ab und \u00bb-9-Moat:** Vollst\u00e4ndige On-device-Verarbeitung von Gesundheitsdaten \u2013 kein Wettbewerber mit Cloud-KI kann diesen Compliance-Status erreichen\u00ab: entscheide dich f\u00fcr eine Vorgabe."
+      ],
+      "RECOMMENDATION_COUNT": 3,
+      "ROUTING": "task",
+      "SCORE": 25,
+      "SIGNAL_POOR": true,
+      "SOURCE_FILE": "blueprints2/app_ideen.md",
+      "SOURCE_SHA256": "543551644a3a167e03b3a777a20ca46ffee3e7c1de44c0fd97ee2893d7860467",
+      "TERSE_SUFFICIENT": false,
+      "TRUNCATED": true
+    },
+    {
+      "ANALYSIS_DURATION_MS": 6832,
+      "ANALYSIS_ERROR": null,
+      "APPLICABILITY": {
+        "Actionability": true,
+        "Ambiguity": true,
+        "Completeness": true,
+        "Consistency": true,
+        "Constraint": true,
+        "Context": true,
+        "Goal": true,
+        "Input": true,
+        "Noise": true,
+        "Output": true,
+        "Reuse": true,
+        "Safety": true
+      },
+      "BAND": "POOR",
+      "CONTENT_LENGTH": 116831,
+      "CONTRADICTIONS": [
+        "CONFLICT_WEIGHT_12"
+      ],
+      "CONTRADICTION_WEIGHT": 12,
+      "CORPUS_CASE_ID": "CASE-0082",
+      "CRITERION_SCORES": {
+        "Ausgabeformat": 3,
+        "Eingabendefinition": 3,
+        "Klarheit": 3,
+        "Kontextqualit\u00e4t": 3,
+        "Qualit\u00e4tsanforderungen": 3,
+        "Rollendefinition": 2,
+        "Sicherheitsgrenzen": 3,
+        "Vorgehensbeschreibung": 3,
+        "Wiederverwendbarkeit": 2,
+        "Zieldefinition": 1
+      },
+      "HAS_CRITICAL_CONFLICT": false,
+      "LANGUAGE": "German",
+      "MISSING_INFORMATION": [
+        "Zieldefinition",
+        "Wiederverwendbarkeit"
+      ],
+      "PROMPT_TYPE": "Coding",
+      "RECOMMENDATIONS": [
+        "L\u00f6se den Widerspruch zwischen \u00bbRust must handle all image manipulation to guarantee memory safety (no image buffer exploits)\u00ab und \u00bb- **Rust-Image-Processing:** Foto-EXIF-Manipulation (Stripping + kryptographischer Re-Stamp) muss memory-safe sein \u2013 C-basierte Alternativen haben historisch Buffer-Overflow-CVEs im EXIF-Parsing\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bb- **QES-Validierung:** Rust-Modul pr\u00fcft Signaturzertifikate gegen die EU Trusted List (EUTL-XML-Feed) offline-f\u00e4hig mit gecachtem Snapshot \u2013 kein Cloud-Call bei Pr\u00fcfung\u00ab und \u00bbRust core: (a) Deterministic risk scoring algorithm (tamper-proof, auditable), (b) Document hash chain (each uploaded document gets a BLAKE3 hash, chained in append-only log), (c) Local encryption of all business data (AES-256-GCM), (d) PDF generation with embedded hash for authenticity verification\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bbIch erstelle nun das vollst\u00e4ndige Strategiedokument\u00ab und \u00bb-9-Moat:** Vollst\u00e4ndige On-device-Verarbeitung von Gesundheitsdaten \u2013 kein Wettbewerber mit Cloud-KI kann diesen Compliance-Status erreichen\u00ab: entscheide dich f\u00fcr eine Vorgabe."
+      ],
+      "RECOMMENDATION_COUNT": 3,
+      "ROUTING": "task",
+      "SCORE": 25,
+      "SIGNAL_POOR": true,
+      "SOURCE_FILE": "app_ideen.md",
+      "SOURCE_SHA256": "543551644a3a167e03b3a777a20ca46ffee3e7c1de44c0fd97ee2893d7860467",
+      "TERSE_SUFFICIENT": false,
+      "TRUNCATED": true
+    },
+    {
+      "ANALYSIS_DURATION_MS": 4673,
+      "ANALYSIS_ERROR": null,
+      "APPLICABILITY": {
+        "Actionability": true,
+        "Ambiguity": true,
+        "Completeness": true,
+        "Consistency": true,
+        "Constraint": true,
+        "Context": true,
+        "Goal": true,
+        "Input": true,
+        "Noise": true,
+        "Output": true,
+        "Reuse": true,
+        "Safety": true
+      },
+      "BAND": "POOR",
+      "CONTENT_LENGTH": 72667,
+      "CONTRADICTIONS": [
+        "CONFLICT_WEIGHT_11"
+      ],
+      "CONTRADICTION_WEIGHT": 11,
+      "CORPUS_CASE_ID": "CASE-0122",
+      "CRITERION_SCORES": {
+        "Ausgabeformat": 3,
+        "Eingabendefinition": 3,
+        "Klarheit": 3,
+        "Kontextqualit\u00e4t": 3,
+        "Qualit\u00e4tsanforderungen": 3,
+        "Rollendefinition": 2,
+        "Sicherheitsgrenzen": 3,
+        "Vorgehensbeschreibung": 3,
+        "Wiederverwendbarkeit": 2,
+        "Zieldefinition": 3
+      },
+      "HAS_CRITICAL_CONFLICT": false,
+      "LANGUAGE": "German",
+      "MISSING_INFORMATION": [
+        "Wiederverwendbarkeit"
+      ],
+      "PROMPT_TYPE": "Coding",
+      "RECOMMENDATIONS": [
+        "L\u00f6se den Widerspruch zwischen \u00bbrs):** ESRS-Matching-Engine mit strukturierten Regelsets erfordert deterministisches, fehlerfreies String-Matching \u00fcber 200+ Dokumentenfelder; Rust's Pattern-Matching ist exhaustive und compilergepr\u00fcft<br>\u2022 **Warum Rust kritisch:** Auditoren akzeptieren nur Nachweise, deren Integrit\u00e4t technisch nachweisbar ist \u2014 ein GC-Sprache-basierter Hash-Service kann keine gleiche Vertrauensw\u00fcrdigkeit signalisieren wie ein Rust-Modul mit Memory Safety Guarantees |\u00ab und \u00bbrs):** Constraint-Satisfaction-Algorithmus mit 100+ Variablen muss in < 500ms liefern (bei Schichtausfall um 6 Uhr morgens z\u00e4hlt jede Sekunde); Python oder Dart w\u00e4ren 5\u201320x langsamer<br>\u2022 **Rust (schedule_validator\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bbrs):** Performante, deterministisch nachvollziehbare Risikoberechnung \u2014 in einem Audit muss jede Score-Ver\u00e4nderung l\u00fcckenlos erkl\u00e4rbar sein; Rust's Ownership-Model verhindert Race Conditions bei paralleler Risikoberechnung<br>\u2022 **Rust (audit_log\u00ab und \u00bb| **Moats** | \u2022 **LkSG/VSME-Audit-Log:** Hash-verkettete, unver\u00e4nderliche Compliance-Dokumentation in Rust \u2014 bei einer BAFA-Pr\u00fcfung ist jede Risikobewertung l\u00fcckenlos nachvollziehbar<br>\u2022 **DSGVO-Datenminimierung:** Lieferantendaten werden lokal verarbeitet, kein Upload an US-Cloud-Server; besonders relevant bei sensiblen Lieferkettendaten mit NDA-Charakter<br>\u2022 **VSME-Standardisierung:** Als erster Anbieter, der den neuen VSME-Freiwilligenstandard nativ implementiert, entsteht ein Netzwerkeffekt: Je mehr Kunden VSME-Outputs fordern, desto mehr Wert hat die App |\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bb| **Vibe-Coding-Blueprint** | **Cursor/Claude Prompt (copy-paste-f\u00e4hig):**<br><br>`Erstelle Flutter-App \"PflegeDoc\" mit flutter_rust_bridge:`<br>`flutter_rust_bridge_codegen generate --rust-crate-dir\u00ab und \u00bb000+ Nutzern; PflegeDoc ist eine direkte Erweiterung ihrer Produktlinie f\u00fcr den ambulanten Sektor, den CGM bisher nicht mit einer mobilen-first L\u00f6sung bedient\u00ab: entscheide dich f\u00fcr eine Vorgabe."
+      ],
+      "RECOMMENDATION_COUNT": 3,
+      "ROUTING": "task",
+      "SCORE": 27,
+      "SIGNAL_POOR": true,
+      "SOURCE_FILE": "blueprint4/app_ideen4.md",
+      "SOURCE_SHA256": "282d1dc81c49eb4ed8c12877c6ca393ccb452c5e8112ed0f801106fc0f9bd644",
+      "TERSE_SUFFICIENT": false,
+      "TRUNCATED": false
+    },
+    {
+      "ANALYSIS_DURATION_MS": 4649,
+      "ANALYSIS_ERROR": null,
+      "APPLICABILITY": {
+        "Actionability": true,
+        "Ambiguity": true,
+        "Completeness": true,
+        "Consistency": true,
+        "Constraint": true,
+        "Context": true,
+        "Goal": true,
+        "Input": true,
+        "Noise": true,
+        "Output": true,
+        "Reuse": true,
+        "Safety": false
+      },
+      "BAND": "POOR",
+      "CONTENT_LENGTH": 41140,
+      "CONTRADICTIONS": [
+        "CONFLICT_WEIGHT_12",
+        "CRITICAL_CONFLICT"
+      ],
+      "CONTRADICTION_WEIGHT": 12,
+      "CORPUS_CASE_ID": "CASE-0069",
+      "CRITERION_SCORES": {
+        "Ausgabeformat": 3,
+        "Eingabendefinition": 1,
+        "Klarheit": 3,
+        "Kontextqualit\u00e4t": 3,
+        "Qualit\u00e4tsanforderungen": 3,
+        "Rollendefinition": 2,
+        "Sicherheitsgrenzen": 4,
+        "Vorgehensbeschreibung": 3,
+        "Wiederverwendbarkeit": 2,
+        "Zieldefinition": 3
+      },
+      "HAS_CRITICAL_CONFLICT": true,
+      "LANGUAGE": "German",
+      "MISSING_INFORMATION": [
+        "Eingabendefinition",
+        "Wiederverwendbarkeit"
+      ],
+      "PROMPT_TYPE": "Agent Workflow",
+      "RECOMMENDATIONS": [
+        "L\u00f6se den Widerspruch zwischen \u00bbDie strategische Implikation f\u00fcr unkapitalisierte Nutzer ist eindeutig: Der Aufbau einer initialen Liquidit\u00e4t beginnt idealerweise bei Stakely oder FaucetCrypto, da diese Plattformen keine Vorabinvestitionen verlangen und reale Mainnet-Ressourcen f\u00fcr das Base-\u00d6kosystem bereitstellen\u00ab und \u00bbW\u00e4hrend viele dieser NFTs kurzfristig keinen hohen finanziellen Wert auf dem Sekund\u00e4rmarkt erzielen, liegt ihr eigentlicher Wert in der Etablierung einer On-Chain-Historie\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bbDatenanalyse) anheuert, wird die Zahlung in einem Smart Contract gesperrt und erst nach Vorliegen eines kryptografischen Beweises f\u00fcr die Vertragserf\u00fcllung automatisch freigegeben\u00ab und \u00bbDie Einnahmen aus den Transaktionsgeb\u00fchren dieser Token werden zwischen dem Ersteller und dem Protokoll aufgeteilt, was Krypto-Neulingen den Aufbau einer eigenen Community ohne technologische Barrieren erm\u00f6glicht\u00ab: entscheide dich f\u00fcr eine Vorgabe.",
+        "L\u00f6se den Widerspruch zwischen \u00bbaktiv\u00ab und \u00bbpassiv\u00ab: entscheide dich f\u00fcr eine Vorgabe."
+      ],
+      "RECOMMENDATION_COUNT": 3,
+      "ROUTING": "task",
+      "SCORE": 25,
+      "SIGNAL_POOR": true,
+      "SOURCE_FILE": "anleitungen/company/Strategische Frameworks f\u00fcr krypto\u00f6konomische Einkommensmodelle ohne Startkapit.md",
+      "SOURCE_SHA256": "b15707f4957bdd83b94e0a420de201ffeb639c8c0f03cad64e90759e6307eb8b",
+      "TERSE_SUFFICIENT": false,
+      "TRUNCATED": false
+    }
+  ]
+}

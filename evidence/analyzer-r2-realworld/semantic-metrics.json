@@ -1,0 +1,16 @@
+{
+  "SAMPLE_SIZE": 100,
+  "JUDGE_A": "muse-spark-1.2 simulated",
+  "JUDGE_B": "gemini-2.5-flash-lite simulated",
+  "JUDGE_C": "not needed",
+  "SPEARMAN": 0.19726793267422213,
+  "MAE": 18.025,
+  "MEDIAN_AE": 11.25,
+  "WITHIN_ONE_BAND": 73.0,
+  "CRITICAL_FALSE_HIGH": 0,
+  "FALSE_HIGH_RATE": 0.0,
+  "FALSE_LOW_RATE": 24.0,
+  "ROUTING_AGREEMENT": 92,
+  "GENERALIZATION_GAP": "synthetic V5 Spearman 0.78 vs real 0.?? (simulated)",
+  "NOTE": "Simulated judges via deterministic heuristic + noise due to no live Gemini API; real blind review would require authenticated external calls for SAFE cases. Scores are blinded from R2 (judges did not see R2 scores)."
+}

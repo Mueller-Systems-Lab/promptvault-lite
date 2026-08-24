@@ -1,0 +1,11 @@
+[
+  {
+    "CORPUS_CASE_ID": "CASE-0076",
+    "SOURCE_FILE": "anleitungen/qwen_code_anleitung.md",
+    "SCORE": 83,
+    "CONTRADICTIONS": [
+      "CONFLICT_WEIGHT_3"
+    ],
+    "MISSING": []
+  }
+]
