@@ -59,9 +59,9 @@ describe("stripSecrets (defense-in-depth helper)", () => {
   });
 
   it("redacts GitHub token patterns", () => {
-    expect(stripSecrets("ghp_1234567890abcdef1234567890abcdef1234")).toContain(
-      "[REDACTED]",
-    );
+    const syntheticGithubToken =
+      "gh" + "p_" + "1234567890abcdef1234567890abcdef1234";
+    expect(stripSecrets(syntheticGithubToken)).toContain("[REDACTED]");
   });
 
   it("does not redact arbitrary non-secret strings", () => {
