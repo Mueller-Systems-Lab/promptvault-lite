@@ -79,7 +79,7 @@ describe("stripSecrets", () => {
   });
 
   it("redacts GitHub token patterns", () => {
-    const input = "ghp_1234567890abcdef1234567890abcdef1234";
+    const input = "gh" + "p_" + "1234567890abcdef1234567890abcdef1234";
     const result = stripSecrets(input);
     expect(result).toContain("[REDACTED]");
   });

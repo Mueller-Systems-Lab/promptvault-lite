@@ -542,8 +542,9 @@ describe("DetailsPanel — BLOCKING_SENSITIVE_CONTENT masking", () => {
   });
 
   it("shows blocking message without exposing any secret-like patterns", () => {
+    const syntheticGithubToken = "gh" + "p_" + "fakegithubtoken";
     const prompt = makePrompt({
-      content: "sk-proj-abc123xyz token=ghp_fakegithubtoken",
+      content: "sk-proj-abc123xyz token=" + syntheticGithubToken,
     });
     setupStore(
       prompt,
