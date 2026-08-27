@@ -2,6 +2,8 @@
 
 **Local-first desktop app for managing, analyzing and improving prompt collections.**
 
+Developed by [Mueller-Systems-Lab](https://github.com/Mueller-Systems-Lab). PromptVault Lite remains an independent product identity.
+
 PromptVault Lite turns messy prompt folders into a structured, searchable and structure-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
 ![Release](https://img.shields.io/badge/release-v1.12.0-blue)
@@ -10,7 +12,7 @@ PromptVault Lite turns messy prompt folders into a structured, searchable and st
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-> **🌐 Public website:** [**promptvault-lite — Produkt-Website**](https://xxammaxx.github.io/promptvault-lite/) — includes a clean product demo, features, workflow, privacy details and installation instructions.
+> **🌐 Public website:** [**promptvault-lite — Produkt-Website**](https://mueller-systems-lab.github.io/promptvault-lite/) — includes a clean product demo, features, workflow, privacy details and installation instructions.
 
 ---
 
@@ -80,7 +82,7 @@ sudo apt install ./PromptVault.Lite_1.12.0_amd64.deb
 ### Developer / source build
 
 ```bash
-git clone https://github.com/xxammaxx/promptvault-lite.git
+git clone https://github.com/Mueller-Systems-Lab/promptvault-lite.git
 cd promptvault-lite
 pnpm install
 pnpm start          # development mode
