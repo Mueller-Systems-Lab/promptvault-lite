@@ -2,7 +2,7 @@
 
 > **Zweck:** Diese Datei bietet KI-Agenten und RAG-Systemen eine strukturierte Uebersicht
 > ueber das PromptVault Lite Projekt. Sie ist fuer maschinelles Lesen optimiert.
-> **Source of Truth:** GitHub Issues → `xxammaxx/promptvault-lite`
+> **Source of Truth:** GitHub Issues → `Mueller-Systems-Lab/promptvault-lite`
 > **Letzte Aktualisierung:** 2026-07-06
 
 ## Projektidentitaet
@@ -15,7 +15,7 @@ keine Cloud-Anbindung, keine Telemetrie, kein Tracking.
 - **State Management:** Zustand
 - **Version:** v1.7.1 (stable release) — v1.7.2 Release Readiness reviewed (Docs Sync completed via PR #208)
 - **Lizenz:** MIT
-- **Repository:** https://github.com/xxammaxx/promptvault-lite
+- **Repository:** https://github.com/Mueller-Systems-Lab/promptvault-lite
 - **CI Status:** REMOTE_CI_INFRA_BLOCKED (Issue #154) — Local-CI-first policy
 
 ## Architekturueberblick

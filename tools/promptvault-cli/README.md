@@ -2,7 +2,7 @@
 
 ## Local Prompt Management Installer & Manager
 
-This is the Python CLI installer for [PromptVault Lite](https://github.com/xxammaxx/promptvault-lite),
+This is the Python CLI installer for [PromptVault Lite](https://github.com/Mueller-Systems-Lab/promptvault-lite),
 a local prompt-management system with quality and hygiene analysis.
 
 > **Publication status:** The `v1.11.1` GitHub Release (Windows installer + release

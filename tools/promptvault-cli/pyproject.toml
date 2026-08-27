@@ -31,7 +31,7 @@ classifiers = [
 promptvault = "promptvault_cli.cli:main"
 
 [project.urls]
-Repository = "https://github.com/xxammaxx/promptvault-lite"
+Repository = "https://github.com/Mueller-Systems-Lab/promptvault-lite"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/promptvault_cli"]

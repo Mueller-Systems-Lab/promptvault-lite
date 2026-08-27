@@ -13,8 +13,8 @@ PromptVault Lite is a community project. Here is how to get help:
 
 ### Questions & Issues
 
-- **[GitHub Issues](https://github.com/xxammaxx/promptvault-lite/issues)** — Bug reports and feature requests
-- **[GitHub Discussions](https://github.com/xxammaxx/promptvault-lite/discussions)** — Questions and community discussion
+- **[GitHub Issues](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues)** — Bug reports and feature requests
+- **[GitHub Discussions](https://github.com/Mueller-Systems-Lab/promptvault-lite/discussions)** — Questions and community discussion
 
 ### Security Vulnerabilities
 
@@ -32,4 +32,4 @@ See **[SECURITY.md](SECURITY.md)** for responsible disclosure.
 
 ## Current Status
 
-**v1.7.1** is the current stable release (published 2026-06-24). A Windows x64 installer is available on the [GitHub Releases](https://github.com/xxammaxx/promptvault-lite/releases) page. The installer is **unsigned** — Windows SmartScreen may show an "Unknown publisher" warning. Source install remains available for developers via `pnpm install && pnpm start`.
+**v1.7.1** is the current stable release (published 2026-06-24). A Windows x64 installer is available on the [GitHub Releases](https://github.com/Mueller-Systems-Lab/promptvault-lite/releases) page. The installer is **unsigned** — Windows SmartScreen may show an "Unknown publisher" warning. Source install remains available for developers via `pnpm install && pnpm start`.

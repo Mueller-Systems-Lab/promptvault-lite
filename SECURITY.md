@@ -8,7 +8,7 @@ PromptVault Lite is a local-first desktop application. Security issues are taken
 
 Instead, report them via:
 
-- **Security Advisory:** If available, use GitHub's [private security advisory](https://github.com/xxammaxx/promptvault-lite/security/advisories/new) workflow.
+- **Security Advisory:** If available, use GitHub's [private security advisory](https://github.com/Mueller-Systems-Lab/promptvault-lite/security/advisories/new) workflow.
 - **Minimal Issue (fallback):** If private advisories are unavailable, create a GitHub issue labeled `security` with only the word "security" in the body — we will reach out with a secure channel for the full report.
 - **PGP:** Not currently available.
 
