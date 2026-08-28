@@ -38,7 +38,7 @@ Danach `http://localhost:8000/` im Browser öffnen.
 - Workflow: `.github/workflows/pages.yml`
 - Source: **GitHub Actions** (Upload des `website/`-Ordners, Deployment über das Pages-Umgebungs-Environment)
 - Auslöser: Push auf `master` mit Änderungen unter `website/**` oder am Workflow selbst; zusätzlich `workflow_dispatch`
-- URL: <https://xxammaxx.github.io/promptvault-lite/>
+- URL: <https://mueller-systems-lab.github.io/promptvault-lite/>
 
 Voraussetzung in den Repository-Einstellungen: *Settings → Pages → Source: GitHub Actions*.
 
