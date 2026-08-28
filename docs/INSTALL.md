@@ -75,7 +75,7 @@ Voraussetzungen: Python >= 3.11 und [uv](https://docs.astral.sh/uv/). Vollständ
 4. Führe `pnpm install` aus.
 5. Starte mit `pnpm start`.
 
-**Pre-built Installer:** Der Windows x64 NSIS-Installer `PromptVault.Lite_1.11.1_x64-setup.exe` ist als [v1.11.1-Release-Asset](https://github.com/xxammaxx/promptvault-lite/releases/tag/v1.11.1) veröffentlicht. Der Installer ist unsigned — Windows SmartScreen zeigt eine Warnung an.
+**Pre-built Installer:** Der Windows x64 NSIS-Installer `PromptVault.Lite_1.11.1_x64-setup.exe` ist als [v1.11.1-Release-Asset](https://github.com/Mueller-Systems-Lab/promptvault-lite/releases/tag/v1.11.1) veröffentlicht. Der Installer ist unsigned — Windows SmartScreen zeigt eine Warnung an.
 
 ## Linux
 

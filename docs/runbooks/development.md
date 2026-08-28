@@ -12,7 +12,7 @@ version: 1.7.0
 
 ```bash
 # Repository klonen
-git clone https://github.com/xxammaxx/promptvault-lite.git
+git clone https://github.com/Mueller-Systems-Lab/promptvault-lite.git
 cd promptvault-lite
 
 # Abhängigkeiten installieren

@@ -1155,7 +1155,7 @@ const CONTAMINATION_SIGNALS: ContaminationSignal[] = [
       // Check if URLs point to expected repos
       const foreignUrls = urls.filter(
         (u) =>
-          !u.includes("github.com/xxammaxx/promptvault-lite") &&
+          !u.includes("github.com/Mueller-Systems-Lab/promptvault-lite") &&
           !u.includes("github.com/cli") &&
           !u.includes("github.com/tauri") &&
           !u.includes("nodejs.org") &&

@@ -62,7 +62,7 @@ pnpm tauri dev
 - Sicherheitsregeln: `SECURITY_GATES.md` _(noch nicht migriert)_
 - Evidence Standard: `EVIDENCE_STANDARD.md` _(noch nicht migriert)_
 - Context Engineering Standard: `CONTEXT_ENGINEERING_STANDARD.md` _(noch nicht migriert)_
-- [Agenten-Regeln](https://github.com/xxammaxx/promptvault-lite/blob/master/AGENTS.md) — Verbindliche Regeln für KI-Agenten
+- [Agenten-Regeln](https://github.com/Mueller-Systems-Lab/promptvault-lite/blob/master/AGENTS.md) — Verbindliche Regeln für KI-Agenten
 
 ## Navigation
 

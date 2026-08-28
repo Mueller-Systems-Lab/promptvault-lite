@@ -6,7 +6,7 @@
     "artifacts": {
         "windows-x86_64": {
             "filename": "PromptVault.Lite_1.11.1_x64-setup.exe",
-            "url": "https://github.com/xxammaxx/promptvault-lite/releases/download/v1.11.1/PromptVault.Lite_1.11.1_x64-setup.exe",
+            "url": "https://github.com/Mueller-Systems-Lab/promptvault-lite/releases/download/v1.11.1/PromptVault.Lite_1.11.1_x64-setup.exe",
             "sha256": "f803e7ab59faf9a8c8533add889149fb400f8eebbafbdc36af7488d744d1f551",
             "size": 2733025,
             "type": "nsis"

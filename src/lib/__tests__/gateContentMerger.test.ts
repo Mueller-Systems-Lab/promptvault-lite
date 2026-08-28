@@ -129,7 +129,7 @@ describe("sanitizeAnswer", () => {
   });
 
   it("preserves safe markdown links", () => {
-    const input = "[PromptVault](https://github.com/xxammaxx/promptvault-lite)";
+    const input = "[PromptVault](https://github.com/Mueller-Systems-Lab/promptvault-lite)";
     expect(sanitizeAnswer(input)).toBe(input);
   });
 
