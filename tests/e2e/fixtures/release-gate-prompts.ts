@@ -367,6 +367,103 @@ sequenceDiagram
 // Export: all prompts and analysis fixtures
 // =============================================================================
 
+// =============================================================================
+// 6. BLUEPRINT_STRONG — Blueprint with strong, unambiguous blueprint signals
+//    (System Architecture, Data Flow, Phases, Acceptance Criteria,
+//    Verification Contract). Classifies as BLUEPRINT (confidence 0.95).
+// =============================================================================
+
+export const BLUEPRINT_STRONG: PromptItem = {
+  id: "vg-006-blueprint-strong",
+  file_path: "/mock-vault/blueprints/notification-system-architecture.md",
+  file_name: "notification-system-architecture.md",
+  title: "Notification System Architecture Blueprint",
+  description: "Strong-signal architecture blueprint (synthetic)",
+  category: "architecture",
+  version: "1.0",
+  tags: ["blueprint", "architecture"],
+  content: `# Notification System — Architecture Blueprint
+
+## System Architecture
+- Frontend: React context provider
+- Backend: Rust worker with job queue
+- Storage: PostgreSQL jobs table
+
+## Data Flow
+1. Application event fires
+2. Notification service creates job record
+3. Worker picks up pending jobs
+
+## Phases
+Phase 1: Email + in-app channels only.
+Phase 2: Push notifications.
+
+## Security
+- All delivery via TLS
+- No credentials in job payloads
+
+## Risk & Limitations
+- No SMS support
+
+## Acceptance Criteria
+- Notification delivered within 60 seconds
+- Retry with exponential backoff
+
+## Verification Contract
+Each acceptance criterion has a deterministic verification step.
+
+## Next Steps / Handoff
+- Handoff to implementation team after review
+`,
+  raw_frontmatter: {
+    title: "Notification System Architecture Blueprint",
+    category: "architecture",
+    version: "1.0",
+    tags: ["blueprint", "architecture"],
+  },
+  created_at: "2026-01-10T09:00:00Z",
+  updated_at: "2026-06-20T09:00:00Z",
+  is_favorite: false,
+};
+
+// =============================================================================
+// 7. SENSITIVE_BLOCKING_QUOTED — Synthetic quoted credentials that trigger
+//    the critical secret heuristic (BLOCKING_SENSITIVE_CONTENT).
+//    All values are 100 % fake.
+// =============================================================================
+
+export const SENSITIVE_BLOCKING_QUOTED: PromptItem = {
+  id: "vg-007-sensitive-quoted",
+  file_path: "/mock-vault/private/db-sync-quoted.md",
+  file_name: "db-sync-quoted.md",
+  title: "Database Sync Script (quoted credentials)",
+  description: "Contains quoted fake credentials — must be blocked",
+  category: "devops",
+  version: "1.0",
+  tags: ["database", "sync"],
+  content: `## Task
+Connect to the database and sync tables.
+
+## Credentials
+api_key = "FAKE_AKIA1234567890ABCDEF"
+password: "FakePasswordNotReal42"
+
+## Steps
+1. Connect
+2. Export
+3. Import
+`,
+  raw_frontmatter: {
+    title: "Database Sync Script (quoted credentials)",
+    category: "devops",
+    version: "1.0",
+    tags: ["database", "sync"],
+  },
+  created_at: "2026-05-01T08:00:00Z",
+  updated_at: "2026-05-01T08:00:00Z",
+  is_favorite: false,
+};
+
 export const ALL_PROMPTS: PromptItem[] = [
   STANDARD_PROMPT,
   BLUEPRINT,
