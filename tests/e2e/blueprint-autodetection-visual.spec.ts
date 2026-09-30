@@ -140,7 +140,7 @@ test("T3: sensitive content is blocked and secrets never reach the DOM", async (
   await expect(page.locator(".blocking-message")).toBeVisible({ timeout: 10000 });
   // Security boundary: synthetic fake credentials must NOT be rendered
   const bodyText = await page.locator("body").innerText();
-  expect(bodyText).not.toContain("FAKE_AKIA1234567890ABCDEF");
+  expect(bodyText).not.toContain("FAKEKEY_1234567890abcdef");
   expect(bodyText).not.toContain("FakePasswordNotReal42");
   await shot(page, "t3-sensitive-blocked");
 });
@@ -156,11 +156,12 @@ test("T4: blueprint evaluation panel renders all 10 dimensions", async ({ page }
   await expect(panel).toBeVisible({ timeout: 10000 });
   // evaluateBlueprint produces exactly 10 dimensions; the panel renders
   // dimension rows plus 9 numeric sub-score bars.
+  const dimensionRows = await panel.locator(".blueprint-dimension-row").count();
+  expect(dimensionRows).toBe(10);
   const scoreElements = await panel.evaluate(
-    (el) =>
-      el.querySelectorAll("[class*='dimension'], .context-mini-score").length,
+    (el) => el.querySelectorAll(".context-mini-score").length,
   );
-  expect(scoreElements).toBeGreaterThanOrEqual(10);
+  expect(scoreElements).toBeGreaterThanOrEqual(9);
   await shot(page, "t4-blueprint-evaluation");
 });
 
@@ -194,14 +195,26 @@ test("T5: blueprint optimizer modal opens, produces output and closes", async ({
 // ---------------------------------------------------------------------------
 // T6 — Dark/Light mode compatibility for blueprint components
 // ---------------------------------------------------------------------------
-test("T6: blueprint components render in light and dark mode", async ({ page }) => {
+// The app defaults to the DARK theme (fresh profile, getThemeFromStorage
+// fallback), and the header toggle cycles dark -> auto -> light. We capture
+// dark first (default) and then light (after one toggle, resolved via
+// colorScheme 'light' for auto), asserting documentElement data-theme
+// explicitly so the baselines cannot be swapped silently.
+test("T6: blueprint components render in dark and light mode", async ({ page }) => {
   await loadVault(page);
   await selectPromptByName(page, "notification-system-architecture");
   await expect(page.locator(".analysis-section-blueprint")).toBeVisible({ timeout: 10000 });
-  await shot(page, "t6-light-mode");
-  await page.locator("button", { hasText: "🌙" }).first().click();
-  await page.waitForTimeout(800);
-  await expect(page.locator(".analysis-section-blueprint")).toBeVisible();
+
+  // Default: dark theme
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(page.locator(".content-class-badge").first()).toBeVisible();
   await shot(page, "t6-dark-mode");
+
+  // One toggle: dark -> auto (resolves to light under colorScheme 'light')
+  await page.locator("button", { hasText: "🌙" }).first().click();
+  await page.waitForTimeout(800);
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(page.locator(".analysis-section-blueprint")).toBeVisible();
+  await expect(page.locator(".content-class-badge").first()).toBeVisible();
+  await shot(page, "t6-light-mode");
 });
