@@ -1,4 +1,5 @@
 pub mod artifacts;
+pub mod embeddings;
 pub mod hygiene;
 pub mod quality;
 pub mod r2;

@@ -1,4 +1,5 @@
 pub mod actions;
+pub mod embeddings;
 pub mod analyze;
 pub mod export;
 pub mod favorites;
