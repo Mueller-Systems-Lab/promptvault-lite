@@ -43,9 +43,9 @@ describe("SettingsPanel — Embeddings-Sektion (#199)", () => {
       enabled: false,
     });
     render(<SettingsPanel onClose={() => {}} />);
-    await waitFor(() =>
-      expect(vi.mocked(embClient.getEmbeddingsStatus)).toHaveBeenCalled(),
-    );
+    await waitFor(() => {
+      expect(vi.mocked(embClient.getEmbeddingsStatus)).toHaveBeenCalled();
+    });
     expect(
       screen.queryByTestId("embeddings-section"),
     ).not.toBeInTheDocument();
