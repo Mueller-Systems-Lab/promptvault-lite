@@ -30,7 +30,7 @@ The two most recently closed issues are #298 and #291 (both "docs(brand): add Mu
 | 40 | Screenshots in docs/screenshots/ | 6 screenshots captured headed from the real renderer (synthetic data), ≤200 KB, README section + alt texts [V] | DONE | PR #302 (merge fa2cd39), evidence comment | **Closed** |
 | 42 | docs/README.md archivieren/löschen | outdated v1.9.0 duplicate, excluded from MkDocs; archived to docs/archive/ with note [V] | DONE | PR #302, evidence comment | **Closed** |
 | 43 | Native deps per platform in INSTALL.md | Linux/Windows/macOS sections added; Linux list verified on this host via pkg-config + green cargo/pnpm gates [V] | DONE | PR #302, evidence comment | **Closed** |
-| 45 | Prompt-Vorschläge übernehmen und neu schreiben | Was PARTIAL (optimizer apply existed; checkbox workflow missing — recommendations were a static `<ol>` [V]); implemented: checkboxes, editable blocks (rule-based mapping), preview, re-analyze with before/after, explicit-save-only, reset [V] | PARTIAL→DONE | PR #303 (33 new tests, red-first) | Closed after merge (see §4) |
+| 45 | Prompt-Vorschläge übernehmen und neu schreiben | Was PARTIAL (optimizer apply existed; checkbox workflow missing — recommendations were a static `<ol>` [V]); implemented: checkboxes, editable blocks (rule-based mapping), preview, re-analyze with before/after, explicit-save-only, reset, stale guards [V] | PARTIAL→DONE | PR #303 merge `e73bfba`; review REQUEST_CHANGES→fixed→APPROVE; all 7 ACs + evidence comment | **Closed** |
 | 69 | Prompt-Packs im UI manuell testen | Manual UI test executed headed with committed synthetic fixtures: 7/7 PASS incl. clipboard-content verification and hygiene artifacts (SCOPE_POLLUTION/CHAT_RESIDUE, score 35/critical) [V] | DONE | Evidence comment | **Closed** |
 | 97 | Web/LAN Backend-Adapter (EPIC) | Network-listener + architecture change + new deps → owner-gated by AGENTS.md §7, constitution §1, strategy #296 [V] | CONFLICT/BLOCKED | Conflict assessment comment posted; no code | **Open** (owner decision) |
 | 99–107 | A2/A3, B1–B5, C1/C2 core/server split | Children of #97; require the workspace split first [V] | BLOCKED (epic) | Ledger entry; documented via #97 comment | **Open** (owner decision) |
@@ -44,9 +44,9 @@ The two most recently closed issues are #298 and #291 (both "docs(brand): add Mu
 | 137–138 | K1/K2 docker preview/LAN check | Children of #97 | BLOCKED (epic) | as above | **Open** (owner decision) |
 | 139–142 | L1–L4 review/approval/evidence/merge gates | Procedural children of the epic merge flow | BLOCKED (epic) | as above | **Open** (owner decision) |
 | 146 | Agentic/Vibe-Coding Baseline 2026 | Phases 1–3 verified present/green [V]; Phase 4 (recurring eval rotation) only partially institutionalized [V] | PARTIAL/BLOCKED | Phase evidence comment posted (required output format included) | **Open** (owner accept or fund Phase-4 remainder) |
-| 152 | Visual E2E blueprint autodetection | Issue's "Current State" outdated (Playwright infra exists); spec added: 6 tests, chromium+firefox green; webkit blocked by host libs [V] | DONE | PR #304 | Closed after merge (see §4) |
+| 152 | Visual E2E blueprint autodetection | Issue's "Current State" outdated (Playwright infra exists); 6-test spec added, chromium+firefox green; webkit blocked by host libs [V]. PR #304 closed (unrelated commits + inverted T6 baselines found in review) → replaced by PR #306 [V] | DONE | PR #306 merge `ae76544`; review APPROVE; evidence comment | **Closed** |
 | 155 | Mermaid map blueprint flow | Code-verified Mermaid flowchart added to ARCHITECTURE.md; syntax validated by independent reviewer with mermaid v11 [V] | DONE | PR #302, evidence comment | **Closed** |
-| 199 | Local embeddings MVP | ADR-004-accepted scope implemented: synthetic provider (deterministic, 0 deps), additive SQLite tables, flag-gated fail-closed commands, sensitive-skip + hash-skip, sanitized search; real provider stays owner-gated per ADR-004 [V] | DONE (MVP scope) | PR #305 (17 Rust + 4 FE tests) | Closed after merge (see §4) |
+| 199 | Local embeddings MVP | ADR-004-accepted scope implemented: synthetic provider (deterministic, 0 deps), additive SQLite tables, flag-gated fail-closed commands, sensitive-skip + hash-skip, sanitized search; real provider stays owner-gated per ADR-004 [V] | DONE (code) / MERGE BLOCKED | PR #305 open: all 12 GitHub checks green, local gates green — **missing: independent review verdict** (reviewer agent hit the session usage limit before producing one; reset 2026-10-01). No self-certification. | **Open** (merge-ready pending review) |
 | 295 | v1.11.0 Advanced Workflows GA | All acceptance criteria verified implemented + shipped in v1.11.0/v1.11.1 releases and v1.12.0 tag; owner approval evidenced by published releases [V] | DONE | Evidence comment | **Closed** (2026-09-30) |
 | 296 | Portfolio consolidation (prompt_archiv) | Source repo not accessible (all probes 404; org list of 24 repos has none) [V]; strategy elements partly satisfied (license, positioning, demo); SBOM/reproducible-build attestation missing [V]; v1.12.0 release publication pending [V] | BLOCKED (owner) | Assessment comment posted | **Open** (3 exact owner decisions listed) |
 
@@ -88,16 +88,21 @@ The two most recently closed issues are #298 and #291 (both "docs(brand): add Mu
 | PR | Scope | Review | Gates | Merge | Issues closed |
 |---|---|---|---|---|---|
 | #302 | Docs batch (#40 #42 #43 #155 + release-state alignment) | Independent reviewer REQUEST_CHANGES (2 blockers) → fixes bd13c06 → re-review **APPROVE** | G9–G16 + GitHub checks 12/12 | **Squash-merged** via web UI → master `fa2cd39` (read-back verified) | #40, #42, #43, #155 |
-| #303 | Recommendation-apply workflow (#45) | Independent reviewer (see §5) | G17–G20 | see §5 | #45 |
-| #304 | Blueprint visual E2E (#152) | Independent reviewer | G25, G26 | see §5 | #152 |
-| #305 | Embeddings MVP (#199) | Independent reviewer | G21–G24 | see §5 | #199 |
+| #303 | Recommendation-apply workflow (#45) | Review 1: REQUEST_CHANGES (3 blockers) → fixes `0a487b3` → Review 2: **APPROVE** | G17–G20 + PR checks 11/12 (cancelled Rust job = runner 20-min timeout on byte-identical master Rust tree, proven via empty `src-tauri` diff) | **Squash-merged** via web UI → `e73bfba` (read back) | #45 (auto-closed + evidence comment) |
+| #304 | Blueprint visual E2E (#152) | Review: REQUEST_CHANGES (unrelated #199 commits on branch; inverted T6 baselines) | G25, G26 | **Closed** (not merged) → replaced by #306 | — |
+| #305 | Embeddings MVP (#199) | **MISSING** (reviewer agent usage-limited before verdict) | G21–G24 + PR checks **12/12 green**, no conflicts | **NOT merged** (merge condition unfulfilled) | #199 stays open |
 
 (§5 review verdicts for #303/#304/#305 are recorded in the run transcript; merges/closures executed accordingly — final states verifiable on GitHub.)
+
+| #306 | Blueprint visual E2E v2 (#152) — replacement for #304 | Review: **APPROVE** (scope discipline, theme baselines pixel-verified, E10 PASS, blocking heuristic empirically confirmed) | G25 + G26 + vitest + PR checks **12/12** | **Squash-merged** via web UI → `ae76544` (read back) | #152 (closed + evidence comment) |
 
 ## 5. Independent reviews
 
 - PR #302: reviewer #1 (REQUEST_CHANGES: PROJECT_STATUS:164 + ROADMAP:22 RELEASED contradictions) → fixed → reviewer #2 **APPROVE** (all blocking + non-blocking items verified fixed).
-- PR #303/#304/#305: three parallel independent reviewer agents; verdicts recorded in the transcript; blocking findings (if any) were addressed before merge — see GitHub PR conversations for the final state.
+- PR #303: Review 1 REQUEST_CHANGES (reason-code export wiring, stale-draft invalidation, cross-prompt selection leak) → fix commit `0a487b3` (incl. reasonCodeSync drift-guard test) → Review 2 **APPROVE** (~1590 related tests re-verified, no regressions).
+- PR #304: **REQUEST_CHANGES** (2 blockers) → branch closed, work replaced by #306.
+- PR #306: **APPROVE** (all six checkpoints green).
+- PR #305: **no verdict** — the independent reviewer agent exhausted the session usage limit mid-review. Per the merge conditions (no self-certification), the fully green PR #305 remains **open** until an independent review happens. Exact remaining action: run an independent review of `feature/embeddings-199` (HEAD `29780ec`), then merge via the web UI (all other conditions already verified green).
 
 ## 6. AI-interface finding (typed action layer, for future decisions)
 
@@ -107,10 +112,11 @@ Verified facts [V]: the typed action registry (`src/actions/`) is an internal Ty
 
 1. **Web/LAN epic #97 + #99–#142 (45 issues):** owner architecture decision required (conflict with strategy #296; AGENTS.md §7 approval requirements; constitution §1). Options documented on #97.
 2. **#146 Phase 4:** recurring eval rotation not institutionalized — owner accept-or-fund decision.
-3. **#296:** prompt_archiv source not accessible (probes 404); v1.12.0 Release publication requires a capable host; SBOM/reproducible-build attestation decision.
-4. **v1.12.0 GitHub Release:** not published (tag exists) — fixed in docs (PR #302), publication itself is the owner action.
-5. **webkit E2E project:** cannot launch on this host (missing system libraries) — environment, not code; chromium+firefox green.
-6. **Windows-native verification (WebdriverIO E2E, NSIS build):** no Windows host in this run — NOT_RUN.
+3. **PR #305 merge:** pending independent review (see §5).
+4. **#296:** prompt_archiv source not accessible (probes 404); v1.12.0 Release publication requires a capable host; SBOM/reproducible-build attestation decision.
+5. **v1.12.0 GitHub Release:** not published (tag exists) — fixed in docs (PR #302), publication itself is the owner action.
+6. **webkit E2E project:** cannot launch on this host (missing system libraries) — environment, not code; chromium+firefox green.
+7. **Windows-native verification (WebdriverIO E2E, NSIS build):** no Windows host in this run — NOT_RUN.
 
 ## 8. Run artifacts
 
