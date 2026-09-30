@@ -6,7 +6,7 @@ Developed by [Mueller-Systems-Lab](https://github.com/Mueller-Systems-Lab). Prom
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and structure-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.12.0-blue)
+![Release](https://img.shields.io/badge/release-v1.11.1%20published%20·%20v1.12.0%20RC-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
@@ -52,13 +52,13 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## Current Release & Publication Status
 
-**v1.12.0** is the final Linux release candidate. Its local-first, offline-capable and deterministic contract covers structure, completeness, hygiene and contradictions plus actionable improvement signals. The native packages are built and checksummed but are not publicly downloadable yet because GitHub asset publication is blocked on this host. Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
+**Latest published GitHub Release: `v1.11.1`.** The `v1.12.0` tag exists on `master`, and its local-first, offline-capable and deterministic contract (structure, completeness, hygiene, contradictions plus actionable improvement signals) is final — but the **`v1.12.0` GitHub Release with the Linux packages has not been published yet** (asset upload is blocked from the build host; publishing requires an explicit owner action from a capable host). Until that happens, `v1.12.0` is a release candidate: the packages below are built and checksummed but not publicly downloadable. Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
 
-| Platform | Asset |
+| Platform | Asset (prepared, publication pending) |
 |---|---|
 | Linux x64 | `PromptVault.Lite_1.12.0_amd64.deb` (Debian package) |
 | Linux x64 | `PromptVault Lite-1.12.0-1.x86_64.rpm` (RPM package) |
-| Linux x64 | `PromptVault Lite_1.12.0_amd64.AppImage` (portable package) |
+| Linux x64 | `PromptVault Lite-1.12.0_amd64.AppImage` (portable package) |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
 
@@ -235,7 +235,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Stable public desktop release: v1.12.0 (GitHub Release with Linux x64 packages). The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Latest published desktop release: v1.11.1 (GitHub Release). The v1.12.0 Linux x64 release candidate is built, checksummed and tagged on `master`, but its GitHub Release publication is still pending (owner action). The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

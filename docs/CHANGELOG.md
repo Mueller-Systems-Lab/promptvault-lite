@@ -23,7 +23,8 @@ instability. Windows and macOS packages are not produced in this Linux run.
 - Privacy evidence remains sanitized and no production LLM dependency or
   external semantic-study runtime is included.
 - Linux installation assets, checksums and a source-identity manifest are
-  published with the GitHub release.
+  prepared for the GitHub release; publication is still pending (asset upload
+  blocked from the build host — owner action required).
 
 ## v1.11.1 — Patch: Release/Version-Test-Contract-Reparatur (PATCH)
 
