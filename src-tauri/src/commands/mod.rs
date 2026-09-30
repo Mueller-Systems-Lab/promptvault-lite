@@ -1,6 +1,6 @@
 pub mod actions;
-pub mod embeddings;
 pub mod analyze;
+pub mod embeddings;
 pub mod export;
 pub mod favorites;
 pub mod persistence;

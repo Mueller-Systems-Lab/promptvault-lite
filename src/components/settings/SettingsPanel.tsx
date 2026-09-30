@@ -4,9 +4,17 @@
 // Expanded from the Dev-Mode-only modal (Issue #92) to a full settings dialog
 // with Theme, Export, Layout, Keyboard Shortcuts, and Language sections.
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { useAppStore } from "@/stores/appStore";
+import {
+  getEmbeddingsStatus,
+  reindexEmbeddings,
+  semanticSearch,
+  type EmbeddingsStatus,
+  type ReindexReport,
+  type SemanticSearchHit,
+} from "@/lib/embeddings/tauriClient";
 import { useObservabilityStore } from "@/observability/observabilityStore";
 import type { Theme, ExportFormat } from "@/stores/appStore";
 
@@ -44,6 +52,30 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
   const obsDeepEnabled = useObservabilityStore((s) => s.isDeepEnabled);
   const toggleObservability = useObservabilityStore((s) => s.toggleObservability);
   const toggleDeepDiagnostics = useObservabilityStore((s) => s.toggleDeepDiagnostics);
+
+  // Lokale Embeddings (Issue #199) — flag-gegate, nur-lesende Anzeige
+  const [embStatus, setEmbStatus] = useState<EmbeddingsStatus | null>(null);
+  const [embError, setEmbError] = useState<string | null>(null);
+  const [embReindexing, setEmbReindexing] = useState(false);
+  const [embReport, setEmbReport] = useState<ReindexReport | null>(null);
+  const [embQuery, setEmbQuery] = useState("");
+  const [embResults, setEmbResults] = useState<SemanticSearchHit[] | null>(null);
+  const [embSearching, setEmbSearching] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    getEmbeddingsStatus()
+      .then((st) => {
+        if (!cancelled) setEmbStatus(st);
+      })
+      .catch(() => {
+        // Command nicht verfügbar (z. B. Web-Modus) → Sektion bleibt verborgen
+        if (!cancelled) setEmbStatus(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Escape key closes the modal (Issue #63 AC)
   useEffect(() => {
@@ -318,6 +350,119 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
               </div>
             )}
           </section>
+
+          {/* ---- Lokale Embeddings (Issue #199, flag-gegate) ---- */}
+          {embStatus?.enabled && (
+            <section className="settings-section" data-testid="embeddings-section">
+              <h3 className="settings-section-title">
+                Lokale Embeddings (experimentell)
+              </h3>
+              <div className="settings-note settings-note--active">
+                <strong>Feature-Flag aktiv</strong> — Provider{" "}
+                {embStatus.provider}/{embStatus.model} ({embStatus.dimensions}{" "}
+                Dimensionen, synthetisch). Indexiert: {embStatus.indexed_count}{" "}
+                Prompts. Hinweis: Die Vektoren sind ein struktureller
+                Ähnlichkeits-Proxy — kein semantisches Modell (ADR-004).
+              </div>
+              <div className="settings-row" style={{ marginTop: "0.5em" }}>
+                <div className="settings-row-label">
+                  <span className="settings-label-text">Index aktualisieren</span>
+                  <span className="settings-label-hint">
+                    Explizite Neu-Indexierung. Sensible Prompts (Critical/PII/Secret)
+                    werden übersprungen; unveränderte Prompts werden per Hash erkannt.
+                  </span>
+                </div>
+                <button
+                  className="btn"
+                  disabled={embReindexing}
+                  onClick={() => {
+                    setEmbReindexing(true);
+                    setEmbError(null);
+                    reindexEmbeddings()
+                      .then((rep) => {
+                        setEmbReport(rep);
+                        return getEmbeddingsStatus();
+                      })
+                      .then((st) => {
+                        setEmbStatus(st);
+                      })
+                      .catch((e: unknown) => {
+                        setEmbError(e instanceof Error ? e.message : String(e));
+                      })
+                      .finally(() => {
+                        setEmbReindexing(false);
+                      });
+                  }}
+                  aria-label="Embeddings neu indexieren"
+                >
+                  {embReindexing ? "⏳ Indexiere..." : "🔄 Neu indexieren"}
+                </button>
+              </div>
+              {embReport && (
+                <div className="settings-note" data-testid="embeddings-reindex-report">
+                  Indexiert: {embReport.indexed} · Sensibel übersprungen:{" "}
+                  {embReport.skipped_sensitive} · Unverändert übersprungen:{" "}
+                  {embReport.skipped_unchanged} · Fehler: {embReport.failed}
+                </div>
+              )}
+              {embError && (
+                <div className="settings-note settings-note--inactive">
+                  Fehler: {embError}
+                </div>
+              )}
+              <div className="settings-row" style={{ marginTop: "0.5em" }}>
+                <div className="settings-row-label">
+                  <span className="settings-label-text">Semantische Suche (Test)</span>
+                  <span className="settings-label-hint">
+                    Advisory-Ergebnisse mit Titel/Kategorie/Score — nie Prompt-Inhalt.
+                  </span>
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: "0.5em", alignItems: "center" }}>
+                <input
+                  type="text"
+                  className="settings-input"
+                  value={embQuery}
+                  onChange={(e) => {
+                    setEmbQuery(e.target.value);
+                  }}
+                  placeholder="Suchbegriffe…"
+                  aria-label="Semantische Suche (Embeddings)"
+                  data-testid="embeddings-search-input"
+                />
+                <button
+                  className="btn"
+                  disabled={embSearching || embQuery.trim().length === 0}
+                  onClick={() => {
+                    setEmbSearching(true);
+                    semanticSearch(embQuery, 10)
+                      .then((hits) => {
+                        setEmbResults(hits);
+                      })
+                      .catch((e: unknown) => {
+                        setEmbError(e instanceof Error ? e.message : String(e));
+                      })
+                      .finally(() => {
+                        setEmbSearching(false);
+                      });
+                  }}
+                  aria-label="Semantische Suche ausführen"
+                >
+                  {embSearching ? "⏳" : "🔍"}
+                </button>
+              </div>
+              {embResults && (
+                <ul className="settings-note" data-testid="embeddings-search-results">
+                  {embResults.length === 0 && <li>Keine Treffer.</li>}
+                  {embResults.map((h) => (
+                    <li key={h.prompt_id}>
+                      {h.title} ({h.category}) — Score {h.score.toFixed(3)}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
         </div>
 
         <div className="modal-footer">
