@@ -445,7 +445,7 @@ export const SENSITIVE_BLOCKING_QUOTED: PromptItem = {
 Connect to the database and sync tables.
 
 ## Credentials
-api_key = "FAKE_AKIA1234567890ABCDEF"
+api_key = "FAKEKEY_1234567890abcdef"
 password: "FakePasswordNotReal42"
 
 ## Steps
