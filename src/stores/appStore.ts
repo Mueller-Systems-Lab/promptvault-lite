@@ -44,6 +44,11 @@ import { mergeAnswers } from "@/lib/gateContentMerger";
 import { generateVariants as generateDirectionVariants } from "@/lib/variantGenerator";
 import { getDefaultSelection } from "@/lib/directionProfiles";
 import {
+  buildRecommendationBlocks,
+  buildPreviewContent,
+  type RecommendationBlock,
+} from "@/lib/recommendationBlocks";
+import {
   createTrace,
   openSpan,
   completeTrace,
@@ -299,6 +304,15 @@ interface AppState {
     saveError: string | null;
   } | null;
 
+  // Recommendation-apply draft state (Issue #45 — RECOMMENDATION_APPLY)
+  recommendationDraft: {
+    promptId: string;
+    originalContent: string;
+    blocks: RecommendationBlock[];
+    before: { quality: number | null; hygiene: number | null };
+    after: { quality: number | null; hygiene: number | null } | null;
+  } | null;
+
   // Actions
   setPrompts: (prompts: PromptItem[]) => void;
   selectPrompt: (id: string | null) => void;
@@ -400,6 +414,20 @@ interface AppState {
   savePromptEditor: () => Promise<void>;
   invalidateAnalysisForPrompt: (promptId: string) => void;
 
+  // Recommendation-apply actions (Issue #45)
+  startRecommendationDraft: (
+    promptId: string,
+    selectedRecommendations: string[],
+  ) => void;
+  updateRecommendationBlock: (
+    promptId: string,
+    blockId: string,
+    text: string,
+  ) => void;
+  resetRecommendationDraft: () => void;
+  applyRecommendationDraftToEditor: (promptId: string) => void;
+  analyzeRecommendationPreview: () => Promise<void>;
+
   // Async actions
   scanFolder: (path: string) => Promise<void>;
   analyzeSelected: () => Promise<void>;
@@ -499,6 +527,7 @@ interface AdvancedWorkflowEventOptions {
   profileIds?: string[];
   enrichedSource?: boolean;
   sourceFingerprint?: string;
+  blockCount?: number;
 }
 
 /**
@@ -540,6 +569,9 @@ function emitAdvancedWorkflowEvent(
   }
   if (options.profileCount !== undefined) {
     attributes["promptvault.direction.profile_count"] = options.profileCount;
+  }
+  if (options.blockCount !== undefined) {
+    attributes["promptvault.recommendations.block_count"] = options.blockCount;
   }
   if (options.profileIds !== undefined) {
     attributes["promptvault.direction.profile_ids"] = options.profileIds;
@@ -624,6 +656,7 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   // Authoring editor state — closed by default
   promptEditor: null,
+  recommendationDraft: null,
 
   // Actions
   setPrompts: (prompts) => {
@@ -1966,6 +1999,139 @@ export const useAppStore = create<AppState>((set, get) => ({
         category: "STATE_ERROR",
       });
     }
+  },
+
+  // =========================================================================
+  // Recommendation-Apply Workflow (Issue #45 — RECOMMENDATION_APPLY)
+  // =========================================================================
+  // Advisory-only: the draft never mutates the stored prompt. Applying goes
+  // through the existing editor (dirty) → explicit "Speichern" lifecycle.
+
+  startRecommendationDraft: (promptId, selectedRecommendations) => {
+    if (selectedRecommendations.length === 0) {
+      emitAdvancedWorkflowEvent("recommendations.apply", "blocked", {
+        promptId,
+        reasonCode: "NO_RECOMMENDATIONS_SELECTED",
+        category: "USER_INPUT_ERROR",
+      });
+      return;
+    }
+    const prompt = get().prompts.find((p) => p.id === promptId);
+    if (!prompt) {
+      emitAdvancedWorkflowEvent("recommendations.apply", "failed", {
+        promptId,
+        reasonCode: "NO_PROMPT_SELECTED",
+        category: "USER_INPUT_ERROR",
+      });
+      return;
+    }
+    // Runtime guard: Record key may not exist although typed non-optional.
+    const evaluation = get().evaluations[promptId] as
+      | PromptEvaluation
+      | undefined;
+    const hygiene = get().hygiene[promptId] as PromptHygiene | undefined;
+    set({
+      recommendationDraft: {
+        promptId,
+        originalContent: prompt.content,
+        blocks: buildRecommendationBlocks(selectedRecommendations),
+        before: {
+          quality: evaluation ? evaluation.overall_score : null,
+          hygiene: hygiene ? hygiene.hygiene_score : null,
+        },
+        after: null,
+      },
+    });
+  },
+
+  updateRecommendationBlock: (promptId, blockId, text) => {
+    set((state) => {
+      if (
+        !state.recommendationDraft ||
+        state.recommendationDraft.promptId !== promptId
+      ) {
+        return {};
+      }
+      return {
+        recommendationDraft: {
+          ...state.recommendationDraft,
+          blocks: state.recommendationDraft.blocks.map((b) =>
+            b.id === blockId ? { ...b, text } : b,
+          ),
+        },
+      };
+    });
+  },
+
+  resetRecommendationDraft: () => {
+    set({ recommendationDraft: null });
+  },
+
+  applyRecommendationDraftToEditor: (promptId) => {
+    const state = get();
+    const draft = state.recommendationDraft;
+    if (!draft || draft.promptId !== promptId) {
+      emitAdvancedWorkflowEvent("recommendations.apply", "failed", {
+        promptId,
+        reasonCode: "NO_PROMPT_SELECTED",
+        category: "USER_INPUT_ERROR",
+      });
+      return;
+    }
+    const prompt = state.prompts.find((p) => p.id === promptId);
+    if (!prompt || draft.originalContent !== prompt.content) {
+      // Stale guard: source changed since the draft was created.
+      emitAdvancedWorkflowEvent("recommendations.apply", "failed", {
+        promptId,
+        reasonCode: "STALE_SOURCE",
+        category: "STATE_ERROR",
+      });
+      set({ recommendationDraft: null });
+      return;
+    }
+    const previewContent = buildPreviewContent(
+      draft.originalContent,
+      draft.blocks,
+    );
+    // Apply through the existing authoring lifecycle: editor dirty, explicit save.
+    get().openEditPrompt(promptId);
+    get().updateEditorField("content", previewContent);
+    set({ recommendationDraft: null });
+    emitAdvancedWorkflowEvent("recommendations.apply", "succeeded", {
+      promptId,
+      blockCount: draft.blocks.length,
+    });
+  },
+
+  analyzeRecommendationPreview: async () => {
+    const state = get();
+    const draft = state.recommendationDraft;
+    if (!draft) return;
+    const previewContent = buildPreviewContent(
+      draft.originalContent,
+      draft.blocks,
+    );
+    // Analysis on the preview only — no store cache writes, no persistence.
+    // A synthetic preview id keeps the diagnostic trace separate from the
+    // stored prompt analysis.
+    const [evaluation, hygiene] = await Promise.all([
+      evaluatePrompt(`preview:${draft.promptId}`, previewContent),
+      analyzeHygiene(`preview:${draft.promptId}`, previewContent),
+    ]);
+    set((s) => {
+      if (!s.recommendationDraft || s.recommendationDraft.promptId !== draft.promptId) {
+        return {};
+      }
+      return {
+        recommendationDraft: {
+          ...s.recommendationDraft,
+          after: {
+            quality: evaluation.overall_score,
+            hygiene: hygiene.hygiene_score,
+          },
+        },
+      };
+    });
   },
 
   // Derived data

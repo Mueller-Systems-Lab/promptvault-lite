@@ -79,6 +79,7 @@ const SAFE_ATTRIBUTE_KEYS: ReadonlySet<string> = new Set([
   "promptvault.direction.profile_ids",
   "promptvault.direction.enriched_source",
   "promptvault.advanced.source_fingerprint",
+  "promptvault.recommendations.block_count",
 ]);
 
 /** Bounded, code-owned invariant violation types (not user content). */

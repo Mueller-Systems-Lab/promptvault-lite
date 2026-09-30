@@ -2287,3 +2287,86 @@ body {
 .paste-info-footer p {
   margin: 0;
 }
+
+/* =============================================================================
+   Recommendation-Apply Workflow (Issue #45)
+   ============================================================================= */
+.recommendations-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-sm, 8px) 0;
+}
+
+.recommendation-item {
+  margin-bottom: 4px;
+}
+
+.recommendation-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.recommendation-label input[type="checkbox"] {
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.recommendation-draft {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: var(--spacing-sm, 8px);
+  background: var(--color-bg-secondary, rgba(127, 127, 127, 0.06));
+}
+
+.recommendation-block {
+  margin-bottom: var(--spacing-sm, 8px);
+}
+
+.recommendation-block-source {
+  font-size: 0.85em;
+  font-weight: 600;
+  margin-bottom: 2px;
+  opacity: 0.8;
+}
+
+.recommendation-block-text {
+  width: 100%;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85em;
+  padding: 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-bg, transparent);
+  color: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.recommendation-preview {
+  max-height: 220px;
+  overflow: auto;
+  font-size: 0.8em;
+  white-space: pre-wrap;
+  border: 1px dashed var(--color-border);
+  border-radius: 4px;
+  padding: 8px;
+  margin: 4px 0 var(--spacing-sm, 8px) 0;
+}
+
+.recommendation-score-compare .recommendation-score-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.9em;
+  margin: 2px 0;
+}
+
+.recommendation-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: var(--spacing-sm, 8px);
+}

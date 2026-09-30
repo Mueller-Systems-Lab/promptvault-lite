@@ -105,7 +105,8 @@ export type ReasonCode =
   | "GENERATION_FAILED"
   | "STALE_SOURCE"
   | "NO_VARIANT_SELECTED"
-  | "APPLY_FAILED";
+  | "APPLY_FAILED"
+  | "NO_RECOMMENDATIONS_SELECTED";
 
 export interface DiagnosticError {
   /** Raw error message. Omited from diagnostic exports (may contain user content/paths/secrets). */

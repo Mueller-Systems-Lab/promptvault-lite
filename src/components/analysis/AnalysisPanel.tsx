@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAppStore } from "@/stores/appStore";
+import { buildPreviewContent } from "@/lib/recommendationBlocks";
 import { BlueprintEvaluationPanel } from "@/components/analysis/BlueprintEvaluationPanel";
 import type { RiskFlagType } from "@/types";
 
@@ -166,8 +167,49 @@ export const AnalysisPanel: React.FC = () => {
   const blueprintEval = useAppStore((s) => s.selectedBlueprintEvaluation)();
   const isAnalyzing = useAppStore((s) => s.isAnalyzing);
   const analyzeSelected = useAppStore((s) => s.analyzeSelected);
+  const recommendationDraft = useAppStore((s) => s.recommendationDraft);
+  const startRecommendationDraft = useAppStore(
+    (s) => s.startRecommendationDraft,
+  );
+  const updateRecommendationBlock = useAppStore(
+    (s) => s.updateRecommendationBlock,
+  );
+  const resetRecommendationDraft = useAppStore(
+    (s) => s.resetRecommendationDraft,
+  );
+  const applyRecommendationDraftToEditor = useAppStore(
+    (s) => s.applyRecommendationDraftToEditor,
+  );
+  const analyzeRecommendationPreview = useAppStore(
+    (s) => s.analyzeRecommendationPreview,
+  );
 
   const [showAllImprovements, setShowAllImprovements] = useState(false);
+  const [selectedRecommendations, setSelectedRecommendations] = useState<
+    Set<number>
+  >(new Set());
+  const [isPreviewAnalyzing, setIsPreviewAnalyzing] = useState(false);
+
+  const toggleRecommendation = (index: number) => {
+    setSelectedRecommendations((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  };
+
+  const handleReanalyze = async (): Promise<void> => {
+    setIsPreviewAnalyzing(true);
+    try {
+      await analyzeRecommendationPreview();
+    } finally {
+      setIsPreviewAnalyzing(false);
+    }
+  };
 
   if (!prompt) {
     return (
@@ -429,15 +471,139 @@ export const AnalysisPanel: React.FC = () => {
           </div>
         )}
 
-        {/* Empfehlungen */}
-        {evaluation && evaluation.recommendations.length > 0 && (
+        {/* Empfehlungen (Issue #45 — auswählbar und als editierbare Blöcke übernehmbar) */}
+        {evaluation && evaluation.recommendations.length > 0 && !recommendationDraft && (
           <div className="analysis-section">
             <h3>Empfehlungen</h3>
-            <ol className="recommendations-list">
+            <ul className="recommendations-checklist">
               {evaluation.recommendations.map((rec, i) => (
-                <li key={i}>{rec}</li>
+                <li key={i} className="recommendation-item">
+                  <label className="recommendation-label">
+                    <input
+                      type="checkbox"
+                      checked={selectedRecommendations.has(i)}
+                      onChange={() => {
+                    toggleRecommendation(i);
+                  }}
+                      data-testid={`recommendation-checkbox-${i}`}
+                    />
+                    <span>{rec}</span>
+                  </label>
+                </li>
               ))}
-            </ol>
+            </ul>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              disabled={selectedRecommendations.size === 0}
+              onClick={() => {
+                startRecommendationDraft(
+                  prompt.id,
+                  evaluation.recommendations.filter((_, i) =>
+                    selectedRecommendations.has(i),
+                  ),
+                );
+              }}
+              data-testid="recommendation-apply-start"
+            >
+              ✅ Vorschläge übernehmen ({selectedRecommendations.size})
+            </button>
+          </div>
+        )}
+
+        {/* Recommendation-Apply Draft (Issue #45) */}
+        {recommendationDraft && recommendationDraft.promptId === prompt.id && (
+          <div className="analysis-section recommendation-draft" data-testid="recommendation-draft">
+            <h3>Vorschläge als Textbausteine</h3>
+            {recommendationDraft.blocks.map((block) => (
+              <div key={block.id} className="recommendation-block">
+                <div className="recommendation-block-source" title={block.sourceRecommendation}>
+                  {block.heading}
+                </div>
+                <textarea
+                  className="recommendation-block-text"
+                  value={block.text}
+                  onChange={(e) => {
+                    updateRecommendationBlock(
+                      recommendationDraft.promptId,
+                      block.id,
+                      e.target.value,
+                    );
+                  }}
+                  rows={4}
+                  data-testid={`recommendation-block-${block.id}`}
+                  aria-label={`Textbaustein ${block.heading}`}
+                />
+              </div>
+            ))}
+            <h4>Vorschau des umgeschriebenen Prompts</h4>
+            <pre
+              className="recommendation-preview"
+              data-testid="recommendation-preview"
+            >
+              {buildPreviewContent(
+                recommendationDraft.originalContent,
+                recommendationDraft.blocks,
+              )}
+            </pre>
+            <div className="recommendation-score-compare" data-testid="recommendation-score-compare">
+              <h4>Vorher / Nachher</h4>
+              <div className="recommendation-score-row">
+                <span>Qualität:</span>
+                <span data-testid="recommendation-score-before-quality">
+                  {recommendationDraft.before.quality ?? "–"}
+                </span>
+                <span>→</span>
+                <span data-testid="recommendation-score-after-quality">
+                  {recommendationDraft.after?.quality ?? "–"}
+                </span>
+              </div>
+              <div className="recommendation-score-row">
+                <span>Hygiene:</span>
+                <span data-testid="recommendation-score-before-hygiene">
+                  {recommendationDraft.before.hygiene ?? "–"}
+                </span>
+                <span>→</span>
+                <span data-testid="recommendation-score-after-hygiene">
+                  {recommendationDraft.after?.hygiene ?? "–"}
+                </span>
+              </div>
+            </div>
+            <div className="recommendation-actions">
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                disabled={isPreviewAnalyzing}
+                onClick={() => {
+                  void handleReanalyze();
+                }}
+                data-testid="recommendation-reanalyze"
+              >
+                {isPreviewAnalyzing ? "⏳ Analysiere..." : "🔄 Neu analysieren"}
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={() => {
+                  applyRecommendationDraftToEditor(prompt.id);
+                }}
+                data-testid="recommendation-apply-to-editor"
+                title="In Editor übernehmen — Speichern nur explizit im Editor"
+              >
+                ✏️ In Editor übernehmen
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => {
+                  resetRecommendationDraft();
+                  setSelectedRecommendations(new Set());
+                }}
+                data-testid="recommendation-reset"
+              >
+                ↩️ Zurücksetzen
+              </button>
+            </div>
           </div>
         )}
       </div>

@@ -273,6 +273,12 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
     description: "Applying an advanced workflow result to the editor failed",
     defaultCategory: "PROCESSING_ERROR",
   },
+  NO_RECOMMENDATIONS_SELECTED: {
+    code: "NO_RECOMMENDATIONS_SELECTED",
+    description:
+      "The recommendation-apply workflow was started without a selected recommendation",
+    defaultCategory: "USER_INPUT_ERROR",
+  },
 };
 
 export function getReasonCodeDescription(code: ReasonCode): string {
