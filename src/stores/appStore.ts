@@ -669,7 +669,15 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (current.isGateOpen && current.activeGatePromptId !== id) {
       set({ isGateOpen: false, activeGatePromptId: null });
     }
-    set({ selectedPromptId: id });
+    // Discard a recommendation draft scoped to a different prompt (#45 —
+    // stale invalidation on prompt switch, consistent with gate handling).
+    const staleDraft =
+      current.recommendationDraft !== null &&
+      current.recommendationDraft.promptId !== id;
+    set({
+      selectedPromptId: id,
+      ...(staleDraft ? { recommendationDraft: null } : {}),
+    });
   },
 
   setEvaluation: (promptId, evaluation) => {
@@ -1923,6 +1931,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       promptId in state.enrichedContexts ||
       promptId in state.gateSkippedItems;
     const hadVariantState = promptId in state.variantResults;
+    const hadRecommendationDraft =
+      state.recommendationDraft?.promptId === promptId;
 
     set((s) => {
       const {
@@ -1980,6 +1990,7 @@ export const useAppStore = create<AppState>((set, get) => ({
         enrichedContexts,
         gateSkippedItems,
         variantResults,
+        ...(hadRecommendationDraft ? { recommendationDraft: null } : {}),
       };
     });
 
@@ -2011,6 +2022,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (selectedRecommendations.length === 0) {
       emitAdvancedWorkflowEvent("recommendations.apply", "blocked", {
         promptId,
+        promptIdKey: "prompt",
         reasonCode: "NO_RECOMMENDATIONS_SELECTED",
         category: "USER_INPUT_ERROR",
       });
@@ -2020,6 +2032,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (!prompt) {
       emitAdvancedWorkflowEvent("recommendations.apply", "failed", {
         promptId,
+        promptIdKey: "prompt",
         reasonCode: "NO_PROMPT_SELECTED",
         category: "USER_INPUT_ERROR",
       });
@@ -2073,6 +2086,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     if (!draft || draft.promptId !== promptId) {
       emitAdvancedWorkflowEvent("recommendations.apply", "failed", {
         promptId,
+        promptIdKey: "prompt",
         reasonCode: "NO_PROMPT_SELECTED",
         category: "USER_INPUT_ERROR",
       });
@@ -2083,6 +2097,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       // Stale guard: source changed since the draft was created.
       emitAdvancedWorkflowEvent("recommendations.apply", "failed", {
         promptId,
+        promptIdKey: "prompt",
         reasonCode: "STALE_SOURCE",
         category: "STATE_ERROR",
       });
@@ -2099,6 +2114,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({ recommendationDraft: null });
     emitAdvancedWorkflowEvent("recommendations.apply", "succeeded", {
       promptId,
+      promptIdKey: "prompt",
       blockCount: draft.blocks.length,
     });
   },

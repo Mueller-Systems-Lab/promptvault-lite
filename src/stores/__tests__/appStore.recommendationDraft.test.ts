@@ -188,4 +188,23 @@ describe("recommendation draft (#45)", () => {
     await useAppStore.getState().analyzeRecommendationPreview();
     expect(evaluatePrompt).not.toHaveBeenCalled();
   });
+
+  it("switching prompts discards a draft scoped to another prompt (stale invalidation)", () => {
+    useAppStore.getState().startRecommendationDraft("p1", ["Definiere ein klares Ziel."]);
+    useAppStore.setState({ prompts: [PROMPT, makePrompt("p2", "# Anderer")] });
+    useAppStore.getState().selectPrompt("p2");
+    expect(useAppStore.getState().recommendationDraft).toBeNull();
+  });
+
+  it("re-selecting the same prompt keeps the draft", () => {
+    useAppStore.getState().startRecommendationDraft("p1", ["Definiere ein klares Ziel."]);
+    useAppStore.getState().selectPrompt("p1");
+    expect(useAppStore.getState().recommendationDraft).not.toBeNull();
+  });
+
+  it("invalidateAnalysisForPrompt discards the draft for that prompt", () => {
+    useAppStore.getState().startRecommendationDraft("p1", ["Definiere ein klares Ziel."]);
+    useAppStore.getState().invalidateAnalysisForPrompt("p1");
+    expect(useAppStore.getState().recommendationDraft).toBeNull();
+  });
 });

@@ -25,48 +25,46 @@ interface HeadingRule {
   template: string;
 }
 
-const DE = (s: string) => s;
-
 const RULES: HeadingRule[] = [
   {
     keywords: /secret/i,
     heading: "## Sicherheit",
-    template: DE("Secrets entfernen. Zugänge über Umgebungsvariablen oder Platzhalter referenzieren."),
+    template: "Secrets entfernen. Zugänge über Umgebungsvariablen oder Platzhalter referenzieren.",
   },
   {
     keywords: /datenschutz|pii|personenbezogen/i,
     heading: "## Datenschutz",
-    template: DE("Personenbezogene Daten anonymisieren (Platzhalter statt echter Namen)."),
+    template: "Personenbezogene Daten anonymisieren (Platzhalter statt echter Namen).",
   },
   {
     keywords: /ziel/i,
     heading: "## Ziel",
-    template: DE("Das Ziel dieser Aufgabe in einem Satz präzise formulieren."),
+    template: "Das Ziel dieser Aufgabe in einem Satz präzise formulieren.",
   },
   {
     keywords: /rolle/i,
     heading: "## Rolle",
-    template: DE("Rolle und Kompetenzen des Agenten beschreiben."),
+    template: "Rolle und Kompetenzen des Agenten beschreiben.",
   },
   {
     keywords: /kontext|context/i,
     heading: "## Kontext",
-    template: DE("Relevanten Kontext ergänzen (Projekt, Umgebung, Voraussetzungen)."),
+    template: "Relevanten Kontext ergänzen (Projekt, Umgebung, Voraussetzungen).",
   },
   {
-    keywords: /ausgabeformat|output|struktur, abschnitte/i,
+    keywords: /ausgabeformat|output|struktur|abschnitte/i,
     heading: "## Ausgabeformat",
-    template: DE("Ausgabeformat definieren: Struktur, Abschnitte, Länge."),
+    template: "Ausgabeformat definieren: Struktur, Abschnitte, Länge.",
   },
   {
     keywords: /anforderung|regel/i,
     heading: "## Anforderungen",
-    template: DE("Anforderungen als nummerierte, imperative Regeln auflisten."),
+    template: "Anforderungen als nummerierte, imperative Regeln auflisten.",
   },
   {
     keywords: /constraint|grenzen|begrenz/i,
     heading: "## Constraints",
-    template: DE("Explizite Grenzen definieren: »Erlaubt ist nur …«"),
+    template: "Explizite Grenzen definieren: »Erlaubt ist nur …«",
   },
 ];
 
@@ -113,6 +111,8 @@ export function buildPreviewContent(
 ): string {
   if (blocks.length === 0) return originalContent;
   const blockText = blocks.map((b) => b.text.trim()).join("\n\n");
+  // trimEnd avoids trailing blank lines before the first block; the preview
+  // remains semantically "original + blank line + blocks".
   const separator = originalContent.trim().length > 0 ? "\n\n" : "";
   return `${originalContent.trimEnd()}${separator}${blockText}\n`;
 }

@@ -11,7 +11,7 @@
 // =============================================================================
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { AnalysisPanel } from "@/components/analysis/AnalysisPanel";
 import { useAppStore } from "@/stores/appStore";
 import type { PromptItem } from "@/types";
@@ -187,6 +187,40 @@ describe("AnalysisPanel — Empfehlungen-Workflow (#45)", () => {
     expect(updatePrompt).not.toHaveBeenCalled();
     // Draft wird nach Übernehmen geschlossen
     expect(useAppStore.getState().recommendationDraft).toBeNull();
+  });
+
+  it("checkbox selection does not leak across prompts", () => {
+    render(<AnalysisPanel />);
+    fireEvent.click(screen.getByTestId("recommendation-checkbox-0"));
+    expect(
+      screen.getByTestId("recommendation-apply-start"),
+    ).not.toBeDisabled();
+    // Switch to another analyzed prompt (act: flush the re-render)
+    act(() => {
+      useAppStore.setState({
+        prompts: [
+          makePrompt("p1", ORIGINAL),
+          makePrompt("p2", "# Anderer Prompt"),
+        ],
+        selectedPromptId: "p2",
+        evaluations: {
+          p2: {
+            id: "e2",
+            prompt_id: "p2",
+            overall_score: 50,
+            criteria: [],
+            missing_sections: [],
+            recommendations: ["Ergänze Kontext für die Aufgabe."],
+            evaluated_at: "2026-09-30T00:00:00Z",
+          },
+        } as never,
+        hygiene: {} as never,
+      });
+    });
+    expect(
+      screen.getByTestId("recommendation-checkbox-0"),
+    ).not.toBeChecked();
+    expect(screen.getByTestId("recommendation-apply-start")).toBeDisabled();
   });
 
   it("Zurücksetzen discards the draft and keeps the original (Kriterium 7)", () => {

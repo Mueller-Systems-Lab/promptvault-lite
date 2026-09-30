@@ -253,4 +253,5 @@ export const ALL_REASON_CODES: ReadonlySet<ReasonCode> = new Set<ReasonCode>([
   "STALE_SOURCE",
   "NO_VARIANT_SELECTED",
   "APPLY_FAILED",
+  "NO_RECOMMENDATIONS_SELECTED",
 ]);

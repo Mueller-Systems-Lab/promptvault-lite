@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppStore } from "@/stores/appStore";
 import { buildPreviewContent } from "@/lib/recommendationBlocks";
 import { BlueprintEvaluationPanel } from "@/components/analysis/BlueprintEvaluationPanel";
@@ -160,6 +160,9 @@ const contextProfileClass = (profile: string): string => {
 };
 
 export const AnalysisPanel: React.FC = () => {
+  // Primitive subscription: guarantees a re-render when the selection changes
+  // (the function-ref selectors below are stable and would not re-render).
+  const selectedPromptId = useAppStore((s) => s.selectedPromptId);
   const prompt = useAppStore((s) => s.selectedPrompt)();
   const evaluation = useAppStore((s) => s.selectedEvaluation)();
   const hygiene = useAppStore((s) => s.selectedHygiene)();
@@ -190,6 +193,12 @@ export const AnalysisPanel: React.FC = () => {
   >(new Set());
   const [isPreviewAnalyzing, setIsPreviewAnalyzing] = useState(false);
 
+  // Reset the checkbox selection when the selected prompt changes —
+  // selections must never leak across prompts (#45 review finding).
+  useEffect(() => {
+    setSelectedRecommendations(new Set());
+  }, [selectedPromptId]);
+
   const toggleRecommendation = (index: number) => {
     setSelectedRecommendations((prev) => {
       const next = new Set(prev);
@@ -206,6 +215,11 @@ export const AnalysisPanel: React.FC = () => {
     setIsPreviewAnalyzing(true);
     try {
       await analyzeRecommendationPreview();
+    } catch (err) {
+      // Established error pattern (analyzeSelected): surface in store error.
+      useAppStore.setState({
+        error: err instanceof Error ? err.message : String(err),
+      });
     } finally {
       setIsPreviewAnalyzing(false);
     }
