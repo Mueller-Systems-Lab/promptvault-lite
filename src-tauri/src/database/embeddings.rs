@@ -88,7 +88,9 @@ impl Database {
         self.ensure_embedding_tables()?;
         let conn = self.lock_conn()?;
         let mut stmt = conn
-            .prepare("SELECT id, provider, model_name, dimensions FROM embedding_models WHERE id = ?1")
+            .prepare(
+                "SELECT id, provider, model_name, dimensions FROM embedding_models WHERE id = ?1",
+            )
             .map_err(|e| e.to_string())?;
         let mut rows = stmt.query(params![id]).map_err(|e| e.to_string())?;
         if let Some(row) = rows.next().map_err(|e| e.to_string())? {
@@ -127,10 +129,7 @@ impl Database {
     }
 
     /// Content hashes by prompt_id for a model (hash-based skip on re-index).
-    pub fn load_embedding_hashes(
-        &self,
-        model_id: &str,
-    ) -> Result<HashMap<String, String>, String> {
+    pub fn load_embedding_hashes(&self, model_id: &str) -> Result<HashMap<String, String>, String> {
         self.ensure_embedding_tables()?;
         let conn = self.lock_conn()?;
         let mut stmt = conn

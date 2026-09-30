@@ -17,7 +17,9 @@ pub const EMBEDDINGS_ENV_FLAG: &str = "PROMPTVAULT_EMBEDDINGS";
 pub const SYNTHETIC_MODEL_ID: &str = "synthetic-feature-hash-v1";
 
 fn embeddings_enabled() -> bool {
-    std::env::var(EMBEDDINGS_ENV_FLAG).map(|v| v == "1").unwrap_or(false)
+    std::env::var(EMBEDDINGS_ENV_FLAG)
+        .map(|v| v == "1")
+        .unwrap_or(false)
 }
 
 /// Sanitized status payload (no vectors, no prompt content).
