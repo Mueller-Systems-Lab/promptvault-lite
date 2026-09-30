@@ -31,6 +31,23 @@ It is built for people who collect, write and refine many prompts — especially
 
 ---
 
+## 📸 Screenshots
+
+UI-Aufnahmen des aktuellen Builds (v1.12.0) mit **synthetischen Demo-Daten** — keine echten Prompts, keine privaten Daten (Issue #40).
+
+| Ansicht | Screenshot |
+|---|---|
+| Explorer — Verzeichnisbaum, Klassen-Badges (PROMPT/DOKUMENTATION/REVIEW), Score und Favorit | ![Explorer-Ansicht mit Ordnerbaum, Klassifizierungs-Badges und Favoriten-Stern](docs/screenshots/explorer.png) |
+| Details — Frontmatter-Metadaten, Markdown-Rendering, Aktionsleiste | ![Details-Ansicht eines ausgewählten Prompts mit Metadaten und Markdown-Rendering](docs/screenshots/details.png) |
+| Analyse — Qualitäts-Score mit Kriterien-Breakdown, Hygiene-Score, Kontext-Bewertung | ![Analyse-Ansicht mit Qualitäts- und Hygiene-Analyse](docs/screenshots/analysis.png) |
+| Analyse mit Artefakten — Hygiene-Warnungen (z. B. Platzhalter) | ![Analyse-Ansicht mit Hygiene-Artefakt-Warnungen](docs/screenshots/analysis-artifacts.png) |
+| Leere Vault — Empty State | ![Leere Vault-Ansicht ohne geladene Prompts](docs/screenshots/empty-vault.png) |
+| Dark Mode | ![Übersicht im Dark Mode](docs/screenshots/overview-dark.png) |
+
+Aufnahme: 1440×900, Vite-Renderer-Modus mit gemocktem Tauri-IPC (identischer Renderer wie im Desktop-Build); Prompt-Inhalte 100 % synthetisch.
+
+---
+
 ## Highlights
 
 - **In-App Prompt Authoring** — create, edit, save and persist prompts directly in the app (v1.10.0, released)
