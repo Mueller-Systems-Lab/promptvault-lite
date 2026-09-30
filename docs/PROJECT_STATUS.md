@@ -161,7 +161,7 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 ## Next Steps (Recommended)
 
 1. **v1.10.0 released (done):** GitHub Release v1.10.0 (Windows x64 NSIS installer + release manifest + checksums) and PyPI `promptvault-lite-manager==1.10.0` (OIDC Trusted Publishing) published; tag `v1.10.0` pushed. Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
-2. **v1.12.0 Advanced Workflows GA — RELEASED:** production build and bounded Analyzer contract are included in the Linux x64 release; the Windows-only CLI remains on its separate v1.11.1 stream.
+2. **v1.12.0 Advanced Workflows GA — final in source, publication pending:** production build and bounded Analyzer contract are part of the tagged v1.12.0 release candidate; the GitHub Release publication is still pending (owner action). The Windows-only CLI remains on its separate v1.11.1 stream.
 3. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
 4. **Code signing for the Windows installer.**
 5. **Architecture Contract Audit / Security Posture Review.**

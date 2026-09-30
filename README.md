@@ -6,7 +6,7 @@ Developed by [Mueller-Systems-Lab](https://github.com/Mueller-Systems-Lab). Prom
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and structure-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.11.1%20published%20·%20v1.12.0%20RC-blue)
+![Release](https://img.shields.io/badge/release-v1.11.1%20published%20%C2%B7%20v1.12.0%20RC-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)

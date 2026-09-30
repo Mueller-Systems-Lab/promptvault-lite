@@ -125,7 +125,7 @@ flowchart TD
     F --> G["Explorer: TreeNode-Badge<br/>(contentClass)"]
     F --> H["Details: selectedBlueprintDetection<br/>z. B. Audio-Zusammenfassungs-Gating"]
     G --> I["Benutzer wählt Blueprint/Hybrid aus"]
-    I --> J["BlueprintEvaluationPanel:<br/>evaluateBlueprint(content)<br/>10-Dimensionen-Evaluation"]
+    I --> J["Blueprint-Evaluation:<br/>evaluateBlueprint(content) via<br/>Action-Layer/App (10 Dimensionen)<br/>Anzeige im BlueprintEvaluationPanel"]
     I --> K["BlueprintOptimizationPanel:<br/>blueprintOptimizer (3 Modi)"]
     K --> L["Übernehmen in den PromptEditor<br/>(Dirty-State → explizites Speichern)"]
     B -. "Fehler: PROCESSING_ERROR /<br/>CLASSIFICATION_FAILED" .-> M["Admin-Observability:<br/>classify-content Spans"]
