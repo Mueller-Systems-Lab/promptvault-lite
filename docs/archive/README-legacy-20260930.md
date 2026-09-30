@@ -1,10 +1,20 @@
 ---
-title: PromptVault Lite
-description: Projektübersicht, Schnellstart und Verweise auf die restliche Dokumentation.
+title: PromptVault Lite (archiviert)
+description: Archivierte Projektübersicht (Stand v1.9.0) — kanonisch sind README.md (Repo-Root) und docs/index.md.
 version: 1.9.0
+archived: 2026-09-30
+archive_reason: "Issue #42: veraltete Duplikat-Übersicht archiviert"
 ---
 
-# PromptVault Lite
+# PromptVault Lite (archivierte Übersicht)
+
+> **Archiviert (2026-09-30, Issue #42).** Diese Datei ist eine veraltete
+> Duplikat-Übersicht (Stand v1.9.0) und war bereits vor der Archivierung aus
+> der MkDocs-Navigation ausgeschlossen (`exclude_docs` in `mkdocs.yml`).
+> Kanonische Übersichten: [`README.md`](../../README.md) (Repo-Root) und
+> [`docs/index.md`](../index.md). Der historische Inhalt folgt unverändert.
+
+## Historischer Inhalt (v1.9.0)
 
 PromptVault Lite ist ein lokales Desktop-Tool zum Einlesen, Durchsuchen und Bewerten von Markdown-Prompts. Die App scannt einen Ordner rekursiv, zeigt Prompts im Drei-Spalten-Layout an und führt regelbasierte Qualitäts- und Hygieneanalysen lokal aus.
 

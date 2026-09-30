@@ -111,6 +111,40 @@ flowchart LR
 - `src/lib/promptContextEvaluation.ts` — TypeScript Context Evaluation
 - `src/lib/pastePromptAnalysis.ts` — Direktanalyse ohne Datei
 
+### Blueprint-Autodetection Flow (Issue #155)
+
+```mermaid
+flowchart TD
+    A["Ordner-Scan / Prompt-Bestand<br/>(appStore.prompts)"] --> B["Chunked Batch-Klassifikation<br/>(appStore, 25 Prompts/Chunk)"]
+    B --> C["classifyContent(content)<br/>src/lib/blueprintDetection.ts"]
+    C --> D{"ContentClass<br/>(8 Klassen)"}
+    D --- D1["PROMPT / BLUEPRINT /<br/>PROMPT_BLUEPRINT_HYBRID"]
+    D --- D2["NOTE / DOC / CODE_FRAGMENT /<br/>GUIDELINE / UNKNOWN_NEEDS_REVIEW"]
+    C --> E["BlueprintDetectOutput<br/>inkl. contamination_status"]
+    E --> F["Cache im Store:<br/>blueprintDetections[prompt_id]"]
+    F --> G["Explorer: TreeNode-Badge<br/>(contentClass)"]
+    F --> H["Details: selectedBlueprintDetection<br/>z. B. Audio-Zusammenfassungs-Gating"]
+    G --> I["Benutzer wählt Blueprint/Hybrid aus"]
+    I --> J["Blueprint-Evaluation:<br/>evaluateBlueprint(content) via<br/>Action-Layer/App (10 Dimensionen)<br/>Anzeige im BlueprintEvaluationPanel"]
+    I --> K["BlueprintOptimizationPanel:<br/>blueprintOptimizer (3 Modi)"]
+    K --> L["Übernehmen in den PromptEditor<br/>(Dirty-State → explizites Speichern)"]
+    B -. "Fehler: PROCESSING_ERROR /<br/>CLASSIFICATION_FAILED" .-> M["Admin-Observability:<br/>classify-content Spans"]
+    J -. "Nur Metadaten (safe-metadata-v1)" .-> M
+```
+
+Eigenschaften des Flows (Stand v1.12.0, Code-verifiziert):
+
+- Die Klassifikation läuft **automatisch** nach dem Scan als Chunk-Batch
+  (25 Prompts pro Chunk) — kein manueller Schritt nötig.
+- Ergebnisse werden pro `prompt_id` im Store gecacht; die Erkennung ist
+  deterministisch und rein lokal (Regex/Heuristik, kein Modell).
+- Die 10-Dimensionen-Evaluation (`evaluateBlueprint`) und die Optimierung
+  (3 Modi) laufen **auf Abruf** über die Panels, nicht im Batch.
+- Schreibzugriffe erfolgen ausschließlich über den PromptEditor mit
+  Dirty-State und explizitem „Speichern" (Autodetection selbst ist read-only).
+- Fehlerklassifikation läuft über die Admin-Observability mit bounded
+  Reason Codes (`CLASSIFICATION_FAILED`), ohne Prompt-Inhalte.
+
 ### Paste Prompt Analyzer
 
 - `src/components/paste/PastePromptAnalyzer.tsx`

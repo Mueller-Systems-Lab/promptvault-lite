@@ -1,19 +1,19 @@
 # Project Status — PromptVault Lite
 
-**Last updated:** 2026-08-24
-**Current stable release:** v1.12.0 (Linux x64 installable desktop release)
+**Last updated:** 2026-09-30
+**Latest published release:** v1.11.1 (GitHub Release, Windows NSIS stream)
+**v1.12.0:** Linux x64 release candidate — tag on `master`, packages built and checksummed; **GitHub Release publication still pending** (asset upload blocked from the build host; owner action required)
 **Branch:** master
-**Master HEAD:** release candidate for `v1.12.0`; source and package identity are recorded in the GitHub release manifest.
 
 ---
 
-**v1.12.0 release:** bounded local/offline/deterministic Analyzer contract shipped for Linux x64. Broad external semantic generalization is not claimed; the 86/176 external study remains incomplete due to provider instability. The Windows-only CLI remains on its last compatible `1.11.1` PyPI release.
+**v1.12.0 release:** bounded local/offline/deterministic Analyzer contract prepared for Linux x64. Broad external semantic generalization is not claimed; the 86/176 external study remains incomplete due to provider instability. The Windows-only CLI remains on its last compatible `1.11.1` PyPI release.
 
-## Current Status: GREEN_RELEASED 🟢
+## Current Status: GREEN_CODE / v1.12.0 PUBLICATION PENDING 🟡
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
-**Release candidate:** v1.12.0 Linux x64 packages, release manifest and `SHA256SUMS.txt` are prepared from the final master source; publication follows the release proof.
+**Release candidate:** v1.12.0 Linux x64 packages, release manifest and `SHA256SUMS.txt` are prepared from the final master source; the GitHub Release itself is **not yet published** (owner action from a capable host required).
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
 
@@ -161,7 +161,7 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 ## Next Steps (Recommended)
 
 1. **v1.10.0 released (done):** GitHub Release v1.10.0 (Windows x64 NSIS installer + release manifest + checksums) and PyPI `promptvault-lite-manager==1.10.0` (OIDC Trusted Publishing) published; tag `v1.10.0` pushed. Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
-2. **v1.12.0 Advanced Workflows GA — RELEASED:** production build and bounded Analyzer contract are included in the Linux x64 release; the Windows-only CLI remains on its separate v1.11.1 stream.
+2. **v1.12.0 Advanced Workflows GA — final in source, publication pending:** production build and bounded Analyzer contract are part of the tagged v1.12.0 release candidate; the GitHub Release publication is still pending (owner action). The Windows-only CLI remains on its separate v1.11.1 stream.
 3. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
 4. **Code signing for the Windows installer.**
 5. **Architecture Contract Audit / Security Posture Review.**

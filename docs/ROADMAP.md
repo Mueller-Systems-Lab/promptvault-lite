@@ -19,7 +19,7 @@
 | Windows x64 NSIS installer + release manifest + checksums | ✅ PUBLISHED (v1.10.0 GitHub Release) |
 | PyPI `promptvault-lite-manager==1.10.0` | ✅ PUBLISHED (OIDC Trusted Publishing) |
 
-## Current Milestone (v1.12.0 — RELEASED)
+## Current Milestone (v1.12.0 — Release Candidate, Veröffentlichung ausstehend)
 
 | Task | Status |
 | --- | --- |
@@ -29,7 +29,7 @@
 | Apply-to-editor integration (Missing-Info enrichment + direction variants → PromptEditor, dirty state, explicit Save) | ✅ IMPLEMENTED |
 | Stale-state invalidation (source change → results invalidated, apply refused `STALE_SOURCE`) | ✅ IMPLEMENTED |
 | Safe observability: `missing_info.*` / `direction.*` + bounded reason codes (safe-metadata-v1 fail-closed) | ✅ IMPLEMENTED |
-| Version bump to 1.12.0 for the desktop application | ✅ RELEASED |
+| Version bump to 1.12.0 for the desktop application | ✅ FINAL IN SOURCE |
 | Production native build proven (exe + NSIS + MSI, no feature env flags); native E2E 11/11; privacy sentinel 0 | ✅ PROVEN |
 | Release: tag + GitHub Release + Linux package publication | ⏳ TAGGED; PUBLIC ASSET PUBLICATION BLOCKED |
 
