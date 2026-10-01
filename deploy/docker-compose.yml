@@ -1,0 +1,29 @@
+# =============================================================================
+# promptvault-server — Web/LAN-Deployment (issue #127 / H2, epic #97)
+# Usage: cp deploy/.env.example deploy/.env (Werte setzen — .env NICHT committen)
+#        docker compose -f deploy/docker-compose.yml up
+# =============================================================================
+
+services:
+  promptvault:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "${PROMPTVAULT_BIND:-127.0.0.1:8080}:8080"
+    environment:
+      PROMPTVAULT_SERVER_VAULT: /vault
+      # Read-only ist der Default und SOLL so bleiben (J2); Absicht 0 = bewusste Freigabe.
+      PROMPTVAULT_SERVER_READ_ONLY: "1"
+      PROMPTVAULT_SERVER_HOST: 0.0.0.0
+      PROMPTVAULT_SERVER_STATIC: /opt/promptvault/ui
+    volumes:
+      # NAS/LAN-Mount: hostseitig read-only einhängen (:ro) — der Container
+      # kann damit nie schreiben (Issue #133 / J2).
+      - ${PROMPTVAULT_VAULT_HOST_PATH:?PROMPTVAULT_VAULT_HOST_PATH setzen}:/vault:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/promptvault-server", "--help"] # Platzhalter: Healthcheck-CLI folgt mit D2-Endpunkt-Check
+      interval: 30s
+      timeout: 5s
+      retries: 3
