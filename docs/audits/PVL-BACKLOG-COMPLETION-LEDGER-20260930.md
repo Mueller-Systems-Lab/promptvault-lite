@@ -1,6 +1,7 @@
 # PVL — Backlog Completion Ledger — 2026-09-30
 
-**Run type:** Fresh-clone backlog completion (owner-authorized per goal of 2026-09-30)
+**Run type:** Fresh-clone backlog completion (owner-authorized per goals of 2026-09-30 and 2026-10-01 resume)
+**Resume:** 2026-10-01 — verified live state, completed PR #305/#199, processed the owner closures of #97/#146/#296 and the epic-children dispositions (see §4/§5 and §9)
 **Repository:** https://github.com/Mueller-Systems-Lab/promptvault-lite
 **Default branch:** `master`
 **Fresh-clone baseline HEAD:** `271729ca43b4955d1843be3b324f1f4e5f9c4ace`
@@ -32,23 +33,23 @@ The two most recently closed issues are #298 and #291 (both "docs(brand): add Mu
 | 43 | Native deps per platform in INSTALL.md | Linux/Windows/macOS sections added; Linux list verified on this host via pkg-config + green cargo/pnpm gates [V] | DONE | PR #302, evidence comment | **Closed** |
 | 45 | Prompt-Vorschläge übernehmen und neu schreiben | Was PARTIAL (optimizer apply existed; checkbox workflow missing — recommendations were a static `<ol>` [V]); implemented: checkboxes, editable blocks (rule-based mapping), preview, re-analyze with before/after, explicit-save-only, reset, stale guards [V] | PARTIAL→DONE | PR #303 merge `e73bfba`; review REQUEST_CHANGES→fixed→APPROVE; all 7 ACs + evidence comment | **Closed** |
 | 69 | Prompt-Packs im UI manuell testen | Manual UI test executed headed with committed synthetic fixtures: 7/7 PASS incl. clipboard-content verification and hygiene artifacts (SCOPE_POLLUTION/CHAT_RESIDUE, score 35/critical) [V] | DONE | Evidence comment | **Closed** |
-| 97 | Web/LAN Backend-Adapter (EPIC) | Network-listener + architecture change + new deps → owner-gated by AGENTS.md §7, constitution §1, strategy #296 [V] | CONFLICT/BLOCKED | Conflict assessment comment posted; no code | **Open** (owner decision) |
-| 99–107 | A2/A3, B1–B5, C1/C2 core/server split | Children of #97; require the workspace split first [V] | BLOCKED (epic) | Ledger entry; documented via #97 comment | **Open** (owner decision) |
-| 108–109 | C3/C3 verify commands, CI workspace | Children of #97 | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 110–117 | D1–D3, E1–E5 server binary/endpoints | Children of #97 (HTTP server = network listener) | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 118–122 | F1–F5 runtime detection/HTTP adapter | Children of #97 | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 123–125 | G1–G3 dual-mode builds/web mode | Children of #97 | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 126–128 | H1–H3 Dockerfile/compose/smoke | Children of #97 | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 129–131 | I1–I3 LXC/NAS/deployment docs | Children of #97; would document unbuilt infra | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 132–136 | J1–J5 security red tests/gates | Scoped to the server adapter (path traversal on HTTP scanner, NAS read-only, web/Tauri isolation, server suite, CI integration) [V] | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 137–138 | K1/K2 docker preview/LAN check | Children of #97 | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 139–142 | L1–L4 review/approval/evidence/merge gates | Procedural children of the epic merge flow | BLOCKED (epic) | as above | **Open** (owner decision) |
-| 146 | Agentic/Vibe-Coding Baseline 2026 | Phases 1–3 verified present/green [V]; Phase 4 (recurring eval rotation) only partially institutionalized [V] | PARTIAL/BLOCKED | Phase evidence comment posted (required output format included) | **Open** (owner accept or fund Phase-4 remainder) |
+| 97 | Web/LAN Backend-Adapter (EPIC) | Network-listener + architecture change + new deps → owner-gated by AGENTS.md §7, constitution §1, strategy #296 [V]; strategy-conflict assessment posted 2026-09-30 with three-decision request | CONFLICT → RESOLVED BY OWNER | Owner closed the epic as completed on 2026-10-01 (immediately after the assessment; no approval of the architecture given); children disposed as not planned on that basis | **Closed by owner (2026-10-01)** |
+| 99–107 | A2/A3, B1–B5, C1/C2 core/server split | Children of #97; require the cancelled workspace split first [V]; epic #97 closed by owner 2026-10-01, strategy #296 closed by owner — approval for the architecture never given (AGENTS.md §7, Constitution §1) [V] | CANCELLED (owner epic decision) | Closed as **not planned** via web UI (2026-10-01) with individual disposition comments referencing the evidence | **Closed (not planned)** |
+| 108–109 | C3/C4 verify commands, CI workspace | Children of #97 (as above) [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 110–117 | D1–D3, E1–E5 server binary/endpoints | Children of #97 (HTTP server = network listener; Constitution §1) [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 118–122 | F1–F5 runtime detection/HTTP adapter | Children of #97 (as above) [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 123–125 | G1–G3 dual-mode builds/web mode | Children of #97 (as above) [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 126–128 | H1–H3 Dockerfile/compose/smoke | Children of #97 (as above) [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 129–131 | I1–I3 LXC/NAS/deployment docs | Children of #97; would document unbuilt infra [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 132–136 | J1–J5 security red tests/gates | Scoped to the cancelled server adapter [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 137–138 | K1/K2 docker preview/LAN check | Children of #97 (as above) [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 139–142 | L1–L4 review/approval/evidence/merge gates | Procedural children of the cancelled epic merge flow [V] | CANCELLED (owner epic decision) | Closed as **not planned** (2026-10-01), individual disposition comments | **Closed (not planned)** |
+| 146 | Agentic/Vibe-Coding Baseline 2026 | Phases 1–3 verified present/green [V]; Phase 4 (recurring eval rotation) only partially institutionalized [V]; phase-evidence comment posted in the issue's required output format | PARTIAL → OWNER-ACCEPTED | Owner closed the issue as completed on 2026-10-01, directly after the evidence comment that explicitly offered „owner may close if the current institutionalization level is accepted" — documented acceptance of the Phase-4 remainder | **Closed by owner (2026-10-01)** |
 | 152 | Visual E2E blueprint autodetection | Issue's "Current State" outdated (Playwright infra exists); 6-test spec added, chromium+firefox green; webkit blocked by host libs [V]. PR #304 closed (unrelated commits + inverted T6 baselines found in review) → replaced by PR #306 [V] | DONE | PR #306 merge `ae76544`; review APPROVE; evidence comment | **Closed** |
 | 155 | Mermaid map blueprint flow | Code-verified Mermaid flowchart added to ARCHITECTURE.md; syntax validated by independent reviewer with mermaid v11 [V] | DONE | PR #302, evidence comment | **Closed** |
-| 199 | Local embeddings MVP | ADR-004-accepted scope implemented: synthetic provider (deterministic, 0 deps), additive SQLite tables, flag-gated fail-closed commands, sensitive-skip + hash-skip, sanitized search; real provider stays owner-gated per ADR-004 [V] | DONE (code) / MERGE BLOCKED | PR #305 open: all 12 GitHub checks green, local gates green — **missing: independent review verdict** (reviewer agent hit the session usage limit before producing one; reset 2026-10-01). No self-certification. | **Open** (merge-ready pending review) |
+| 199 | Local embeddings MVP | ADR-004-accepted scope implemented: synthetic provider (deterministic, 0 deps), additive SQLite tables, flag-gated fail-closed commands, sensitive-skip + hash-skip, sanitized search; real provider stays owner-gated per ADR-004 [V] | DONE | PR #305 merge `ef91a7f` (2026-10-01): fresh independent review **APPROVE** (0 blockers; reviewed head `29780ec`), conflict-resolution merge `575bae6` (embeddings source byte-identical to reviewed head), 12/12 checks green on merge head, 1758 vitest + 342 cargo tests PASS; evidence comment | **Closed** (2026-10-01) |
 | 295 | v1.11.0 Advanced Workflows GA | All acceptance criteria verified implemented + shipped in v1.11.0/v1.11.1 releases and v1.12.0 tag; owner approval evidenced by published releases [V] | DONE | Evidence comment | **Closed** (2026-09-30) |
-| 296 | Portfolio consolidation (prompt_archiv) | Source repo not accessible (all probes 404; org list of 24 repos has none) [V]; strategy elements partly satisfied (license, positioning, demo); SBOM/reproducible-build attestation missing [V]; v1.12.0 release publication pending [V] | BLOCKED (owner) | Assessment comment posted | **Open** (3 exact owner decisions listed) |
+| 296 | Portfolio consolidation (prompt_archiv) | Source repo not accessible (all probes 404; org list of 24 repos has none) [V]; strategy elements partly satisfied (license, positioning, demo); SBOM/reproducible-build attestation missing [V]; v1.12.0 release publication pending [V] | BLOCKED → OWNER-DISPOSED | Assessment comment posted 2026-09-30 (exact blockers + 3 owner decisions); **owner closed the issue as completed on 2026-10-01** without providing the source — treated as the owner's informed disposition; the unmet requirements (prompt_archiv diff/import-compat, SBOM, release publication) remain documented in the issue thread | **Closed by owner (2026-10-01)** |
 
 ### Closed-at-baseline issues additionally verified
 
@@ -90,7 +91,7 @@ The two most recently closed issues are #298 and #291 (both "docs(brand): add Mu
 | #302 | Docs batch (#40 #42 #43 #155 + release-state alignment) | Independent reviewer REQUEST_CHANGES (2 blockers) → fixes bd13c06 → re-review **APPROVE** | G9–G16 + GitHub checks 12/12 | **Squash-merged** via web UI → master `fa2cd39` (read-back verified) | #40, #42, #43, #155 |
 | #303 | Recommendation-apply workflow (#45) | Review 1: REQUEST_CHANGES (3 blockers) → fixes `0a487b3` → Review 2: **APPROVE** | G17–G20 + PR checks 11/12 (cancelled Rust job = runner 20-min timeout on byte-identical master Rust tree, proven via empty `src-tauri` diff) | **Squash-merged** via web UI → `e73bfba` (read back) | #45 (auto-closed + evidence comment) |
 | #304 | Blueprint visual E2E (#152) | Review: REQUEST_CHANGES (unrelated #199 commits on branch; inverted T6 baselines) | G25, G26 | **Closed** (not merged) → replaced by #306 | — |
-| #305 | Embeddings MVP (#199) | **MISSING** (reviewer agent usage-limited before verdict) | G21–G24 + PR checks **12/12 green**, no conflicts | **NOT merged** (merge condition unfulfilled) | #199 stays open |
+| #305 | Embeddings MVP (#199) | Resume 2026-10-01: fresh independent review **APPROVE** (head `29780ec`, 0 blockers); conflict vs master (App.css, from #303) resolved via merge commit `575bae6` — embeddings source byte-identical to reviewed head [V] | G21–G24 + checks **12/12 green** on merge head `575bae6` (incl. Rust, WebKit, native E2E E19, Packaging E20) | **Squash-merged** via web UI → `ef91a7f` (read back) | #199 (auto-closed + evidence comment) |
 
 (§5 review verdicts for #303/#304/#305 are recorded in the run transcript; merges/closures executed accordingly — final states verifiable on GitHub.)
 
@@ -102,7 +103,8 @@ The two most recently closed issues are #298 and #291 (both "docs(brand): add Mu
 - PR #303: Review 1 REQUEST_CHANGES (reason-code export wiring, stale-draft invalidation, cross-prompt selection leak) → fix commit `0a487b3` (incl. reasonCodeSync drift-guard test) → Review 2 **APPROVE** (~1590 related tests re-verified, no regressions).
 - PR #304: **REQUEST_CHANGES** (2 blockers) → branch closed, work replaced by #306.
 - PR #306: **APPROVE** (all six checkpoints green).
-- PR #305: **no verdict** — the independent reviewer agent exhausted the session usage limit mid-review. Per the merge conditions (no self-certification), the fully green PR #305 remains **open** until an independent review happens. Exact remaining action: run an independent review of `feature/embeddings-199` (HEAD `29780ec`), then merge via the web UI (all other conditions already verified green).
+- PR #305 (resume, 2026-10-01): fresh genuinely-independent review of head `29780ec` — **APPROVE** with zero blocking issues (reviewer verified: no new dependencies, no network/process/model code, fail-closed flag paths, sensitive-skip, sanitized payloads, additive schema; re-ran cargo test 342 PASS and the settings suite 4/4). Non-blocking suggestions (comment/code alignment on the artifacts-JSON fallback, FNV-vs-SHA-256 ADR note, iso_now format, score threshold, env-mutation test isolation) recorded in the review and flagged for follow-up.
+- Merge-precondition change on 2026-10-01: master had moved (#303/#306/#307), producing an `src/App.css` conflict on the PR branch. Resolved by a regular merge commit `575bae6` (no force-push) keeping both reviewed CSS blocks; verified empty diff for all embeddings source between `29780ec` and `575bae6`; full vitest suite 1758 PASS on the merge head; all 12 CI checks green on `575bae6` (including the native E2E and packaging jobs).
 
 ## 6. AI-interface finding (typed action layer, for future decisions)
 
@@ -110,13 +112,24 @@ Verified facts [V]: the typed action registry (`src/actions/`) is an internal Ty
 
 ## 7. Blocked/unverified items (exact reasons)
 
-1. **Web/LAN epic #97 + #99–#142 (45 issues):** owner architecture decision required (conflict with strategy #296; AGENTS.md §7 approval requirements; constitution §1). Options documented on #97.
-2. **#146 Phase 4:** recurring eval rotation not institutionalized — owner accept-or-fund decision.
-3. **PR #305 merge:** pending independent review (see §5).
-4. **#296:** prompt_archiv source not accessible (probes 404); v1.12.0 Release publication requires a capable host; SBOM/reproducible-build attestation decision.
+1. **Web/LAN epic #97 + #99–#142:** RESOLVED 2026-10-01 — the owner closed the epic after the documented three-decision request; the children were closed as **not planned** through the web UI with individual evidence comments (approval for the architecture was never given, so the Constitution §1 / AGENTS.md §7 gates stand). Reopen path documented in each comment.
+2. **#146 Phase 4:** owner accepted the current institutionalization level by closing the issue as completed on 2026-10-01 (explicitly offered in the evidence comment). A recurring eval rotation remains a documented future improvement, not an open blocker.
+3. **#296:** owner closed the issue as completed on 2026-10-01 without providing prompt_archiv access; the import-compat work therefore never happened and the source remains unavailable. v1.12.0 Release publication and the SBOM decision remain genuine owner actions if the harvest/sale path is pursued.
 5. **v1.12.0 GitHub Release:** not published (tag exists) — fixed in docs (PR #302), publication itself is the owner action.
 6. **webkit E2E project:** cannot launch on this host (missing system libraries) — environment, not code; chromium+firefox green.
 7. **Windows-native verification (WebdriverIO E2E, NSIS build):** no Windows host in this run — NOT_RUN.
+
+## 7b. Final disposition summary (after resume, 2026-10-01)
+
+All 56 baseline issues carry a final, evidence-backed disposition:
+
+| Outcome | Issues |
+|---|---|
+| Completed & closed with verified evidence (code/doc PRs merged) | #40 #42 #43 #45 #69 #152 #155 #199 #295 |
+| Closed by owner after evidence assessment (documented acceptance/disposition) | #97 #146 #296 |
+| Cancelled with the owner-closed epic (closed as **not planned** with individual evidence comments) | #99–#142 (44 issues) |
+
+Open at run end: **none**. Outstanding owner actions outside the issue tracker: publish the v1.12.0 GitHub Release; provide/decide prompt_archiv access if the harvest/sale goal is pursued; optional follow-ups from the #305 review (non-blocking).
 
 ## 8. Run artifacts
 
