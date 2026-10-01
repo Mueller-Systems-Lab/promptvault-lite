@@ -104,6 +104,32 @@ jobs:
         run: cargo test --workspace --locked
 
   # ─────────────────────────────────────────────────────────────────────────
+  # Web/LAN Security Gate (J5, epic #97)
+  # ─────────────────────────────────────────────────────────────────────────
+  security-gate:
+    name: Security Gate (Web/LAN J5)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Run security gate (J5)
+        run: |
+          pnpm install --frozen-lockfile
+          node scripts/security-gate.mjs --no-color
+
+  # ─────────────────────────────────────────────────────────────────────────
   # Secret Scan (E10)
   # ─────────────────────────────────────────────────────────────────────────
   secret-scan:
