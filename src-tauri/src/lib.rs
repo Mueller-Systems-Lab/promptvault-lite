@@ -93,6 +93,10 @@ pub fn run() {
             commands::tts::synthesize_piper,
             commands::tts::speak_system_tts,
             commands::tts::stop_local_tts,
+            // Local Embeddings MVP (Issue #199, ADR-004) — flag-gated (fail-closed)
+            commands::embeddings::embeddings_status,
+            commands::embeddings::embeddings_reindex,
+            commands::embeddings::semantic_search,
             // E2E-Bridge-Gate (ADR-005): existiert NUR im Debug-Build.
             // Produktions-Build: Command nicht registriert → invoke wirft →
             // Frontend exponiert window.__pvlLoadArchive NICHT (fail-closed).

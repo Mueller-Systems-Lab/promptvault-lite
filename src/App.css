@@ -2370,3 +2370,14 @@ body {
   flex-wrap: wrap;
   margin-top: var(--spacing-sm, 8px);
 }
+
+/* Settings input for the embeddings test search (Issue #199) */
+.settings-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-bg, transparent);
+  color: inherit;
+  font-size: 0.9em;
+}
