@@ -21,6 +21,51 @@ last_updated: 2026-08-24
 - Node.js (LTS empfohlen)
 - pnpm
 
+## Native Abhängigkeiten je Plattform (Issue #43)
+
+Der Quellbau der Tauri-2-App benötigt pro Plattform unterschiedliche native
+Systembibliotheken. Die Paketinstallation (`.deb`/`.rpm`/NSIS) benötigt keine
+dieser Build-Abhängigkeiten — sie gelten nur für `pnpm tauri build` /
+`pnpm start` aus dem Quellcode.
+
+### Linux (Debian/Ubuntu/Mint)
+
+```bash
+sudo apt update
+sudo apt install libwebkit2gtk-4.1-dev \
+  build-essential \
+  curl \
+  wget \
+  file \
+  libxdo-dev \
+  libssl-dev \
+  libayatana-appindicator3-dev \
+  librsvg2-dev
+```
+
+- Verifiziert auf Linux Mint 22.1 (Kernel 6.8): `pkg-config` meldet
+  `webkit2gtk-4.1`, `gtk+-3.0` und `libsoup-3.0` als vorhanden — der
+  Rust-Workspace (`cargo test`, `cargo clippy`, `pnpm build`) läuft grün.
+- Fedora/RHEL: Paketnamen unterscheiden sich
+  (`webkit2gtk4.1-devel`, `libxdo-devel`, `openssl-devel`,
+  `libayatana-appindicator3-devel`, `librsvg2-devel`).
+
+### Windows (10/11)
+
+- **Microsoft Visual Studio C++ Build Tools** (MSVC-Toolchain `x86_64-pc-windows-msvc`)
+- **WebView2 Runtime** — unter Windows 10/11 vorinstalliert; sonst über den
+  Evergreen-Installer von Microsoft nachziehen
+- Keine weiteren nativen Bibliotheken erforderlich
+
+### macOS
+
+- **Xcode Command Line Tools** (`xcode-select --install`)
+- WebView (WKWebView) ist Teil des Betriebssystems — keine zusätzliche Bibliothek
+
+Referenz: Tauri-2-Prerequisites-Dokumentation. Bei reinem
+Frontend-Entwicklung ohne Rust-Backend (`pnpm dev`) sind keine nativen
+Abhängigkeiten nötig.
+
 ## Allgemeine Schritte (Quellbau)
 
 ```bash

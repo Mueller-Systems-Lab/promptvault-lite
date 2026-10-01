@@ -125,6 +125,7 @@ extra:
 # or are not yet migrated to the MkDocs build
 exclude_docs: |
   README.md
+  archive/*
   GOVERNANCE.md
   agent/*
   architecture/*
