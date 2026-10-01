@@ -12,7 +12,7 @@ use promptvault_lite_lib::commands::scan;
 use promptvault_lite_lib::database::Database;
 use promptvault_lite_lib::models::PromptItem;
 use promptvault_lite_lib::scanner::file_scanner;
-use promptvault_lite_lib::scanner::DebouncedWatcher;
+use promptvault_lite_lib::watcher::DebouncedWatcher;
 use tempfile::TempDir;
 // =============================================================================
 // Hilfsfunktionen

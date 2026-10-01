@@ -5,7 +5,8 @@ use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter};
 
-use super::file_scanner::is_supported_prompt_extension;
+// file_scanner lives in promptvault-core since the workspace split (#104)
+use promptvault_core::scanner::is_supported_prompt_extension;
 
 /// Payload für watcher:changed Tauri Event
 #[derive(Clone, serde::Serialize)]

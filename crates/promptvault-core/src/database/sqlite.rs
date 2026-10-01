@@ -15,7 +15,9 @@ pub struct Database {
 
 impl Database {
     /// Hilfsfunktion: Lockt die Connection für lesende/schreibende Zugriffe.
-    pub(crate) fn lock_conn(&self) -> Result<std::sync::MutexGuard<'_, Connection>, String> {
+    /// Connection-Zugriff für die Tauri-Command-Schicht (crate-übergreifend
+    /// seit dem Workspace-Split, Epic #97).
+    pub fn lock_conn(&self) -> Result<std::sync::MutexGuard<'_, Connection>, String> {
         self.conn
             .lock()
             .map_err(|e| format!("Datenbank-Lock-Fehler: {}", e))
