@@ -1,10 +1,12 @@
-pub mod analysis;
+// Epic #97 (workspace split, issues #101–#105): the framework-free modules
+// live in the promptvault-core crate now. These re-exports keep the
+// `crate::<module>` paths inside the tauri crate (commands, tests) working.
+pub use promptvault_core::{analysis, database, models, observability, parser, scanner};
 pub mod commands;
-pub mod database;
-pub mod models;
-pub mod observability;
-pub mod parser;
-pub mod scanner;
+pub mod watcher;
+
+#[cfg(test)]
+mod commands_inventory;
 
 use crate::database::Database;
 use commands::tts::TtsState;

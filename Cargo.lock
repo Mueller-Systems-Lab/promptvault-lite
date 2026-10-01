@@ -2884,6 +2884,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "promptvault-core"
+version = "1.12.0"
+dependencies = [
+ "chrono",
+ "dunce",
+ "log",
+ "regex",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "tempfile",
+ "uuid",
+ "walkdir",
+]
+
+[[package]]
 name = "promptvault-lite"
 version = "1.12.0"
 dependencies = [
@@ -2892,6 +2909,7 @@ dependencies = [
  "env_logger",
  "log",
  "notify",
+ "promptvault-core",
  "regex",
  "rusqlite",
  "serde",
@@ -2907,6 +2925,16 @@ dependencies = [
  "uuid",
  "walkdir",
  "zip",
+]
+
+[[package]]
+name = "promptvault-server"
+version = "1.12.0"
+dependencies = [
+ "env_logger",
+ "log",
+ "promptvault-core",
+ "tempfile",
 ]
 
 [[package]]

@@ -1,6 +1,7 @@
 use crate::database::Database;
 use crate::models::PromptItem;
-use crate::scanner::{file_scanner, DebouncedWatcher};
+use crate::watcher::DebouncedWatcher;
+use promptvault_core::scanner::file_scanner;
 use std::sync::Mutex;
 
 /// Globaler App-State mit zwischengespeicherten Prompts
