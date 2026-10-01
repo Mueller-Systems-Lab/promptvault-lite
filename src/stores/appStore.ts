@@ -19,17 +19,12 @@ import type {
   AnalysisReport,
 } from "@/types";
 import {
-  scanDirectory,
-  evaluatePrompt,
-  analyzeHygiene,
   analyzeAll as tauriAnalyzeAll,
-  startFileWatcher,
-  stopFileWatcher,
-  toggleFavorite as tauriToggleFavorite,
   createPrompt as tauriCreatePrompt,
   updatePrompt as tauriUpdatePrompt,
 } from "@/lib/tauri";
 import { evaluatePromptContext } from "@/lib/promptContextEvaluation";
+import { getBackend } from "@/lib/backend";
 import { classifyContent } from "@/lib/blueprintDetection";
 import { listen } from "@tauri-apps/api/event";
 import type { UnlistenFn } from "@tauri-apps/api/event";
@@ -729,7 +724,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     }));
 
     try {
-      const newState = await tauriToggleFavorite(promptId);
+      const newState = await getBackend().toggleFavorite(promptId);
       // Backend bestätigt — State korrigieren falls nötig
       set((state) => ({
         prompts: state.prompts.map((p) =>
@@ -784,7 +779,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     // Stop backend watcher (only in Tauri context)
     if (typeof window !== "undefined" && "__TAURI_INTERNALS__" in window) {
       try {
-        await stopFileWatcher();
+        await getBackend().stopFileWatcher();
       } catch (err) {
         console.error("Fehler beim Stoppen des Watchers:", err);
       }
@@ -881,9 +876,9 @@ export const useAppStore = create<AppState>((set, get) => ({
       getContextEvaluation: (promptId: string) =>
         state.contextEvaluations[promptId] ?? null,
       evaluatePrompt: (promptId: string, content: string) =>
-        evaluatePrompt(promptId, content),
+        getBackend().evaluatePrompt(promptId, content),
       analyzeHygiene: (promptId: string, content: string) =>
-        analyzeHygiene(promptId, content),
+        getBackend().analyzeHygiene(promptId, content),
       createPrompt: async (input: CreatePromptInput) => {
         return tauriCreatePrompt(input);
       },
@@ -2131,8 +2126,8 @@ export const useAppStore = create<AppState>((set, get) => ({
     // A synthetic preview id keeps the diagnostic trace separate from the
     // stored prompt analysis.
     const [evaluation, hygiene] = await Promise.all([
-      evaluatePrompt(`preview:${draft.promptId}`, previewContent),
-      analyzeHygiene(`preview:${draft.promptId}`, previewContent),
+      getBackend().evaluatePrompt(`preview:${draft.promptId}`, previewContent),
+      getBackend().analyzeHygiene(`preview:${draft.promptId}`, previewContent),
     ]);
     set((s) => {
       if (!s.recommendationDraft || s.recommendationDraft.promptId !== draft.promptId) {
@@ -2351,7 +2346,7 @@ export const useAppStore = create<AppState>((set, get) => ({
           stage: "scan_directory",
         });
         try {
-          prompts = await scanDirectory(path);
+          prompts = await getBackend().scanDirectory(path);
           endScan("succeeded", {
             attributes: {
               "promptvault.scan.prompt_count": prompts.length,
@@ -2376,7 +2371,7 @@ export const useAppStore = create<AppState>((set, get) => ({
           stage: "start_file_watcher",
         });
         try {
-          await startFileWatcher(path);
+          await getBackend().startFileWatcher(path);
           endWatcher("succeeded");
         } catch (watchErr) {
           endWatcher("failed", {
@@ -2389,12 +2384,15 @@ export const useAppStore = create<AppState>((set, get) => ({
           });
         }
       } else {
-        prompts = await scanDirectory(path);
-        await startFileWatcher(path);
+        prompts = await getBackend().scanDirectory(path);
+        await getBackend().startFileWatcher(path);
       }
 
       const watchedPath = path;
-      const unlisten = await listen<ChangedPayload>(
+      const isDesktopBackend = getBackend().kind === "tauri";
+      let unlisten: UnlistenFn | null = null;
+      if (isDesktopBackend) {
+        unlisten = await listen<ChangedPayload>(
         "watcher:changed",
         (event) => {
           const { added, modified, removed } = event.payload;
@@ -2409,7 +2407,7 @@ export const useAppStore = create<AppState>((set, get) => ({
             }, 3000);
 
             if (watchedPath) {
-              scanDirectory(watchedPath)
+              getBackend().scanDirectory(watchedPath)
                 .then((updatedPrompts) => {
                   set({ prompts: updatedPrompts });
                 })
@@ -2439,12 +2437,13 @@ export const useAppStore = create<AppState>((set, get) => ({
           }
         },
       );
+      }
 
       set({
         prompts,
         isLoading: false,
         currentFolderPath: path,
-        _watcherUnlisten: unlisten,
+        ...(unlisten ? { _watcherUnlisten: unlisten } : {}),
       });
 
       // Restart persistence (v1.10.0 — AUTHORING_LIFECYCLE): remember the
@@ -2532,11 +2531,11 @@ export const useAppStore = create<AppState>((set, get) => ({
         // creates the "tauri-ipc" span; the Rust command returns a real
         // backend_span which recordBackendSpan emits as "rust-analysis".
         const [evalResult, hygResult] = await Promise.all([
-          evaluatePrompt(prompt.id, prompt.content, {
+          getBackend().evaluatePrompt(prompt.id, prompt.content, {
             trace,
             parentSpanId: resolveSpanId,
           }),
-          analyzeHygiene(prompt.id, prompt.content, {
+          getBackend().analyzeHygiene(prompt.id, prompt.content, {
             trace,
             parentSpanId: resolveSpanId,
           }),
@@ -2545,8 +2544,8 @@ export const useAppStore = create<AppState>((set, get) => ({
         hygiene = hygResult;
       } else {
         [evaluation, hygiene] = await Promise.all([
-          evaluatePrompt(prompt.id, prompt.content),
-          analyzeHygiene(prompt.id, prompt.content),
+          getBackend().evaluatePrompt(prompt.id, prompt.content),
+          getBackend().analyzeHygiene(prompt.id, prompt.content),
         ]);
       }
 
