@@ -202,8 +202,24 @@ function App() {
     }
   }, [selectedPromptId]);
 
+  const handleSelectFolderWeb = useCallback(async () => {
+    // Web/LAN mode (#124 / G2): no native dialog — the user enters the
+    // server-side vault path; scanning goes through the HTTP adapter.
+    const selected = window.prompt(
+      "Vault-Pfad auf dem Server (absoluter Pfad):",
+      currentFolderPath ?? "/vault",
+    );
+    if (!selected) return;
+    setFolderPath(selected);
+    await scanFolder(selected);
+    void batchClassifyBlueprints();
+  }, [currentFolderPath, scanFolder, batchClassifyBlueprints]);
+
   const handleSelectFolder = useCallback(async () => {
-    if (!isTauri) return;
+    if (!isTauri) {
+      await handleSelectFolderWeb();
+      return;
+    }
 
     try {
       const { open } = await import("@tauri-apps/plugin-dialog");
@@ -224,7 +240,7 @@ function App() {
     } catch (err) {
       console.error("Ordner-Auswahl fehlgeschlagen:", err);
     }
-  }, [isTauri, scanFolder, batchClassifyBlueprints]);
+  }, [isTauri, handleSelectFolderWeb, scanFolder, batchClassifyBlueprints]);
 
   const handleAnalyzeAll = useCallback(async () => {
     await analyzeAll();
@@ -232,7 +248,7 @@ function App() {
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
-    onOpenFolder: isLoading || !isTauri ? undefined : handleSelectFolder,
+    onOpenFolder: isLoading ? undefined : handleSelectFolder,
     onFocusSearch: () => {
       searchInputRef.current?.focus();
     },
@@ -318,8 +334,12 @@ function App() {
             onClick={() => {
               void handleSelectFolder();
             }}
-            disabled={isLoading || !isTauri}
-            title={`Ordner öffnen (${modLabel}+O)`}
+            disabled={isLoading}
+            title={
+              isTauri
+                ? `Ordner öffnen (${modLabel}+O)`
+                : `Vault-Pfad auf dem Server öffnen (Web/LAN-Modus)`
+            }
           >
             {isLoading ? "⏳ Scanne..." : "📁 Ordner öffnen"}
           </button>

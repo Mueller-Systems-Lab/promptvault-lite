@@ -40,6 +40,15 @@ export default defineConfig({
     watch: {
       ignored: ["**/src-tauri/**"],
     },
+    // Web/LAN mode (issue #123 / G1): forward same-origin /api calls to the
+    // promptvault-server during development (production serves the built UI
+    // from the server itself, staying same-origin without a proxy).
+    proxy: {
+      "/api": {
+        target: process.env.PROMPTVAULT_SERVER_URL || "http://127.0.0.1:8080",
+        changeOrigin: true,
+      },
+    },
   },
   envPrefix: ["VITE_", "TAURI_"],
   build: {

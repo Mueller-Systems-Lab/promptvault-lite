@@ -2,24 +2,15 @@ use crate::database::Database;
 
 // --- Innere Logik — testbar ohne Tauri-Kontext (ADR-008) ---
 
+// Seit dem Workspace-Split (#105) leben die Favoriten-Operationen in
+// promptvault-core (Database::toggle_favorite / ::get_favorites) und werden
+// von Desktop- und Server-Frontend gleichermaßen genutzt.
 pub fn toggle_favorite_impl(prompt_id: &str, db: &Database) -> Result<bool, String> {
-    let prompt = db
-        .get_prompt(prompt_id)?
-        .ok_or_else(|| format!("Prompt not found: {}", prompt_id))?;
-
-    let new_state = !prompt.is_favorite;
-    db.set_favorite(prompt_id, new_state)?;
-    Ok(new_state)
+    db.toggle_favorite(prompt_id)
 }
 
 pub fn get_favorites_impl(db: &Database) -> Result<Vec<String>, String> {
-    let prompts = db.load_prompts()?;
-    let favorites: Vec<String> = prompts
-        .into_iter()
-        .filter(|p| p.is_favorite)
-        .map(|p| p.id)
-        .collect();
-    Ok(favorites)
+    db.get_favorites()
 }
 
 // --- Tauri Commands — dünne Wrapper ---

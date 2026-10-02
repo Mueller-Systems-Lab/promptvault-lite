@@ -12,8 +12,10 @@
 //   - no-data-loss: create → edit → save → content equal
 // =============================================================================
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { useAppStore } from "@/stores/appStore";
+import { setBackendOverride } from "@/lib/backend";
+import type { BackendAdapter } from "@/lib/backend";
 import {
   setObservabilityEnabled,
   clearAll,
@@ -488,6 +490,23 @@ describe("Authoring — restart persistence", () => {
     clearAll();
     setObservabilityEnabled(false);
     resetStore();
+    // F4: scanFolder konsumiert die Backend-Factory — Stub für diesen Block.
+    const adapter: BackendAdapter = {
+      kind: "http",
+      capabilities: { nativeFolderDialog: false, fileWatcher: false, nativeClipboard: false },
+      scanDirectory: vi.fn(() => Promise.resolve([makePrompt("p1")])),
+      evaluatePrompt: vi.fn(() => {
+        throw new Error("not used");
+      }),
+      analyzeHygiene: vi.fn(() => {
+        throw new Error("not used");
+      }),
+      toggleFavorite: vi.fn(() => Promise.resolve(true)),
+      getFavorites: vi.fn(() => Promise.resolve([])),
+      startFileWatcher: vi.fn(() => Promise.resolve()),
+      stopFileWatcher: vi.fn(() => Promise.resolve()),
+    };
+    setBackendOverride(adapter);
     try {
       localStorage.removeItem("promptvault.lastFolder");
     } catch {
@@ -497,6 +516,42 @@ describe("Authoring — restart persistence", () => {
 
   it("scanFolder writes promptvault.lastFolder to localStorage on success", async () => {
     mockTauriScanDirectory.mockResolvedValue([makePrompt("p1")]);
+    // F4: scanFolder konsumiert die Backend-Factory — Override mit dem
+    // gleichen Ergebnis wie der tauri-Mock oben.
+    const backendAdapter: BackendAdapter = {
+      kind: "http",
+      capabilities: { nativeFolderDialog: false, fileWatcher: false, nativeClipboard: false },
+      scanDirectory: vi.fn(() => Promise.resolve([makePrompt("p1")])),
+      evaluatePrompt: vi.fn(() => {
+        throw new Error("not used in this test");
+      }),
+      analyzeHygiene: vi.fn(() => {
+        throw new Error("not used in this test");
+      }),
+      toggleFavorite: vi.fn(() => Promise.resolve(true)),
+      getFavorites: vi.fn(() => Promise.resolve([])),
+      startFileWatcher: vi.fn(() => Promise.resolve()),
+      stopFileWatcher: vi.fn(() => Promise.resolve()),
+    };
+    setBackendOverride(backendAdapter);
+    // F4: scanFolder konsumiert die Backend-Factory — Stub für diesen Test.
+    const adapter: BackendAdapter = {
+      kind: "http",
+      capabilities: { nativeFolderDialog: false, fileWatcher: false, nativeClipboard: false },
+      scanDirectory: vi.fn(() => Promise.resolve([makePrompt("p1")])),
+      evaluatePrompt: vi.fn(() => {
+        throw new Error("not used");
+      }),
+      analyzeHygiene: vi.fn(() => {
+        throw new Error("not used");
+      }),
+      toggleFavorite: vi.fn(() => Promise.resolve(true)),
+      getFavorites: vi.fn(() => Promise.resolve([])),
+      startFileWatcher: vi.fn(() => Promise.resolve()),
+      stopFileWatcher: vi.fn(() => Promise.resolve()),
+    };
+    setBackendOverride(adapter);
+
 
     await useAppStore.getState().scanFolder("C:\\vault\\prompts");
 
@@ -538,4 +593,8 @@ describe("Authoring — no data loss", () => {
     expect(finalPrompt?.title).toBe("Start");
     expect(useAppStore.getState().promptEditor).toBeNull();
   });
+});
+
+afterEach(() => {
+  setBackendOverride(null);
 });

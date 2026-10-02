@@ -241,6 +241,18 @@ export async function toggleFavorite(promptId: string, opts?: TauriCallOptions):
 
 // --- Export ---
 
+export async function getFavorites(opts?: TauriCallOptions): Promise<string[]> {
+  if (opts?.trace) {
+    return invokeObserved<string[]>("get_favorites", {}, {
+      trace: opts.trace,
+      operation: "favorites-list",
+      layer: "tauri-ipc",
+      parentSpanId: opts.parentSpanId,
+    });
+  }
+  return invoke<string[]>("get_favorites");
+}
+
 export async function exportJson(
   promptIds: string[],
   exportPath: string,
