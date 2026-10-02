@@ -31,9 +31,12 @@ pub fn api_router() -> Router<AppState> {
         .route("/export", post(export::export_prompts))
 }
 
-/// Write-access guard (issue #111 / D2): fail-closed — every mutating route
-/// calls this first and returns 403 unless the server was explicitly started
-/// with `PROMPTVAULT_SERVER_READ_ONLY=0` (the default is read-only).
+/// Write-access guard (issue #111 / D2): fail-closed — mutating routes call
+/// this first and return 403 unless the server was explicitly started with
+/// `PROMPTVAULT_SERVER_READ_ONLY=0` (the default is read-only).
+/// Exception: `POST /api/scan` writes only the server-side cache/DB (never
+/// the vault) and is intentionally unguarded — without scan the server
+/// would serve nothing in default mode.
 pub mod guard {
     use crate::error::ApiError;
     use crate::state::AppState;

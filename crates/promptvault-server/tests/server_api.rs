@@ -218,14 +218,24 @@ async fn favorites_list_returns_favorited_prompts() {
 // --- E5 (#117) ---------------------------------------------------------------
 
 #[tokio::test]
-async fn evidence_read_returns_hygiene_artifacts() {
+async fn evidence_read_returns_real_hygiene_artifacts() {
+    // J1-nahe Verstärkung: das Fixture enthält ein bekanntes Artefakt
+    // (Dateipfad-Referenz) — die Hygiene darf NICHT „perfekt" melden.
     let (state, _vault) = state_with_prompts(true);
+    {
+        let mut prompts = state.prompts.lock().unwrap();
+        prompts[0].content = "# Rolle\nTester.\n\nLog: /var/log/app/error.log\n".to_string();
+    }
     let app = build_router(state);
     let (status, json) = call(app, "GET", "/api/evidence/p1", None).await;
     assert_eq!(status, StatusCode::OK);
     assert_eq!(json["prompt_id"], "p1");
     assert!(json["hygiene_score"].is_number());
-    assert!(json["artifacts"].is_array());
+    assert!(
+        json["hygiene_score"].as_i64().unwrap() < 100,
+        "bekanntes Artefakt muss den Hygiene-Score senken (Argument-Reihenfolge-Regression)"
+    );
+    assert!(!json["artifacts"].as_array().unwrap().is_empty());
 }
 
 #[tokio::test]

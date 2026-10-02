@@ -28,7 +28,7 @@ pub async fn read_evidence(
             .ok_or_else(|| ApiError::not_found(format!("Prompt {id} nicht gescannt")))?
     };
 
-    let hygiene = promptvault_core::analysis::analyze_hygiene(&id, &content);
+    let hygiene = promptvault_core::analysis::analyze_hygiene(&content, &id);
 
     Ok(Json(json!({
         "prompt_id": pid,

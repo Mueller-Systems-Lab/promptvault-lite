@@ -726,8 +726,8 @@ mod probe_favorites {
     #[test]
     fn probe_toggle_and_get_favorites_exist() {
         let db = Database::new_in_memory().unwrap();
-        let r = db.toggle_favorite("nix");
-        assert!(r.is_err() || r.is_ok()); // Kompilier-/Auflösungsprobe
+        // "nix" existiert nicht → Err erwartet (kein Fake-Pass-Muster)
+        assert!(db.toggle_favorite("nix").is_err());
         let _ = db.get_favorites().unwrap();
     }
 }
