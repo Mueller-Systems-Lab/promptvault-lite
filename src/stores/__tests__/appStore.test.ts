@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { useAppStore } from "@/stores/appStore";
 import type { PromptItem, PromptEvaluation, PromptHygiene } from "@/types";
 
@@ -12,7 +12,45 @@ vi.mock("@/lib/tauri", async () => {
   };
 });
 
-import { toggleFavorite as tauriToggleFavorite } from "@/lib/tauri";
+// F4: der Store konsumiert die Backend-Factory — Tests pinnen einen
+// Stub-Adapter über setBackendOverride (gleiche Semantik wie produktiv).
+import { setBackendOverride } from "@/lib/backend";
+import type { BackendAdapter } from "@/lib/backend";
+
+const mockBackendToggle = vi.fn();
+function useMockBackend(): void {
+  const adapter: BackendAdapter = {
+    kind: "http",
+    capabilities: { nativeFolderDialog: false, fileWatcher: false, nativeClipboard: false },
+    scanDirectory: vi.fn(() => Promise.resolve([])),
+    evaluatePrompt: vi.fn(() =>
+      Promise.resolve({
+        id: "e",
+        prompt_id: "",
+        overall_score: 0,
+        criteria: [],
+        missing_sections: [],
+        recommendations: [],
+        evaluated_at: "",
+      } as never),
+    ),
+    analyzeHygiene: vi.fn(() =>
+      Promise.resolve({
+        id: "h",
+        prompt_id: "",
+        hygiene_score: 100,
+        status: "clean" as const,
+        artifacts: [] as never[],
+        analyzed_at: "",
+      } as never),
+    ),
+    toggleFavorite: mockBackendToggle,
+    getFavorites: vi.fn(() => Promise.resolve([])),
+    startFileWatcher: vi.fn(() => Promise.resolve()),
+    stopFileWatcher: vi.fn(() => Promise.resolve()),
+  };
+  setBackendOverride(adapter);
+}
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -721,13 +759,18 @@ describe("toggleFavorite (async, Backend)", () => {
   beforeEach(() => {
     resetStore();
     vi.clearAllMocks();
+    useMockBackend();
     useAppStore.setState({
       prompts: [makePrompt("p1", "/test/p1.md", { is_favorite: false })],
     });
   });
 
+  afterEach(() => {
+    setBackendOverride(null);
+  });
+
   it("optimistisches UI-Update toggled is_favorite sofort", async () => {
-    const mockToggle = vi.mocked(tauriToggleFavorite);
+    const mockToggle = mockBackendToggle;
     // Make the backend call resolve successfully
     mockToggle.mockResolvedValue(true);
 
@@ -739,7 +782,7 @@ describe("toggleFavorite (async, Backend)", () => {
   });
 
   it("revertiert State bei Backend-Fehler mit Error-String", async () => {
-    const mockToggle = vi.mocked(tauriToggleFavorite);
+    const mockToggle = mockBackendToggle;
     mockToggle.mockRejectedValue(new Error("Backend nicht erreichbar"));
 
     // p1 starts as NOT favorite
@@ -757,7 +800,7 @@ describe("toggleFavorite (async, Backend)", () => {
   });
 
   it("synchronisiert State mit Backend-Antwort", async () => {
-    const mockToggle = vi.mocked(tauriToggleFavorite);
+    const mockToggle = mockBackendToggle;
     // Backend returns false (successfully unfavorited)
     mockToggle.mockResolvedValue(false);
 
