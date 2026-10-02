@@ -7,14 +7,18 @@ license = "MIT"
 edition = "2021"
 rust-version = "1.77"
 
-# NOTE (issue #110/D1): the HTTP stack (axum/tokio/tower-http) is added in the
-# server-endpoints change; this crate starts as a dependency-free binary that
-# implements configuration loading and validation (fail-closed).
-
 [dependencies]
 promptvault-core = { path = "../promptvault-core" }
+axum = { version = "0.7", default-features = false, features = ["http1", "json", "tokio"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "signal"] }
+tower-http = { version = "0.5", features = ["fs"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 log = "0.4"
 env_logger = "0.11"
+dunce = "1"
 
 [dev-dependencies]
 tempfile = "3"
+tower = { version = "0.5", features = ["util"] }
+http-body-util = "0.1"
