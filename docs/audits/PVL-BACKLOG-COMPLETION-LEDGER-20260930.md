@@ -168,3 +168,31 @@ informierte Owner-Disposition. Der Owner öffnete außerdem **#316**
 (agent-project-contract) — ein neues Anliegen außerhalb des 58-Issue-Sets.
 **Verbleibt offen aus dem 58er-Set: #296** (prompt_archiv-Quelle nicht
 zugänglich — exakter Blocker im Issue; Owner hat das Issue wieder geöffnet).
+
+---
+
+# 10. Verifikations-Update (2026-10-02, Continuation-Run)
+
+Live-Verifikation im sichtbaren Browser (Stand 2026-10-02, ~12:30 CEST):
+
+- **#137/K1 + #138/K2:** Vom Owner zunächst „as completed" geschlossen
+  (nach den Status-Kommentaren mit Lieferung + exakter fehlender Eingabe).
+  Da die **Ausführungs-ACs unverified** bleiben (keine Container-Runtime auf
+  dem Verifikations-Host; LXC/LAN-Umgebung ownerseitig), wurden beide per
+  Web-Interface **wiedereröffnet** und mit exakter fehlender Eingabe
+  kommentiert (docker-smoke.sh-Ausführung bzw. LXC/LAN-Client-Check).
+  `which docker podman` → nicht gefunden → Runtime-Anteil **BLOCKED**.
+- **#296:** weiterhin **offen**; Quellen-Re-Probe unverändert negativ
+  (prompt_archiv nicht in den zugänglichen Repositories; Evidenz-Kommentar
+  vom 2026-10-01 im Issue). SBOM-/Attestat-Anforderungen: nicht produziert,
+  nicht behauptet.
+- **PR #319 / Merge-Commit `f3c00cb`:** gemerged; CI-Run **CI #257 auf
+  master: grün (22m38s, alle Checks abgeschlossen)** — der im prior audit
+  offene Check ist damit abgeschlossen und grün. Vorgänger #256 (PR) und
+  #255 (746b354) ebenfalls grün.
+- **#316:** neues, außerhalb des 58-Issue-Sets liegendes Issue des Owners
+  (agent-project-contract) — bleibt als out-of-scope dieses Backlog-Runs
+  identifiziert und offen.
+- **Epic-Merge-Verifikation:** `ccb93cb` (#317) auf master — CI grün
+  (#253). Kettene-Reviews: #309 APPROVE, #313 Re-Review APPROVE,
+  #311(APPROVE, via #314), #315 Re-Review APPROVE.
