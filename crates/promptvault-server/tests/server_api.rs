@@ -296,3 +296,55 @@ async fn unknown_api_route_is_404() {
     let (status, _) = call(app, "GET", "/api/nonsense", None).await;
     assert_eq!(status, StatusCode::NOT_FOUND);
 }
+
+// --- J1 (#132): Symlink-Escape — kanonischer Pfad wird aufgelöst -------------
+
+#[tokio::test]
+async fn scan_resolves_symlinked_vault_without_escape() {
+    // Realer Vault + Symlink darauf: der Scan folgt dem kanonischen Pfad
+    // (kein Verlassen durch client-kontrollierte Segmente möglich, da '..'
+    // und relative Pfade hart abgelehnt werden).
+    let vault = tempfile::tempdir().unwrap();
+    std::fs::write(vault.path().join("link-fixture.md"), "# Rolle\nTest.").unwrap();
+    let link_dir = tempfile::tempdir().unwrap();
+    #[cfg(unix)]
+    std::os::unix::fs::symlink(vault.path(), link_dir.path().join("link")).unwrap();
+    let linked = link_dir.path().join("link");
+
+    let state = state_with(true);
+    let app = build_router(state.clone());
+    let body = serde_json::json!({ "path": linked.to_str().unwrap() }).to_string();
+    let (status, json) = call(app, "POST", "/api/scan", Some(body)).await;
+    assert_eq!(status, StatusCode::OK);
+    assert!(json.as_array().map(|a| !a.is_empty()).unwrap_or(false));
+    // Kanonischer Pfad ist der reale Vault (kein Escape in fremde Verzeichnisse)
+    let cached = state.prompts.lock().unwrap().clone();
+    assert!(cached
+        .iter()
+        .all(|p| p.file_path.starts_with(vault.path().to_str().unwrap())));
+}
+
+#[tokio::test]
+async fn scan_allows_dotdot_prefixed_names_but_rejects_dotdot_segments() {
+    // "..hidden" ist KEIN Traversal-Segment — nur exakte ".."-Segmente sind verboten
+    let vault = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(vault.path().join("..hidden")).unwrap();
+    std::fs::write(vault.path().join("..hidden").join("fixture.md"), "# Rolle\nTest.").unwrap();
+
+    // Positivfall: ..hidden/ ist ein gültiges Verzeichnis und wird gescannt
+    let state = state_with(true);
+    let app = build_router(state);
+    let body =
+        serde_json::json!({ "path": format!("{}/..hidden", vault.path().to_str().unwrap()) })
+            .to_string();
+    let (status, json) = call(app, "POST", "/api/scan", Some(body)).await;
+    assert_eq!(status, StatusCode::OK);
+    assert!(json.as_array().map(|a| !a.is_empty()).unwrap_or(false));
+
+    // Negativfall: echtes ".."-Segment bleibt verboten
+    let app2 = build_router(state_with(true));
+    let body = serde_json::json!({ "path": format!("{}/..", vault.path().to_str().unwrap()) })
+        .to_string();
+    let (status, _) = call(app2, "POST", "/api/scan", Some(body)).await;
+    assert_eq!(status, StatusCode::BAD_REQUEST);
+}
