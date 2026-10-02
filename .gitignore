@@ -83,3 +83,6 @@ playwright/.auth/
 tests/e2e/.env.local
 tests/e2e/corpus-config.ts
 playwright.config.local.ts
+
+# vite transient config dumps
+vite.config.ts.timestamp-*.mjs
