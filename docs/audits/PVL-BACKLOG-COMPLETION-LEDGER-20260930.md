@@ -157,7 +157,14 @@ und das Epic in Abhängigkeitsreihenfolge implementiert:
 **Umgesetzte Disposition (2026-10-02):** #99–#136, #139–#142 mit
 Evidenz-Kommentaren **geschlossen** (AC→Deliverable→PR #317→Merge
 `ccb93cb`, CI 13/13); #97 (Epic) und #146 (Phase 4 = Flywheel + Runbook)
-geschlossen; **offen bleiben:** #137/K1 + #138/K2 (echte
-Umgebungsabhängigkeiten: Docker-Runtime bzw. LXC/LAN des Owners — Lieferung
-komplett, exakte fehlende Eingabe je Issue kommentiert) und #296
-(prompt_archiv-Quelle nicht zugänglich — exakter Blocker im Issue).
+geschlossen.
+
+**Live-Korrektur (2026-10-02, nach Merge):** Der Owner schloss #137/K1 und
+#138/K2 persönlich „as completed" — unmittelbar nach den Status-Kommentaren,
+die die komplette Lieferung plus die exakte fehlende Eingabe (Docker-Runtime
+bzw. LXC/LAN-Umgebung) dokumentierten. Die Ausführungs-ACs bleiben damit
+unverifiziert (dokumentiert in den Issue-Threads); die Schließung ist die
+informierte Owner-Disposition. Der Owner öffnete außerdem **#316**
+(agent-project-contract) — ein neues Anliegen außerhalb des 58-Issue-Sets.
+**Verbleibt offen aus dem 58er-Set: #296** (prompt_archiv-Quelle nicht
+zugänglich — exakter Blocker im Issue; Owner hat das Issue wieder geöffnet).
