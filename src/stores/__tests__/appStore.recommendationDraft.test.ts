@@ -10,7 +10,6 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useAppStore } from "@/stores/appStore";
-import { evaluatePrompt, analyzeHygiene } from "@/lib/tauri";
 import type { PromptItem } from "@/types";
 
 vi.mock("@/lib/tauri", () => ({
@@ -30,6 +29,25 @@ vi.mock("@/lib/tauri", () => ({
 
 vi.mock("@tauri-apps/api/event", () => ({
   listen: vi.fn(() => Promise.resolve(() => {})),
+}));
+
+// F4: Store konsumiert die Backend-Factory — Stub-Adapter statt tauri-Mock.
+const backendEvaluate = vi.fn();
+const backendHygiene = vi.fn();
+vi.mock("@/lib/backend", () => ({
+  getBackend: () => ({
+    kind: "http",
+    capabilities: { nativeFolderDialog: false, fileWatcher: false, nativeClipboard: false },
+    scanDirectory: vi.fn(() => Promise.resolve([])),
+    evaluatePrompt: (id: string, c: string) =>
+      Promise.resolve(backendEvaluate(id, c) as never),
+    analyzeHygiene: (id: string, c: string) =>
+      Promise.resolve(backendHygiene(id, c) as never),
+    toggleFavorite: vi.fn(() => Promise.resolve(true)),
+    getFavorites: vi.fn(() => Promise.resolve([])),
+    startFileWatcher: vi.fn(() => Promise.resolve()),
+    stopFileWatcher: vi.fn(() => Promise.resolve()),
+  }),
 }));
 
 function makePrompt(id: string, content: string): PromptItem {
@@ -155,7 +173,7 @@ describe("recommendation draft (#45)", () => {
   });
 
   it("analyzeRecommendationPreview re-analyzes preview content and records after scores", async () => {
-    vi.mocked(evaluatePrompt).mockResolvedValue({
+    backendEvaluate.mockResolvedValue({
       id: "e2",
       prompt_id: "preview",
       overall_score: 80,
@@ -164,7 +182,7 @@ describe("recommendation draft (#45)", () => {
       recommendations: [],
       evaluated_at: "2026-09-30T00:00:00Z",
     });
-    vi.mocked(analyzeHygiene).mockResolvedValue({
+    backendHygiene.mockResolvedValue({
       id: "h2",
       prompt_id: "preview",
       hygiene_score: 90,
@@ -177,7 +195,8 @@ describe("recommendation draft (#45)", () => {
     const d = useAppStore.getState().recommendationDraft;
     expect(d?.after).toEqual({ quality: 80, hygiene: 90 });
     // analysis must have been called with the PREVIEW content (original + block)
-    const calledContent = vi.mocked(evaluatePrompt).mock.calls[0]?.[1] ?? "";
+    const firstCall = backendEvaluate.mock.calls[0] as [string, string] | undefined;
+    const calledContent = firstCall?.[1] ?? "";
     expect(calledContent).toContain("## Ziel");
     expect(calledContent.startsWith(PROMPT.content)).toBe(true);
     // store analysis caches must NOT be overwritten by the preview analysis
@@ -186,7 +205,7 @@ describe("recommendation draft (#45)", () => {
 
   it("analyzeRecommendationPreview without draft is a no-op", async () => {
     await useAppStore.getState().analyzeRecommendationPreview();
-    expect(evaluatePrompt).not.toHaveBeenCalled();
+    expect(backendEvaluate).not.toHaveBeenCalled();
   });
 
   it("switching prompts discards a draft scoped to another prompt (stale invalidation)", () => {

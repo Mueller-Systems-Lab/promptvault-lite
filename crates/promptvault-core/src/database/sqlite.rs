@@ -139,6 +139,27 @@ impl Database {
 
     // --- Prompts ---
 
+    /// Favoriten-Status wechseln (getestet über die Command-Integration;
+    /// seit dem Workspace-Split #105 auch für den Server genutzt).
+    pub fn toggle_favorite(&self, prompt_id: &str) -> Result<bool, String> {
+        let prompt = self
+            .get_prompt(prompt_id)?
+            .ok_or_else(|| format!("Prompt not found: {}", prompt_id))?;
+        let new_state = !prompt.is_favorite;
+        self.set_favorite(prompt_id, new_state)?;
+        Ok(new_state)
+    }
+
+    /// Alle favorisierten Prompt-IDs.
+    pub fn get_favorites(&self) -> Result<Vec<String>, String> {
+        Ok(self
+            .load_prompts()?
+            .into_iter()
+            .filter(|p| p.is_favorite)
+            .map(|p| p.id)
+            .collect())
+    }
+
     /// Speichert eine Liste von Prompts (ersetzt existierende mit gleichem file_path)
     pub fn save_prompts(&self, prompts: &[PromptItem]) -> Result<(), String> {
         let conn = self.lock_conn()?;
@@ -695,5 +716,18 @@ mod tests {
         db.clear_prompts().unwrap();
         let loaded = db.load_prompts().unwrap();
         assert_eq!(loaded.len(), 0);
+    }
+}
+
+#[cfg(test)]
+mod probe_favorites {
+    use super::*;
+
+    #[test]
+    fn probe_toggle_and_get_favorites_exist() {
+        let db = Database::new_in_memory().unwrap();
+        // "nix" existiert nicht → Err erwartet (kein Fake-Pass-Muster)
+        assert!(db.toggle_favorite("nix").is_err());
+        let _ = db.get_favorites().unwrap();
     }
 }

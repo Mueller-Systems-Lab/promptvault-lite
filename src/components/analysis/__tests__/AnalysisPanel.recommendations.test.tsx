@@ -35,6 +35,24 @@ vi.mock("@tauri-apps/api/event", () => ({
   listen: vi.fn(() => Promise.resolve(() => {})),
 }));
 
+const backendEvaluate = vi.fn();
+const backendHygiene = vi.fn();
+vi.mock("@/lib/backend", () => ({
+  getBackend: () => ({
+    kind: "http",
+    capabilities: { nativeFolderDialog: false, fileWatcher: false, nativeClipboard: false },
+    scanDirectory: vi.fn(() => Promise.resolve([])),
+    evaluatePrompt: (id: string, c: string) =>
+      Promise.resolve(backendEvaluate(id, c) as never),
+    analyzeHygiene: (id: string, c: string) =>
+      Promise.resolve(backendHygiene(id, c) as never),
+    toggleFavorite: vi.fn(() => Promise.resolve(true)),
+    getFavorites: vi.fn(() => Promise.resolve([])),
+    startFileWatcher: vi.fn(() => Promise.resolve()),
+    stopFileWatcher: vi.fn(() => Promise.resolve()),
+  }),
+}));
+
 function makePrompt(id: string, content: string): PromptItem {
   return {
     id,
@@ -136,8 +154,7 @@ describe("AnalysisPanel — Empfehlungen-Workflow (#45)", () => {
   });
 
   it("Neu analysieren fills the after scores (Kriterium 4+5)", async () => {
-    const { evaluatePrompt, analyzeHygiene } = await import("@/lib/tauri");
-    vi.mocked(evaluatePrompt).mockResolvedValue({
+    vi.mocked(backendEvaluate).mockResolvedValue({
       id: "e2",
       prompt_id: "preview:p1",
       overall_score: 80,
@@ -146,7 +163,7 @@ describe("AnalysisPanel — Empfehlungen-Workflow (#45)", () => {
       recommendations: [],
       evaluated_at: "2026-09-30T00:00:00Z",
     });
-    vi.mocked(analyzeHygiene).mockResolvedValue({
+    vi.mocked(backendHygiene).mockResolvedValue({
       id: "h2",
       prompt_id: "preview:p1",
       hygiene_score: 90,
