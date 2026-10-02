@@ -136,3 +136,28 @@ Open at run end: **none**. Outstanding owner actions outside the issue tracker: 
 - Screenshots (browser evidence): workspace `pv-workspace/shots/` (numbered) — screenshots in PRs #302/#304 are the committed subset (synthetic data only).
 - Gate logs: `pv-workspace/gate-*.log`.
 - Browser scripts: `/home/xxammaxx/pv-harness/s*.mjs` (headed Chromium harness).
+
+---
+
+# 9. Epic-Umsetzung Web/LAN (#97) — Resume-Run 2026-10-01/02
+
+Der Owner hat am 2026-10-01 die Richtung geändert: die 58-Issue-Anforderungen
+sind zu vervollständigen (ADR-007). Die not-planned-Schließungen der
+Epic-Kinder wurden reverted (47 Issues wiedereröffnet, browser-verifiziert)
+und das Epic in Abhängigkeitsreihenfolge implementiert:
+
+| PR | Inhalt (Issues) | Review | Stand |
+|---|---|---|---|
+| #309 | Workspace-Split (#99, #100-Skeleton, #101–#105, #106–#109; ADR-007) | APPROVE | **Gemerged** `e7b7a5a` |
+| #313 | Server HTTP API D1–E5 (#110–#117); ersetzt #310 (Blocker: vertauschte analyze_hygiene-Argumente, behoben + load-bearing Regressionstest) | Re-Review APPROVE | **Gemerged** (Kette) |
+| #314 | Frontend-Adapter + Web-Mode F1–G3 (#118–#125); ersetzt #311 (APPROVE, aber Kette verworfen) | APPROVE | **Gemerged** (Kette) |
+| #315 | Docker/Deploy-Docs/Security-Gate/Eval-Flywheel (#126–#136, #146 Phase 4); ersetzt #312 nach 5 Blocker-Fixes (u. a. gitignore-Whitelist für die drei Scripts — Root Cause des fehlenden Commits) | Re-Review APPROVE | **Gemerged** (Kette) |
+| #317 | Integration → master (B'+fix+C+D) | CI auf master-Diff | Merge ausstehend |
+
+Issue-Dispositionsplan (nach #317-Merge): #99–#136 mit Evidenz schließen
+(je Issue: AC→Deliverable→PR→Merge-Commit); **#137/K1 und #138/K2 bleiben
+offen** (echte externe Abhängigkeiten: Docker-Runtime bzw. LXC/LAN-Umgebung
+des Owners — Scripts/Doku vollständig geliefert); #97 schließt als Epic mit
+Verweis auf die offenen Umgebungskriterien; #146 schließt (Phase 4 = Flywheel
++ Runbook, in #315/#317); #296 bleibt offen (prompt_archiv-Quelle nicht
+zugänglich — exakter Blocker im Issue dokumentiert).
