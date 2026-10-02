@@ -329,7 +329,11 @@ async fn scan_allows_dotdot_prefixed_names_but_rejects_dotdot_segments() {
     // "..hidden" ist KEIN Traversal-Segment — nur exakte ".."-Segmente sind verboten
     let vault = tempfile::tempdir().unwrap();
     std::fs::create_dir_all(vault.path().join("..hidden")).unwrap();
-    std::fs::write(vault.path().join("..hidden").join("fixture.md"), "# Rolle\nTest.").unwrap();
+    std::fs::write(
+        vault.path().join("..hidden").join("fixture.md"),
+        "# Rolle\nTest.",
+    )
+    .unwrap();
 
     // Positivfall: ..hidden/ ist ein gültiges Verzeichnis und wird gescannt
     let state = state_with(true);
@@ -343,8 +347,8 @@ async fn scan_allows_dotdot_prefixed_names_but_rejects_dotdot_segments() {
 
     // Negativfall: echtes ".."-Segment bleibt verboten
     let app2 = build_router(state_with(true));
-    let body = serde_json::json!({ "path": format!("{}/..", vault.path().to_str().unwrap()) })
-        .to_string();
+    let body =
+        serde_json::json!({ "path": format!("{}/..", vault.path().to_str().unwrap()) }).to_string();
     let (status, _) = call(app2, "POST", "/api/scan", Some(body)).await;
     assert_eq!(status, StatusCode::BAD_REQUEST);
 }
