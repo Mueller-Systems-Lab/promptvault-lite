@@ -18,7 +18,7 @@ fn temp_vault() -> PathBuf {
     p
 }
 
-fn config_for(vault: &PathBuf) -> promptvault_server::ServerConfig {
+fn config_for(vault: &std::path::Path) -> promptvault_server::ServerConfig {
     promptvault_server::load_config(&|k: &str| match k {
         "PROMPTVAULT_SERVER_VAULT" => Ok(vault.to_str().unwrap().to_string()),
         _ => Err(std::env::VarError::NotPresent),
@@ -104,10 +104,7 @@ fn binary_serves_health_endpoint() {
         if let Ok(mut stream) = TcpStream::connect(addr.as_str()) {
             stream
                 .write_all(
-                    format!(
-                        "GET /api/health HTTP/1.1\r\nhost: localhost\r\nconnection: close\r\n\r\n"
-                    )
-                    .as_bytes(),
+                    b"GET /api/health HTTP/1.1\r\nhost: localhost\r\nconnection: close\r\n\r\n",
                 )
                 .unwrap();
             let mut buf = String::new();
@@ -127,4 +124,5 @@ fn binary_serves_health_endpoint() {
     assert!(body.contains("\"read_only\":true"), "body: {body}");
     assert!(body.contains("\"status\":\"ok\""), "body: {body}");
     let _ = child.kill();
+    child.wait().expect("child aufräumen");
 }
