@@ -133,4 +133,17 @@ describe("http adapter (#119 / F2)", () => {
     expect(httpAdapter.capabilities.nativeFolderDialog).toBe(false);
     expect(httpAdapter.capabilities.fileWatcher).toBe(false);
   });
+
+  it("J3 isolation: http adapter performs NO tauri invoke even if internals appear later", async () => {
+    const invoke = vi.fn(() => Promise.resolve(null));
+    vi.stubGlobal("__TAURI_INTERNALS__", { invoke });
+    stubFetch((path) => (path === "/api/scan" ? [] : {}));
+    try {
+      const prompts = await httpAdapter.scanDirectory("/vault");
+      expect(prompts).toEqual([]);
+      expect(invoke).not.toHaveBeenCalled();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
 });
