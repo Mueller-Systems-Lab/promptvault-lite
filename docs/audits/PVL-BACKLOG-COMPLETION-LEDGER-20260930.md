@@ -152,12 +152,12 @@ und das Epic in Abhängigkeitsreihenfolge implementiert:
 | #313 | Server HTTP API D1–E5 (#110–#117); ersetzt #310 (Blocker: vertauschte analyze_hygiene-Argumente, behoben + load-bearing Regressionstest) | Re-Review APPROVE | **Gemerged** (Kette) |
 | #314 | Frontend-Adapter + Web-Mode F1–G3 (#118–#125); ersetzt #311 (APPROVE, aber Kette verworfen) | APPROVE | **Gemerged** (Kette) |
 | #315 | Docker/Deploy-Docs/Security-Gate/Eval-Flywheel (#126–#136, #146 Phase 4); ersetzt #312 nach 5 Blocker-Fixes (u. a. gitignore-Whitelist für die drei Scripts — Root Cause des fehlenden Commits) | Re-Review APPROVE | **Gemerged** (Kette) |
-| #317 | Integration → master (B'+fix+C+D) | CI auf master-Diff | Merge ausstehend |
+| #317 | Integration → master (B'+fix+C+D) | Kettene-Reviews: APPROVE ×4 | **Gemerged** `ccb93cb` — CI **13/13 grün** auf Merge-Head |
 
-Issue-Dispositionsplan (nach #317-Merge): #99–#136 mit Evidenz schließen
-(je Issue: AC→Deliverable→PR→Merge-Commit); **#137/K1 und #138/K2 bleiben
-offen** (echte externe Abhängigkeiten: Docker-Runtime bzw. LXC/LAN-Umgebung
-des Owners — Scripts/Doku vollständig geliefert); #97 schließt als Epic mit
-Verweis auf die offenen Umgebungskriterien; #146 schließt (Phase 4 = Flywheel
-+ Runbook, in #315/#317); #296 bleibt offen (prompt_archiv-Quelle nicht
-zugänglich — exakter Blocker im Issue dokumentiert).
+**Umgesetzte Disposition (2026-10-02):** #99–#136, #139–#142 mit
+Evidenz-Kommentaren **geschlossen** (AC→Deliverable→PR #317→Merge
+`ccb93cb`, CI 13/13); #97 (Epic) und #146 (Phase 4 = Flywheel + Runbook)
+geschlossen; **offen bleiben:** #137/K1 + #138/K2 (echte
+Umgebungsabhängigkeiten: Docker-Runtime bzw. LXC/LAN des Owners — Lieferung
+komplett, exakte fehlende Eingabe je Issue kommentiert) und #296
+(prompt_archiv-Quelle nicht zugänglich — exakter Blocker im Issue).
