@@ -19,6 +19,10 @@ WORKDIR /build
 RUN apt-get update && apt-get install -y --no-install-recommends pkg-config && \
     rm -rf /var/lib/apt/lists/*
 COPY Cargo.toml Cargo.lock ./
+# Workspace-Manifest: src-tauri ist Workspace-Member und muss für die
+# Manifest-Auflösung vorhanden sein (nur Cargo.toml — gebaut wird per -p
+# ausschließlich der Server).
+COPY src-tauri/Cargo.toml ./src-tauri/Cargo.toml
 COPY crates ./crates
 RUN cargo build --release -p promptvault-server
 

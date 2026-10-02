@@ -22,8 +22,6 @@ services:
       # kann damit nie schreiben (Issue #133 / J2).
       - ${PROMPTVAULT_VAULT_HOST_PATH:?PROMPTVAULT_VAULT_HOST_PATH setzen}:/vault:ro
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "/usr/local/bin/promptvault-server", "--help"] # Platzhalter: Healthcheck-CLI folgt mit D2-Endpunkt-Check
-      interval: 30s
-      timeout: 5s
-      retries: 3
+    # Healthcheck: folgt, sobald der Server einen CLI-Probe-Modus oder ein
+    # Healthcheck-Binary im Image hat (aktuell würde ein zweiter Server-
+    # Start deterministisch scheitern — bewusst KEIN Schein-Healthcheck).

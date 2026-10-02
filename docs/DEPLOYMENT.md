@@ -25,9 +25,9 @@ per Opt-in. Die Desktop-App bleibt unverändert offline.
 2. Docker installieren (official convenience script oder apt-Repository).
 3. Repository auf den Container bringen (git clone oder Artefakt-Upload).
 4. Deployment: siehe H2 — `docker compose` aus `deploy/`.
-5. Erreichbarkeit: Container-IP im LAN; Port nur intern freigeben
-   (`PROMPTVAULT_BIND=127.0.0.1:8080` im Container-Port-Mapping ersetzen
-   durch die Container-IP), Reverse-Proxy mit Auth für Fernzugriff.
+5. Erreichbarkeit: `PROMPTVAULT_BIND` ist die **Host-seitige** Publish-
+   Angabe — für LAN-Zugriff `127.0.0.1` durch die LAN-IP des Docker-Hosts
+   ersetzen (oder Reverse-Proxy mit Auth für Fernzugriff vorziehen).
 
 > **Bewusst außerhalb des Scopes:** konkrete Zugangsdaten, Container-IDs
 > und IPs der Proxmox-Instanz des Owners (Issue #97 nennt Zieleinheiten —
@@ -56,7 +56,7 @@ git clone https://github.com/Mueller-Systems-Lab/promptvault-lite.git
 cd promptvault-lite
 cp deploy/.env.example deploy/.env   # Werte setzen
 docker compose -f deploy/docker-compose.yml up -d
-curl http://<CONTAINER_IP>:8080/api/health
+curl http://127.0.0.1:8080/api/health  # Default: Publish auf Host-Loopback
 ```
 
 UI im Browser: `http://<CONTAINER_IP>:8080` (same-origin, kein CORS).

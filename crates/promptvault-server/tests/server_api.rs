@@ -325,15 +325,26 @@ async fn scan_resolves_symlinked_vault_without_escape() {
 }
 
 #[tokio::test]
-async fn scan_rejects_dotdot_segment_but_allows_dotdot_prefixed_names() {
+async fn scan_allows_dotdot_prefixed_names_but_rejects_dotdot_segments() {
     // "..hidden" ist KEIN Traversal-Segment — nur exakte ".."-Segmente sind verboten
     let vault = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(vault.path().join("..hidden")).unwrap();
+    std::fs::write(vault.path().join("..hidden").join("fixture.md"), "# Rolle\nTest.").unwrap();
+
+    // Positivfall: ..hidden/ ist ein gültiges Verzeichnis und wird gescannt
     let state = state_with(true);
     let app = build_router(state);
     let body =
         serde_json::json!({ "path": format!("{}/..hidden", vault.path().to_str().unwrap()) })
             .to_string();
-    // Existiert nicht → bad_request; Kern: kein Panic und kein Umlenken
-    let (status, _) = call(app, "POST", "/api/scan", Some(body)).await;
+    let (status, json) = call(app, "POST", "/api/scan", Some(body)).await;
+    assert_eq!(status, StatusCode::OK);
+    assert!(json.as_array().map(|a| !a.is_empty()).unwrap_or(false));
+
+    // Negativfall: echtes ".."-Segment bleibt verboten
+    let app2 = build_router(state_with(true));
+    let body = serde_json::json!({ "path": format!("{}/..", vault.path().to_str().unwrap()) })
+        .to_string();
+    let (status, _) = call(app2, "POST", "/api/scan", Some(body)).await;
     assert_eq!(status, StatusCode::BAD_REQUEST);
 }
