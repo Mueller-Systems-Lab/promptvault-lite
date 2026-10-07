@@ -31,6 +31,11 @@ describe("ExportDialog in web mode", () => {
     render(<ExportDialog onClose={vi.fn()} />);
     expect(screen.getByRole("radio", { name: /JSON/ })).toBeInTheDocument();
     expect(screen.getByRole("radio", { name: /Markdown/ })).toBeInTheDocument();
-    expect(screen.queryByRole("radio", { name: /ZIP/ })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("radio", { name: /ZIP/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText("ZIP-Export ist im Webmodus nicht verfügbar."),
+    ).toBeVisible();
   });
 });
