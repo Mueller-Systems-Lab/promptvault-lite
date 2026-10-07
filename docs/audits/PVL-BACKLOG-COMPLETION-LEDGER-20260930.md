@@ -254,8 +254,7 @@ below name an ancestor merge commit. For squash/rebase/integration chains,
 the named merged PR commit and its recorded patch/tree content were checked
 against `master`; a non-ancestor branch head is not treated as proof of merge.
 Historical test/review details are cited to §§3–5 and §9 where recorded;
-unrecorded review or test details are explicitly **NOT_VERIFIED**. Remote
-the table below records the exact pre-cleanup heads; each stale ref was deleted through the visible UI and its final absence was checked against `git ls-remote --heads origin` (see §15).
+unrecorded review or test details are explicitly **NOT_VERIFIED**. The table below records the exact pre-cleanup heads; each stale ref was deleted through the visible UI and its final absence was checked against `git ls-remote --heads origin` (see §15).
 
 | Remote ref | Exact head SHA | Relationship / associated work and evidence | Unique changes, tests, review | Disposition |
 |---|---|---|---|
