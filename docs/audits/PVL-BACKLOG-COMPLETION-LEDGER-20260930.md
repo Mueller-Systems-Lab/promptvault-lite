@@ -385,3 +385,21 @@ The original 28 refs are each listed with exact initial head and disposition in 
 ## Final corpus test gate
 
 The exact local test directory `Promps/` received a preliminary metadata-only inventory, but it has not been used for final application testing and no prompt content has been read. Corpus testing remains pending until this ledger PR and all feasible implementation work are merged. The original corpus and `.aws/` remain untracked user data and are not part of the ledger change. The final run will use the exact required directory, a disposable copy, sanitized local identifiers/hashes, and visible desktop plus headed-browser testing where the corresponding runtime is available. Unavailable native desktop or LAN environments will be recorded as **BLOCKED** or **NOT_RUN**, never PASS.
+
+# 18. Web-mode Analyze All correction and final test handoff (2026-10-07)
+
+After PRs #323–#325, preliminary visible web-mode acceptance exposed that **Analyze All** still called the Tauri IPC bridge directly in browser mode. PR [#326](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/326) routes web mode through the HTTP backend adapter, bounds analysis concurrency at 12, preserves result ordering and error aggregation, and leaves the Tauri desktop backend path intact. Regression coverage verifies the browser backend route and result behavior.
+
+| PR | Exact reviewed head | Independent review | Required checks | Merge commit / branch disposition |
+|---|---|---|---|---|
+| [#326](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/326) | `9cf4984b2b95837296ee04d452abcba4073ce5af` | **APPROVE** on the exact head; review verified the complete patch against the local candidate | Run [37614944778](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37614944778), 13/13 required jobs passed, including frontend, Rust, security/secret scan, Chromium/Firefox/WebKit, accessibility, Tauri build, artifact integrity, native Tauri E2E, file-dialog, and packaging smoke | Squash-merged as `d82cf29dfd6001988923b95ddfe8203cc163cffe`. The temporary `fix/web-analyze-all` ref is pending final content/reference verification and visible-UI deletion. |
+
+Local gates for the candidate passed: frontend tests (81 files, 1,771 tests), lint, TypeScript, build, Rust workspace tests, Rust formatting, Clippy, and `git diff --check`. The initial lint finding in a test was corrected before the final local run. These local and CI results establish code checks; they do not substitute for the final visible corpus workflows below.
+
+The final corpus test gate remains pending until this ledger update is reviewed and merged. The final run must use the exact resolved `Promps/` directory and a disposable copy, retain only sanitized local case IDs and hashes in evidence, and report unsupported inputs separately. Visible headed web-mode testing is required. Visible native desktop testing remains **BLOCKED** if the native app surface is unavailable; no browser or headless result may be described as desktop evidence. Issue #137's completed Compose acceptance remains separate from the comprehensive final-corpus test.
+
+## Current issue and branch handoff
+
+Issue outcomes in §17 remain current: #322, #316, and #137 are closed with their evidence linked there; #296 remains open for unavailable `prompt_archiv` provenance/source and owner release/SBOM decisions; #138 remains open pending an authorized LAN environment/configuration. Do not mark either open Issue complete without its stated evidence.
+
+The initial 28 refs and their exact initial heads remain itemized in §11. Previously merged temporary refs are documented in §17. Re-fetch the live remote refs after this ledger PR and record exact final heads, count, and visible-UI dispositions for every newly created ref, including this ledger branch and `fix/web-analyze-all`. Keep `master`.
