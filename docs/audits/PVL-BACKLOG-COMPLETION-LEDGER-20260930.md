@@ -291,9 +291,10 @@ retirement and a final reference check.
 | `quality/analyzer-r2-realworld-validation` | `b550562bb3ff1827df51257c15500aa4f507d446` | Head is ancestor of master; snapshot differs substantially. No associated PR/Issue verified. | Historical analyzer/benchmark/report/evidence blobs remain reachable in history; current snapshot superseded. No remerge. Historical test/review evidence **NOT_VERIFIED**. | Historical snapshot superseded; pending visible UI deletion. |
 | `quality/analyzer-r2-verification-closure` | `b6eb1d0b10a20298a26731e1f2d8824756aa2e9c` | Head is ancestor of master; snapshot differs substantially. No associated PR/Issue verified. | Historical analyzer/benchmark/report/evidence blobs remain reachable in history; current snapshot superseded. No remerge. Historical test/review evidence **NOT_VERIFIED**. | Historical snapshot superseded; pending visible UI deletion. |
 
-No ref was deleted. Branch retirement is an outstanding UI-only operation; the
-`docs/ledger-epic-final` ref is intentionally preserved until its extra stale
-commit receives an explicit disposition. The `master` ref is retained.
+No ref was deleted. Branch retirement is an outstanding UI-only operation.
+The `docs/ledger-epic-final` ref is represented by the identical #319 merged
+tree and is listed as pending UI retirement in its row; the `master` ref is
+retained.
 
 
 ---
@@ -302,8 +303,17 @@ commit receives an explicit disposition. The `master` ref is retained.
 
 The initial live inventory in §11 counted 28 remote branch refs including `master`. After the owner confirmed the visible GitHub session was signed in, the visible GitHub UI created the docs branch `docs/issue-322-merge-first`. The current remote count is therefore 29 refs including `master`; §11's table remains the disposition ledger for the original 28 refs.
 
-| Newly created remote ref | Exact head at this checkpoint | Pull request | Current disposition |
+| Newly created remote ref | First published head (superseded) | Pull request | Disposition at publication |
 |---|---|---|---|
-| `docs/issue-322-merge-first` | `5593e4acbdbfc9c1fa488cb35557d5392bebca79` | [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323), base `master` at `52524e6ee29640a9ad896cfa5f0dbe52350d21f9` | Open for independent review and checks; not merged. |
+| `docs/issue-322-merge-first` | `5593e4acbdbfc9c1fa488cb35557d5392bebca79` | [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323), base `master` at `52524e6ee29640a9ad896cfa5f0dbe52350d21f9` | Published for review; later ledger updates supersede this head. Current head is in §13. |
 
 PR #323 contains the permanent Merge First rule and this branch-disposition ledger update. Its diff check passed. The PR event automatically started workflow run `37593789356`; its checks were still in progress at this checkpoint. No workflow rerun was requested. Issue #322 remains open until the rule is verified on `master`; the PR uses `Refs #322` and does not auto-close it.
+
+
+---
+
+# 13. Latest PR checkpoint (2026-10-07 08:38 UTC)
+
+At this checkpoint, `origin/docs/issue-322-merge-first` and open PR [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323) pointed to `ff1c25cf6fdb002b5785a51a86ca5e218d9d830c`, based on `master` `52524e6ee29640a9ad896cfa5f0dbe52350d21f9`. The live remote had 29 branch refs including `master`; the §11 table covers the original 28 and §12 records the additional docs ref.
+
+Automatic PR workflow run [37594690283](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37594690283) had passed Frontend Unit/Integration, Accessibility, Chromium, Firefox, WebKit, Secret Scan, Security Gate, and Rust (Tauri Backend). Build Tauri Debug Binary was still pending. The run was triggered by the PR update; no manual rerun was requested. The next ledger commit will supersede this exact-head checkpoint.
