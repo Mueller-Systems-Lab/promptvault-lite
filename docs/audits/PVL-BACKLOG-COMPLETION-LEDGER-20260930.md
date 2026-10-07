@@ -305,7 +305,7 @@ The initial live inventory in §11 counted 28 remote branch refs including `mast
 
 | Newly created remote ref | First published head (superseded) | Pull request | Disposition at publication |
 |---|---|---|---|
-| `docs/issue-322-merge-first` | `5593e4acbdbfc9c1fa488cb35557d5392bebca79` | [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323), base `master` at `52524e6ee29640a9ad896cfa5f0dbe52350d21f9` | Published for review; later ledger updates supersede this head. Current head is in §13. |
+| `docs/issue-322-merge-first` | `5593e4acbdbfc9c1fa488cb35557d5392bebca79` | [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323), base `master` at `52524e6ee29640a9ad896cfa5f0dbe52350d21f9` | Published for review; later ledger updates supersede this head. The follow-up head checkpoints appear in §§13–14. |
 
 PR #323 contains the permanent Merge First rule and this branch-disposition ledger update. Its diff check passed. The PR event automatically started workflow run `37593789356`; its checks were still in progress at this checkpoint. No workflow rerun was requested. Issue #322 remains open until the rule is verified on `master`; the PR uses `Refs #322` and does not auto-close it.
 
@@ -317,3 +317,12 @@ PR #323 contains the permanent Merge First rule and this branch-disposition ledg
 At this checkpoint, `origin/docs/issue-322-merge-first` and open PR [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323) pointed to `ff1c25cf6fdb002b5785a51a86ca5e218d9d830c`, based on `master` `52524e6ee29640a9ad896cfa5f0dbe52350d21f9`. The live remote had 29 branch refs including `master`; the §11 table covers the original 28 and §12 records the additional docs ref.
 
 Automatic PR workflow run [37594690283](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37594690283) had passed Frontend Unit/Integration, Accessibility, Chromium, Firefox, WebKit, Secret Scan, Security Gate, and Rust (Tauri Backend). Build Tauri Debug Binary was still pending. The run was triggered by the PR update; no manual rerun was requested. The next ledger commit will supersede this exact-head checkpoint.
+
+
+---
+
+# 14. Latest remote head checkpoint (2026-10-07 08:42 UTC)
+
+Immediately before this ledger update, the current `origin/docs/issue-322-merge-first` ref and PR #323 pointed to `70ef75ab4af67d2db4f245908df19b6d53b94d5e`; PR #323 remained open against `master` `52524e6ee29640a9ad896cfa5f0dbe52350d21f9`. The live remote still had 29 branch refs including `master`.
+
+Automatic workflow run [37595456039](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37595456039), for that head, was in progress across all nine jobs when observed. This ledger update will supersede that head; its new PR head and checks must be re-fetched and independently reviewed before any merge.
