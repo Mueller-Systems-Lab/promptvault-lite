@@ -388,7 +388,7 @@ The exact local test directory `Promps/` received a preliminary metadata-only in
 
 # 18. Web-mode Analyze All correction and final test handoff (2026-10-07)
 
-After PRs #323–#325, preliminary visible web-mode acceptance exposed that **Analyze All** still called the Tauri IPC bridge directly in browser mode. PR [#326](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/326) routes web mode through the production HTTP backend adapter, whose analysis concurrency is bounded at 12; that limit does not apply to the custom-adapter compatibility fallback. It preserves result ordering and error aggregation while leaving the Tauri desktop backend path intact. Regression coverage verifies the browser backend route and result behavior.
+After PRs #323–#325, preliminary visible web-mode acceptance exposed that **Analyze All** still called the Tauri IPC bridge directly in browser mode. PR [#326](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/326) routes web mode through the production HTTP backend adapter, whose analysis concurrency is bounded at 12; that limit does not apply to the custom-adapter compatibility fallback. It preserves prompt order in the report and returns per-prompt results with aggregate totals and average score; a request failure rejects the current batch. The Tauri desktop backend path remains intact. Regression coverage verifies the browser backend route and result behavior.
 
 | PR | Exact reviewed head | Independent review | Required checks | Merge commit / branch disposition |
 |---|---|---|---|---|
