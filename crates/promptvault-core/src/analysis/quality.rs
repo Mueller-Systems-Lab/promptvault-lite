@@ -662,10 +662,7 @@ fn evaluate_goal_definition(content: &str) -> EvaluationCriterion {
     let transform_goal =
         re::transform_goal().is_match(content) && re::placeholder().is_match(content);
 
-    let score = if (count >= 2 && has_goal_statement)
-        || (has_goal_statement && has_goal_heading)
-        || transform_goal
-    {
+    let score = if (count >= 2 || has_goal_heading) && has_goal_statement || transform_goal {
         10
     } else if found || has_goal_statement || has_goal_heading {
         6

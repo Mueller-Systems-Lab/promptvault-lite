@@ -1,0 +1,101 @@
+{
+  "contractVersion": "1.0.0",
+  "project": {
+    "provider": "github",
+    "owner": "Mueller-Systems-Lab",
+    "repository": "promptvault-lite",
+    "defaultBranch": "master",
+    "canonicalRemotes": [
+      "https://github.com/Mueller-Systems-Lab/promptvault-lite.git",
+      "git@github.com:Mueller-Systems-Lab/promptvault-lite.git"
+    ],
+    "approvedForks": [],
+    "rootMarker": "git-repository-root"
+  },
+  "paths": {
+    "instructions": "AGENTS.md",
+    "specs": [".opencode/spec", ".opencode/specs", "docs/specs"],
+    "skills": [".agents/skills"],
+    "tests": [
+      "src",
+      "tests",
+      "src-tauri/tests",
+      "crates",
+      "scripts/__tests__",
+      "tools/promptvault-cli/tests"
+    ],
+    "evidence": ["evidence", ".opencode/reports"]
+  },
+  "writePolicy": {
+    "permitted": [
+      "AGENTS.md",
+      ".dockerignore",
+      "package.json",
+      "Cargo.toml",
+      "Cargo.lock",
+      "pnpm-lock.yaml",
+      "README.md",
+      "LICENSE",
+      "tsconfig.json",
+      "vite.config.ts",
+      "playwright.config.ts",
+      ".agents/project-contract.v1.json",
+      ".agents/schemas/project-contract.v1.schema.json",
+      ".agents/skills/**",
+      "docs/**",
+      ".opencode/spec/**",
+      ".opencode/specs/**",
+      "scripts/**",
+      "src/**",
+      "src-tauri/**",
+      "crates/**",
+      "deploy/**",
+      ".opencode/reports/**",
+      "tests/**",
+      "tools/**",
+      "evidence/**"
+    ],
+    "restricted": [
+      ".aws/**",
+      "Promps/**",
+      ".env*",
+      "**/.env*",
+      ".git/**",
+      "node_modules/**",
+      "target/**",
+      "dist/**",
+      ".playwright-mcp/**",
+      "playwright-report/**",
+      "test-results/**"
+    ]
+  },
+  "workspacePolicy": {
+    "noNestedProjectRoot": true,
+    "nestedRoots": [],
+    "preflight": [
+      "resolve-git-root-and-realpath",
+      "verify-canonical-origin-and-project-identity",
+      "verify-contract-and-schema",
+      "check-nested-git-roots-and-declarations",
+      "check-worktree-and-submodule-context",
+      "check-configuration-shadowing",
+      "confirm-write-scope",
+      "rebind-context-after-repository-or-workspace-switch"
+    ],
+    "configurationShadowing": {
+      "inspectApplicableInstructions": true,
+      "inspectApplicableGlobalSkills": true,
+      "recordActiveRuntime": true,
+      "doNotInferEnforcementFromDocumentation": true
+    }
+  },
+  "enforcementEvidence": {
+    "repositoryInstructions": "DOCUMENT_ONLY",
+    "contractValidator": "VALIDATOR_AVAILABLE",
+    "writePathPolicyValidator": "VALIDATOR_AVAILABLE",
+    "writeBoundaryEnforcement": "TOOL_GAP",
+    "preCommitHook": "TOOL_GAP",
+    "writeBroker": "TOOL_GAP",
+    "globalOpenCodeRuntime": "NOT_VERIFIED"
+  }
+}

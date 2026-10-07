@@ -15,6 +15,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "test": "vitest run",
+    "test:project-contract": "node --test scripts/__tests__/project-contract.node-check.js",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:usb": "playwright test tests/e2e/usb-corpus.spec.ts",
