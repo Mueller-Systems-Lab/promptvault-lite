@@ -25,7 +25,8 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
   },
   ANALYSIS_DATA_MISSING: {
     code: "ANALYSIS_DATA_MISSING",
-    description: "Required analysis data (evaluation/hygiene/context) is missing",
+    description:
+      "Required analysis data (evaluation/hygiene/context) is missing",
     defaultCategory: "EXPECTED_BLOCK",
   },
   BLOCKING_SENSITIVE_CONTENT: {
@@ -68,6 +69,11 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
     description: "Tauri IPC invoke call failed",
     defaultCategory: "IPC_ERROR",
   },
+  HTTP_REQUEST_FAILED: {
+    code: "HTTP_REQUEST_FAILED",
+    description: "Web backend HTTP request failed",
+    defaultCategory: "IO_ERROR",
+  },
   RUST_COMMAND_FAILED: {
     code: "RUST_COMMAND_FAILED",
     description: "Rust backend command execution failed",
@@ -95,12 +101,14 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
   },
   STALE_CONTEXT_RESULT: {
     code: "STALE_CONTEXT_RESULT",
-    description: "Context evaluation does not match current content fingerprint",
+    description:
+      "Context evaluation does not match current content fingerprint",
     defaultCategory: "STATE_ERROR",
   },
   STALE_BLUEPRINT_RESULT: {
     code: "STALE_BLUEPRINT_RESULT",
-    description: "Blueprint detection does not match current content fingerprint",
+    description:
+      "Blueprint detection does not match current content fingerprint",
     defaultCategory: "STATE_ERROR",
   },
   STALE_GATE_CONTEXT: {
@@ -130,7 +138,8 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
   },
   PARTIAL_SAVE_FAILURE: {
     code: "PARTIAL_SAVE_FAILURE",
-    description: "Save operation partially succeeded (e.g., file saved but rescan failed)",
+    description:
+      "Save operation partially succeeded (e.g., file saved but rescan failed)",
     defaultCategory: "PARTIAL_FAILURE",
   },
   UNEXPECTED_STATE_TRANSITION: {
@@ -260,7 +269,8 @@ export const REASON_CODES: Record<ReasonCode, ReasonCodeEntry> = {
   },
   STALE_SOURCE: {
     code: "STALE_SOURCE",
-    description: "Advanced workflow result is stale relative to the current source",
+    description:
+      "Advanced workflow result is stale relative to the current source",
     defaultCategory: "STATE_ERROR",
   },
   NO_VARIANT_SELECTED: {
