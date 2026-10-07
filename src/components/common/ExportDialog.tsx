@@ -110,6 +110,11 @@ export const ExportDialog: React.FC<ExportDialogProps> = ({ onClose }) => {
                 </div>
               </label>
             ))}
+            {isWeb && (
+              <p className="export-format-desc" role="note">
+                ZIP-Export ist im Webmodus nicht verfügbar.
+              </p>
+            )}
           </fieldset>
 
           {/* Favorites checkbox */}
