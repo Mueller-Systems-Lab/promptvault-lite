@@ -6,8 +6,8 @@ import type {
 } from "@/types";
 
 export interface WebExportEntry extends PromptItem {
-  quality_score?: number;
-  hygiene_score?: number;
+  quality_score: number | null;
+  hygiene_score: number | null;
 }
 
 export interface WebExportDocument {
@@ -16,8 +16,12 @@ export interface WebExportDocument {
   prompts: WebExportEntry[];
 }
 
+type ExportSourcePrompt = Omit<PromptItem, "category"> & {
+  category?: string | null;
+};
+
 export function buildWebExportDocument(
-  prompts: PromptItem[],
+  prompts: ExportSourcePrompt[],
   evaluations: Record<string, PromptEvaluation>,
   hygiene: Record<string, PromptHygiene>,
   exportDate = new Date().toISOString(),
@@ -40,10 +44,9 @@ export function buildWebExportDocument(
         : undefined;
       return {
         ...prompt,
-        ...(evaluation ? { quality_score: evaluation.overall_score } : {}),
-        ...(hygieneResult
-          ? { hygiene_score: hygieneResult.hygiene_score }
-          : {}),
+        category: prompt.category?.trim() ? prompt.category : "uncategorized",
+        quality_score: evaluation?.overall_score ?? null,
+        hygiene_score: hygieneResult?.hygiene_score ?? null,
       };
     }),
   };
@@ -72,8 +75,8 @@ export function buildWebExportContent(
         `tags: ${JSON.stringify(prompt.tags)}`,
         `created_at: ${JSON.stringify(prompt.created_at)}`,
         `updated_at: ${JSON.stringify(prompt.updated_at)}`,
-        `# quality_score: ${prompt.quality_score ?? "—"}`,
-        `# hygiene_score: ${prompt.hygiene_score ?? "—"}`,
+        `# quality_score: ${prompt.quality_score ?? "null"}`,
+        `# hygiene_score: ${prompt.hygiene_score ?? "null"}`,
       ].join("\n");
       return `---\n${metadata}\n---\n\n${prompt.content}`;
     })
@@ -89,6 +92,7 @@ export function buildWebExportContent(
 interface WritableFile {
   write(data: Blob): Promise<void>;
   close(): Promise<void>;
+  abort(): Promise<void>;
 }
 
 interface SaveFileHandle {
@@ -104,6 +108,14 @@ interface SaveFileOptions {
 }
 
 type SaveFilePicker = (options: SaveFileOptions) => Promise<SaveFileHandle>;
+
+function writeError(error: unknown): Error {
+  if (error instanceof DOMException && error.name === "AbortError") {
+    return error;
+  }
+  const message = error instanceof Error ? error.message : String(error);
+  return new Error(`Fehler beim Schreiben: ${message}`);
+}
 
 export async function saveWebExportFile(
   file: { filename: string; mimeType: string; content: string },
@@ -126,8 +138,27 @@ export async function saveWebExportFile(
       ],
     });
     const writable = await handle.createWritable();
-    await writable.write(blob);
-    await writable.close();
+    try {
+      await writable.write(blob);
+    } catch (error) {
+      // Aborting discards the temporary file; closing could commit a partial write.
+      try {
+        await writable.abort();
+      } catch {
+        // Preserve the original write failure for the caller.
+      }
+      throw writeError(error);
+    }
+    try {
+      await writable.close();
+    } catch (error) {
+      try {
+        await writable.abort();
+      } catch {
+        // Preserve the close failure if cleanup also fails.
+      }
+      throw writeError(error);
+    }
     return;
   }
 
@@ -139,7 +170,8 @@ export async function saveWebExportFile(
   document.body.appendChild(link);
   link.click();
   link.remove();
+  // Give the browser time to begin consuming the blob before revocation.
   window.setTimeout(() => {
     URL.revokeObjectURL(url);
-  }, 0);
+  }, 1000);
 }
