@@ -82,6 +82,21 @@ Issue -> Spec -> Verification Contract -> Red Tests -> Agent-Code
 -> Human Approval -> Evidence-Kommentar -> Merge
 ```
 
+### Merge First (permanent)
+
+Before starting an unrelated implementation branch, inspect the current local
+and remote integration queue, including open PRs, active branches, and pending
+review or validation work. Finish the existing work first: obtain the required
+independent review, address findings, run its required gates, and merge only
+after the applicable human approval. If existing work cannot or should not be
+merged, record an explicit disposition (for example blocked, superseded,
+archived, or intentionally abandoned) with its reason and evidence before
+starting unrelated work. Keep this rule in force for every subsequent task.
+
+This rule does not authorize automatic merges, self-review, bypassing branch
+protection, or skipping human approval; the review and approval requirements in
+§§4, 7, and 9 continue to apply.
+
 ---
 
 ## 6. Evidence-Format

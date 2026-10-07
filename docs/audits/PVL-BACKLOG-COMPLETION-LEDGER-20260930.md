@@ -7,7 +7,7 @@
 **Fresh-clone baseline HEAD:** `271729ca43b4955d1843be3b324f1f4e5f9c4ace`
 **Host:** Linux x86_64 (Linux Mint 22.1, kernel 6.8.0-85-generic), bash 5.2.21, git 2.43.0, node v22.23.2, pnpm 11.22.0, rustc/cargo 1.97.1
 **Browser for all GitHub reads/mutations:** visible headed Chromium via Playwright (no headless browsing; no `gh`/API mutations — `gh` only as git push credential helper)
-**Local workspace:** /home/xxammaxx/pv-backlog/clone (isolated fresh clone; node_modules via pnpm; cargo target on /home/xxammaxx/pv-target with DEBUG=0 profile after disk-space constraints on the build host)
+**Local workspace:** isolated fresh clone; package and build-cache paths omitted.
 
 ## 1. Baseline inventory (live GitHub, 2026-09-30)
 
@@ -135,7 +135,7 @@ Open at run end: **none**. Outstanding owner actions outside the issue tracker: 
 
 - Screenshots (browser evidence): workspace `pv-workspace/shots/` (numbered) — screenshots in PRs #302/#304 are the committed subset (synthetic data only).
 - Gate logs: `pv-workspace/gate-*.log`.
-- Browser scripts: `/home/xxammaxx/pv-harness/s*.mjs` (headed Chromium harness).
+- Browser scripts: local headed Chromium harness scripts (private paths omitted).
 
 ---
 
@@ -196,3 +196,158 @@ Live-Verifikation im sichtbaren Browser (Stand 2026-10-02, ~12:30 CEST):
 - **Epic-Merge-Verifikation:** `ccb93cb` (#317) auf master — CI grün
   (#253). Kettene-Reviews: #309 APPROVE, #313 Re-Review APPROVE,
   #311(APPROVE, via #314), #315 Re-Review APPROVE.
+
+---
+
+# 11. Current backlog and branch recheck (2026-10-07)
+
+This section records the later live recheck and supersedes any conflicting
+historical issue or branch status in §§1–10. It is a local documentation
+change on `docs/issue-322-merge-first`; this section and the permanent rule in
+`AGENTS.md` are not yet merged to `master`. Separate local-only branches hold
+the #137 and #316 implementation work below. GitHub remained signed out in the
+visible browser, so no GitHub mutation or remote-ref deletion could be made.
+
+## Current GitHub snapshot and five-issue outcome
+
+Read-only recheck: canonical remote `origin` is
+`https://github.com/Mueller-Systems-Lab/promptvault-lite`; `master` is at
+`52524e6ee29640a9ad896cfa5f0dbe52350d21f9`; 28 remote branch refs including
+`master`; 0 open PRs. Issues #322, #316, #296, #137, and #138 are all currently
+open. This supersedes earlier statements in §§1–10 that #137/#138 were closed
+or #316 was outside scope. The latest observed `master` CI run is successful
+for this exact SHA (run [37009237683](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37009237683), 2026-10-02); no rerun was triggered.
+
+| Issue | Current state | Evidence and remaining acceptance |
+|---|---|---|
+| #322 — permanent Merge First rule | **OPEN; pending master verification** | The permanent actionable rule is added to this branch's `AGENTS.md`, preserving independent review and human approval. It is not yet on `master`; verify after reviewed merge before closing the tracking issue. |
+| #316 — project-local agent contract | **OPEN; repository implementation local-only** | Local reviewed commit `5d8cec347ea1222bf7188f258f3ccfffd1ffda04` contains the contract and validator; repository tests passed in its local evidence. It is not on `master`. Executing-host OpenCode active-project/config audit remains **NOT_VERIFIED**; do not claim hook/broker enforcement. |
+| #296 — prompt archive consolidation | **OPEN; BLOCKED** | The owner archive source remains unavailable in accessible repositories/branches/releases/authorized exports. No source diff or compatibility migration can be evidenced. Required owner input: provide authorized access/export and any source provenance/license details needed to compare it. |
+| #137 — Docker Compose acceptance | **OPEN; UI workflow PASS; full browser acceptance NOT_VERIFIED** | Local branch commits `9501faf29e91c0cb9d5c92ed5b5367aa4bf47e9d` and `8199fc8a9933a7eb31119abb2cbb244f09187e18` received independent review (**APPROVE** for the final code tree). Compose built and ran on `127.0.0.1:18137`; `/api/health` returned `read_only: true`, `/vault` was mounted read-only, the visible Playwright MCP headed Chromium tab found 3 synthetic prompts, displayed quality 84 and hygiene 97, and completed JSON and Markdown downloads using the visible UI. The Markdown download contained 3 documents with YAML metadata; ZIP was absent from the web UI. Favorite toggle persisted after a container restart in a temporary server write-mode run while `/vault` stayed read-only. Container log scan counted 0 panic/fatal/error lines. `scripts/docker-smoke.sh 18138` and `node scripts/security-gate.mjs` passed. Screenshots: `.playwright-mcp/issue-137-favorite-persisted.png`, `.playwright-mcp/issue-137-final-export.png`; generated test data, containers, and downloads were removed. These establish the local UI workflow, not master evidence. OS-level identity for a newly launched Google Chrome window was not captured (**NOT_VERIFIED**), so do not close the Issue yet. |
+| #138 — LAN acceptance | **OPEN; BLOCKED** | No authorized LXC/LAN target or owner-provided access/configuration is available in this recheck. Required: owner-provided authorized environment/configuration to verify client access, health/core flows, read-only NAS behavior, response times, and WAN isolation in a visible browser. |
+
+The local implementation commits above are not ancestors of current `master`
+and have no PR in the live snapshot. Their repository-side evidence is therefore
+not master evidence. No acceptance is inferred from documentation or CI in
+place of the required runtime or host audit.
+
+## Local-only implementation refs
+
+These refs were rechecked with `git branch`, `git worktree list`, and exact
+local heads. They are not included in the 28 remote refs above and are not
+published:
+
+| Local ref | Exact head / working tree | Changes and evidence | Disposition |
+|---|---|---|---|
+| `docs/issue-322-merge-first` | Base `52524e6ee29640a9ad896cfa5f0dbe52350d21f9`; tracked working-tree edits in `AGENTS.md` and this ledger | Permanent actionable Merge First rule; ledger refresh and local evidence. Diff check passed. | Published as PR #323; later exact heads and checks are recorded in §§12–15. |
+| `feat/issue-316-project-contract` | `5d8cec347ea1222bf7188f258f3ccfffd1ffda04` | Project contract and deterministic validator; 18/18 tests and independent review passed. Host hook/broker enforcement remains **TOOL_GAP**; applicable unavailable host state is **NOT_VERIFIED**. | Preserve for reviewed PR; no remote branch yet. |
+| `fix/issue-137-compose-build` | `8199fc8a9933a7eb31119abb2cbb244f09187e18` (two commits ahead of current `master`) | Docker hardening/smoke gate and web export compatibility; final tree independently reviewed **APPROVE**. Full frontend (80 files/1,683 tests), Rust workspace, lint, TypeScript, Compose build, Docker smoke, and security gate passed; headed Compose UI workflow was exercised, while new-Google-Chrome process identity remains **NOT_VERIFIED**. One earlier Rust run failed its time-sensitive `test_large_prompt` threshold at 12.67 s; subsequent full workspace reruns passed. | Preserve for reviewed PR; no remote branch yet. |
+
+At the time of this local-only checkpoint, GitHub integration awaited a signed-in visible browser session. The owner later confirmed sign-in; visible UI actions and the resulting state are recorded in §§12–15. No GitHub mutation was performed through an API or shell.
+
+## Remote branch disposition ledger
+
+Evidence method: exact full head SHAs were re-fetched with `git ls-remote
+--heads origin`; PR association/state/head/merge SHAs were read with `gh pr
+view` and the open-PR count with `gh pr list` (read-only). Normal merge claims
+below name an ancestor merge commit. For squash/rebase/integration chains,
+the named merged PR commit and its recorded patch/tree content were checked
+against `master`; a non-ancestor branch head is not treated as proof of merge.
+Historical test/review details are cited to §§3–5 and §9 where recorded;
+unrecorded review or test details are explicitly **NOT_VERIFIED**. The table below records the exact pre-cleanup heads; each stale ref was deleted through the visible UI and its final absence was checked against `git ls-remote --heads origin` (see §15).
+
+| Remote ref | Exact head SHA | Relationship / associated work and evidence | Unique changes, tests, review | Disposition |
+|---|---|---|---|
+| `backup/pre-finalization-20260824` | `e5fda6602237d3251d065db0f1e7e199c2d2d1b8` | Head is an ancestor of `master`; no unique commits beyond current history. | Historical snapshot only; no active PR identified. | Safe retirement candidate; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `brand/mueller-systems-lab-rollout-20260827` | `93f90f8d1ce9ce4088c7db20b0e9e15cdc8f4c12` | PR #299 merge `275235232372997357460d66a43793a22aec8e0e` is an ancestor of `master`; README rollout patch represented. | PR merged; review/check specifics not recorded here (**NOT_VERIFIED**). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `docs/backlog-batch-20260930` | `bd13c06c7ce43f62c2029dab3d5c5305c2915611` | PR #302 merge `fa2cd39fc427b1b3c3c2570cfcc9c6363aa7fe3c` is an ancestor; docs patch verified in §§3–5. | Independent re-review **APPROVE**; docs build and local gates recorded; PR checks 12/12 (§§3–5). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `docs/backlog-ledger` | `45b270b7b4a8c89083d9214df431f09410268983` | PR #307 merge `2c78f27534ee0078dd1a91fd14ee5f34cf13770f` is an ancestor; ledger patch later extended. | PR merge verified; individual review/check detail **NOT_VERIFIED** in this ledger. | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `docs/backlog-ledger-resume` | `e8ca95ccb3563fb5454ab1d5eb561394210e43cb` | PR #308 merge `cdaf5e022a42395a4db23eb492f75f61e76be1d2` is an ancestor; later ledger content supersedes its snapshot. | PR merge verified; individual review/check detail **NOT_VERIFIED** here. | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `docs/ledger-epic-final` | `a57d6d1d3e887d8bd7269dc5f90b0f3d5d4de17a` | Branch head has the same tree as PR #319's merged tree; merge `f3c00cbbf41308103294b9378e2c70d07a741f30` is an ancestor of `master`. PR #320 later updated the ledger. | Historical #319 status is superseded by #320 and this section; PR #319 merge and master CI #257 green are recorded in §10. No unique unmerged patch remains. | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `docs/ledger-final-verify` | `c0533dd60332963a0cfbe03c523cf8742769a66f` | PR #320 merge `84b5b1b499f60082de6ae7eba2d7f5fba19b8d48` is an ancestor; verification ledger changes represented. | PR merge verified; detailed review/check not recorded here (**NOT_VERIFIED**). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feat/web-lan-backend` | `82d8b89be2c13511b5a90d5e3a8bfdb36866878a` | PR #311 closed/superseded; backend work replaced by #314/#317 integration. | No unique required change identified after merged replacement; #317 chain review APPROVE ×4 and CI 13/13 (§9). | Superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feat/web-lan-backend-v2` | `ba30563cded75b6d841d283d102b85bb2134bdb4` | PR #317 head; integration merge `ccb93cb9357a7d942bc264e55eeda4fbb3ca2915` is an ancestor of `master`. | Integrated backend/frontend/deploy chain; chain review APPROVE ×4 and CI 13/13 (§9). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feat/web-lan-deploy` | `4ed423f3200efcf1ef0541d21434ef06654ccccf` | PR #312 closed/superseded by #315/#317. | Had a generated Vite timestamp artifact, not product work; deployment changes included by replacement chain. #317 CI 13/13 (§9). | Superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feat/web-lan-deploy-v2` | `9a46e7aa89c2e80f3b3081522b40dc90b3fa9bdc` | PR #315 merged in integration chain #317; integration merge `ccb93cb...` is an ancestor and contains deploy/security/eval patch. | Re-review APPROVE; #317 CI 13/13 (§9). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feat/web-lan-server` | `4841131a9f9d6a75130b5247908adcc2a7ab8080` | PR #310 closed/superseded; same head became base/workspace work in #309/#313 replacement chain. | Server API finalized by #313 and integrated through #317; chain CI 13/13 (§9). | Superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feat/web-lan-server-v2` | `661948500b2548ff640dcf133788bfcfc58c03ae` | PR #314 merge commit/head is represented by integration PR #317 merge `ccb93cb...` ancestor of master. | Frontend adapter and web-mode work integrated; #317 review APPROVE ×4, CI 13/13 (§9). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feat/web-lan-workspace` | `5698328b389a6400f3d8cb8aacc69de730285121` | This is PR #313's squash merge SHA, but it is not an ancestor of `master` or PR #317's integration merge. PR #317 merge `ccb93cb9357a7d942bc264e55eeda4fbb3ca2915` is an ancestor of master and its patch includes server route files plus `crates/promptvault-server/tests/server_api.rs` (42 changed files; `git show --stat` evidence). | Server API and workspace work are represented by #317's integration patch; chain review APPROVE ×4 and CI 13/13 (§9). | Represented by integration patch; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feature/blueprint-visual-152` | `d249f687495b6bd7998f6f6170150aa248b4f9b5` | PR #304 closed with REQUEST_CHANGES; visual work replaced by #306 and embeddings by #305. Their merges `ae76544...` and `ef91a7f...` are ancestors. | #304 mixed unrelated history; #305 APPROVE and 12/12; #306 APPROVE and 12/12 (§§4–5). | Superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feature/blueprint-visual-152-v2` | `afa461434ee48484cb53a1d9f42d74a18a6a9070` | PR #306 merge `ae76544c7dfec976d5a8d34ae62ef78b0e52aa6b` is an ancestor. | Independent review APPROVE; recorded checks 12/12 (§§4–5). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feature/embeddings-199` | `575bae622bd2d9c517d2cc954136d5f7b20e63bc` | PR #305 merge `ef91a7f2aa82d39e5c038981f23b01550c553f18` is an ancestor; conflict-resolution source was checked byte-identical to reviewed head (§5). | Independent review APPROVE; tests and checks recorded green (§§3–5). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `feature/recommendation-apply-45-v2` | `0a487b35007bde57039fe3c63c24378cb3fa51b0` | PR #303 merge `e73bfba7a241573928cea591fb8ad05dd239de6f` is an ancestor. | Review REQUEST_CHANGES then APPROVE after fixes; local gates recorded; one cancelled Rust check explained by unchanged tree (§§3–5). | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `fix/security-synthetic-secret-fixtures` | `9c1bdfda6a36a5fc2644839cf0745ff508fded66` | Head is ancestor of master; associated PR #297 merge `42a7e5c111473c6b1fdd6fbe09ecc9c15d9fdc89` is ancestor. | Fixture/security changes represented; detailed review and gate evidence **NOT_VERIFIED** here. | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `fix/server-serve` | `5cedc66774485b44f2292c220f9e2baf2e9f71d5` | Head is not an ancestor, but exact tree comparison with `master` is empty; server fix PR #321 merged at current master `52524e6...`. | No tree-level unique content; #321 is the recorded fix. Detailed review/check evidence **NOT_VERIFIED** here. | Same tree/represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `maintenance/final-stale-owner-cleanup-20260828` | `8d72dfbff5fa38e3dd96a46322629e201d12c0e1` | PR #301 merge `271729ca43b4955d1843be3b324f1f4e5f9c4ace` is an ancestor. | Stale-owner cleanup represented; review/check detail **NOT_VERIFIED** here. | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `maintenance/post-brand-owner-links-20260828` | `54d855c5415c2e06e47e75e617d7eadf498d3597` | PR #300 merge `ea633b1712e3f2b5f51ea3248d35b18e6af7526c` is an ancestor. | Brand link updates represented; review/check detail **NOT_VERIFIED** here. | Represented; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `master` | `52524e6ee29640a9ad896cfa5f0dbe52350d21f9` | Canonical default branch at recheck. | Current open-issue snapshot and branch base. | Retain. |
+| `quality/analyzer-r2` | `7d17334426b9b408ac7b8e17026fabfc34eeda7e` | Head is ancestor of master; historical snapshot tree differs substantially from current tree. No associated PR/Issue verified. | Historical analyzer/benchmark/report/evidence blobs remain reachable in master history; some current snapshots were later replaced/deleted. No remerge warranted; exact per-file current equivalence not asserted. Historical test/review evidence **NOT_VERIFIED**. | Historical snapshot superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `quality/analyzer-r2-cleanroom` | `16e1f44f627125455402f74435502587685fe3b6` | Head is ancestor of master; snapshot differs substantially. No associated PR/Issue verified. | Historical analyzer/benchmark/report/evidence blobs remain reachable in history; current snapshot superseded. No remerge. Historical test/review evidence **NOT_VERIFIED**. | Historical snapshot superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `quality/analyzer-r2-generalization` | `0af4afd3e38abe6aef8c15f13b055cc18a1b68c0` | Head is ancestor of master; snapshot differs substantially. No associated PR/Issue verified. | Historical analyzer/benchmark/report/evidence blobs remain reachable in history; current snapshot superseded. No remerge. Historical test/review evidence **NOT_VERIFIED**. | Historical snapshot superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `quality/analyzer-r2-realworld-validation` | `b550562bb3ff1827df51257c15500aa4f507d446` | Head is ancestor of master; snapshot differs substantially. No associated PR/Issue verified. | Historical analyzer/benchmark/report/evidence blobs remain reachable in history; current snapshot superseded. No remerge. Historical test/review evidence **NOT_VERIFIED**. | Historical snapshot superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+| `quality/analyzer-r2-verification-closure` | `b6eb1d0b10a20298a26731e1f2d8824756aa2e9c` | Head is ancestor of master; snapshot differs substantially. No associated PR/Issue verified. | Historical analyzer/benchmark/report/evidence blobs remain reachable in history; current snapshot superseded. No remerge. Historical test/review evidence **NOT_VERIFIED**. | Historical snapshot superseded; deleted through visible GitHub UI on 2026-10-07; absent from the final remote ref list. |
+
+All stale refs in this inventory were later deleted through the visible GitHub UI; the final remote ref check is recorded in §15. The `docs/ledger-epic-final` ref was represented by the identical #319 merged tree before deletion. The `master` ref is retained.
+
+
+---
+
+# 12. Authenticated continuation (2026-10-07)
+
+The initial live inventory in §11 counted 28 remote branch refs including `master`. After the owner confirmed the visible GitHub session was signed in, the visible GitHub UI created the docs branch `docs/issue-322-merge-first`. The current remote count is therefore 29 refs including `master`; §11's table remains the disposition ledger for the original 28 refs.
+
+| Newly created remote ref | First published head (superseded) | Pull request | Disposition at publication |
+|---|---|---|---|
+| `docs/issue-322-merge-first` | `5593e4acbdbfc9c1fa488cb35557d5392bebca79` | [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323), base `master` at `52524e6ee29640a9ad896cfa5f0dbe52350d21f9` | Published for review; later ledger updates supersede this head. The follow-up head checkpoints appear in §§13–14. |
+
+PR #323 contains the permanent Merge First rule and this branch-disposition ledger update. Its diff check passed. The PR event automatically started workflow run `37593789356`; its checks were still in progress at this checkpoint. No workflow rerun was requested. Issue #322 remains open until the rule is verified on `master`; the PR uses `Refs #322` and does not auto-close it.
+
+
+---
+
+# 13. Latest PR checkpoint (2026-10-07 08:38 UTC)
+
+At this checkpoint, `origin/docs/issue-322-merge-first` and open PR [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323) pointed to `ff1c25cf6fdb002b5785a51a86ca5e218d9d830c`, based on `master` `52524e6ee29640a9ad896cfa5f0dbe52350d21f9`. The live remote had 29 branch refs including `master`; the §11 table covers the original 28 and §12 records the additional docs ref.
+
+Automatic PR workflow run [37594690283](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37594690283) had passed Frontend Unit/Integration, Accessibility, Chromium, Firefox, WebKit, Secret Scan, Security Gate, and Rust (Tauri Backend). Build Tauri Debug Binary was still pending. The run was triggered by the PR update; no manual rerun was requested. The next ledger commit will supersede this exact-head checkpoint.
+
+
+---
+
+# 14. Latest remote head checkpoint (2026-10-07 08:42 UTC)
+
+Immediately before this ledger update, the current `origin/docs/issue-322-merge-first` ref and PR #323 pointed to `70ef75ab4af67d2db4f245908df19b6d53b94d5e`; PR #323 remained open against `master` `52524e6ee29640a9ad896cfa5f0dbe52350d21f9`. The live remote still had 29 branch refs including `master`.
+
+Automatic workflow run [37595456039](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37595456039), for that head, was in progress across all nine jobs when observed. This ledger update will supersede that head; its new PR head and checks must be re-fetched and independently reviewed before any merge.
+
+
+---
+
+# 15. Branch cleanup and live acceptance checkpoint (2026-10-07 09:10 UTC)
+
+The visible GitHub session was authenticated. Before cleanup, the remote held 29 refs: the original 28 plus `docs/issue-322-merge-first`. The 27 stale refs in §11 were deleted with the visible GitHub branch controls. The final read-only `git ls-remote --heads origin` returned exactly two refs: `master` at `52524e6ee29640a9ad896cfa5f0dbe52350d21f9` and the open PR ref `docs/issue-322-merge-first` at `9324ae953e26640e99c8715af596be752d60a40e`. Thus the final count is 2; every initial branch other than `master` is recorded in §11 with its exact initial SHA and final deletion disposition. No deletion used an API or shell mutation.
+
+At the 09:10 UTC checkpoint before this ledger update, PR [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323) was open and mergeable, based on `master` at `52524e6ee29640a9ad896cfa5f0dbe52350d21f9`, with head `9324ae953e26640e99c8715af596be752d60a40e`. Its exact-head independent review verdict was **APPROVE**. Automatic workflow run [37595663962](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37595663962) completed with all 13 jobs passing, including Tauri Debug Binary, Native Tauri Real E2E, Native File Dialog Smoke, package smoke, browser tests, Rust, security, and accessibility. The run was triggered by the PR update; no manual rerun was requested. This is a historical checkpoint; later exact-head state is recorded in §16.
+
+The five live Issues were rechecked after the historical entries in §§3–10. Current acceptance state is:
+
+| Issue | Current state | Evidence or exact outstanding condition |
+|---|---|---|
+| [#322](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/322) | OPEN | Permanent actionable Merge First rule is in this PR's `AGENTS.md`; close only after it is verified on `master`. Closing the tracking issue must explicitly leave the rule permanent. |
+| [#316](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/316) | OPEN | Local project contract/validator branch `feat/issue-316-project-contract` at `5d8cec347ea1222bf7188f258f3ccfffd1ffda04`; 18/18 contract tests and independent review passed. Host hook/broker enforcement is a `TOOL_GAP`; applicable unavailable host runtime is `NOT_VERIFIED`. Must be published for reviewed PR after #323 is merged. |
+| [#296](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/296) | OPEN | No accessible `prompt_archiv` source or authorized export was found, so no source diff is invented. Owner actions: provide the source/export (or confirm retired/deleted) with provenance/licensing; publish v1.12.0 from a capable host; decide whether to produce an SBOM/reproducible-build attestation. Historical owner disposition in §4 is superseded by the current live Issue. |
+| [#137](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/137) | CLOSED (completed) | Compose build/start, visible headed browser workflow, scan, quality/hygiene, favorite persistence, JSON/Markdown export validation, and clean logs were documented. Two sanitized synthetic-fixture screenshots were attached in [the acceptance comment](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/137#issuecomment-6034865080); test data/containers were cleaned up. The issue was closed through the visible UI after evidence was posted. Historical child-issue dispositions in §4 are superseded by the current live Issue. |
+| [#138](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/138) | OPEN | No authorized LXC/LAN target or securely supplied configuration is available. Required owner input: authorized environment/config for visible client, health/workflow, read-only NAS, response-time, and WAN-isolation checks. |
+
+Final corpus testing has not started: it must run only against the exact final merged `master` after the feasible implementation PRs and ledger updates are merged. The original `Promps/` remains untracked user data, unchanged, and has not been read or copied during this checkpoint.
+
+
+---
+
+# 16. Current acceptance and PR check checkpoint (2026-10-07 09:17 UTC)
+
+Immediately before this checkpoint update, PR #323 was open against `master` `52524e6ee29640a9ad896cfa5f0dbe52350d21f9` at head `4127182acbb960b54cf263592f4afb76f03fa052`. Run [37599118359](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37599118359) was still in progress: Accessibility, Frontend Unit/Integration, Secret Scan, Chromium, Firefox, WebKit, and Security Gate had passed; Rust and Build Tauri Debug Binary were pending. The latest ledger edit will create a new head; re-fetch that head, request an exact-head independent review, and wait for every required check before merge. No check from an older head substitutes for the new head.
+
+Live Issue #137 was closed as completed through the visible UI after its acceptance comment and two headed Compose screenshots were attached: [acceptance evidence](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/137#issuecomment-6034865080). The screenshots use only synthetic fixture data. The comment records Compose start, scanning, quality/hygiene results, favorite persistence, JSON/Markdown export validation, clean container logs, and cleanup. The full visible workflow criteria are therefore evidenced; no Chrome process identity requirement exists in the Issue.
+
+The exact live Issue #296 acceptance blocker remains the unavailable `prompt_archiv` source/export for source comparison and import-compatibility work. Its separate owner actions are: provide/confirm archive access and provenance/licensing; publish the v1.12.0 release from a capable host; and decide whether an SBOM/reproducible-build attestation should be produced. These items remain open and no release or attestation is claimed.
