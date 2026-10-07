@@ -2,6 +2,7 @@ import React from "react";
 import type { ExportFormat } from "@/types";
 import { useExport } from "@/hooks/useExport";
 import { useFocusTrap } from "@/hooks/useFocusTrap";
+import { getBackend } from "@/lib/backend/factory";
 
 interface ExportDialogProps {
   onClose: () => void;
@@ -41,6 +42,7 @@ export const ExportDialog: React.FC<ExportDialogProps> = ({ onClose }) => {
   } = useExport();
 
   const [favoritesOnly, setFavoritesOnly] = React.useState(false);
+  const isWeb = getBackend().kind === "http";
   const dialogRef = useFocusTrap(true);
 
   const handleExport = () => {
@@ -90,7 +92,7 @@ export const ExportDialog: React.FC<ExportDialogProps> = ({ onClose }) => {
           {/* Format selection */}
           <fieldset className="export-format-group" disabled={isExporting}>
             <legend>Format</legend>
-            {FORMAT_OPTIONS.map((opt) => (
+            {FORMAT_OPTIONS.filter((opt) => !isWeb || opt.value !== "zip").map((opt) => (
               <label
                 key={opt.value}
                 className={`export-format-option ${exportFormat === opt.value ? "export-format-active" : ""}`}
