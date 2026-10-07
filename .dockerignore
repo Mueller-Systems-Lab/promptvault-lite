@@ -1,0 +1,6 @@
+/Promps/
+/.aws/
+/.git/
+/deploy/.env
+**/node_modules/
+**/target/

@@ -7,6 +7,7 @@
 //   G3 — Keine Secrets/Anmeldedaten in Deploy-Artefakten
 //   G4 — Path-Traversal-Validierung vorhanden und getestet
 //   G5 — Frontend-Isolation: HTTP-Adapter ohne Tauri-API-Nutzung
+//   G7 — Docker-Workspace-Quelle und benannte Build-Context-Ausschlüsse
 // Exit 1 bei Verletzung. Ausgeführt in CI (Job security-gate) und lokal.
 // =============================================================================
 import { readFileSync, existsSync } from "node:fs";
@@ -90,6 +91,40 @@ check("G5 — Frontend-Isolation: HTTP-Adapter ohne Tauri-API", () => {
   assert(!adapter.includes("__TAURI_INTERNALS__"), "HTTP-Adapter nutzt Tauri-Internals");
   const detect = read("src/lib/backend/detect.ts");
   assert(detect.includes("hasTauriInternals"), "Detection fehlt");
+});
+
+check("G7 — Docker-Workspace-Copy und benannte Context-Ausschlüsse", () => {
+  const dockerfile = read("deploy/Dockerfile");
+  assert(
+    dockerfile.includes("FROM rust:1.85-slim AS rust-build"),
+    "Rust-Builder-Image muss rust:1.85-slim sein",
+  );
+  assert(
+    dockerfile.includes("COPY src-tauri/src/lib.rs ./src-tauri/src/lib.rs"),
+    "Dockerfile kopiert den src-tauri Library-Target-Root nicht",
+  );
+  assert(
+    dockerfile.includes("--create-home --home-dir /home/promptvault promptvault"),
+    "Runtime-User braucht ein beschreibbares Home für die Server-Datenbank",
+  );
+
+  const compose = read("deploy/docker-compose.yml");
+  assert(
+    /build:\s*\r?\n\s+context:\s*\.\.\s*\r?\n\s+dockerfile:\s*deploy\/Dockerfile/.test(compose),
+    "Compose muss den Repo-Root als Context und deploy/Dockerfile verwenden",
+  );
+
+  const dockerignore = read(".dockerignore");
+  for (const path of [
+    "/Promps/",
+    "/.aws/",
+    "/.git/",
+    "/deploy/.env",
+    "**/node_modules/",
+    "**/target/",
+  ]) {
+    assert(dockerignore.split("\n").some((line) => line.trim() === path), `${path} fehlt in .dockerignore`);
+  }
 });
 
 // Traversal-/Isolation-Tests laufen lassen (schnell, deterministisch)
