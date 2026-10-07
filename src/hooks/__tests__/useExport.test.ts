@@ -10,8 +10,16 @@ const mocks = vi.hoisted(() => ({
   ],
   evaluations: {},
   hygiene: {},
-  buildDocument: vi.fn(() => ({ export_date: "2026-01-01", version: "1", prompts: [] })),
-  buildContent: vi.fn(() => ({ filename: "export.json", mimeType: "application/json", content: "{}" })),
+  buildDocument: vi.fn(() => ({
+    export_date: "2026-01-01",
+    version: "1",
+    prompts: [],
+  })),
+  buildContent: vi.fn(() => ({
+    filename: "export.json",
+    mimeType: "application/json",
+    content: "{}",
+  })),
   saveWeb: vi.fn(() => Promise.resolve()),
   exportJson: vi.fn(() => Promise.resolve()),
   exportMarkdown: vi.fn(() => Promise.resolve()),
@@ -48,6 +56,10 @@ describe("useExport backend behavior", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.backendKind = "http";
+    mocks.prompts = [
+      { id: "favorite", is_favorite: true, content: "safe" },
+      { id: "ordinary", is_favorite: false, content: "safe" },
+    ];
     mocks.saveWeb.mockResolvedValue(undefined);
     mocks.open.mockResolvedValue("/tmp/export");
   });
@@ -70,7 +82,9 @@ describe("useExport backend behavior", () => {
   });
 
   it("handles browser cancellation without presenting an error", async () => {
-    mocks.saveWeb.mockRejectedValueOnce(new DOMException("Cancelled", "AbortError"));
+    mocks.saveWeb.mockRejectedValueOnce(
+      new DOMException("Cancelled", "AbortError"),
+    );
     const { result } = renderHook(() => useExport());
     await act(async () => result.current.startExport(false));
     expect(result.current.error).toBeNull();
@@ -78,11 +92,66 @@ describe("useExport backend behavior", () => {
   });
 
   it("shows a useful error when browser file writing fails", async () => {
-    mocks.saveWeb.mockRejectedValueOnce(new Error("Write failed"));
+    mocks.saveWeb.mockRejectedValueOnce(
+      new Error("Fehler beim Schreiben: Write failed"),
+    );
     const { result } = renderHook(() => useExport());
     await act(async () => result.current.startExport(false));
-    expect(result.current.error).toBe("Write failed");
+    expect(result.current.error).toBe("Fehler beim Schreiben: Write failed");
     expect(result.current.isExporting).toBe(false);
+  });
+
+  it("keeps browser picker setup errors distinct from write errors", async () => {
+    mocks.saveWeb.mockRejectedValueOnce(new Error("Picker blocked"));
+    const { result } = renderHook(() => useExport());
+    await act(async () => result.current.startExport(false));
+
+    expect(result.current.error).toBe("Picker blocked");
+    expect(mocks.open).not.toHaveBeenCalled();
+  });
+
+  it("rejects an empty selection without invoking browser save or Tauri IPC", async () => {
+    mocks.prompts = [];
+    const { result } = renderHook(() => useExport());
+    await act(async () => result.current.startExport(false));
+
+    expect(result.current.error).toBe(
+      "Keine Prompts zum Exportieren ausgewählt",
+    );
+    expect(mocks.saveWeb).not.toHaveBeenCalled();
+    expect(mocks.open).not.toHaveBeenCalled();
+    expect(mocks.exportJson).not.toHaveBeenCalled();
+  });
+
+  it("rejects ZIP in web mode before browser save or Tauri IPC", async () => {
+    const { result } = renderHook(() => useExport());
+    act(() => {
+      result.current.setExportFormat("zip");
+    });
+    await act(async () => result.current.startExport(false));
+
+    expect(result.current.error).toBe(
+      "ZIP-Export ist im Webmodus nicht verfügbar.",
+    );
+    expect(mocks.buildDocument).not.toHaveBeenCalled();
+    expect(mocks.saveWeb).not.toHaveBeenCalled();
+    expect(mocks.open).not.toHaveBeenCalled();
+    expect(mocks.exportZip).not.toHaveBeenCalled();
+  });
+
+  it("clears an earlier write error when the next export starts", async () => {
+    mocks.saveWeb.mockRejectedValueOnce(
+      new Error("Fehler beim Schreiben: Disk full"),
+    );
+    const { result } = renderHook(() => useExport());
+    await act(async () => result.current.startExport(false));
+    expect(result.current.error).toBe("Fehler beim Schreiben: Disk full");
+
+    await act(async () => result.current.startExport(false));
+    expect(result.current.error).toBeNull();
+    expect(mocks.saveWeb).toHaveBeenCalledTimes(2);
+    expect(mocks.open).not.toHaveBeenCalled();
+    expect(mocks.exportJson).not.toHaveBeenCalled();
   });
 
   it("uses Tauri IPC in desktop mode", async () => {
