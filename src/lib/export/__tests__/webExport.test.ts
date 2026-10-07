@@ -5,6 +5,7 @@ import {
   buildWebExportDocument,
   saveWebExportFile,
 } from "../webExport";
+import type { WebExportDocument } from "../webExport";
 
 const prompt: PromptItem = {
   id: "synthetic-1",
@@ -51,7 +52,9 @@ describe("web export", () => {
     );
 
     const json = buildWebExportContent("json", document);
-    expect(json.filename).toBe("promptvault-export-2026-01-02T03-04-05-000Z.json");
+    expect(json.filename).toBe(
+      "promptvault-export-2026-01-02T03-04-05-000Z.json",
+    );
     expect(JSON.parse(json.content)).toMatchObject({
       export_date: "2026-01-02T03:04:05.000Z",
       version: __APP_VERSION__,
@@ -68,6 +71,101 @@ describe("web export", () => {
     expect(markdown.content).toContain(prompt.content);
   });
 
+  it("uses null for missing analysis and uncategorized for missing or blank categories", () => {
+    const document = buildWebExportDocument(
+      [
+        { ...prompt, category: undefined },
+        { ...prompt, id: "blank", category: "  " },
+      ],
+      {},
+      {},
+      "2026-01-02T03:04:05.000Z",
+    );
+    const json = JSON.parse(
+      buildWebExportContent("json", document).content,
+    ) as WebExportDocument;
+    const markdown = buildWebExportContent("markdown", document);
+
+    expect(json.prompts).toHaveLength(2);
+    for (const entry of json.prompts) {
+      expect(entry).toMatchObject({
+        category: "uncategorized",
+        quality_score: null,
+        hygiene_score: null,
+      });
+    }
+    expect(markdown.content).toContain('category: "uncategorized"');
+    expect(markdown.content).toContain("# quality_score: null");
+    expect(markdown.content).toContain("# hygiene_score: null");
+  });
+
+  it("retains an actual score of zero", () => {
+    const document = buildWebExportDocument(
+      [prompt],
+      { [prompt.id]: { ...evaluation, overall_score: 0 } },
+      { [prompt.id]: { ...hygiene, hygiene_score: 0 } },
+    );
+    const json = JSON.parse(
+      buildWebExportContent("json", document).content,
+    ) as WebExportDocument;
+    const markdown = buildWebExportContent("markdown", document);
+
+    expect(json.prompts[0].quality_score).toBe(0);
+    expect(json.prompts[0].hygiene_score).toBe(0);
+    expect(markdown.content).toContain("# quality_score: 0");
+    expect(markdown.content).toContain("# hygiene_score: 0");
+  });
+
+  it("writes separate Markdown blocks for multiple prompts with Unicode content", () => {
+    const secondPrompt = {
+      ...prompt,
+      id: "synthetic-2",
+      title: "Grüße 🌍",
+      content: "Zweite Zeile: café 🚀",
+      tags: [],
+    };
+    const document = buildWebExportDocument(
+      [prompt, secondPrompt],
+      {},
+      {},
+      "2026-01-02T03:04:05.000Z",
+    );
+    const markdown = buildWebExportContent("markdown", document);
+    const blocks = markdown.content.split("\n\n---\n\n");
+
+    expect(blocks).toHaveLength(2);
+    expect(blocks[0]).toMatch(/^---\ntitle: "Synthetic title"/);
+    expect(blocks[0]).toContain(prompt.content);
+    expect(blocks[1]).toMatch(/^---\ntitle: "Grüße 🌍"/);
+    expect(blocks[1]).toContain("tags: []");
+    expect(blocks[1]).toContain(secondPrompt.content);
+    expect(
+      (
+        JSON.parse(
+          buildWebExportContent("json", document).content,
+        ) as WebExportDocument
+      ).prompts[1].title,
+    ).toBe("Grüße 🌍");
+  });
+
+  it("serializes more than 1000 selected prompts", () => {
+    const prompts = Array.from({ length: 1001 }, (_, index) => ({
+      ...prompt,
+      id: `synthetic-${index}`,
+      content: `Content ${index}`,
+    }));
+    const document = buildWebExportDocument(prompts, {}, {});
+    const json = JSON.parse(
+      buildWebExportContent("json", document).content,
+    ) as WebExportDocument;
+
+    expect(json.prompts).toHaveLength(1001);
+    expect(json.prompts[1000]).toMatchObject({
+      id: "synthetic-1000",
+      content: "Content 1000",
+    });
+  });
+
   it("writes through the browser save picker and closes the stream", async () => {
     const write = vi.fn((blob: Blob) => {
       expect(blob).toBeInstanceOf(Blob);
@@ -76,10 +174,11 @@ describe("web export", () => {
       return Promise.resolve();
     });
     const close = vi.fn(() => Promise.resolve());
+    const abort = vi.fn(() => Promise.resolve());
     const picker = vi.fn(() =>
       Promise.resolve({
-        createWritable: () => Promise.resolve({ write, close }),
-      })
+        createWritable: () => Promise.resolve({ write, close, abort }),
+      }),
     );
 
     await saveWebExportFile(
@@ -102,10 +201,193 @@ describe("web export", () => {
     });
     expect(write).toHaveBeenCalledOnce();
     expect(close).toHaveBeenCalledOnce();
+    expect(abort).not.toHaveBeenCalled();
+  });
+
+  it("aborts a failed write without committing a partial file", async () => {
+    const writeError = new Error("Write failed");
+    const write = vi.fn(() => Promise.reject(writeError));
+    const abort = vi.fn(() => Promise.resolve());
+    const close = vi.fn(() => Promise.resolve());
+    const picker = vi.fn(() =>
+      Promise.resolve({
+        createWritable: () => Promise.resolve({ write, abort, close }),
+      }),
+    );
+
+    await expect(
+      saveWebExportFile(
+        {
+          filename: "promptvault-export.json",
+          mimeType: "application/json",
+          content: '{"ok":true}',
+        },
+        picker,
+      ),
+    ).rejects.toThrow("Fehler beim Schreiben: Write failed");
+    expect(abort).toHaveBeenCalledOnce();
+    expect(close).not.toHaveBeenCalled();
+  });
+
+  it("labels close failures as write errors", async () => {
+    const write = vi.fn(() => Promise.resolve());
+    const close = vi.fn(() => Promise.reject(new Error("Close failed")));
+    const abort = vi.fn(() => Promise.resolve());
+    const picker = vi.fn(() =>
+      Promise.resolve({
+        createWritable: () => Promise.resolve({ write, close, abort }),
+      }),
+    );
+
+    await expect(
+      saveWebExportFile(
+        {
+          filename: "promptvault-export.json",
+          mimeType: "application/json",
+          content: "{}",
+        },
+        picker,
+      ),
+    ).rejects.toThrow("Fehler beim Schreiben: Close failed");
+    expect(write).toHaveBeenCalledOnce();
+    expect(close).toHaveBeenCalledOnce();
+    expect(abort).toHaveBeenCalledOnce();
+  });
+
+  it("preserves a close failure when abort also fails", async () => {
+    const write = vi.fn(() => Promise.resolve());
+    const close = vi.fn(() => Promise.reject(new Error("Close failed")));
+    const abort = vi.fn(() => Promise.reject(new Error("Abort failed")));
+    const picker = vi.fn(() =>
+      Promise.resolve({
+        createWritable: () => Promise.resolve({ write, close, abort }),
+      }),
+    );
+
+    await expect(
+      saveWebExportFile(
+        {
+          filename: "promptvault-export.json",
+          mimeType: "application/json",
+          content: "{}",
+        },
+        picker,
+      ),
+    ).rejects.toThrow("Fehler beim Schreiben: Close failed");
+    expect(abort).toHaveBeenCalledOnce();
+  });
+
+  it("preserves picker setup errors without a write label", async () => {
+    const picker = vi.fn(() => Promise.reject(new Error("Picker blocked")));
+    await expect(
+      saveWebExportFile(
+        {
+          filename: "promptvault-export.json",
+          mimeType: "application/json",
+          content: "{}",
+        },
+        picker,
+      ),
+    ).rejects.toThrow("Picker blocked");
+  });
+
+  it("preserves AbortError from a failed write", async () => {
+    const cancellation = new DOMException("Cancelled", "AbortError");
+    const abort = vi.fn(() => Promise.resolve());
+    const picker = vi.fn(() =>
+      Promise.resolve({
+        createWritable: () =>
+          Promise.resolve({
+            write: () => Promise.reject(cancellation),
+            close: () => Promise.resolve(),
+            abort,
+          }),
+      }),
+    );
+    await expect(
+      saveWebExportFile(
+        {
+          filename: "promptvault-export.json",
+          mimeType: "application/json",
+          content: "{}",
+        },
+        picker,
+      ),
+    ).rejects.toBe(cancellation);
+    expect(abort).toHaveBeenCalledOnce();
+  });
+
+  it("downloads through an anchor and revokes its object URL", async () => {
+    const pickerDescriptor = Object.getOwnPropertyDescriptor(
+      window,
+      "showSaveFilePicker",
+    );
+    const createDescriptor = Object.getOwnPropertyDescriptor(
+      URL,
+      "createObjectURL",
+    );
+    const revokeDescriptor = Object.getOwnPropertyDescriptor(
+      URL,
+      "revokeObjectURL",
+    );
+    const clickedLinks: HTMLAnchorElement[] = [];
+    const click = vi
+      .spyOn(HTMLAnchorElement.prototype, "click")
+      .mockImplementation(function (this: HTMLAnchorElement) {
+        clickedLinks.push(this);
+      });
+    const createObjectURL = vi.fn((_blob: Blob) => "blob:promptvault-test");
+    const revokeObjectURL = vi.fn();
+    Reflect.deleteProperty(window, "showSaveFilePicker");
+    Object.defineProperty(URL, "createObjectURL", {
+      configurable: true,
+      value: createObjectURL,
+    });
+    Object.defineProperty(URL, "revokeObjectURL", {
+      configurable: true,
+      value: revokeObjectURL,
+    });
+    vi.useFakeTimers();
+
+    try {
+      await saveWebExportFile({
+        filename: "promptvault-export.md",
+        mimeType: "text/markdown;charset=utf-8",
+        content: "Grüße 🌍",
+      });
+
+      expect(createObjectURL).toHaveBeenCalledOnce();
+      expect(createObjectURL.mock.calls[0][0]).toBeInstanceOf(Blob);
+      expect(click).toHaveBeenCalledOnce();
+      expect(clickedLinks[0]?.href).toBe("blob:promptvault-test");
+      expect(clickedLinks[0]?.download).toBe("promptvault-export.md");
+      expect(clickedLinks[0]?.isConnected).toBe(false);
+      expect(revokeObjectURL).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(999);
+      expect(revokeObjectURL).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(1);
+      expect(revokeObjectURL).toHaveBeenCalledOnce();
+      expect(revokeObjectURL).toHaveBeenCalledWith("blob:promptvault-test");
+    } finally {
+      vi.useRealTimers();
+      click.mockRestore();
+      if (pickerDescriptor)
+        Object.defineProperty(window, "showSaveFilePicker", pickerDescriptor);
+      else Reflect.deleteProperty(window, "showSaveFilePicker");
+      if (createDescriptor)
+        Object.defineProperty(URL, "createObjectURL", createDescriptor);
+      else Reflect.deleteProperty(URL, "createObjectURL");
+      if (revokeDescriptor)
+        Object.defineProperty(URL, "revokeObjectURL", revokeDescriptor);
+      else Reflect.deleteProperty(URL, "revokeObjectURL");
+    }
   });
 
   it("calls the browser save picker with window as its receiver", async () => {
-    const original = Object.getOwnPropertyDescriptor(window, "showSaveFilePicker");
+    const original = Object.getOwnPropertyDescriptor(
+      window,
+      "showSaveFilePicker",
+    );
     const write = vi.fn(() => Promise.resolve());
     const close = vi.fn(() => Promise.resolve());
     const picker = vi.fn(function (this: Window) {
@@ -127,7 +409,8 @@ describe("web export", () => {
       });
       expect(picker).toHaveBeenCalledOnce();
     } finally {
-      if (original) Object.defineProperty(window, "showSaveFilePicker", original);
+      if (original)
+        Object.defineProperty(window, "showSaveFilePicker", original);
       else Reflect.deleteProperty(window, "showSaveFilePicker");
     }
   });
