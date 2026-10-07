@@ -39,7 +39,7 @@ export function useExport(): UseExportReturn {
       }
 
       if (targetPrompts.length === 0) {
-        setError("Keine Prompts zum Exportieren ausgewählt.");
+        setError("Keine Prompts zum Exportieren ausgewählt");
         return;
       }
 
