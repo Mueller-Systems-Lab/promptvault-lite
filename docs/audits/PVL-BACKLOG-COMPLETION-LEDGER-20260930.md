@@ -351,3 +351,37 @@ Immediately before this checkpoint update, PR #323 was open against `master` `52
 Live Issue #137 was closed as completed through the visible UI after its acceptance comment and two headed Compose screenshots were attached: [acceptance evidence](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/137#issuecomment-6034865080). The screenshots use only synthetic fixture data. The comment records Compose start, scanning, quality/hygiene results, favorite persistence, JSON/Markdown export validation, clean container logs, and cleanup. The full visible workflow criteria are therefore evidenced; no Chrome process identity requirement exists in the Issue.
 
 The exact live Issue #296 acceptance blocker remains the unavailable `prompt_archiv` source/export for source comparison and import-compatibility work. Its separate owner actions are: provide/confirm archive access and provenance/licensing; publish the v1.12.0 release from a capable host; and decide whether an SBOM/reproducible-build attestation should be produced. These items remain open and no release or attestation is claimed.
+
+
+---
+
+# 17. Final backlog disposition after PRs #323 and #324 (2026-10-07)
+
+This section supersedes the pending/open checkpoints in §§12–16. `master` now points to `e5cc4205dff9b02876b92e6b811e8500c0103c71`. The exact merged PR heads, reviews, required checks, issue outcomes, and temporary branch dispositions are recorded below. The original branch inventory and initial exact heads remain in §11.
+
+## Reviewed implementation PRs
+
+| PR | Exact reviewed head | Independent review | Required checks | Merge commit / disposition |
+|---|---|---|---|---|
+| [#323](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/323) | `db6a6223a17025d05b2ae84447dc21e842a1c8f5` | **APPROVE** on the exact final head | Run [37599684883](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37599684883), 13/13 passed | Squash-merged `382fbe03b3093286bb129f8982e68421d7cb7bdc`; temporary `docs/issue-322-merge-first` ref deleted through visible GitHub UI. |
+| [#324](https://github.com/Mueller-Systems-Lab/promptvault-lite/pull/324) | `d66782c43467e225909339b708c0a28276619e71` | **APPROVE** on the exact final head; that head includes the behavior-equivalent Clippy simplification | Run [37605595308](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/runs/37605595308), all 13 required jobs passed: frontend, Rust, security, secret scan, Chromium/Firefox/WebKit, accessibility, Tauri build, artifact integrity, native Tauri E2E, file-dialog smoke, packaging smoke | Squash-merged `e5cc4205dff9b02876b92e6b811e8500c0103c71`; temporary `feat/issue-316-project-contract-v2` ref deleted through visible GitHub UI. Its remote branch tree matched the merged master tree; ancestry was not used as proof because this was a squash merge. |
+
+PR #324 extends the existing project instructions and adds `.agents/project-contract.v1.json`, its schema, the deterministic validator, and regression tests for the Issue #316 root/identity/symlink/duplicate-root/module/worktree/submodule/repository-switch cases. The focused contract suite passed 19/19. The required local gates also passed: `pnpm test` (1,768 tests), lint, TypeScript, build, Rust workspace tests, Rust format, and Clippy. The Rust boolean simplification in `quality.rs` is behavior-equivalent and was made to satisfy the repository's required `-D warnings` Clippy gate.
+
+## Issue outcomes
+
+| Issue | Final state | Evidence or exact remaining blocker |
+|---|---|---|
+| [#322](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/322) | **CLOSED** | Permanent actionable Merge First rule is in `master` `382fbe03b3093286bb129f8982e68421d7cb7bdc`; closure comment [explicitly preserves the permanent policy](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/322#issuecomment-6035316902). |
+| [#316](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/316) | **CLOSED — repository-side contract and available host audit evidenced** | PR #324 merged at `e5cc4205dff9b02876b92e6b811e8500c0103c71`; focused contract suite 19/19 and all 13 PR checks passed. Acceptance and host-audit classifications are in [the Issue comment](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/316#issuecomment-6036126470): `DOCUMENT_ONLY`, `VALIDATOR_AVAILABLE`, `TOOL_GAP` for hook/broker enforcement, and `NOT_VERIFIED` for uninspected harnesses and the Windows host. No global configuration was changed; no host enforcement is claimed. |
+| [#137](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/137) | **CLOSED** | Local Docker Compose acceptance and sanitized synthetic-data screenshots are documented in [the acceptance comment](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/137#issuecomment-6034865080). |
+| [#296](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/296) | **OPEN — source/owner actions required** | No accessible `prompt_archiv` source or authorized export was available for comparison; no source diff or compatibility result is claimed. Owner actions: provide the source/export with provenance and licensing or confirm it is retired/deleted; publish v1.12.0 from a capable host; decide whether to produce an SBOM/reproducible-build attestation. |
+| [#138](https://github.com/Mueller-Systems-Lab/promptvault-lite/issues/138) | **OPEN — authorized LAN environment required** | Missing an authorized LXC/LAN target and securely supplied configuration. Owner must provide the authorized environment/configuration needed for visible client access, health and core workflows, read-only NAS behavior, response-time checks, and WAN-isolation verification. No local web-mode result is claimed as LAN acceptance. |
+
+## Final branch disposition
+
+The original 28 refs are each listed with exact initial head and disposition in §11: `master` is retained; the 27 stale historical refs were verified as represented, superseded, or archival-only and deleted through the visible GitHub UI. PR #323 and PR #324 each created one temporary implementation ref; both were deleted after their exact merged trees were verified. After the ledger PR is merged and its temporary ref is retired, the expected final remote branch set is exactly `master` (count 1); this is rechecked after retirement. No force-push, API mutation, protection bypass, or administrative merge was used.
+
+## Final corpus test gate
+
+The exact local test directory `Promps/` received a preliminary metadata-only inventory, but it has not been used for final application testing and no prompt content has been read. Corpus testing remains pending until this ledger PR and all feasible implementation work are merged. The original corpus and `.aws/` remain untracked user data and are not part of the ledger change. The final run will use the exact required directory, a disposable copy, sanitized local identifiers/hashes, and visible desktop plus headed-browser testing where the corresponding runtime is available. Unavailable native desktop or LAN environments will be recorded as **BLOCKED** or **NOT_RUN**, never PASS.
