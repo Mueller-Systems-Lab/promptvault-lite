@@ -8,7 +8,12 @@
 // The factory (factory.ts) picks one at runtime (issue #121 / F4).
 // =============================================================================
 
-import type { PromptEvaluation, PromptHygiene, PromptItem } from "@/types";
+import type {
+  AnalysisReport,
+  PromptEvaluation,
+  PromptHygiene,
+  PromptItem,
+} from "@/types";
 
 /** Capabilities a backend can advertise (drives UI adjustments, G2). */
 export interface BackendCapabilities {
@@ -30,6 +35,8 @@ export interface BackendAdapter {
     content: string,
     opts?: { trace?: unknown; parentSpanId?: string },
   ): Promise<PromptEvaluation>;
+  /** Batch analysis where the backend supports a single-call report. */
+  analyzeAll?(prompts: PromptItem[]): Promise<AnalysisReport>;
   analyzeHygiene(
     promptId: string,
     content: string,

@@ -43,19 +43,13 @@ import {
   buildPreviewContent,
   type RecommendationBlock,
 } from "@/lib/recommendationBlocks";
-import {
-  createTrace,
-  openSpan,
-  completeTrace,
-} from "@/observability/trace";
+import { createTrace, openSpan, completeTrace } from "@/observability/trace";
 import {
   isObservabilityEnabled,
   recordCompletedTrace,
   emitDiagnosticEvent,
 } from "@/observability/events";
-import {
-  checkLengthMismatch,
-} from "@/observability/invariants";
+import { checkLengthMismatch } from "@/observability/invariants";
 import { contentFingerprint } from "@/observability/redaction";
 import type {
   Trace,
@@ -63,6 +57,39 @@ import type {
   DiagnosticCategory,
   ReasonCode,
 } from "@/observability/contracts";
+
+async function analyzeAllWithBackend(
+  prompts: PromptItem[],
+): Promise<AnalysisReport> {
+  const backend = getBackend();
+  if (backend.kind === "tauri") return tauriAnalyzeAll(prompts);
+  if (backend.analyzeAll) return backend.analyzeAll(prompts);
+
+  // Keep custom HTTP adapters compatible while ensuring web mode never calls
+  // Tauri IPC. Production HttpAdapter uses the combined endpoint above.
+  const results = await Promise.all(
+    prompts.map(async (prompt) => {
+      const [evaluation, hygiene] = await Promise.all([
+        backend.evaluatePrompt(prompt.id, prompt.content),
+        backend.analyzeHygiene(prompt.id, prompt.content),
+      ]);
+      return { evaluation, hygiene };
+    }),
+  );
+  const evaluations = results.map((result) => result.evaluation);
+  return {
+    evaluations,
+    hygiene: results.map((result) => result.hygiene),
+    total_prompts: prompts.length,
+    average_score:
+      evaluations.length === 0
+        ? 0
+        : evaluations.reduce(
+            (sum, evaluation) => sum + evaluation.overall_score,
+            0,
+          ) / evaluations.length,
+  };
+}
 
 // --- Theme Types ---
 
@@ -1175,9 +1202,7 @@ export const useAppStore = create<AppState>((set, get) => ({
 
     // Validate: all REQUIRED items must be answered (unless SKIPPED/ASSUMPTIONS)
     if (outcome === "COMPLETED") {
-      const requiredItems = session.items.filter(
-        (i) => i.tier === "REQUIRED",
-      );
+      const requiredItems = session.items.filter((i) => i.tier === "REQUIRED");
       const requiredUnanswered = requiredItems.some(
         (item) =>
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard
@@ -1660,7 +1685,7 @@ export const useAppStore = create<AppState>((set, get) => ({
    * The original prompt is NEVER modified — a new file is created.
    * BLOCKING conflicts are enforced at the UI level (buttons disabled).
    */
-   saveVariantAsPrompt: async (variant: PromptVariant) => {
+  saveVariantAsPrompt: async (variant: PromptVariant) => {
     const state = get();
     const folderPath = state.currentFolderPath;
 
@@ -2130,7 +2155,10 @@ export const useAppStore = create<AppState>((set, get) => ({
       getBackend().analyzeHygiene(`preview:${draft.promptId}`, previewContent),
     ]);
     set((s) => {
-      if (!s.recommendationDraft || s.recommendationDraft.promptId !== draft.promptId) {
+      if (
+        !s.recommendationDraft ||
+        s.recommendationDraft.promptId !== draft.promptId
+      ) {
         return {};
       }
       return {
@@ -2392,9 +2420,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       const isDesktopBackend = getBackend().kind === "tauri";
       let unlisten: UnlistenFn | null = null;
       if (isDesktopBackend) {
-        unlisten = await listen<ChangedPayload>(
-        "watcher:changed",
-        (event) => {
+        unlisten = await listen<ChangedPayload>("watcher:changed", (event) => {
           const { added, modified, removed } = event.payload;
           const count = added.length + modified.length + removed.length;
           if (count > 0) {
@@ -2407,7 +2433,8 @@ export const useAppStore = create<AppState>((set, get) => ({
             }, 3000);
 
             if (watchedPath) {
-              getBackend().scanDirectory(watchedPath)
+              getBackend()
+                .scanDirectory(watchedPath)
                 .then((updatedPrompts) => {
                   set({ prompts: updatedPrompts });
                 })
@@ -2435,8 +2462,7 @@ export const useAppStore = create<AppState>((set, get) => ({
                 });
             }
           }
-        },
-      );
+        });
       }
 
       set({
@@ -2625,27 +2651,33 @@ export const useAppStore = create<AppState>((set, get) => ({
     const trace = obsEnabled
       ? createTrace("analyze-all")
       : (null as Trace | null);
+    const backendLayer =
+      getBackend().kind === "tauri" ? "tauri-ipc" : "typescript";
+    const backendFailureCode =
+      backendLayer === "tauri-ipc"
+        ? "TAURI_INVOKE_FAILED"
+        : "HTTP_REQUEST_FAILED";
 
     try {
       if (trace) {
         const { endSpan: endBatch } = openSpan(trace, {
           operation: "analyze-all-batch",
-          layer: "tauri-ipc",
+          layer: backendLayer,
           stage: "analyze_all",
           attributes: { "promptvault.batch.prompt_count": prompts.length },
         });
 
         let report: AnalysisReport;
         try {
-          report = await tauriAnalyzeAll(prompts);
+          report = await analyzeAllWithBackend(prompts);
           endBatch("succeeded");
         } catch (err) {
           endBatch("failed", {
-            reasonCode: "TAURI_INVOKE_FAILED",
+            reasonCode: backendFailureCode,
             error: {
               message: String(err),
-              category: "IPC_ERROR",
-              reasonCode: "TAURI_INVOKE_FAILED",
+              category: backendLayer === "tauri-ipc" ? "IPC_ERROR" : "IO_ERROR",
+              reasonCode: backendFailureCode,
             },
           });
           throw err;
@@ -2698,7 +2730,7 @@ export const useAppStore = create<AppState>((set, get) => ({
         completeTrace(trace, "succeeded");
         recordCompletedTrace(trace, "succeeded");
       } else {
-        const report = await tauriAnalyzeAll(prompts);
+        const report = await analyzeAllWithBackend(prompts);
 
         set((state) => {
           const evals = { ...state.evaluations };

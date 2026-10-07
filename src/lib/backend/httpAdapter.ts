@@ -5,7 +5,12 @@
 // the built UI itself, keeping everything same-origin).
 // =============================================================================
 
-import type { PromptEvaluation, PromptHygiene, PromptItem } from "@/types";
+import type {
+  AnalysisReport,
+  PromptEvaluation,
+  PromptHygiene,
+  PromptItem,
+} from "@/types";
 import type { BackendAdapter, BackendCapabilities } from "./types";
 
 const envBase = (import.meta.env as { VITE_API_BASE?: string }).VITE_API_BASE;
@@ -69,6 +74,39 @@ export const httpAdapter: BackendAdapter = {
       { method: "POST" },
     );
     return res.hygiene;
+  },
+  async analyzeAll(prompts: PromptItem[]): Promise<AnalysisReport> {
+    const results: Array<{
+      evaluation: PromptEvaluation;
+      hygiene: PromptHygiene;
+    }> = [];
+    const batchSize = 12;
+    for (let index = 0; index < prompts.length; index += batchSize) {
+      const batch = await Promise.all(
+        prompts
+          .slice(index, index + batchSize)
+          .map((prompt) =>
+            apiFetch<{ evaluation: PromptEvaluation; hygiene: PromptHygiene }>(
+              `/prompts/${encodeURIComponent(prompt.id)}/analyze`,
+              { method: "POST" },
+            ),
+          ),
+      );
+      results.push(...batch);
+    }
+    const evaluations = results.map((result) => result.evaluation);
+    return {
+      evaluations,
+      hygiene: results.map((result) => result.hygiene),
+      total_prompts: prompts.length,
+      average_score:
+        evaluations.length === 0
+          ? 0
+          : evaluations.reduce(
+              (sum, evaluation) => sum + evaluation.overall_score,
+              0,
+            ) / evaluations.length,
+    };
   },
   async toggleFavorite(promptId: string): Promise<boolean> {
     const res = await apiFetch<{ is_favorite: boolean }>(

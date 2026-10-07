@@ -20,11 +20,12 @@ describe("reason-code contract sync", () => {
       "NO_PROMPT_SELECTED",
       "NO_MISSING_INFO",
       "CLASSIFICATION_FAILED",
+      "HTTP_REQUEST_FAILED",
       "AUTHORING_SAVE_FAILED",
     ];
     for (const code of unionMembers) {
       expect(ALL_REASON_CODES.has(code)).toBe(true);
-  }
+    }
   });
 
   it("REASON_CODES registry covers every member of ALL_REASON_CODES", () => {

@@ -16,10 +16,14 @@ import type { PromptItem } from "@/types";
 describe("runtime detection (#118 / F1)", () => {
   it("detects tauri when __TAURI_INTERNALS__ with invoke is present", () => {
     expect(
-      hasTauriInternals({ __TAURI_INTERNALS__: { invoke: () => Promise.resolve(null) } }),
+      hasTauriInternals({
+        __TAURI_INTERNALS__: { invoke: () => Promise.resolve(null) },
+      }),
     ).toBe(true);
     expect(
-      detectBackendKind({ __TAURI_INTERNALS__: { invoke: () => Promise.resolve(null) } }),
+      detectBackendKind({
+        __TAURI_INTERNALS__: { invoke: () => Promise.resolve(null) },
+      }),
     ).toBe("tauri");
   });
 
@@ -27,7 +31,9 @@ describe("runtime detection (#118 / F1)", () => {
     expect(hasTauriInternals({})).toBe(false);
     expect(hasTauriInternals({ __TAURI_INTERNALS__: {} as never })).toBe(false);
     expect(detectBackendKind({})).toBe("http");
-    expect(detectBackendKind({ __TAURI_INTERNALS__: { invoke: 42 as never } })).toBe("http");
+    expect(
+      detectBackendKind({ __TAURI_INTERNALS__: { invoke: 42 as never } }),
+    ).toBe("http");
   });
 });
 
@@ -63,7 +69,9 @@ describe("http adapter (#119 / F2)", () => {
     globalThis.fetch = originalFetch;
   });
 
-  function stubFetch(respond: (path: string, init?: RequestInit) => unknown): void {
+  function stubFetch(
+    respond: (path: string, init?: RequestInit) => unknown,
+  ): void {
     const stub = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
       const url = typeof input === "string" ? input : String(input);
       const path = url.replace(/^https?:\/\/[^/]+/, "");
@@ -105,8 +113,23 @@ describe("http adapter (#119 / F2)", () => {
     stubFetch((path) =>
       path === "/api/prompts/p1/analyze"
         ? {
-            evaluation: { id: "e", prompt_id: "p1", overall_score: 70, criteria: [], missing_sections: [], recommendations: [], evaluated_at: "t" },
-            hygiene: { id: "h", prompt_id: "p1", hygiene_score: 90, status: "clean", artifacts: [], analyzed_at: "t" },
+            evaluation: {
+              id: "e",
+              prompt_id: "p1",
+              overall_score: 70,
+              criteria: [],
+              missing_sections: [],
+              recommendations: [],
+              evaluated_at: "t",
+            },
+            hygiene: {
+              id: "h",
+              prompt_id: "p1",
+              hygiene_score: 90,
+              status: "clean",
+              artifacts: [],
+              analyzed_at: "t",
+            },
           }
         : {},
     );
@@ -116,17 +139,95 @@ describe("http adapter (#119 / F2)", () => {
     expect(hygiene.hygiene_score).toBe(90);
   });
 
+  it("analyzeAll uses the combined HTTP endpoint and preserves result order", async () => {
+    const prompts: PromptItem[] = [
+      {
+        id: "p1",
+        file_path: "/v/p1.md",
+        file_name: "p1.md",
+        title: "P1",
+        description: "",
+        category: "tasks",
+        version: "1.0",
+        tags: [],
+        content: "one",
+        raw_frontmatter: {},
+        created_at: "t",
+        updated_at: "t",
+        is_favorite: false,
+      },
+      {
+        id: "p2",
+        file_path: "/v/p2.md",
+        file_name: "p2.md",
+        title: "P2",
+        description: "",
+        category: "tasks",
+        version: "1.0",
+        tags: [],
+        content: "two",
+        raw_frontmatter: {},
+        created_at: "t",
+        updated_at: "t",
+        is_favorite: false,
+      },
+    ];
+    stubFetch((path) => {
+      const id = path.includes("/p1/") ? "p1" : "p2";
+      return {
+        evaluation: {
+          id: `e-${id}`,
+          prompt_id: id,
+          overall_score: id === "p1" ? 70 : 90,
+          criteria: [],
+          missing_sections: [],
+          recommendations: [],
+          evaluated_at: "t",
+        },
+        hygiene: {
+          id: `h-${id}`,
+          prompt_id: id,
+          hygiene_score: 100,
+          status: "clean",
+          artifacts: [],
+          analyzed_at: "t",
+        },
+      };
+    });
+
+    if (!httpAdapter.analyzeAll) {
+      throw new Error("HTTP adapter must support batch analysis");
+    }
+    const report = await httpAdapter.analyzeAll(prompts);
+
+    expect(report.total_prompts).toBe(2);
+    expect(report.average_score).toBe(80);
+    expect(report.evaluations.map((result) => result.prompt_id)).toEqual([
+      "p1",
+      "p2",
+    ]);
+    expect(report.hygiene.map((result) => result.prompt_id)).toEqual([
+      "p1",
+      "p2",
+    ]);
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+  });
+
   it("throws the server's error message on API failure", async () => {
     const stub = vi.fn(() =>
       Promise.resolve({
         ok: false,
         status: 403,
         json: () =>
-          Promise.resolve({ error: { code: "forbidden", message: "read-only server" } }),
+          Promise.resolve({
+            error: { code: "forbidden", message: "read-only server" },
+          }),
       } as Response),
     );
     globalThis.fetch = stub as unknown as typeof fetch;
-    await expect(httpAdapter.toggleFavorite("p1")).rejects.toThrow("read-only server");
+    await expect(httpAdapter.toggleFavorite("p1")).rejects.toThrow(
+      "read-only server",
+    );
   });
 
   it("web capabilities flag no native dialog/watcher (G2 contract)", () => {
