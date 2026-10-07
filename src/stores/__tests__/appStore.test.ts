@@ -14,14 +14,24 @@ vi.mock("@/lib/tauri", async () => {
 
 // F4: der Store konsumiert die Backend-Factory — Tests pinnen einen
 // Stub-Adapter über setBackendOverride (gleiche Semantik wie produktiv).
-import { setBackendOverride } from "@/lib/backend";
+import { getBackend, setBackendOverride } from "@/lib/backend";
 import type { BackendAdapter } from "@/lib/backend";
+import {
+  clearAll,
+  getTraces,
+  getEvents,
+  setObservabilityEnabled,
+} from "@/observability/events";
 
 const mockBackendToggle = vi.fn();
 function useMockBackend(): void {
   const adapter: BackendAdapter = {
     kind: "http",
-    capabilities: { nativeFolderDialog: false, fileWatcher: false, nativeClipboard: false },
+    capabilities: {
+      nativeFolderDialog: false,
+      fileWatcher: false,
+      nativeClipboard: false,
+    },
     scanDirectory: vi.fn(() => Promise.resolve([])),
     evaluatePrompt: vi.fn(() =>
       Promise.resolve({
@@ -813,6 +823,64 @@ describe("toggleFavorite (async, Backend)", () => {
 
     const prompts = useAppStore.getState().prompts;
     expect(prompts[0].is_favorite).toBe(false);
+  });
+});
+
+describe("analyzeAll (HTTP backend)", () => {
+  beforeEach(() => {
+    resetStore();
+    useAppStore.setState({ error: null });
+    clearAll();
+    setObservabilityEnabled(true);
+    vi.clearAllMocks();
+    useMockBackend();
+    useAppStore.setState({
+      prompts: [
+        makePrompt("p1", "/test/p1.md"),
+        makePrompt("p2", "/test/p2.md"),
+      ],
+    });
+  });
+
+  afterEach(() => {
+    setBackendOverride(null);
+    setObservabilityEnabled(false);
+    clearAll();
+  });
+
+  it("uses backend analysis methods and stores both results for web mode", async () => {
+    await useAppStore.getState().analyzeAll();
+
+    expect(Object.keys(useAppStore.getState().evaluations)).toEqual([
+      "p1",
+      "p2",
+    ]);
+    expect(Object.keys(useAppStore.getState().hygiene)).toEqual(["p1", "p2"]);
+    expect(useAppStore.getState().isAnalyzing).toBe(false);
+    expect(useAppStore.getState().error).toBeNull();
+    expect(
+      getTraces()
+        .at(-1)
+        ?.spans.find((span) => span.operation === "analyze-all-batch")?.layer,
+    ).toBe("typescript");
+  });
+
+  it("classifies web batch failures as HTTP requests, not Tauri or Rust", async () => {
+    setBackendOverride({
+      ...getBackend(),
+      analyzeAll: vi.fn().mockRejectedValue(new Error("offline")),
+    });
+
+    await useAppStore.getState().analyzeAll();
+
+    expect(
+      getTraces()
+        .at(-1)
+        ?.spans.find((span) => span.operation === "analyze-all-batch")?.layer,
+    ).toBe("typescript");
+    expect(
+      getEvents().some((event) => event.reasonCode === "HTTP_REQUEST_FAILED"),
+    ).toBe(true);
   });
 });
 
