@@ -13,16 +13,17 @@
 # =============================================================================
 
 # --- Stage 1: Rust-Server bauen ---------------------------------------------
-FROM rust:1.83-slim AS rust-build
+FROM rust:1.85-slim AS rust-build
 WORKDIR /build
 # minimale System-Abhängigkeiten (keine GUI-Libs — der Server ist headless)
 RUN apt-get update && apt-get install -y --no-install-recommends pkg-config && \
     rm -rf /var/lib/apt/lists/*
 COPY Cargo.toml Cargo.lock ./
 # Workspace-Manifest: src-tauri ist Workspace-Member und muss für die
-# Manifest-Auflösung vorhanden sein (nur Cargo.toml — gebaut wird per -p
-# ausschließlich der Server).
+# Manifest-Auflösung samt Library-Target-Root vorhanden sein (gebaut wird per
+# -p ausschließlich der Server).
 COPY src-tauri/Cargo.toml ./src-tauri/Cargo.toml
+COPY src-tauri/src/lib.rs ./src-tauri/src/lib.rs
 COPY crates ./crates
 RUN cargo build --release -p promptvault-server
 
@@ -40,10 +41,11 @@ RUN pnpm build
 FROM debian:12-slim
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
-    useradd --system --uid 10001 --no-create-home promptvault
+    useradd --system --uid 10001 --create-home --home-dir /home/promptvault promptvault
 COPY --from=rust-build /build/target/release/promptvault-server /usr/local/bin/promptvault-server
 COPY --from=ui-build /build/dist /opt/promptvault/ui
 ENV PROMPTVAULT_SERVER_HOST=0.0.0.0 \
+    HOME=/home/promptvault \
     PROMPTVAULT_SERVER_PORT=8080 \
     PROMPTVAULT_SERVER_STATIC=/opt/promptvault/ui \
     PROMPTVAULT_SERVER_READ_ONLY=1
