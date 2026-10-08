@@ -3,7 +3,7 @@
 **Last updated:** 2026-09-30
 **Latest published release:** v1.11.1 (GitHub Release, Windows NSIS stream)
 **v1.12.0:** Linux x64 release candidate — tag on `master`, packages built and checksummed; **GitHub Release publication still pending** (asset upload blocked from the build host; owner action required)
-**Branch:** master
+**Branch:** main
 
 ---
 

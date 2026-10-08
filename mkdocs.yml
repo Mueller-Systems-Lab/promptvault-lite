@@ -7,7 +7,7 @@ site_description: Lokales Prompt-Management-System mit Qualitäts- und Hygienean
 site_author: PromptVault Team
 repo_url: https://github.com/Mueller-Systems-Lab/promptvault-lite
 repo_name: Mueller-Systems-Lab/promptvault-lite
-edit_uri: edit/master/docs/
+edit_uri: edit/main/docs/
 
 # Copyright
 copyright: >
