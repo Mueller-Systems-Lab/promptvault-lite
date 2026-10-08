@@ -2,9 +2,10 @@ import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { useExport } from "../useExport";
 
-const prompts = [
-  {
-    id: "synthetic-write-abort",
+const mocks = vi.hoisted(() => ({
+  prompts: [
+    {
+      id: "synthetic-write-abort",
     file_path: "/tmp/synthetic/prompt.md",
     file_name: "prompt.md",
     title: "Synthetic prompt",
@@ -16,13 +17,14 @@ const prompts = [
     raw_frontmatter: {},
     created_at: "2026-01-01T00:00:00Z",
     updated_at: "2026-01-01T00:00:00Z",
-    is_favorite: false,
-  },
-];
+      is_favorite: false,
+    },
+  ],
+}));
 
 vi.mock("@/stores/appStore", () => ({
   useAppStore: (selector: (state: unknown) => unknown) =>
-    selector({ prompts, evaluations: {}, hygiene: {} }),
+    selector({ prompts: mocks.prompts, evaluations: {}, hygiene: {} }),
 }));
 vi.mock("@/lib/backend/factory", () => ({
   getBackend: () => ({ kind: "http" }),
@@ -36,7 +38,9 @@ vi.mock("@tauri-apps/api/event", () => ({ listen: vi.fn() }));
 vi.mock("@tauri-apps/plugin-dialog", () => ({ open: vi.fn() }));
 
 describe("useExport browser write failures", () => {
-  it("surfaces an AbortError thrown after the save destination was selected", async () => {
+  it(
+    "surfaces an AbortError thrown after the save destination was selected",
+    async () => {
     const originalPicker = Object.getOwnPropertyDescriptor(
       window,
       "showSaveFilePicker",
@@ -73,6 +77,6 @@ describe("useExport browser write failures", () => {
       } else {
         Reflect.deleteProperty(window, "showSaveFilePicker");
       }
-    }
-  });
+    },
+  );
 });
