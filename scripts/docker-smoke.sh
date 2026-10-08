@@ -27,6 +27,7 @@ title: "Smoke Fixture"
 ## Rolle
 Smoke-Tester.
 MD
+chmod 644 "$SMOKE_DIR/vault/smoke.md"
 
 echo "[smoke] building image..."
 docker build -f deploy/Dockerfile -t "$IMAGE_NAME" .

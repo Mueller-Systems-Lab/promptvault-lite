@@ -4,3 +4,5 @@
 /deploy/.env
 **/node_modules/
 **/target/
+/.env
+/.env.*

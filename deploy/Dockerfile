@@ -45,6 +45,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
 COPY --from=rust-build /build/target/release/promptvault-server /usr/local/bin/promptvault-server
 COPY --from=ui-build /build/dist /opt/promptvault/ui
 ENV PROMPTVAULT_SERVER_HOST=0.0.0.0 \
+    HOME=/home/promptvault \
     PROMPTVAULT_SERVER_PORT=8080 \
     PROMPTVAULT_SERVER_STATIC=/opt/promptvault/ui \
     PROMPTVAULT_SERVER_READ_ONLY=1
