@@ -5,13 +5,14 @@ import { ExportDialog } from "../ExportDialog";
 const mocks = vi.hoisted(() => ({
   setExportFormat: vi.fn(),
   startExport: vi.fn(),
+  error: null as string | null,
 }));
 
 vi.mock("@/hooks/useExport", () => ({
   useExport: () => ({
     isExporting: false,
     progress: 0,
-    error: null,
+    error: mocks.error,
     exportFormat: "json",
     setExportFormat: mocks.setExportFormat,
     startExport: mocks.startExport,
@@ -25,6 +26,24 @@ vi.mock("@/lib/backend/factory", () => ({
 describe("ExportDialog in web mode", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  it("shows the German failure message and no raw browser text", () => {
+    mocks.error =
+      "Die Exportdatei konnte nicht geschrieben werden. Bitte freien Speicherplatz prüfen und erneut versuchen.";
+    try {
+      render(<ExportDialog onClose={vi.fn()} />);
+      expect(
+        screen.getByText(
+          "Die Exportdatei konnte nicht geschrieben werden. Bitte freien Speicherplatz prüfen und erneut versuchen.",
+        ),
+      ).toBeVisible();
+      expect(
+        screen.queryByText(/Failed to execute|showSaveFilePicker|AbortError/),
+      ).toBeNull();
+    } finally {
+      mocks.error = null;
+    }
   });
 
   it("offers JSON and Markdown but hides the unsupported ZIP format", () => {

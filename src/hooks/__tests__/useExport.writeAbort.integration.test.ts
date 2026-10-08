@@ -1,6 +1,19 @@
 import { act, renderHook } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useExport } from "../useExport";
+
+const WRITE_MESSAGE =
+  "Die Exportdatei konnte nicht geschrieben werden. Bitte freien Speicherplatz prüfen und erneut versuchen.";
+const DESTINATION_MESSAGE =
+  "Der Speicherort konnte nicht ausgewählt oder angelegt werden. Bitte einen anderen Ordner wählen.";
+
+let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+beforeEach(() => {
+  consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+});
+afterEach(() => {
+  consoleErrorSpy.mockRestore();
+});
 
 const mocks = vi.hoisted(() => ({
   prompts: [
@@ -66,8 +79,9 @@ describe("useExport browser write failures", () => {
       expect(write).toHaveBeenCalledOnce();
       expect(abort).toHaveBeenCalledOnce();
       expect(close).not.toHaveBeenCalled();
-      expect(result.current.error).toMatch(/^Fehler beim Schreiben:/);
-      expect(result.current.error).toContain("Write was aborted");
+      expect(result.current.error).toBe(WRITE_MESSAGE);
+      expect(result.current.error).not.toContain("Write was aborted");
+      expect(result.current.error).not.toMatch(/AbortError|Failed to execute/);
       expect(result.current.isExporting).toBe(false);
     } finally {
       if (originalPicker) {
@@ -105,11 +119,57 @@ describe("useExport browser write failures", () => {
         await result.current.startExport(false);
       });
 
-      expect(result.current.error).toMatch(/^Fehler beim Schreiben:/);
-      expect(result.current.error).toContain(
+      expect(result.current.error).toBe(DESTINATION_MESSAGE);
+      expect(result.current.error).not.toContain(
         "Failed to create or truncate file",
       );
       expect(result.current.isExporting).toBe(false);
+    } finally {
+      if (originalPicker) {
+        Object.defineProperty(window, "showSaveFilePicker", originalPicker);
+      } else {
+        Reflect.deleteProperty(window, "showSaveFilePicker");
+      }
+    }
+  });
+
+  it("surfaces a write failure even when the abort message claims a user cancellation", async () => {
+    const originalPicker = Object.getOwnPropertyDescriptor(
+      window,
+      "showSaveFilePicker",
+    );
+    // Adversarial case: after the destination was selected, the write stage
+    // rejects with an AbortError whose wording resembles a picker dismissal.
+    // The write stage must not be reclassifiable as cancellation by message.
+    const abort = vi.fn().mockResolvedValue(undefined);
+    const write = vi
+      .fn()
+      .mockRejectedValue(new DOMException("The user aborted a request.", "AbortError"));
+    const close = vi.fn().mockResolvedValue(undefined);
+    const createWritable = vi.fn().mockResolvedValue({ write, close, abort });
+    const picker = vi.fn().mockResolvedValue({ createWritable });
+
+    Object.defineProperty(window, "showSaveFilePicker", {
+      configurable: true,
+      value: picker,
+    });
+
+    try {
+      const { result } = renderHook(() => useExport());
+      await act(async () => {
+        await result.current.startExport(false);
+      });
+
+      expect(picker).toHaveBeenCalledOnce();
+      expect(createWritable).toHaveBeenCalledOnce();
+      expect(write).toHaveBeenCalledOnce();
+      expect(abort).toHaveBeenCalledOnce();
+      expect(close).not.toHaveBeenCalled();
+      expect(result.current.error).toBe(WRITE_MESSAGE);
+      expect(result.current.isExporting).toBe(false);
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining("The user aborted a request."),
+      );
     } finally {
       if (originalPicker) {
         Object.defineProperty(window, "showSaveFilePicker", originalPicker);
@@ -147,6 +207,7 @@ describe("useExport browser write failures", () => {
       expect(picker).toHaveBeenCalledOnce();
       expect(result.current.error).toBeNull();
       expect(result.current.isExporting).toBe(false);
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
     } finally {
       if (originalPicker) {
         Object.defineProperty(window, "showSaveFilePicker", originalPicker);
