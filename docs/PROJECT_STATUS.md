@@ -13,7 +13,7 @@
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
 **Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
-**Release candidate:** v1.12.0 Linux x64 packages, release manifest and `SHA256SUMS.txt` are prepared from the final master source; the GitHub Release itself is **not yet published** (owner action from a capable host required).
+**Release candidate:** v1.12.0 Linux x64 packages, release manifest and `SHA256SUMS.txt` are prepared from the final `main` source; the GitHub Release itself is **not yet published** (owner action from a capable host required).
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
 
