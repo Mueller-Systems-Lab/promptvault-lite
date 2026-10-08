@@ -20,6 +20,21 @@ interface UseExportReturn {
   startExport: (favoritesOnly: boolean) => Promise<void>;
 }
 
+/**
+ * Message for the error banner. Reads `message` duck-typed so DOMExceptions
+ * and cross-realm errors surface like plain Errors, and never returns an empty
+ * string the dialog would render as nothing.
+ */
+function exportErrorMessage(error: unknown): string {
+  if (typeof error === "object" && error !== null) {
+    const { message } = error as { message?: unknown };
+    if (typeof message === "string" && message.length > 0) {
+      return message;
+    }
+  }
+  return "Unbekannter Export-Fehler";
+}
+
 export function useExport(): UseExportReturn {
   const [isExporting, setIsExporting] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -114,9 +129,7 @@ export function useExport(): UseExportReturn {
         if (isExportCancellation(err)) {
           return;
         }
-        setError(
-          err instanceof Error ? err.message : "Unbekannter Export-Fehler",
-        );
+        setError(exportErrorMessage(err));
       } finally {
         // Clean up event listener
         if (unlistenRef.current) {

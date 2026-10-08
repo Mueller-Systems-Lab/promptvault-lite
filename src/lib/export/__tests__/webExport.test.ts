@@ -338,7 +338,10 @@ describe("web export", () => {
   });
 
   it("preserves AbortError from cancelling the save picker", async () => {
-    const cancellation = new DOMException("Cancelled", "AbortError");
+    const cancellation = new DOMException(
+      "Failed to execute 'showSaveFilePicker' on 'Window': The user aborted a request.",
+      "AbortError",
+    );
     const picker = vi.fn(() => Promise.reject(cancellation));
     await expect(
       saveWebExportFile(
@@ -397,6 +400,19 @@ describe("web export", () => {
     expect(isExportCancellation(new Error("Fehler beim Schreiben: x"))).toBe(
       false,
     );
+    // Unknown or missing messages surface as failures instead of staying silent.
+    expect(isExportCancellation(new DOMException("Cancelled", "AbortError"))).toBe(
+      false,
+    );
+    expect(isExportCancellation(new DOMException("", "AbortError"))).toBe(false);
+    expect(isExportCancellation(undefined)).toBe(false);
+    // Duck-typed: an AbortError from another realm is still recognized.
+    expect(
+      isExportCancellation({
+        name: "AbortError",
+        message: "The user aborted a request.",
+      }),
+    ).toBe(true);
   });
 
   it("downloads through an anchor and revokes its object URL", async () => {

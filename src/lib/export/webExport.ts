@@ -117,27 +117,38 @@ function writeError(error: unknown): Error {
 // Chrome rejects showSaveFilePicker with AbortError both when the user
 // dismisses the dialog ("The user aborted a request.") and when the chosen
 // file cannot be created or truncated ("Failed to create or truncate file").
-const PICKER_FILE_CREATION_FAILURE = /failed to create or truncate/i;
+// The message is the only discriminator Chrome offers, so cancellation is the
+// narrow, positively identified case: anything unrecognized stays a surfaced
+// failure instead of silently ending the export.
+const PICKER_DISMISSAL_MESSAGE = /user aborted/i;
+const PICKER_FILE_CREATION_MESSAGE = /failed to create or truncate/i;
 
-function isFileCreationFailure(error: unknown): boolean {
-  return (
-    error instanceof DOMException &&
-    error.name === "AbortError" &&
-    PICKER_FILE_CREATION_FAILURE.test(error.message)
-  );
+/** Message of an AbortError-shaped rejection, or null when it is not one (duck-typed: survives cross-realm DOMExceptions). */
+function abortErrorMessage(error: unknown): string | null {
+  if (typeof error !== "object" || error === null) {
+    return null;
+  }
+  const candidate = error as { name?: unknown; message?: unknown };
+  if (candidate.name !== "AbortError") {
+    return null;
+  }
+  return typeof candidate.message === "string" ? candidate.message : "";
 }
 
 /**
- * True only for a deliberate save-picker dismissal. A failed file creation
- * reports the same AbortError name and must surface as an export failure
- * instead of being misread as a cancellation.
+ * True only for a deliberate save-picker dismissal. Failed file creations and
+ * unrecognized aborts must surface as export failures instead of being misread
+ * as a cancellation. Shared by both export backends: the desktop path only
+ * reaches this check with non-abort errors, which are surfaced as before.
  */
 export function isExportCancellation(error: unknown): boolean {
-  return (
-    error instanceof DOMException &&
-    error.name === "AbortError" &&
-    !isFileCreationFailure(error)
-  );
+  const message = abortErrorMessage(error);
+  return message !== null && PICKER_DISMISSAL_MESSAGE.test(message);
+}
+
+function isFileCreationFailure(error: unknown): boolean {
+  const message = abortErrorMessage(error);
+  return message !== null && PICKER_FILE_CREATION_MESSAGE.test(message);
 }
 
 export async function saveWebExportFile(
