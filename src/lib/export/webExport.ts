@@ -110,9 +110,6 @@ interface SaveFileOptions {
 type SaveFilePicker = (options: SaveFileOptions) => Promise<SaveFileHandle>;
 
 function writeError(error: unknown): Error {
-  if (error instanceof DOMException && error.name === "AbortError") {
-    return error;
-  }
   const message = error instanceof Error ? error.message : String(error);
   return new Error(`Fehler beim Schreiben: ${message}`);
 }
