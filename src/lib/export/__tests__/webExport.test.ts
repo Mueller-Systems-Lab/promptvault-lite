@@ -291,7 +291,7 @@ describe("web export", () => {
     ).rejects.toThrow("Picker blocked");
   });
 
-  it("preserves AbortError from a failed write", async () => {
+  it("reports AbortError from a failed write as a write error", async () => {
     const cancellation = new DOMException("Cancelled", "AbortError");
     const abort = vi.fn(() => Promise.resolve());
     const picker = vi.fn(() =>
@@ -313,8 +313,23 @@ describe("web export", () => {
         },
         picker,
       ),
-    ).rejects.toBe(cancellation);
+    ).rejects.toThrow("Fehler beim Schreiben: Cancelled");
     expect(abort).toHaveBeenCalledOnce();
+  });
+
+  it("preserves AbortError from cancelling the save picker", async () => {
+    const cancellation = new DOMException("Cancelled", "AbortError");
+    const picker = vi.fn(() => Promise.reject(cancellation));
+    await expect(
+      saveWebExportFile(
+        {
+          filename: "promptvault-export.json",
+          mimeType: "application/json",
+          content: "{}",
+        },
+        picker,
+      ),
+    ).rejects.toBe(cancellation);
   });
 
   it("downloads through an anchor and revokes its object URL", async () => {
