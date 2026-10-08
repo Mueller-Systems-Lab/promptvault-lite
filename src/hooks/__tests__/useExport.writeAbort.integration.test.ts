@@ -106,7 +106,9 @@ describe("useExport browser write failures", () => {
       });
 
       expect(result.current.error).toMatch(/^Fehler beim Schreiben:/);
-      expect(result.current.error).toContain("Failed to create or truncate file");
+      expect(result.current.error).toContain(
+        "Failed to create or truncate file",
+      );
       expect(result.current.isExporting).toBe(false);
     } finally {
       if (originalPicker) {

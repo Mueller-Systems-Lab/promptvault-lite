@@ -293,7 +293,10 @@ describe("web export", () => {
   });
 
   it("reports AbortError while creating the writer as a write error", async () => {
-    const cancellation = new DOMException("Writer creation failed", "AbortError");
+    const cancellation = new DOMException(
+      "Writer creation failed",
+      "AbortError",
+    );
     const picker = vi.fn(() =>
       Promise.resolve({
         createWritable: () => Promise.reject(cancellation),
@@ -401,10 +404,12 @@ describe("web export", () => {
       false,
     );
     // Unknown or missing messages surface as failures instead of staying silent.
-    expect(isExportCancellation(new DOMException("Cancelled", "AbortError"))).toBe(
+    expect(
+      isExportCancellation(new DOMException("Cancelled", "AbortError")),
+    ).toBe(false);
+    expect(isExportCancellation(new DOMException("", "AbortError"))).toBe(
       false,
     );
-    expect(isExportCancellation(new DOMException("", "AbortError"))).toBe(false);
     expect(isExportCancellation(undefined)).toBe(false);
     // Duck-typed: an AbortError from another realm is still recognized.
     expect(

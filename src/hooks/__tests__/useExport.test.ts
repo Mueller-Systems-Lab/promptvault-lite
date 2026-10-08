@@ -40,9 +40,8 @@ vi.mock("@/lib/backend/factory", () => ({
   getBackend: () => ({ kind: mocks.backendKind }),
 }));
 vi.mock("@/lib/export/webExport", async (importOriginal) => {
-  const actual = await importOriginal<
-    typeof import("@/lib/export/webExport")
-  >();
+  const actual =
+    await importOriginal<typeof import("@/lib/export/webExport")>();
   return {
     ...actual,
     buildWebExportDocument: mocks.buildDocument,

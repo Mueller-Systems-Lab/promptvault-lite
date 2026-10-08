@@ -123,7 +123,10 @@ function writeError(error: unknown): Error {
 const PICKER_DISMISSAL_MESSAGE = /user aborted/i;
 const PICKER_FILE_CREATION_MESSAGE = /failed to create or truncate/i;
 
-/** Message of an AbortError-shaped rejection, or null when it is not one (duck-typed: survives cross-realm DOMExceptions). */
+/**
+ * Message of an AbortError-shaped rejection, or null when it is not one.
+ * Duck-typed so cross-realm DOMExceptions are recognized too.
+ */
 function abortErrorMessage(error: unknown): string | null {
   if (typeof error !== "object" || error === null) {
     return null;
