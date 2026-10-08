@@ -134,7 +134,12 @@ export async function saveWebExportFile(
         },
       ],
     });
-    const writable = await handle.createWritable();
+    let writable: WritableFile;
+    try {
+      writable = await handle.createWritable();
+    } catch (error) {
+      throw writeError(error);
+    }
     try {
       await writable.write(blob);
     } catch (error) {
