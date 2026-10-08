@@ -77,4 +77,80 @@ describe("useExport browser write failures", () => {
       }
     }
   });
+
+  it("surfaces a picker AbortError caused by a failed file creation", async () => {
+    const originalPicker = Object.getOwnPropertyDescriptor(
+      window,
+      "showSaveFilePicker",
+    );
+    // Chrome 140 reports a non-writable destination with AbortError and this
+    // exact message; it must not be treated like a user cancellation.
+    const picker = vi
+      .fn()
+      .mockRejectedValue(
+        new DOMException(
+          "Failed to execute 'showSaveFilePicker' on 'Window': Failed to create or truncate file",
+          "AbortError",
+        ),
+      );
+
+    Object.defineProperty(window, "showSaveFilePicker", {
+      configurable: true,
+      value: picker,
+    });
+
+    try {
+      const { result } = renderHook(() => useExport());
+      await act(async () => {
+        await result.current.startExport(false);
+      });
+
+      expect(result.current.error).toMatch(/^Fehler beim Schreiben:/);
+      expect(result.current.error).toContain("Failed to create or truncate file");
+      expect(result.current.isExporting).toBe(false);
+    } finally {
+      if (originalPicker) {
+        Object.defineProperty(window, "showSaveFilePicker", originalPicker);
+      } else {
+        Reflect.deleteProperty(window, "showSaveFilePicker");
+      }
+    }
+  });
+
+  it("stays silent when the user dismisses the save picker", async () => {
+    const originalPicker = Object.getOwnPropertyDescriptor(
+      window,
+      "showSaveFilePicker",
+    );
+    const picker = vi
+      .fn()
+      .mockRejectedValue(
+        new DOMException(
+          "Failed to execute 'showSaveFilePicker' on 'Window': The user aborted a request.",
+          "AbortError",
+        ),
+      );
+
+    Object.defineProperty(window, "showSaveFilePicker", {
+      configurable: true,
+      value: picker,
+    });
+
+    try {
+      const { result } = renderHook(() => useExport());
+      await act(async () => {
+        await result.current.startExport(false);
+      });
+
+      expect(picker).toHaveBeenCalledOnce();
+      expect(result.current.error).toBeNull();
+      expect(result.current.isExporting).toBe(false);
+    } finally {
+      if (originalPicker) {
+        Object.defineProperty(window, "showSaveFilePicker", originalPicker);
+      } else {
+        Reflect.deleteProperty(window, "showSaveFilePicker");
+      }
+    }
+  });
 });

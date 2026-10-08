@@ -39,11 +39,17 @@ vi.mock("@/stores/appStore", () => ({
 vi.mock("@/lib/backend/factory", () => ({
   getBackend: () => ({ kind: mocks.backendKind }),
 }));
-vi.mock("@/lib/export/webExport", () => ({
-  buildWebExportDocument: mocks.buildDocument,
-  buildWebExportContent: mocks.buildContent,
-  saveWebExportFile: mocks.saveWeb,
-}));
+vi.mock("@/lib/export/webExport", async (importOriginal) => {
+  const actual = await importOriginal<
+    typeof import("@/lib/export/webExport")
+  >();
+  return {
+    ...actual,
+    buildWebExportDocument: mocks.buildDocument,
+    buildWebExportContent: mocks.buildContent,
+    saveWebExportFile: mocks.saveWeb,
+  };
+});
 vi.mock("@/lib/tauri", () => ({
   exportJson: mocks.exportJson,
   exportMarkdown: mocks.exportMarkdown,

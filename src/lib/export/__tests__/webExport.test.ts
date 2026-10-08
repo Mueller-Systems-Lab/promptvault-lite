@@ -3,6 +3,7 @@ import type { PromptEvaluation, PromptHygiene, PromptItem } from "@/types";
 import {
   buildWebExportContent,
   buildWebExportDocument,
+  isExportCancellation,
   saveWebExportFile,
 } from "../webExport";
 import type { WebExportDocument } from "../webExport";
@@ -349,6 +350,53 @@ describe("web export", () => {
         picker,
       ),
     ).rejects.toBe(cancellation);
+  });
+
+  it("reports a picker AbortError for a failed file creation as a write error", async () => {
+    // Chrome 140 rejects showSaveFilePicker with AbortError when the selected
+    // destination cannot be written (observed: read-only directory).
+    const creationFailure = new DOMException(
+      "Failed to execute 'showSaveFilePicker' on 'Window': Failed to create or truncate file",
+      "AbortError",
+    );
+    const picker = vi.fn(() => Promise.reject(creationFailure));
+
+    const error = await saveWebExportFile(
+      {
+        filename: "promptvault-export.json",
+        mimeType: "application/json",
+        content: "{}",
+      },
+      picker,
+    ).catch((e: unknown) => e);
+
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).message).toMatch(
+      /^Fehler beim Schreiben: .*Failed to create or truncate file/,
+    );
+    expect(isExportCancellation(error)).toBe(false);
+  });
+
+  it("classifies picker rejections as cancellation or failure", () => {
+    expect(
+      isExportCancellation(
+        new DOMException(
+          "Failed to execute 'showSaveFilePicker' on 'Window': The user aborted a request.",
+          "AbortError",
+        ),
+      ),
+    ).toBe(true);
+    expect(
+      isExportCancellation(
+        new DOMException(
+          "Failed to execute 'showSaveFilePicker' on 'Window': Failed to create or truncate file",
+          "AbortError",
+        ),
+      ),
+    ).toBe(false);
+    expect(isExportCancellation(new Error("Fehler beim Schreiben: x"))).toBe(
+      false,
+    );
   });
 
   it("downloads through an anchor and revokes its object URL", async () => {

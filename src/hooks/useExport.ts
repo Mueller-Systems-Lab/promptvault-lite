@@ -6,6 +6,7 @@ import { getBackend } from "@/lib/backend/factory";
 import {
   buildWebExportContent,
   buildWebExportDocument,
+  isExportCancellation,
   saveWebExportFile,
 } from "@/lib/export/webExport";
 import type { ExportFormat, ExportProgressPayload } from "@/types";
@@ -110,7 +111,7 @@ export function useExport(): UseExportReturn {
 
         setProgress(100);
       } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") {
+        if (isExportCancellation(err)) {
           return;
         }
         setError(

@@ -114,6 +114,32 @@ function writeError(error: unknown): Error {
   return new Error(`Fehler beim Schreiben: ${message}`);
 }
 
+// Chrome rejects showSaveFilePicker with AbortError both when the user
+// dismisses the dialog ("The user aborted a request.") and when the chosen
+// file cannot be created or truncated ("Failed to create or truncate file").
+const PICKER_FILE_CREATION_FAILURE = /failed to create or truncate/i;
+
+function isFileCreationFailure(error: unknown): boolean {
+  return (
+    error instanceof DOMException &&
+    error.name === "AbortError" &&
+    PICKER_FILE_CREATION_FAILURE.test(error.message)
+  );
+}
+
+/**
+ * True only for a deliberate save-picker dismissal. A failed file creation
+ * reports the same AbortError name and must surface as an export failure
+ * instead of being misread as a cancellation.
+ */
+export function isExportCancellation(error: unknown): boolean {
+  return (
+    error instanceof DOMException &&
+    error.name === "AbortError" &&
+    !isFileCreationFailure(error)
+  );
+}
+
 export async function saveWebExportFile(
   file: { filename: string; mimeType: string; content: string },
   picker?: SaveFilePicker,
@@ -125,15 +151,25 @@ export async function saveWebExportFile(
   const pickerToUse = picker ?? browserPicker?.bind(window);
   if (pickerToUse) {
     const extension = file.filename.endsWith(".json") ? ".json" : ".md";
-    const handle = await pickerToUse({
-      suggestedName: file.filename,
-      types: [
-        {
-          description: "PromptVault export",
-          accept: { [file.mimeType.split(";")[0]]: [extension] },
-        },
-      ],
-    });
+    let handle: SaveFileHandle;
+    try {
+      handle = await pickerToUse({
+        suggestedName: file.filename,
+        types: [
+          {
+            description: "PromptVault export",
+            accept: { [file.mimeType.split(";")[0]]: [extension] },
+          },
+        ],
+      });
+    } catch (error) {
+      // A failed file creation is an export failure; only a dismissal may
+      // silently end the export.
+      if (isFileCreationFailure(error)) {
+        throw writeError(error);
+      }
+      throw error;
+    }
     let writable: WritableFile;
     try {
       writable = await handle.createWritable();
