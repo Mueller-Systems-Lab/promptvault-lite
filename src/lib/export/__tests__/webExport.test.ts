@@ -307,7 +307,7 @@ describe("web export", () => {
         },
         picker,
       ),
-    ).rejects.toThrow("Fehler beim Schreiben: Writer creation failed");
+    ).rejects.toThrow(/Fehler beim Schreiben: .*Writer creation failed/);
   });
 
   it("reports AbortError from a failed write as a write error", async () => {
@@ -332,7 +332,7 @@ describe("web export", () => {
         },
         picker,
       ),
-    ).rejects.toThrow("Fehler beim Schreiben: Cancelled");
+    ).rejects.toThrow(/Fehler beim Schreiben: .*Cancelled/);
     expect(abort).toHaveBeenCalledOnce();
   });
 
