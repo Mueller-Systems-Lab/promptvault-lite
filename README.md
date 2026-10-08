@@ -69,7 +69,7 @@ Aufnahme: 1440×900, Vite-Renderer-Modus mit gemocktem Tauri-IPC (identischer Re
 
 ## Current Release & Publication Status
 
-**Latest published GitHub Release: `v1.11.1`.** The `v1.12.0` tag exists on `master`, and its local-first, offline-capable and deterministic contract (structure, completeness, hygiene, contradictions plus actionable improvement signals) is final — but the **`v1.12.0` GitHub Release with the Linux packages has not been published yet** (asset upload is blocked from the build host; publishing requires an explicit owner action from a capable host). Until that happens, `v1.12.0` is a release candidate: the packages below are built and checksummed but not publicly downloadable. Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
+**Latest published GitHub Release: `v1.11.1`.** The `v1.12.0` tag exists on `main`, and its local-first, offline-capable and deterministic contract (structure, completeness, hygiene, contradictions plus actionable improvement signals) is final — but the **`v1.12.0` GitHub Release with the Linux packages has not been published yet** (asset upload is blocked from the build host; publishing requires an explicit owner action from a capable host). Until that happens, `v1.12.0` is a release candidate: the packages below are built and checksummed but not publicly downloadable. Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
 
 | Platform | Asset (prepared, publication pending) |
 |---|---|
@@ -252,7 +252,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Latest published desktop release: v1.11.1 (GitHub Release). The v1.12.0 Linux x64 release candidate is built, checksummed and tagged on `master`, but its GitHub Release publication is still pending (owner action). The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Latest published desktop release: v1.11.1 (GitHub Release). The v1.12.0 Linux x64 release candidate is built, checksummed and tagged on `main`, but its GitHub Release publication is still pending (owner action). The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

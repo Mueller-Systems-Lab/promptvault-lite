@@ -2,7 +2,7 @@ name: Deploy static content to GitHub Pages
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - "website/**"
       - ".github/workflows/pages.yml"

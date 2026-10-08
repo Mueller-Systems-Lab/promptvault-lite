@@ -4,7 +4,7 @@
     "provider": "github",
     "owner": "Mueller-Systems-Lab",
     "repository": "promptvault-lite",
-    "defaultBranch": "master",
+    "defaultBranch": "main",
     "canonicalRemotes": [
       "https://github.com/Mueller-Systems-Lab/promptvault-lite.git",
       "git@github.com:Mueller-Systems-Lab/promptvault-lite.git"
