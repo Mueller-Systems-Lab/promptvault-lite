@@ -291,6 +291,25 @@ describe("web export", () => {
     ).rejects.toThrow("Picker blocked");
   });
 
+  it("reports AbortError while creating the writer as a write error", async () => {
+    const cancellation = new DOMException("Writer creation failed", "AbortError");
+    const picker = vi.fn(() =>
+      Promise.resolve({
+        createWritable: () => Promise.reject(cancellation),
+      }),
+    );
+    await expect(
+      saveWebExportFile(
+        {
+          filename: "promptvault-export.json",
+          mimeType: "application/json",
+          content: "{}",
+        },
+        picker,
+      ),
+    ).rejects.toThrow("Fehler beim Schreiben: Writer creation failed");
+  });
+
   it("reports AbortError from a failed write as a write error", async () => {
     const cancellation = new DOMException("Cancelled", "AbortError");
     const abort = vi.fn(() => Promise.resolve());
