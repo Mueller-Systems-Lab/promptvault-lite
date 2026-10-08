@@ -117,13 +117,17 @@ describe("useExport backend behavior", () => {
     expect(result.current.isExporting).toBe(false);
   });
 
-  it("shows a useful error when browser file writing fails", async () => {
+  it("shows a useful German error when browser file writing fails", async () => {
     mocks.saveWeb.mockRejectedValueOnce(
-      new Error("Fehler beim Schreiben: Write failed"),
+      new Error(
+        "Die Exportdatei konnte nicht geschrieben werden. Bitte freien Speicherplatz prüfen und erneut versuchen.",
+      ),
     );
     const { result } = renderHook(() => useExport());
     await act(async () => result.current.startExport(false));
-    expect(result.current.error).toBe("Fehler beim Schreiben: Write failed");
+    expect(result.current.error).toBe(
+      "Die Exportdatei konnte nicht geschrieben werden. Bitte freien Speicherplatz prüfen und erneut versuchen.",
+    );
     expect(result.current.isExporting).toBe(false);
   });
 

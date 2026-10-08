@@ -1,6 +1,15 @@
-import { describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+  type MockInstance,
+} from "vitest";
 import type { PromptEvaluation, PromptHygiene, PromptItem } from "@/types";
 import {
+  ExportFailureError,
   buildWebExportContent,
   buildWebExportDocument,
   isExportCancellation,
@@ -42,6 +51,25 @@ const hygiene: PromptHygiene = {
   artifacts: [],
   analyzed_at: "2026-01-01T00:00:00Z",
 };
+
+// Failing export stages log the raw exception text for diagnosis; silence it
+// here and assert on it where relevant.
+let consoleErrorSpy: MockInstance<Parameters<typeof console.error>, void>;
+beforeEach(() => {
+  consoleErrorSpy = vi
+    .spyOn(console, "error")
+    .mockImplementation(() => undefined);
+});
+afterEach(() => {
+  consoleErrorSpy.mockRestore();
+});
+
+const WRITE_MESSAGE =
+  "Die Exportdatei konnte nicht geschrieben werden. Bitte freien Speicherplatz prüfen und erneut versuchen.";
+const DESTINATION_MESSAGE =
+  "Der Speicherort konnte nicht ausgewählt oder angelegt werden. Bitte einen anderen Ordner wählen.";
+const FINALIZE_MESSAGE =
+  "Die Exportdatei konnte nicht abgeschlossen werden. Bitte erneut versuchen.";
 
 describe("web export", () => {
   it("builds JSON and Markdown with the selected prompt and analysis scores", () => {
@@ -216,21 +244,27 @@ describe("web export", () => {
       }),
     );
 
-    await expect(
-      saveWebExportFile(
-        {
-          filename: "promptvault-export.json",
-          mimeType: "application/json",
-          content: '{"ok":true}',
-        },
-        picker,
-      ),
-    ).rejects.toThrow("Fehler beim Schreiben: Write failed");
+    const error = (await saveWebExportFile(
+      {
+        filename: "promptvault-export.json",
+        mimeType: "application/json",
+        content: '{"ok":true}',
+      },
+      picker,
+    ).catch((e: unknown) => e)) as ExportFailureError;
+
+    expect(error).toBeInstanceOf(ExportFailureError);
+    expect(error.stage).toBe("write");
+    expect(error.message).toBe(WRITE_MESSAGE);
+    expect(error.technicalDetail).toContain("Write failed");
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("[export] write failure: Write failed"),
+    );
     expect(abort).toHaveBeenCalledOnce();
     expect(close).not.toHaveBeenCalled();
   });
 
-  it("labels close failures as write errors", async () => {
+  it("reports close failures as a German finalize error", async () => {
     const write = vi.fn(() => Promise.resolve());
     const close = vi.fn(() => Promise.reject(new Error("Close failed")));
     const abort = vi.fn(() => Promise.resolve());
@@ -240,16 +274,19 @@ describe("web export", () => {
       }),
     );
 
-    await expect(
-      saveWebExportFile(
-        {
-          filename: "promptvault-export.json",
-          mimeType: "application/json",
-          content: "{}",
-        },
-        picker,
-      ),
-    ).rejects.toThrow("Fehler beim Schreiben: Close failed");
+    const error = (await saveWebExportFile(
+      {
+        filename: "promptvault-export.json",
+        mimeType: "application/json",
+        content: "{}",
+      },
+      picker,
+    ).catch((e: unknown) => e)) as ExportFailureError;
+
+    expect(error).toBeInstanceOf(ExportFailureError);
+    expect(error.stage).toBe("finalize");
+    expect(error.message).toBe(FINALIZE_MESSAGE);
+    expect(error.technicalDetail).toContain("Close failed");
     expect(write).toHaveBeenCalledOnce();
     expect(close).toHaveBeenCalledOnce();
     expect(abort).toHaveBeenCalledOnce();
@@ -265,31 +302,39 @@ describe("web export", () => {
       }),
     );
 
-    await expect(
-      saveWebExportFile(
-        {
-          filename: "promptvault-export.json",
-          mimeType: "application/json",
-          content: "{}",
-        },
-        picker,
-      ),
-    ).rejects.toThrow("Fehler beim Schreiben: Close failed");
+    const error = (await saveWebExportFile(
+      {
+        filename: "promptvault-export.json",
+        mimeType: "application/json",
+        content: "{}",
+      },
+      picker,
+    ).catch((e: unknown) => e)) as ExportFailureError;
+
+    expect(error.stage).toBe("finalize");
+    expect(error.message).toBe(FINALIZE_MESSAGE);
+    expect(error.technicalDetail).toContain("Close failed");
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("abort cleanup failed"),
+      expect.anything(),
+    );
     expect(abort).toHaveBeenCalledOnce();
   });
 
-  it("preserves picker setup errors without a write label", async () => {
+  it("reports picker setup errors as a German destination error", async () => {
     const picker = vi.fn(() => Promise.reject(new Error("Picker blocked")));
-    await expect(
-      saveWebExportFile(
-        {
-          filename: "promptvault-export.json",
-          mimeType: "application/json",
-          content: "{}",
-        },
-        picker,
-      ),
-    ).rejects.toThrow("Picker blocked");
+    const error = (await saveWebExportFile(
+      {
+        filename: "promptvault-export.json",
+        mimeType: "application/json",
+        content: "{}",
+      },
+      picker,
+    ).catch((e: unknown) => e)) as ExportFailureError;
+
+    expect(error.stage).toBe("destination");
+    expect(error.message).toBe(DESTINATION_MESSAGE);
+    expect(error.technicalDetail).toBe("Picker blocked");
   });
 
   it("reports AbortError while creating the writer as a write error", async () => {
@@ -302,16 +347,18 @@ describe("web export", () => {
         createWritable: () => Promise.reject(cancellation),
       }),
     );
-    await expect(
-      saveWebExportFile(
-        {
-          filename: "promptvault-export.json",
-          mimeType: "application/json",
-          content: "{}",
-        },
-        picker,
-      ),
-    ).rejects.toThrow(/Fehler beim Schreiben: .*Writer creation failed/);
+    const error = (await saveWebExportFile(
+      {
+        filename: "promptvault-export.json",
+        mimeType: "application/json",
+        content: "{}",
+      },
+      picker,
+    ).catch((e: unknown) => e)) as ExportFailureError;
+
+    expect(error.stage).toBe("write");
+    expect(error.message).toBe(WRITE_MESSAGE);
+    expect(error.technicalDetail).toContain("Writer creation failed");
   });
 
   it("reports AbortError from a failed write as a write error", async () => {
@@ -327,16 +374,18 @@ describe("web export", () => {
           }),
       }),
     );
-    await expect(
-      saveWebExportFile(
-        {
-          filename: "promptvault-export.json",
-          mimeType: "application/json",
-          content: "{}",
-        },
-        picker,
-      ),
-    ).rejects.toThrow(/Fehler beim Schreiben: .*Cancelled/);
+    const error = (await saveWebExportFile(
+      {
+        filename: "promptvault-export.json",
+        mimeType: "application/json",
+        content: "{}",
+      },
+      picker,
+    ).catch((e: unknown) => e)) as ExportFailureError;
+
+    expect(error.stage).toBe("write");
+    expect(error.message).toBe(WRITE_MESSAGE);
+    expect(error.technicalDetail).toContain("Cancelled");
     expect(abort).toHaveBeenCalledOnce();
   });
 
@@ -356,6 +405,7 @@ describe("web export", () => {
         picker,
       ),
     ).rejects.toBe(cancellation);
+    expect(isExportCancellation(cancellation)).toBe(true);
   });
 
   it("reports a picker AbortError for a failed file creation as a write error", async () => {
@@ -367,20 +417,45 @@ describe("web export", () => {
     );
     const picker = vi.fn(() => Promise.reject(creationFailure));
 
-    const error = await saveWebExportFile(
+    const error = (await saveWebExportFile(
       {
         filename: "promptvault-export.json",
         mimeType: "application/json",
         content: "{}",
       },
       picker,
-    ).catch((e: unknown) => e);
+    ).catch((e: unknown) => e)) as ExportFailureError;
 
-    expect(error).toBeInstanceOf(Error);
-    expect((error as Error).message).toMatch(
-      /^Fehler beim Schreiben: .*Failed to create or truncate file/,
+    expect(error).toBeInstanceOf(ExportFailureError);
+    expect(error.stage).toBe("destination");
+    expect(error.message).toBe(DESTINATION_MESSAGE);
+    expect(error.technicalDetail).toContain(
+      "Failed to create or truncate file",
     );
     expect(isExportCancellation(error)).toBe(false);
+  });
+
+  it("keeps raw browser exception text out of the user-facing message", async () => {
+    const raw =
+      "Failed to execute 'showSaveFilePicker' on 'Window': Failed to create or truncate file";
+    const picker = vi.fn(() =>
+      Promise.reject(new DOMException(raw, "AbortError")),
+    );
+
+    const error = (await saveWebExportFile(
+      {
+        filename: "promptvault-export.json",
+        mimeType: "application/json",
+        content: "{}",
+      },
+      picker,
+    ).catch((e: unknown) => e)) as ExportFailureError;
+
+    expect(error.message).not.toMatch(
+      /Failed to execute|showSaveFilePicker|AbortError|Error:/,
+    );
+    expect(error.technicalDetail).toBe(raw);
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining(raw));
   });
 
   it("classifies picker rejections as cancellation or failure", () => {

@@ -109,9 +109,57 @@ interface SaveFileOptions {
 
 type SaveFilePicker = (options: SaveFileOptions) => Promise<SaveFileHandle>;
 
-function writeError(error: unknown): Error {
-  const message = error instanceof Error ? error.message : String(error);
-  return new Error(`Fehler beim Schreiben: ${message}`);
+export type ExportFailureStage = "destination" | "write" | "finalize";
+
+const EXPORT_FAILURE_MESSAGES: Record<ExportFailureStage, string> = {
+  destination:
+    "Der Speicherort konnte nicht ausgewählt oder angelegt werden. Bitte einen anderen Ordner wählen.",
+  write:
+    "Die Exportdatei konnte nicht geschrieben werden. Bitte freien Speicherplatz prüfen und erneut versuchen.",
+  finalize:
+    "Die Exportdatei konnte nicht abgeschlossen werden. Bitte erneut versuchen.",
+};
+
+/**
+ * Export failure with a user-facing German message. The raw browser or
+ * filesystem text stays in `technicalDetail` (and on the console) instead of
+ * being shown in the UI.
+ */
+export class ExportFailureError extends Error {
+  readonly stage: ExportFailureStage;
+  readonly technicalDetail: string;
+
+  constructor(stage: ExportFailureStage, technicalDetail: string) {
+    super(EXPORT_FAILURE_MESSAGES[stage]);
+    this.name = "ExportFailureError";
+    this.stage = stage;
+    this.technicalDetail = technicalDetail;
+  }
+}
+
+/**
+ * Raw exception text for the developer channel. Duck-typed so DOMExceptions
+ * (which are not `instanceof Error` in every environment) report their message
+ * instead of a `name: message` composite.
+ */
+function technicalMessage(error: unknown): string {
+  if (typeof error === "object" && error !== null) {
+    const { message } = error as { message?: unknown };
+    if (typeof message === "string" && message.length > 0) {
+      return message;
+    }
+  }
+  return String(error);
+}
+
+function failExport(
+  stage: ExportFailureStage,
+  error: unknown,
+): ExportFailureError {
+  const technicalDetail = technicalMessage(error);
+  // Developer-facing channel: the raw exception text stays out of the UI.
+  console.error(`[export] ${stage} failure: ${technicalDetail}`);
+  return new ExportFailureError(stage, technicalDetail);
 }
 
 // Chrome rejects showSaveFilePicker with AbortError both when the user
@@ -121,7 +169,6 @@ function writeError(error: unknown): Error {
 // narrow, positively identified case: anything unrecognized stays a surfaced
 // failure instead of silently ending the export.
 const PICKER_DISMISSAL_MESSAGE = /user aborted/i;
-const PICKER_FILE_CREATION_MESSAGE = /failed to create or truncate/i;
 
 /**
  * Message of an AbortError-shaped rejection, or null when it is not one.
@@ -149,11 +196,6 @@ export function isExportCancellation(error: unknown): boolean {
   return message !== null && PICKER_DISMISSAL_MESSAGE.test(message);
 }
 
-function isFileCreationFailure(error: unknown): boolean {
-  const message = abortErrorMessage(error);
-  return message !== null && PICKER_FILE_CREATION_MESSAGE.test(message);
-}
-
 export async function saveWebExportFile(
   file: { filename: string; mimeType: string; content: string },
   picker?: SaveFilePicker,
@@ -177,18 +219,18 @@ export async function saveWebExportFile(
         ],
       });
     } catch (error) {
-      // A failed file creation is an export failure; only a dismissal may
-      // silently end the export.
-      if (isFileCreationFailure(error)) {
-        throw writeError(error);
+      // A dismissal ends the export quietly; every other picker failure is a
+      // destination failure for the user.
+      if (isExportCancellation(error)) {
+        throw error;
       }
-      throw error;
+      throw failExport("destination", error);
     }
     let writable: WritableFile;
     try {
       writable = await handle.createWritable();
     } catch (error) {
-      throw writeError(error);
+      throw failExport("write", error);
     }
     try {
       await writable.write(blob);
@@ -196,20 +238,22 @@ export async function saveWebExportFile(
       // Aborting discards the temporary file; closing could commit a partial write.
       try {
         await writable.abort();
-      } catch {
+      } catch (cleanupError) {
         // Preserve the original write failure for the caller.
+        console.error("[export] write abort cleanup failed:", cleanupError);
       }
-      throw writeError(error);
+      throw failExport("write", error);
     }
     try {
       await writable.close();
     } catch (error) {
       try {
         await writable.abort();
-      } catch {
+      } catch (cleanupError) {
         // Preserve the close failure if cleanup also fails.
+        console.error("[export] finalize abort cleanup failed:", cleanupError);
       }
-      throw writeError(error);
+      throw failExport("finalize", error);
     }
     return;
   }
