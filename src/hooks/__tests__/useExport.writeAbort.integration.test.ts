@@ -1,5 +1,13 @@
 import { act, renderHook } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+  type MockInstance,
+} from "vitest";
 import { useExport } from "../useExport";
 
 const WRITE_MESSAGE =
@@ -7,9 +15,11 @@ const WRITE_MESSAGE =
 const DESTINATION_MESSAGE =
   "Der Speicherort konnte nicht ausgewählt oder angelegt werden. Bitte einen anderen Ordner wählen.";
 
-let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+let consoleErrorSpy: MockInstance<Parameters<typeof console.error>, void>;
 beforeEach(() => {
-  consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+  consoleErrorSpy = vi
+    .spyOn(console, "error")
+    .mockImplementation(() => undefined);
 });
 afterEach(() => {
   consoleErrorSpy.mockRestore();
@@ -144,7 +154,9 @@ describe("useExport browser write failures", () => {
     const abort = vi.fn().mockResolvedValue(undefined);
     const write = vi
       .fn()
-      .mockRejectedValue(new DOMException("The user aborted a request.", "AbortError"));
+      .mockRejectedValue(
+        new DOMException("The user aborted a request.", "AbortError"),
+      );
     const close = vi.fn().mockResolvedValue(undefined);
     const createWritable = vi.fn().mockResolvedValue({ write, close, abort });
     const picker = vi.fn().mockResolvedValue({ createWritable });

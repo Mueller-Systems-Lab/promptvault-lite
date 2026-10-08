@@ -240,7 +240,7 @@ export async function saveWebExportFile(
         await writable.abort();
       } catch (cleanupError) {
         // Preserve the original write failure for the caller.
-        console.error("[export] abort cleanup failed:", cleanupError);
+        console.error("[export] write abort cleanup failed:", cleanupError);
       }
       throw failExport("write", error);
     }
@@ -251,7 +251,7 @@ export async function saveWebExportFile(
         await writable.abort();
       } catch (cleanupError) {
         // Preserve the close failure if cleanup also fails.
-        console.error("[export] abort cleanup failed:", cleanupError);
+        console.error("[export] finalize abort cleanup failed:", cleanupError);
       }
       throw failExport("finalize", error);
     }

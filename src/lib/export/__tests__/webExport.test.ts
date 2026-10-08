@@ -1,4 +1,12 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+  type MockInstance,
+} from "vitest";
 import type { PromptEvaluation, PromptHygiene, PromptItem } from "@/types";
 import {
   ExportFailureError,
@@ -46,9 +54,11 @@ const hygiene: PromptHygiene = {
 
 // Failing export stages log the raw exception text for diagnosis; silence it
 // here and assert on it where relevant.
-let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+let consoleErrorSpy: MockInstance<Parameters<typeof console.error>, void>;
 beforeEach(() => {
-  consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+  consoleErrorSpy = vi
+    .spyOn(console, "error")
+    .mockImplementation(() => undefined);
 });
 afterEach(() => {
   consoleErrorSpy.mockRestore();
@@ -419,14 +429,18 @@ describe("web export", () => {
     expect(error).toBeInstanceOf(ExportFailureError);
     expect(error.stage).toBe("destination");
     expect(error.message).toBe(DESTINATION_MESSAGE);
-    expect(error.technicalDetail).toContain("Failed to create or truncate file");
+    expect(error.technicalDetail).toContain(
+      "Failed to create or truncate file",
+    );
     expect(isExportCancellation(error)).toBe(false);
   });
 
   it("keeps raw browser exception text out of the user-facing message", async () => {
     const raw =
       "Failed to execute 'showSaveFilePicker' on 'Window': Failed to create or truncate file";
-    const picker = vi.fn(() => Promise.reject(new DOMException(raw, "AbortError")));
+    const picker = vi.fn(() =>
+      Promise.reject(new DOMException(raw, "AbortError")),
+    );
 
     const error = (await saveWebExportFile(
       {
@@ -441,9 +455,7 @@ describe("web export", () => {
       /Failed to execute|showSaveFilePicker|AbortError|Error:/,
     );
     expect(error.technicalDetail).toBe(raw);
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      expect.stringContaining(raw),
-    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining(raw));
   });
 
   it("classifies picker rejections as cancellation or failure", () => {
