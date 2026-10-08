@@ -114,6 +114,46 @@ function writeError(error: unknown): Error {
   return new Error(`Fehler beim Schreiben: ${message}`);
 }
 
+// Chrome rejects showSaveFilePicker with AbortError both when the user
+// dismisses the dialog ("The user aborted a request.") and when the chosen
+// file cannot be created or truncated ("Failed to create or truncate file").
+// The message is the only discriminator Chrome offers, so cancellation is the
+// narrow, positively identified case: anything unrecognized stays a surfaced
+// failure instead of silently ending the export.
+const PICKER_DISMISSAL_MESSAGE = /user aborted/i;
+const PICKER_FILE_CREATION_MESSAGE = /failed to create or truncate/i;
+
+/**
+ * Message of an AbortError-shaped rejection, or null when it is not one.
+ * Duck-typed so cross-realm DOMExceptions are recognized too.
+ */
+function abortErrorMessage(error: unknown): string | null {
+  if (typeof error !== "object" || error === null) {
+    return null;
+  }
+  const candidate = error as { name?: unknown; message?: unknown };
+  if (candidate.name !== "AbortError") {
+    return null;
+  }
+  return typeof candidate.message === "string" ? candidate.message : "";
+}
+
+/**
+ * True only for a deliberate save-picker dismissal. Failed file creations and
+ * unrecognized aborts must surface as export failures instead of being misread
+ * as a cancellation. Shared by both export backends: the desktop path only
+ * reaches this check with non-abort errors, which are surfaced as before.
+ */
+export function isExportCancellation(error: unknown): boolean {
+  const message = abortErrorMessage(error);
+  return message !== null && PICKER_DISMISSAL_MESSAGE.test(message);
+}
+
+function isFileCreationFailure(error: unknown): boolean {
+  const message = abortErrorMessage(error);
+  return message !== null && PICKER_FILE_CREATION_MESSAGE.test(message);
+}
+
 export async function saveWebExportFile(
   file: { filename: string; mimeType: string; content: string },
   picker?: SaveFilePicker,
@@ -125,15 +165,25 @@ export async function saveWebExportFile(
   const pickerToUse = picker ?? browserPicker?.bind(window);
   if (pickerToUse) {
     const extension = file.filename.endsWith(".json") ? ".json" : ".md";
-    const handle = await pickerToUse({
-      suggestedName: file.filename,
-      types: [
-        {
-          description: "PromptVault export",
-          accept: { [file.mimeType.split(";")[0]]: [extension] },
-        },
-      ],
-    });
+    let handle: SaveFileHandle;
+    try {
+      handle = await pickerToUse({
+        suggestedName: file.filename,
+        types: [
+          {
+            description: "PromptVault export",
+            accept: { [file.mimeType.split(";")[0]]: [extension] },
+          },
+        ],
+      });
+    } catch (error) {
+      // A failed file creation is an export failure; only a dismissal may
+      // silently end the export.
+      if (isFileCreationFailure(error)) {
+        throw writeError(error);
+      }
+      throw error;
+    }
     let writable: WritableFile;
     try {
       writable = await handle.createWritable();

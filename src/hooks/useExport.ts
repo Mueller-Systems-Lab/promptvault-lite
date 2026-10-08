@@ -6,6 +6,7 @@ import { getBackend } from "@/lib/backend/factory";
 import {
   buildWebExportContent,
   buildWebExportDocument,
+  isExportCancellation,
   saveWebExportFile,
 } from "@/lib/export/webExport";
 import type { ExportFormat, ExportProgressPayload } from "@/types";
@@ -17,6 +18,21 @@ interface UseExportReturn {
   exportFormat: ExportFormat;
   setExportFormat: (format: ExportFormat) => void;
   startExport: (favoritesOnly: boolean) => Promise<void>;
+}
+
+/**
+ * Message for the error banner. Reads `message` duck-typed so DOMExceptions
+ * and cross-realm errors surface like plain Errors, and never returns an empty
+ * string the dialog would render as nothing.
+ */
+function exportErrorMessage(error: unknown): string {
+  if (typeof error === "object" && error !== null) {
+    const { message } = error as { message?: unknown };
+    if (typeof message === "string" && message.length > 0) {
+      return message;
+    }
+  }
+  return "Unbekannter Export-Fehler";
 }
 
 export function useExport(): UseExportReturn {
@@ -110,12 +126,10 @@ export function useExport(): UseExportReturn {
 
         setProgress(100);
       } catch (err) {
-        if (err instanceof DOMException && err.name === "AbortError") {
+        if (isExportCancellation(err)) {
           return;
         }
-        setError(
-          err instanceof Error ? err.message : "Unbekannter Export-Fehler",
-        );
+        setError(exportErrorMessage(err));
       } finally {
         // Clean up event listener
         if (unlistenRef.current) {

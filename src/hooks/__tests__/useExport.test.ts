@@ -39,11 +39,16 @@ vi.mock("@/stores/appStore", () => ({
 vi.mock("@/lib/backend/factory", () => ({
   getBackend: () => ({ kind: mocks.backendKind }),
 }));
-vi.mock("@/lib/export/webExport", () => ({
-  buildWebExportDocument: mocks.buildDocument,
-  buildWebExportContent: mocks.buildContent,
-  saveWebExportFile: mocks.saveWeb,
-}));
+vi.mock("@/lib/export/webExport", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("@/lib/export/webExport")>();
+  return {
+    ...actual,
+    buildWebExportDocument: mocks.buildDocument,
+    buildWebExportContent: mocks.buildContent,
+    saveWebExportFile: mocks.saveWeb,
+  };
+});
 vi.mock("@/lib/tauri", () => ({
   exportJson: mocks.exportJson,
   exportMarkdown: mocks.exportMarkdown,
@@ -83,11 +88,32 @@ describe("useExport backend behavior", () => {
 
   it("handles browser cancellation without presenting an error", async () => {
     mocks.saveWeb.mockRejectedValueOnce(
-      new DOMException("Cancelled", "AbortError"),
+      new DOMException(
+        "Failed to execute 'showSaveFilePicker' on 'Window': The user aborted a request.",
+        "AbortError",
+      ),
     );
     const { result } = renderHook(() => useExport());
     await act(async () => result.current.startExport(false));
     expect(result.current.error).toBeNull();
+    expect(result.current.isExporting).toBe(false);
+  });
+
+  it("surfaces an unrecognized abort instead of treating it as a cancellation", async () => {
+    mocks.saveWeb.mockRejectedValueOnce(
+      new DOMException("Cancelled", "AbortError"),
+    );
+    const { result } = renderHook(() => useExport());
+    await act(async () => result.current.startExport(false));
+    expect(result.current.error).toBe("Cancelled");
+    expect(result.current.isExporting).toBe(false);
+  });
+
+  it("never presents an empty error message for a message-less failure", async () => {
+    mocks.saveWeb.mockRejectedValueOnce(new DOMException("", "AbortError"));
+    const { result } = renderHook(() => useExport());
+    await act(async () => result.current.startExport(false));
+    expect(result.current.error).toBe("Unbekannter Export-Fehler");
     expect(result.current.isExporting).toBe(false);
   });
 
