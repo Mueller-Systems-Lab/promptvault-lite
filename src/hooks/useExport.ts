@@ -2,6 +2,12 @@ import { useState, useCallback, useRef } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { useAppStore } from "@/stores/appStore";
 import { exportJson, exportMarkdown, exportZip } from "@/lib/tauri";
+import { getBackend } from "@/lib/backend/factory";
+import {
+  buildWebExportContent,
+  buildWebExportDocument,
+  saveWebExportFile,
+} from "@/lib/export/webExport";
 import type { ExportFormat, ExportProgressPayload } from "@/types";
 
 interface UseExportReturn {
@@ -33,7 +39,7 @@ export function useExport(): UseExportReturn {
       }
 
       if (targetPrompts.length === 0) {
-        setError("Keine Prompts zum Exportieren ausgewählt.");
+        setError("Keine Prompts zum Exportieren ausgewählt");
         return;
       }
 
@@ -42,6 +48,22 @@ export function useExport(): UseExportReturn {
       setError(null);
 
       try {
+        if (getBackend().kind === "http") {
+          if (exportFormat === "zip") {
+            throw new Error("ZIP-Export ist im Webmodus nicht verfügbar.");
+          }
+          const document = buildWebExportDocument(
+            targetPrompts,
+            evaluations,
+            hygiene,
+          );
+          await saveWebExportFile(
+            buildWebExportContent(exportFormat, document),
+          );
+          setProgress(100);
+          return;
+        }
+
         // Open directory dialog — backend creates files inside chosen directory
         const { open } = await import("@tauri-apps/plugin-dialog");
 
@@ -88,6 +110,9 @@ export function useExport(): UseExportReturn {
 
         setProgress(100);
       } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") {
+          return;
+        }
         setError(
           err instanceof Error ? err.message : "Unbekannter Export-Fehler",
         );
