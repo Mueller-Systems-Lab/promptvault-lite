@@ -1,16 +1,120 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.13.1
+version: 1.13.2
 ---
 
 # Changelog
 
+## v1.13.2 — Reliability, Trust-Boundary & Release-Automation Hardening (PATCH)
+
+**Status: RELEASE CANDIDATE** — a hardening patch on top of v1.13.1. It changes
+observable behaviour in exactly one place (the server's scan authorization) and
+automates the release gate that v1.13.1 introduced as a manual step.
+
+### Security
+
+- **`POST /api/scan` is now authorisierte Wurzel-Auswahl, nicht beliebiger
+  Pfad.** Der Server akzeptiert Scan-Pfade nur noch innerhalb der konfigurierten
+  Scan-Wurzeln; **Default ist Least Privilege: nur der konfigurierte Vault**
+  (`PROMPTVAULT_SERVER_VAULT`) und alles darunter. Weitere Wurzeln gibt der
+  Operator explizit über `PROMPTVAULT_SERVER_SCAN_ROOTS` frei (Unix `:`,
+  Windows `;`); `PROMPTVAULT_SERVER_SCAN_ROOTS=*` hebt die Grenze auf
+  (vertrauenswürdiger Host). Ein Pfad außerhalb der Wurzeln ist **HTTP 403**.
+  Die Prüfung läuft auf dem kanonischen Pfad, ein aus einer Wurzel
+  herausführender Symlink wird also abgelehnt. Die erlaubten Wurzeln werden
+  geloggt, nicht an den Client zurückgemeldet.
+  **Path-Traversal und Wurzel-Autorisierung bleiben getrennte Probleme:**
+  Syntax-/Existenzfehler sind weiterhin **HTTP 400**, eine nicht freigegebene
+  Wurzel ist **403**.
+  Die Desktop-App ist nicht betroffen — sie geht nicht über HTTP.
+  Für das dokumentierte Container-Deployment ändert sich nichts (die Web-UI
+  adressiert `/vault`, die Compose-Datei setzt `PROMPTVAULT_SERVER_SCAN_ROOTS`
+  explizit auf `/vault`). Ein Bare-Metal-Lauf, der bisher beliebige
+  Verzeichnisse gescannt hat, braucht jetzt `PROMPTVAULT_SERVER_SCAN_ROOTS=*`
+  oder eine Wurzelliste.
+- **Security Gate G8** prüft die neue Invariante maschinell (Least-Privilege-
+  Default, getrennte Traversal-/Autorisierungspfade und die Red-Tests).
+
+### Changed
+
+- **Das Release-Gate ist keine manuelle Erinnerung mehr.** Neuer Workflow
+  `.github/workflows/release.yml` baut die Linux-Pakete, staged die kanonischen
+  Dateinamen, prüft sie mit `scripts/verify-release-artifacts.mjs` und
+  veröffentlicht **nur**, wenn diese Prüfung auf genau den Bytes durchgeht, die
+  hochgeladen werden. Der Ablauf ist fail-closed: fehlgeschlagene Verifikation,
+  Tag außerhalb von `main`, bestehendes Release → kein Publish.
+- **`@tauri-apps/cli` auf `^2.11.4`** angehoben. Ab dieser Version erzeugt der
+  AppImage-Bundler **relative** `.DirIcon`- und `.desktop`-Symlinks
+  (upstream #15596); bis `2.11.2` schrieb er einen **absoluten** Symlink auf den
+  Build-Baum, der nach dem Extrahieren ins Leere zeigte.
+  (`pnpm-lock.yaml` wurde dafür mit demselben Major neu aufgelöst, den die CI
+  nutzt — pnpm 9, `lockfileVersion 9.0`, geprüft mit `--frozen-lockfile`.
+  Neben der gewollten Paketänderung schreibt die Auflösung nur die
+  Peer-Abhängigkeits-Suffixe des geteilten `supports-color` neu; beide
+  Versionen bleiben im Lock. Kein Paket ist hinzugekommen oder entfallen; die
+  Frontend-Suite (89 Dateien / 1843 Tests) und ESLint laufen auf diesem Baum
+  grün.)
+- **`test_large_prompt` hat keine Wall-Clock-Grenze mehr.** Die absolute
+  <8-s-Zusage machte die Korrektheits-CI lastabhängig (ein parallel laufender
+  Kompilierlauf konnte sie reißen, ohne dass sich an der Analyse etwas
+  verschlechtert hätte). Die Korrektheit wird weiter geprüft; die Performance
+  prüft jetzt ein eigenes, lastinvariantes Gate in einer isolierten CI-Spur.
+
+### Added
+
+- **`scripts/release/stage-linux-release.mjs`** — staged die Tauri-Bundles auf
+  die kanonischen, leerzeichenfreien Dateinamen und schreibt Manifest plus
+  `SHA256SUMS.txt`. Fail-closed bei fehlender/doppelter Paketart, falscher
+  Version im Dateinamen oder leerem Artefakt.
+- **Neue Verifier-Gates** in `scripts/verify-release-artifacts.mjs`:
+  G5 (jeder Symlink im extrahierten AppImage muss auflösen — das ist die
+  `.DirIcon`-Regression), G6 (keine secret-artigen Dateien/Private-Key-Blöcke),
+  G7 (`--expect-version`/`--expect-commit`: das Manifest muss zu **diesem** Tag
+  gehören), G8 (`--require-full-set`: genau deb+rpm+AppImage,
+  `SHA256SUMS.txt` muss zu den Dateien passen). Die reinen Regeln liegen in
+  `scripts/lib/release-artifacts-rules.mjs` und sind direkt getestet.
+- **Neue Performance-Spur** in `.github/workflows/ci.yml` (`performance`,
+  Release-Modus, seriell) mit dem Gate
+  `test_large_prompt_scaling_is_subquadratic`. Das Gate ist an der gemessenen
+  Realität ausgerichtet: die Analysezeit ist zwischen 256 KiB und 16 MiB
+  praktisch konstant (~0,17 s, der Aufruf-Overhead dominiert), also gibt es
+  keinen messbaren Term pro Byte. Gemeldet wird deshalb nur ein Wachstum, das
+  *zugleich* proportional groß ist (≥ 1,5x bei 4x Eingabe) *und* absolut groß
+  (≥ 0,20 s); zusätzlich eine Katastrophengrenze von 5 s für 1 MiB. Unter
+  12-facher CPU-Last wurde das Verhältnis verifiziert (Messwerte 4x höher,
+  Verhältnis unverändert ~0,95 → PASS), und ein injizierter superlinearer Term
+  wurde verifiziert gefangen (Verhältnis 2,76, Zuwachs 0,32 s → FAIL).
+- **Scan-Autorisierungs-Red-Tests** (erlaubte Wurzel, Unterverzeichnis,
+  Geschwister-Pfad, Eltern-Escape, Symlink-Escape, mehrere Wurzeln,
+  uneingeschränkter Modus, Default-Deny) und Config-Tests für die neuen
+  Umgebungsvariablen.
+
+### Fixed
+
+- **v1.13.1 stand im Changelog noch als „RELEASE CANDIDATE"**, obwohl es
+  veröffentlicht war; Status auf `RELEASED` korrigiert.
+- **`scripts/*`-Allowlist** um `scripts/release/` ergänzt, damit das
+  Release-Tooling nicht stillschweigend uncommittbar ist.
+
+### Notes
+
+- Kein Gate, Schwellenwert oder Security-Check wurde abgeschwächt. Die
+  Performance-Prüfung wurde nicht gelockert, sondern präzisiert: die absolute
+  Zeitmessung neben einem Kompilierlauf ist entfallen, dafür prüft eine eigene
+  Spur jetzt Superlinearität (lastinvariant) *und* eine Katastrophengrenze —
+  beides mit belegter Detektions- und Lastrobustheits-Evidenz.
+- `PROMPTVAULT_SERVER_SCAN_ROOTS` ist die einzige Verhaltensänderung, die ein
+  bestehendes Deployment bemerken kann; sie ist in `docs/DEPLOYMENT.md`
+  („Sicherheitsgrenzen") und in `deploy/.env.example` dokumentiert.
+
 ## v1.13.1 — Post-Release Hardening (PATCH)
 
-**Status: RELEASE CANDIDATE** — a hardening patch on top of v1.13.0. No product
-behaviour changes: it tightens trust boundaries that were already documented,
-makes two ambiguous contracts explicit, and adds the missing regression coverage.
+**Status: RELEASED** — published 2026-10-09 from tag `v1.13.1`
+(commit `2603c7665659f8ceb4ac061bd9578ed8baf1e47a`): Linux x64 `.deb`, `.rpm`
+and AppImage plus `SHA256SUMS.txt` and a source-identity manifest. No product
+behaviour changes: it tightened trust boundaries that were already documented,
+made two ambiguous contracts explicit, and added the missing regression coverage.
 
 ### Fixed
 

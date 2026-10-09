@@ -8,6 +8,7 @@
 //   G4 — Path-Traversal-Validierung vorhanden und getestet
 //   G5 — Frontend-Isolation: HTTP-Adapter ohne Tauri-API-Nutzung
 //   G7 — Docker-Workspace-Quelle und benannte Build-Context-Ausschlüsse
+//   G8 — Scan-Wurzel-Autorisierung: Default Least Privilege + Red-Tests
 // Exit 1 bei Verletzung. Ausgeführt in CI (Job security-gate) und lokal.
 // =============================================================================
 import { readFileSync, existsSync } from "node:fs";
@@ -130,11 +131,56 @@ check("G7 — Docker-Workspace-Copy und benannte Context-Ausschlüsse", () => {
 // Traversal-/Isolation-Tests laufen lassen (schnell, deterministisch)
 check("G6 — Server-Traversal- und Isolation-Tests grün", () => {
   // execSync wirft bei Nicht-Null-Exit — KEINE Tail-Pipe (would mask failures)
-  execSync("cargo test -p promptvault-server scan_", {
+  execSync("cargo test -p promptvault-server", {
     stdio: "pipe",
     cwd: process.cwd(),
     env: { ...process.env, CARGO_TARGET_DIR: process.env.CARGO_TARGET_DIR || "target" },
   });
+});
+
+check("G8 — Scan-Wurzel-Autorisierung (Default Least Privilege, v1.13.2)", () => {
+  const cfg = read("crates/promptvault-server/src/config.rs");
+  assert(cfg.includes("PROMPTVAULT_SERVER_SCAN_ROOTS"), "SCAN_ROOTS-Env fehlt");
+  assert(cfg.includes("allow_unrestricted_scan"), "Unrestricted-Opt-in-Flag fehlt");
+  const scan = read("crates/promptvault-server/src/routes/scan.rs");
+  assert(scan.includes("authorize_scan_path"), "Scan-Autorisierung fehlt in scan.rs");
+  assert(
+    scan.includes("ErrorCode::Forbidden") || scan.includes("forbidden("),
+    "403 für nicht autorisierte Wurzel fehlt",
+  );
+  // Traversal (400) und Autorisierung (403) müssen getrennte Pfade bleiben.
+  assert(
+    scan.indexOf("validate_scan_path") !== scan.indexOf("authorize_scan_path"),
+    "Traversal-Validierung und Wurzel-Autorisierung sind nicht getrennt",
+  );
+  const tests = read("crates/promptvault-server/tests/server_api.rs");
+  const required = [
+    "scan_allows_a_subdirectory_of_an_allowed_root",
+    "scan_denies_a_sibling_directory_of_the_root",
+    "scan_denies_the_parent_of_the_root",
+    "scan_denies_a_symlink_that_escapes_the_root",
+    "scan_supports_multiple_allowed_roots",
+    "scan_unrestricted_mode_accepts_any_readable_directory",
+    "scan_denies_arbitrary_absolute_path_by_default",
+    "scan_malformed_path_is_bad_request_not_forbidden",
+  ];
+  for (const t of required) {
+    assert(tests.includes(t), `Red-Test fehlt: ${t}`);
+  }
+
+  // Die Eigenschaft selbst muss laufen, nicht nur als Text vorkommen: eine
+  // Textprüfung auf `vec![canonical_root(&vault_path)?]` hat den Regressionsfall
+  // "Default kehrt zu uneingeschränkt zurück" nicht erkannt. Also den Test
+  // ausführen, der genau den Default pinnt.
+  execSync(
+    "cargo test -p promptvault-server --lib -- config::tests::scan_roots_default_to_the_vault " +
+      "config::tests::scan_roots_star_is_the_explicit_unrestricted_opt_in",
+    {
+      stdio: "pipe",
+      cwd: process.cwd(),
+      env: { ...process.env, CARGO_TARGET_DIR: process.env.CARGO_TARGET_DIR || "target" },
+    },
+  );
 });
 
 console.log(

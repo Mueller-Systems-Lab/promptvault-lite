@@ -32,7 +32,7 @@ function sha256(file) {
 }
 
 /** Build a real minimal .deb whose payload file contains `payload`. */
-function buildDeb(destDir, name, payload) {
+function buildDeb(destDir, name, payload, payloadFiles = {}) {
   const root = join(destDir, `${name}.tree`);
   mkdirSync(join(root, "DEBIAN"), { recursive: true });
   writeFileSync(
@@ -41,6 +41,9 @@ function buildDeb(destDir, name, payload) {
       "Maintainer: test <test@example.invalid>\nDescription: fixture\n",
   );
   writeFileSync(join(root, "payload.txt"), payload);
+  for (const [rel, content] of Object.entries(payloadFiles)) {
+    writeFileSync(join(root, rel), content);
+  }
   const file = join(destDir, name);
   execFileSync("dpkg-deb", ["--build", root, file], { stdio: "ignore" });
   return file;
@@ -49,10 +52,12 @@ function buildDeb(destDir, name, payload) {
 /**
  * Build a staging directory: artifacts/ + checksums/promptvault-release-manifest.json.
  * `realDeb: false` writes an unopenable file with a .deb name (fail-closed case).
+ * `payloadFiles` adds extra files (e.g. a `.env`) to the deb payload.
  */
 function makeStaging({
   assetName = "PromptVault-Lite_1.13.1_amd64.deb",
   payload = "clean payload",
+  payloadFiles = {},
   manifest,
   realDeb = true,
 } = {}) {
@@ -61,7 +66,7 @@ function makeStaging({
   mkdirSync(join(dir, "artifacts"));
   mkdirSync(join(dir, "checksums"));
   const file = realDeb
-    ? buildDeb(join(dir, "artifacts"), assetName, payload)
+    ? buildDeb(join(dir, "artifacts"), assetName, payload, payloadFiles)
     : (writeFileSync(join(dir, "artifacts", assetName), payload),
       join(dir, "artifacts", assetName));
 
@@ -162,5 +167,81 @@ describe("verify-release-artifacts", () => {
     ]);
     expect(res.code).not.toBe(0);
     expect(res.out).toMatch(/MISSION-/);
+  });
+
+  // --- v1.13.2 gates --------------------------------------------------------
+
+  it("rejects a payload that ships a private key block (G6)", () => {
+    const res = run(
+      makeStaging({
+        payload: "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKC\n-----END RSA PRIVATE KEY-----\n",
+      }),
+    );
+    expect(res.code).not.toBe(0);
+    expect(res.out).toMatch(/private key/i);
+  });
+
+  it("rejects a payload that ships a secret-like file name (G6)", () => {
+    const res = run(makeStaging({ payloadFiles: { ".env": "TOKEN=abc\n" } }));
+    expect(res.code).not.toBe(0);
+    expect(res.out).toMatch(/secret-like file/i);
+  });
+
+  it("enforces expected release version and commit when given (G7)", () => {
+    const dir = makeStaging();
+    const good = run(dir, [
+      "--expect-version",
+      "1.13.1",
+      "--expect-commit",
+      "bd001f48d162612b38af608684083fe639aecb66",
+    ]);
+    expect(good.code).toBe(0);
+
+    const wrongVersion = run(dir, ["--expect-version", "1.13.2"]);
+    expect(wrongVersion.code).not.toBe(0);
+    expect(wrongVersion.out).toMatch(/release_version/);
+
+    const wrongCommit = run(dir, ["--expect-commit", "0".repeat(40)]);
+    expect(wrongCommit.code).not.toBe(0);
+    expect(wrongCommit.out).toMatch(/source_commit/);
+  });
+
+  it("rejects an unexpected extra file in the artifact set (G8)", () => {
+    const dir = makeStaging();
+    writeFileSync(join(dir, "artifacts", "notes.txt"), "leftover");
+    const res = run(dir);
+    expect(res.code).not.toBe(0);
+    expect(res.out).toMatch(/unexpected asset/i);
+  });
+
+  it("requires the full deb+rpm+appimage set only with --require-full-set (G8)", () => {
+    const dir = makeStaging(); // deb only
+    expect(run(dir).code).toBe(0);
+    const strict = run(dir, ["--require-full-set"]);
+    expect(strict.code).not.toBe(0);
+    expect(strict.out).toMatch(/missing package type/i);
+  });
+
+  it("rejects a SHA256SUMS.txt that disagrees with the artifacts (G8b)", () => {
+    const dir = makeStaging();
+    writeFileSync(
+      join(dir, "checksums", "SHA256SUMS.txt"),
+      `${"0".repeat(64)}  PromptVault-Lite_1.13.1_amd64.deb\n`,
+    );
+    const res = run(dir);
+    expect(res.code).not.toBe(0);
+    expect(res.out).toMatch(/sha256 mismatch/i);
+  });
+
+  it("accepts a SHA256SUMS.txt that matches the artifacts (G8b)", () => {
+    const dir = makeStaging();
+    const file = join(dir, "artifacts", "PromptVault-Lite_1.13.1_amd64.deb");
+    writeFileSync(
+      join(dir, "checksums", "SHA256SUMS.txt"),
+      `${sha256(file)}  PromptVault-Lite_1.13.1_amd64.deb\n`,
+    );
+    const res = run(dir);
+    expect(res.code).toBe(0);
+    expect(res.out).toMatch(/checksum\(s\) verified/i);
   });
 });

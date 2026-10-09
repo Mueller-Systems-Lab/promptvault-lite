@@ -1,7 +1,7 @@
 ---
 title: Deployment (Web/LAN)
 description: promptvault-server in Docker/LXC mit NAS-Vault (Epic #97).
-version: 1.13.1
+version: 1.13.2
 last_updated: 2026-10-09
 ---
 
@@ -74,18 +74,27 @@ UI im Browser: `http://<CONTAINER_IP>:8080` (same-origin, kein CORS).
 - **Keine Authentifizierung.** Der Server ist für ein vertrauenswürdiges LAN
   gedacht, nicht für WAN-Exposition. Für Fernzugriff einen Reverse-Proxy mit
   Auth vorziehen.
-- **`POST /api/scan` akzeptiert einen beliebigen absoluten Verzeichnispfad**
-  (analog zur Ordnerauswahl der Desktop-App; die Web-UI erfragt ihn per
-  Eingabe). Abgelehnt werden nur `..`-Segmente und nicht existierende bzw.
-  nicht-Verzeichnis-Pfade; eine Bindung an den konfigurierten Vault erzwingt
-  der Server nicht. Ein Client kann damit jedes Verzeichnis scannen, das der
-  Server-Prozess lesen darf, und über `GET /api/prompts` die gefundenen
-  `.md`/`.markdown`/`.txt`-Inhalte zurückerhalten.
-  **Im dokumentierten Container-Deployment ist das auf das Container-Dateisystem
-  begrenzt** (verifiziert: ein host-seitiger Pfad wie `/home/<user>` ist im
-  Container nicht vorhanden und wird mit HTTP 400 abgelehnt); erreichbar sind
-  damit nur das Container-Dateisystem selbst und der read-only gemountete Vault.
-  Bei einem Bare-Metal-Lauf des Servers gilt diese Grenze nicht — dort nur auf
-  einem vertrauenswürdigen Host betreiben.
+- **`POST /api/scan` ist auf konfigurierte Scan-Wurzeln beschränkt**
+  (seit v1.13.2). Standard ist **Least Privilege: nur der konfigurierte Vault**
+  (`PROMPTVAULT_SERVER_VAULT`), zusätzlich scanbar sind alle Verzeichnisse
+  *unterhalb* dieser Wurzel. Weitere Wurzeln gibt der Operator explizit über
+  `PROMPTVAULT_SERVER_SCAN_ROOTS` frei (auf Unix `:`-getrennt, Windows `;`).
+  Mit dem Sonderwert `PROMPTVAULT_SERVER_SCAN_ROOTS=*` wird die Beschränkung
+  bewusst abgeschaltet (uneingeschränktes Scannen — nur für einen
+  vertrauenswürdigen Host).
+  Ein Request außerhalb der erlaubten Wurzeln wird mit **HTTP 403** abgelehnt.
+  Die Prüfung läuft auf dem **kanonischen** Pfad: ein Symlink, der eine erlaubte
+  Wurzel verlässt, wird abgelehnt, obwohl seine Textform harmlos aussieht.
+  Die erlaubten Wurzeln werden serverseitig geloggt, aber **nicht** an den
+  Client zurückgemeldet.
+- **`..`-Segmente und nicht existierende Pfade sind eine andere Fehlerklasse**
+  als „nicht autorisiert": Syntax-/Existenzfehler ergeben **HTTP 400**, eine
+  nicht freigegebene Wurzel ergibt **HTTP 403**. Path-Traversal und
+  Wurzel-Autorisierung sind zwei verschiedene Probleme und werden auch so
+  behandelt.
+  **Im dokumentierten Container-Deployment** ist der Effekt ohnehin auf das
+  Container-Dateisystem begrenzt (ein host-seitiger Pfad wie `/home/<user>` ist
+  im Container nicht vorhanden und wird mit HTTP 400 abgelehnt); zusätzlich gilt
+  die Wurzel-Beschränkung.
 - **Vault-Schreibschutz** wird strukturell doppelt abgesichert: read-only
   gemountetes Volume (`:ro`) plus `PROMPTVAULT_SERVER_READ_ONLY=1` (Default).

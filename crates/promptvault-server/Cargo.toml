@@ -1,6 +1,6 @@
 [package]
 name = "promptvault-server"
-version = "1.13.1"
+version = "1.13.2"
 description = "HTTP server for PromptVault Lite (Web/LAN mode) wrapping promptvault-core"
 authors = ["PromptVault Team"]
 license = "MIT"

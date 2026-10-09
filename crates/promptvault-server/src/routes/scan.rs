@@ -3,10 +3,11 @@
 use axum::extract::State;
 use axum::Json;
 use serde::Deserialize;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use promptvault_core::models::PromptItem;
 
+use crate::config::ServerConfig;
 use crate::error::{map_core_error, ApiError, ApiResult};
 use crate::state::AppState;
 
@@ -18,6 +19,11 @@ pub struct ScanRequest {
 /// Validate a scan target before touching the filesystem (basis for the
 /// J1 red tests): absolute path, no `..` segments, existing directory.
 /// Returns the canonicalized path (symlink-consistent).
+///
+/// This function checks *shape and existence*, not *permission*. Which roots a
+/// client is allowed to scan is a separate decision made by
+/// [`authorize_scan_path`]; mixing the two is what makes path-traversal fixes
+/// miss the authorized-root problem entirely.
 pub fn validate_scan_path(raw: &str) -> Result<PathBuf, ApiError> {
     let trimmed = raw.trim();
     if trimmed.is_empty() {
@@ -40,11 +46,55 @@ pub fn validate_scan_path(raw: &str) -> Result<PathBuf, ApiError> {
     Ok(canonical)
 }
 
+/// Authorize a canonicalized scan path against the configured scan roots.
+///
+/// Deliberately a *separate* step from [`validate_scan_path`], with a distinct
+/// status code: a malformed path is `400 Bad Request`, a path outside the
+/// authorized roots is `403 Forbidden`. They are different problems — the
+/// first is syntax, the second is permission.
+///
+/// Containment is decided with `Path::starts_with`, which compares whole path
+/// components: `/vault-other` is *not* inside `/vault`. The input is already
+/// canonical (symlinks resolved), so a symlink that leaves an allowed root is
+/// denied even though its textual form looks harmless.
+///
+/// The allowed roots are logged but never echoed to the client: the server
+/// answers unauthenticated LAN clients, and the project's J1 stance is not to
+/// disclose server-side paths. Operators get the env-var name instead.
+pub fn authorize_scan_path(canonical: &Path, config: &ServerConfig) -> Result<(), ApiError> {
+    if config.allow_unrestricted_scan {
+        return Ok(());
+    }
+    if config
+        .scan_roots
+        .iter()
+        .any(|root| canonical.starts_with(root))
+    {
+        return Ok(());
+    }
+    log::warn!(
+        "Scan abgelehnt: {} liegt außerhalb der erlaubten Wurzeln {:?}",
+        canonical.display(),
+        config
+            .scan_roots
+            .iter()
+            .map(|r| r.display().to_string())
+            .collect::<Vec<_>>()
+    );
+    Err(ApiError::forbidden(
+        "Pfad liegt außerhalb der für diesen Server freigegebenen Scan-Wurzeln. \
+         Der Administrator kann weitere Wurzeln über PROMPTVAULT_SERVER_SCAN_ROOTS \
+         freigeben (oder '*' für uneingeschränktes Scannen auf einem \
+         vertrauenswürdigen Host setzen).",
+    ))
+}
+
 pub async fn scan_vault(
     State(state): State<AppState>,
     Json(req): Json<ScanRequest>,
 ) -> ApiResult<Json<Vec<PromptItem>>> {
     let dir = validate_scan_path(&req.path)?;
+    authorize_scan_path(&dir, &state.config)?;
     let prompts =
         promptvault_core::scanner::scan_directory(dir.to_str().ok_or_else(|| {
             ApiError::bad_request("Pfad enthält ungültige Unicode-/Systemzeichen")

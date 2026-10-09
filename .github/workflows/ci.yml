@@ -104,6 +104,47 @@ jobs:
         run: cargo test --workspace --locked
 
   # ─────────────────────────────────────────────────────────────────────────
+  # Performance lane (eigene, isolierte Spur)
+  #
+  # Die Performance-Tests der Analyse sind `debug_assertions`-ignoriert und
+  # laufen nur hier im Release-Modus. Getrennt von der Korrektheits-CI, weil
+  # eine Zeitmessung, die neben einem parallel laufenden Kompilierlauf
+  # stattfindet, nichts über die Analyse aussagt. Das Gate vergleicht
+  # Laufzeiten (4x Eingabe < 10x Zeit) und ist damit lastinvariant — kein
+  # zufälliges Rot bei ausgelastetem Runner.
+  # ─────────────────────────────────────────────────────────────────────────
+  performance:
+    name: Performance (Analyse, Release)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-release-${{ hashFiles('Cargo.lock') }}
+
+      - name: Performance gates (release, isolated)
+        # Release-Modus, damit die `debug_assertions`-ignorierten Perf-Tests
+        # ausgeführt werden; seriell, damit sich die Messungen nicht gegenseitig
+        # verfälschen. `--nocapture` zeigt die gemessenen Zeiten im Log. Die
+        # ganze Core-Lib-Suite läuft mit, damit die Performance-Spur nicht nur
+        # zwei Tests ausführt.
+        run: >-
+          cargo test --locked --release -p promptvault-core --lib --
+          --nocapture --test-threads=1
+
+  # ─────────────────────────────────────────────────────────────────────────
   # Web/LAN Security Gate (J5, epic #97)
   # ─────────────────────────────────────────────────────────────────────────
   security-gate:

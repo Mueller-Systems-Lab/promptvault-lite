@@ -1702,6 +1702,12 @@ mod edge_tests {
         assert!(!eval.criteria.is_empty());
     }
 
+    /// Korrektheit für einen großen Prompt. Bewusst OHNE Wall-Clock-Grenze:
+    /// eine absolute Zeitgrenze in der normalen Korrektheits-CI hing allein von
+    /// der Auslastung des Rechners ab (ein parallel laufender `cargo test`
+    /// konnte sie reißen), ohne je eine echte Regression anzuzeigen. Die
+    /// Performance wird load-invariant in
+    /// `test_large_prompt_scaling_is_subquadratic` geprüft.
     #[test]
     fn test_large_prompt() {
         // Generate a ~100KB prompt
@@ -1711,15 +1717,132 @@ mod edge_tests {
         let content = format!("{}{}", base, repeated);
         assert!(content.len() > 100_000);
 
-        let start = std::time::Instant::now();
         let eval = evaluate_prompt(&content, "test-large");
-        let duration = start.elapsed();
 
         assert!(!eval.criteria.is_empty());
+        // Dieselbe Kriterienmenge wie bei einem kleinen Prompt: die Analyse
+        // verarbeitet den ganzen Inhalt, statt bei großer Eingabe abzubrechen
+        // oder Kriterien zu verlieren.
+        let small = evaluate_prompt("# Large Prompt\n\nKurz.", "test-large-small");
+        assert_eq!(
+            eval.criteria.len(),
+            small.criteria.len(),
+            "großer Prompt liefert eine andere Kriterienmenge als ein kleiner"
+        );
+        assert!(eval.criteria.iter().all(|c| !c.name.trim().is_empty()));
+    }
+
+    /// Performance-Gate für die Analysekosten (v1.13.2).
+    ///
+    /// Vorgeschichte: `test_large_prompt` hatte eine absolute Wall-Clock-Grenze
+    /// (<8 s für ~100 KB). Diese Grenze hing allein an der Maschinenauslastung —
+    /// ein parallel laufender Kompilierlauf konnte Korrektheits-CI rot machen,
+    /// ohne dass sich an der Analyse etwas verschlechtert hätte. Der gemessene
+    /// Ist-Wert liegt bei ~0,25 s, also rund 30x unter der Grenze.
+    ///
+    /// **Messgrundlage.** Profil der Analysezeit über die Eingabegröße
+    /// (Release, `best_of(3)`, gemessen im Rahmen dieses Umbaus):
+    ///
+    /// ```text
+    ///    64 KiB -> 0,115 s    256 KiB -> 0,169 s
+    ///  1024 KiB -> 0,168 s   4096 KiB -> 0,172 s   16384 KiB -> 0,166 s
+    /// ```
+    ///
+    /// Die Kosten sind also praktisch **unabhängig von der Eingabegröße**: der
+    /// Aufruf-Overhead (Musterkompilierung, feste Kriteriensätze) dominiert,
+    /// ein messbarer Term pro Byte existiert nicht.
+    ///
+    /// Daraus folgen die zwei Prüfungen dieses Gates:
+    ///
+    /// 1. **Superlinearität.** Ein neu eingeschleppter Term pro Byte — linear
+    ///    oder quadratisch — fällt bei einem Verhältnis von 4x Eingabe auf
+    ///    (siehe unten, verifiziert). Weil die Grundlast in beiden Messungen
+    ///    enthalten ist, ist das Verhältnis **lastinvariant**: läuft der Rechner
+    ///    unter Last, wachsen beide Messungen gemeinsam.
+    ///    Eine reine Verhältnisgrenze wäre zu schwach, weil der konstante Teil
+    ///    den Zähler verwässert (ein superlinearer Term kann in einem Verhältnis
+    ///    von 2,6 enden, obwohl er für sich 15x ist). Deshalb wird zusätzlich
+    ///    die **absolute Differenz** verlangt: gemeldet wird nur, wenn das
+    ///    Wachstum *zugleich* proportional groß (>= 1,5x) und absolut groß
+    ///    (>= 0,20 s) ist. Beides zusammen kann ein Lastartefakt nicht
+    ///    vortäuschen — unter Last wächst beides gemeinsam, das *Verhältnis*
+    ///    bleibt aber stabil.
+    /// 2. **Absolute Katastrophengrenze.** Eine großzügige Obergrenze für die
+    ///    große Eingabe fängt eine Verschlechterung des *konstanten* Aufwands um
+    ///    Größenordnungen, die ein Verhältnis-Test nicht sieht: Ist-Wert ~0,25 s,
+    ///    Grenze 5 s (20x Abstand).
+    ///
+    /// Nur im Release-Lauf aktiv (`cargo test --release -p promptvault-core --lib`),
+    /// eigene CI-Spur `performance`; die Korrektheits-CI führt diesen Test nicht
+    /// aus. Debug-Zeiten sind für belastbare Verhältnisse zu verrauscht.
+    #[test]
+    #[cfg_attr(debug_assertions, ignore)]
+    fn test_large_prompt_scaling_is_subquadratic() {
+        const SMALL_KIB: usize = 256;
+        const LARGE_KIB: usize = 4 * SMALL_KIB;
+        /// Ab hier gilt ein Laufzeit-Wachstum als "absolut groß". Muss deutlich
+        /// über dem gemessenen Grundrauschen (~5 ms) und deutlich unter dem
+        /// Signal eines echten superlinearen Terms liegen.
+        const GROWTH_FLOOR_S: f64 = 0.20;
+        /// Ein superlinearer Term verdoppelt-plus die Zeit bei 4x Eingabe; die
+        /// flache Grundkurve liefert ~1,0. 1,5 trennt beides mit Abstand.
+        const RATIO_LIMIT: f64 = 1.5;
+        /// Katastrophengrenze für den konstanten Anteil.
+        const ABSOLUTE_LIMIT_S: f64 = 5.0;
+
+        fn make_prompt(target_bytes: usize) -> String {
+            let unit = "This is a test paragraph with enough content to simulate a real prompt. ";
+            let mut content = String::with_capacity(target_bytes + unit.len());
+            content.push_str("# Large Prompt\n\n");
+            while content.len() < target_bytes {
+                content.push_str(unit);
+            }
+            content
+        }
+
+        /// Best of `samples` runs. Das Minimum nähert sich der unbelasteten
+        /// Laufzeit an und ist robuster gegen Scheduling-Aussetzer als der
+        /// Median; ein Ausreißer nach oben kann das Minimum nicht verzerren.
+        fn best_of(samples: usize, content: &str) -> std::time::Duration {
+            let mut best = std::time::Duration::MAX;
+            for _ in 0..samples {
+                let start = std::time::Instant::now();
+                let eval = evaluate_prompt(content, "test-scaling");
+                let elapsed = start.elapsed();
+                assert!(!eval.criteria.is_empty());
+                best = best.min(elapsed);
+            }
+            best
+        }
+
+        let small = make_prompt(SMALL_KIB * 1024);
+        let large = make_prompt(LARGE_KIB * 1024);
+
+        // Aufwärmen (Regex-Caches, Allokator) — nicht in die Messung einbeziehen.
+        let _ = evaluate_prompt(&small, "test-scaling-warmup");
+        let _ = evaluate_prompt(&large, "test-scaling-warmup");
+
+        let t_small = best_of(5, &small);
+        let t_large = best_of(5, &large);
+        // sichtbar mit `--nocapture`: das Gate dokumentiert seine eigene Evidenz
+        println!("perf: {SMALL_KIB} KiB = {t_small:?}, {LARGE_KIB} KiB = {t_large:?}");
+
+        let small_s = t_small.as_secs_f64();
+        let large_s = t_large.as_secs_f64();
+        let ratio = large_s / small_s.max(f64::MIN_POSITIVE);
+        let growth = large_s - small_s;
+
+        let superlinear = ratio >= RATIO_LIMIT && growth >= GROWTH_FLOOR_S;
         assert!(
-            duration.as_secs() < 8,
-            "Large prompt took too long: {:?}",
-            duration
+            !superlinear,
+            "Analyse skaliert superlinear: {LARGE_KIB} KiB brauchte {ratio:.2}x die Zeit von \
+             {SMALL_KIB} KiB ({t_small:?} -> {t_large:?}, +{growth:.3} s). \
+             Grenzen: Verhältnis < {RATIO_LIMIT}, oder Zuwachs < {GROWTH_FLOOR_S} s."
+        );
+
+        assert!(
+            large_s < ABSOLUTE_LIMIT_S,
+            "Analyse eines {LARGE_KIB}-KiB-Prompts dauerte {t_large:?} (Grenze {ABSOLUTE_LIMIT_S} s)"
         );
     }
 

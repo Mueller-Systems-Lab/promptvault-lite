@@ -17,9 +17,20 @@
 //       marker. Archives are unpacked before scanning, because a compressed
 //       payload hides its strings; an artifact that cannot be unpacked is a
 //       hard failure, never a silent pass.
+//   G5  Every symlink in the extracted AppImage resolves inside the tree. An
+//       absolute `.DirIcon` pointing at the build directory (v1.13.0/v1.13.1)
+//       is broken after extraction and is refused.
+//   G6  No secret-like files (.env, id_rsa, private-key blocks) in a payload.
+//   G7  The manifest's release_version/source_commit match the release being
+//       published, when the caller names them (`--expect-version`,
+//       `--expect-commit`).
+//   G8  The artifact set contains no unexpected files; with
+//       `--require-full-set` it must contain deb + rpm + appimage, and a staged
+//       SHA256SUMS.txt has to agree with the files.
 //
 // Usage:
 //   node scripts/verify-release-artifacts.mjs <staging-dir> [--forbid <regex>]...
+//       [--expect-version <x.y.z>] [--expect-commit <40-hex>] [--require-full-set]
 //
 // Run this on the machine that built the artifacts: two of the default rules
 // ("build user", "build host") are evaluated against the scanning host, so on a
@@ -34,6 +45,14 @@ import { execFileSync } from "node:child_process";
 import { mkdtempSync, lstatSync, readdirSync, readFileSync, readlinkSync, rmSync, statSync } from "node:fs";
 import { tmpdir, homedir, hostname } from "node:os";
 import { basename, join, resolve } from "node:path";
+
+import {
+  SECRET_FILE_NAMES,
+  hasPrivateKeyBlock,
+  isDanglingSymlink,
+  isScannableForSecrets,
+  isSecretFileName,
+} from "./lib/release-artifacts-rules.mjs";
 
 const failures = [];
 const check = (name, fn) => {
@@ -52,6 +71,24 @@ const forbidArgs = [];
 for (let i = 0; i < argv.length; i += 1) {
   if (argv[i] === "--forbid" && argv[i + 1]) forbidArgs.push(argv[i + 1]);
 }
+
+/** Value of a `--name value` option, or null. */
+function option(name) {
+  const i = argv.indexOf(`--${name}`);
+  return i !== -1 && argv[i + 1] && !argv[i + 1].startsWith("--") ? argv[i + 1] : null;
+}
+
+/** True when a boolean `--name` flag is present. */
+function flag(name) {
+  return argv.includes(`--${name}`);
+}
+
+// Expectations supplied by the release workflow. When present they make the
+// gate meaningful for THIS release, not just for "some well-formed release":
+// a manifest whose version or commit does not match the tag being published is
+// a hard failure.
+const expectVersion = option("expect-version");
+const expectCommit = option("expect-commit");
 
 // --- discovery ---------------------------------------------------------------
 
@@ -199,6 +236,8 @@ function scanBuffer(where, buf) {
   return hits;
 }
 
+// --- unpacking (shared by G4/G5/G6) -----------------------------------------
+
 /** Unpack an archive so its (compressed) payload can be scanned. */
 function unpack(artifact, workDir) {
   const name = basename(artifact);
@@ -239,29 +278,187 @@ function unpack(artifact, workDir) {
   return kind.roots();
 }
 
+// Unpack everything ONCE. G4/G5/G6 all inspect the extracted payloads, and a
+// failure to unpack must fail every one of them — never silently skip a gate.
+const workDir = mkdtempSync(join(tmpdir(), "pv-scan-"));
+let unpackError = null;
+const extracted = [];
+try {
+  for (const artifact of artifacts) {
+    extracted.push({
+      name: basename(artifact),
+      isAppImage: artifact.toLowerCase().endsWith(".appimage"),
+      roots: unpack(artifact, workDir),
+    });
+  }
+} catch (e) {
+  unpackError = e.message;
+}
+
+// --- G4: prohibited paths ----------------------------------------------------
+
 check("G4 artifacts leak no private or ephemeral build path", () => {
-  const workDir = mkdtempSync(join(tmpdir(), "pv-scan-"));
-  try {
-    const hits = [];
-    for (const artifact of artifacts) {
-      hits.push(...scanBuffer(basename(artifact), readFileSync(artifact)));
-      for (const root of unpack(artifact, workDir)) {
-        for (const file of walk(root)) {
-          const rel = `${basename(artifact)}!${file.slice(root.length)}`;
-          if (lstatSync(file).isSymbolicLink()) {
-            hits.push(...scanBuffer(`${rel} ->`, Buffer.from(readlinkSync(file), "latin1")));
-          } else {
-            hits.push(...scanBuffer(rel, readFileSync(file)));
-          }
+  if (unpackError) throw new Error(unpackError);
+  const hits = [];
+  for (const { name, roots } of extracted) {
+    hits.push(...scanBuffer(name, readFileSync(join(artifactsDir, name))));
+    for (const root of roots) {
+      for (const file of walk(root)) {
+        const rel = `${name}!${file.slice(root.length)}`;
+        if (lstatSync(file).isSymbolicLink()) {
+          hits.push(...scanBuffer(`${rel} ->`, Buffer.from(readlinkSync(file), "latin1")));
+        } else {
+          hits.push(...scanBuffer(rel, readFileSync(file)));
         }
       }
     }
-    if (hits.length) throw new Error(`${hits.length} hit(s): ${hits.slice(0, 6).join("; ")}`);
-    return `${artifacts.length} artifact(s) clean`;
-  } finally {
-    rmSync(workDir, { recursive: true, force: true });
   }
+  if (hits.length) throw new Error(`${hits.length} hit(s): ${hits.slice(0, 6).join("; ")}`);
+  return `${artifacts.length} artifact(s) clean`;
 });
+
+// --- G5: symlink integrity in the AppImage -----------------------------------
+
+// An AppImage is a *self-contained* directory tree: every symlink in it has to
+// resolve inside the tree. An absolute symlink that points at the build tree
+// (the v1.13.0/v1.13.1 `.DirIcon` -> /…/PromptVault Lite.AppDir/PromptVault
+// Lite.png) is broken the moment the AppImage is extracted anywhere else, and
+// it is also the reason an absolute build path was embedded at all.
+//
+// Scope: the AppImage only. A .deb/.rpm legitimately ships absolute symlinks
+// into system paths (`/lib/...`) that do not exist inside the payload, so the
+// rule would be a false-positive generator there.
+check("G5 AppImage symlinks resolve inside the extracted tree", () => {
+  if (unpackError) throw new Error(unpackError);
+  const appimages = extracted.filter((e) => e.isAppImage);
+  if (appimages.length === 0) return "no AppImage in this set";
+  const broken = [];
+  for (const { name, roots } of appimages) {
+    for (const root of roots) {
+      for (const file of walk(root)) {
+        if (!lstatSync(file).isSymbolicLink()) continue;
+        if (isDanglingSymlink(file)) {
+          broken.push(`${name}!${file.slice(root.length)} -> ${readlinkSync(file)}`);
+        }
+      }
+    }
+  }
+  if (broken.length) {
+    throw new Error(
+      `${broken.length} dangling symlink(s) in the AppImage: ${broken.slice(0, 6).join("; ")}`,
+    );
+  }
+  return "all symlinks resolve";
+});
+
+// --- G6: secret-like files in the payload ------------------------------------
+
+// File-name based, so it cannot trip over a bundled library that merely
+// contains the word "secret". These names have no business in a desktop bundle.
+check("G6 payloads contain no secret-like files", () => {
+  if (unpackError) throw new Error(unpackError);
+  const hits = [];
+  for (const { name, roots } of extracted) {
+    for (const root of roots) {
+      for (const file of walk(root)) {
+        const rel = `${name}!${file.slice(root.length)}`;
+        if (isSecretFileName(file)) {
+          hits.push(`${rel}: secret-like file name`);
+          continue;
+        }
+        // Only small files are content-scanned; a bundled multi-MB library is
+        // not a plausible key store.
+        if (isScannableForSecrets(file) && hasPrivateKeyBlock(readFileSync(file).toString("latin1"))) {
+          hits.push(`${rel}: private key block`);
+        }
+      }
+    }
+  }
+  if (hits.length) throw new Error(`${hits.length} hit(s): ${hits.slice(0, 6).join("; ")}`);
+  return "no secret-like files";
+});
+
+// --- G7: manifest identity vs the release being published --------------------
+
+// Only enforced when the caller names the expected identity. The release
+// workflow passes both, which is what turns "a well-formed manifest" into "the
+// manifest for THIS tag".
+check("G7 manifest identity matches the release being published", () => {
+  if (!manifest?.release_version) throw new Error("manifest not usable (see G1)");
+  if (!expectVersion && !expectCommit) {
+    return "no expectation given (--expect-version/--expect-commit)";
+  }
+  const problems = [];
+  if (expectVersion && manifest.release_version !== expectVersion) {
+    problems.push(`release_version ${manifest.release_version} ≠ ${expectVersion}`);
+  }
+  if (expectCommit && manifest.source_commit !== expectCommit) {
+    problems.push(`source_commit ${manifest.source_commit} ≠ ${expectCommit}`);
+  }
+  if (problems.length) throw new Error(problems.join("; "));
+  return `version=${manifest.release_version} commit=${manifest.source_commit.slice(0, 12)}`;
+});
+
+// --- G8: exact asset set + checksum file -------------------------------------
+
+// The published release must be exactly the expected packages — an extra file
+// in the staging directory is either a stale build or an accidental upload, and
+// both must stop the release rather than be published.
+//
+// The *completeness* half (all three package types present) is opt-in via
+// `--require-full-set`, which the release workflow always passes. The verifier
+// is also used against partial sets (single-package fixtures, a CLI-only
+// release), and demanding an AppImage there would make it unusable.
+const EXPECTED_SUFFIXES = [".deb", ".rpm", ".appimage"];
+check("G8 asset set contains no unexpected files", () => {
+  const names = artifacts.map((p) => basename(p)).sort();
+  if (names.length === 0) throw new Error("no artifacts found");
+  const unexpected = names.filter(
+    (n) => !EXPECTED_SUFFIXES.some((s) => n.toLowerCase().endsWith(s)),
+  );
+  if (unexpected.length) throw new Error(`unexpected asset(s): ${unexpected.join(", ")}`);
+  if (flag("require-full-set")) {
+    const missing = EXPECTED_SUFFIXES.filter((s) => !names.some((n) => n.toLowerCase().endsWith(s)));
+    if (missing.length) throw new Error(`missing package type(s): ${missing.join(", ")}`);
+  }
+  return names.join(", ");
+});
+
+// When a SHA256SUMS.txt is staged, it must agree with the artifacts — otherwise
+// the published `sha256sum -c` would fail for a user even though the manifest
+// matched.
+check("G8b SHA256SUMS.txt agrees with the artifacts", () => {
+  const sums = firstExisting([
+    join(stagingDir, "checksums", "SHA256SUMS.txt"),
+    join(stagingDir, "SHA256SUMS.txt"),
+  ]);
+  if (!sums) return "no SHA256SUMS.txt staged";
+  const onDisk = new Map(
+    artifacts.map((p) => [basename(p), createHash("sha256").update(readFileSync(p)).digest("hex")]),
+  );
+  const listed = new Map();
+  for (const line of readFileSync(sums, "utf8").split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    const m = /^([0-9a-f]{64})\s+\*?(.+)$/.exec(trimmed);
+    if (!m) throw new Error(`unparsable line in SHA256SUMS.txt: ${trimmed}`);
+    listed.set(m[2], m[1]);
+  }
+  if (listed.size === 0) throw new Error("SHA256SUMS.txt is empty");
+  const problems = [];
+  for (const [name, digest] of listed) {
+    if (!onDisk.has(name)) problems.push(`${name}: listed but not staged`);
+    else if (onDisk.get(name) !== digest) problems.push(`${name}: sha256 mismatch`);
+  }
+  for (const name of onDisk.keys()) {
+    if (!listed.has(name)) problems.push(`${name}: staged but not listed`);
+  }
+  if (problems.length) throw new Error(problems.join("; "));
+  return `${listed.size} checksum(s) verified`;
+});
+
+// Extracted trees were only needed for the gates above.
+rmSync(workDir, { recursive: true, force: true });
 
 console.log("");
 if (failures.length) {
