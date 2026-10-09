@@ -206,8 +206,11 @@ Siehe `docs/testing/autonomous-test-harness-contract.md` für das vollständige 
 
 ## Remote-CI
 
-GitHub Actions / Remote-CI ist `REMOTE_CI_INFRA_BLOCKED` (Issue #154).
-Lokale Gates sind der autoritative Qualitäts-Gate.
+GitHub Actions läuft bei jedem Push auf `main` und ist dort grün
+(13/13 Checks auf dem aktuellen Head). Die frühere Einstufung
+`REMOTE_CI_INFRA_BLOCKED` (Issue #154, inzwischen geschlossen) beschreibt das
+beobachtete Verhalten nicht mehr.
+Lokale Gates bleiben vor jedem Merge verpflichtend.
 Remote-CI-Reruns nicht ohne Owner-Approval auslösen.
 
 ## Neue Tests schreiben

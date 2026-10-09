@@ -1,28 +1,39 @@
 //! Real corpus validation test.
 //! This test runs evaluate_prompt and analyze_hygiene on all .md files
-//! in the owner's real prompt folder. Results are written to evidence/.
+//! in a real prompt folder. Results are written to evidence/.
 //!
-//! THIS TEST READS FROM THE REAL PROMPT FOLDER AND WRITES TO evidence/
+//! THIS TEST READS FROM A REAL PROMPT FOLDER AND WRITES TO evidence/
 //! It is SAFE: no file contents are committed, only aggregate stats.
 //!
-//! Run: cargo test --test real_corpus_validation -- --nocapture
+//! The folder is not hard-coded; point `PROMPTVAULT_REAL_CORPUS_DIR` at a
+//! local prompt folder to run it. Without it the test skips.
+//!
+//! Run: PROMPTVAULT_REAL_CORPUS_DIR=/path/to/prompts \
+//!      cargo test --test real_corpus_validation -- --ignored --nocapture
 
 use std::path::Path;
 use std::{collections::HashMap, fs};
 
-const REAL_PROMPT_DIR: &str = "/home/xxammaxx/Schreibtisch/Promps";
+const REAL_PROMPT_DIR_ENV: &str = "PROMPTVAULT_REAL_CORPUS_DIR";
 
 #[test]
 #[ignore = "Requires real prompt folder and may trigger regex backtracking on certain content"]
 fn real_corpus_quality_and_hygiene_eval() {
-    let root = Path::new(REAL_PROMPT_DIR);
-    if !root.exists() {
+    let root = match std::env::var(REAL_PROMPT_DIR_ENV) {
+        Ok(dir) if !dir.trim().is_empty() => std::path::PathBuf::from(dir),
+        _ => {
+            eprintln!("SKIP: {REAL_PROMPT_DIR_ENV} is not set. Machine-specific test.");
+            return;
+        }
+    };
+    if !root.is_dir() {
         eprintln!(
-            "SKIP: Real prompt folder not found at {}. Machine-specific test.",
-            REAL_PROMPT_DIR
+            "SKIP: {REAL_PROMPT_DIR_ENV} does not point to a directory: {}",
+            root.display()
         );
         return;
     }
+    let root: &Path = &root;
 
     // Collect .md files
     let mut md_files: Vec<std::path::PathBuf> = Vec::new();

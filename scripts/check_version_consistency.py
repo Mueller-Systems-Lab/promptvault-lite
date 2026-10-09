@@ -28,6 +28,16 @@ DESKTOP_SOURCES = {
     "package.json": REPO_ROOT / "package.json",
     "src-tauri/Cargo.toml": REPO_ROOT / "src-tauri" / "Cargo.toml",
     "src-tauri/tauri.conf.json": REPO_ROOT / "src-tauri" / "tauri.conf.json",
+    # The workspace crates introduced by the Web/LAN split ship with the same
+    # desktop version and must not drift from it.
+    "crates/promptvault-core/Cargo.toml": REPO_ROOT
+    / "crates"
+    / "promptvault-core"
+    / "Cargo.toml",
+    "crates/promptvault-server/Cargo.toml": REPO_ROOT
+    / "crates"
+    / "promptvault-server"
+    / "Cargo.toml",
 }
 
 CLI_SOURCES = {

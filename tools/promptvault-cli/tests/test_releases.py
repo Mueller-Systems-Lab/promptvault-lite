@@ -319,3 +319,31 @@ def test_artifact_download_url_derives_fallback() -> None:
     url = releases.artifact_download_url("1.9.0", entry)
     assert url.endswith("/v1.9.0/setup.exe")
     assert "releases/download" in url
+
+
+def test_release_urls_use_the_canonical_repository_owner() -> None:
+    """Guards against a stale owner in the derived download URLs.
+
+    A wrong owner here makes every derived manifest/artifact URL return 404,
+    which breaks `promptvault install`/`update` at runtime.
+    """
+    assert releases.RELEASE_OWNER == "Mueller-Systems-Lab"
+    assert releases.RELEASE_REPO == "promptvault-lite"
+
+    expected_prefix = (
+        "https://github.com/Mueller-Systems-Lab/promptvault-lite/releases/download"
+    )
+    assert releases.release_manifest_url("1.11.1").startswith(expected_prefix)
+    assert releases.artifact_download_url(
+        "1.11.1", {"filename": "setup.exe"}
+    ).startswith(expected_prefix)
+
+
+def test_checked_in_manifest_matches_derived_release_base_url() -> None:
+    """The checked-in manifest and the code-derived owner must not disagree."""
+    manifest_path = (
+        Path(__file__).resolve().parent.parent / "promptvault-release-manifest.json"
+    )
+    manifest = json.loads(manifest_path.read_text())
+    for entry in manifest["artifacts"].values():
+        assert entry["url"].startswith(releases.RELEASE_BASE_URL), entry["url"]

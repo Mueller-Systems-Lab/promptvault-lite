@@ -6,7 +6,7 @@ Developed by [Mueller-Systems-Lab](https://github.com/Mueller-Systems-Lab). Prom
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and structure-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.11.1%20published%20%C2%B7%20v1.12.0%20RC-blue)
+![Release](https://img.shields.io/badge/release-v1.12.0%20published%20%C2%B7%20v1.13.0%20RC-blue)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
@@ -33,7 +33,7 @@ It is built for people who collect, write and refine many prompts — especially
 
 ## 📸 Screenshots
 
-UI-Aufnahmen des aktuellen Builds (v1.12.0) mit **synthetischen Demo-Daten** — keine echten Prompts, keine privaten Daten (Issue #40).
+UI-Aufnahmen des v1.12.0-Builds mit **synthetischen Demo-Daten** — keine echten Prompts, keine privaten Daten (Issue #40).
 
 | Ansicht | Screenshot |
 |---|---|
@@ -55,9 +55,11 @@ Aufnahme: 1440×900, Vite-Renderer-Modus mit gemocktem Tauri-IPC (identischer Re
 - **Structural Quality & Hygiene Analysis** — assess prompt structure and completeness (clarity, role, goal, context, output format, reusability — applied where relevant); detect contamination such as secrets, private paths and evidence clutter
 - **Prompt Context Evaluation** — measure how well a prompt carries its own context
 - **Blueprint Detection** — detect prompt blueprints, hybrids and architecture-like agent instructions (10-dimension quality evaluation)
-- **Advanced Workflows GA** — Missing Info and Direction/Variants are available by default in the standard production build (v1.12.0)
-- **Missing Info** — dynamic pre-optimization questionnaire that identifies information gaps and lets you answer, skip or assume before optimization (v1.12.0)
-- **Direction Profiles & Variants** — generate optimization variants in different directions, compare them and apply the best one into the editor (v1.12.0)
+- **Advanced Workflows GA** — Missing Info and Direction/Variants are available by default in the standard production build
+- **Missing Info** — dynamic pre-optimization questionnaire that identifies information gaps and lets you answer, skip or assume before optimization
+- **Direction Profiles & Variants** — generate optimization variants in different directions, compare them and apply the best one into the editor
+- **Web/LAN Mode** — an optional local HTTP server (`promptvault-server`) serves the app to other devices on your LAN, read-only by default (v1.13.0)
+- **Docker / Compose Deployment** — multi-stage image and a Compose file with the vault mounted read-only (v1.13.0)
 - **Prompt Optimization** — deterministic local optimization (conservative/balanced/aggressive)
 - **Admin Observability** — read-only runtime diagnostics with trace/span correlation and reason codes
 - **Local TTS** — local speech output for prompt summaries (Piper neural / spd-say / espeak-ng / Web Speech fallback), no cloud TTS
@@ -69,17 +71,20 @@ Aufnahme: 1440×900, Vite-Renderer-Modus mit gemocktem Tauri-IPC (identischer Re
 
 ## Current Release & Publication Status
 
-**Latest published GitHub Release: `v1.11.1`.** The `v1.12.0` tag exists on `main`, and its local-first, offline-capable and deterministic contract (structure, completeness, hygiene, contradictions plus actionable improvement signals) is final — but the **`v1.12.0` GitHub Release with the Linux packages has not been published yet** (asset upload is blocked from the build host; publishing requires an explicit owner action from a capable host). Until that happens, `v1.12.0` is a release candidate: the packages below are built and checksummed but not publicly downloadable. Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
+**Latest published GitHub Release: `v1.12.0`** — the bounded offline Analyzer release for Linux x64 (`.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.12.0`. It preserves the local-first, offline-capable and deterministic contract (structure, completeness, hygiene, contradictions plus actionable improvement signals). Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
 
-| Platform | Asset (prepared, publication pending) |
+**`v1.13.0` (current release candidate)** adds the Web/LAN server, the `promptvault-core` / `promptvault-server` split and Docker/Compose deployment on top of the v1.12.0 desktop application. Its Linux packages use GitHub-safe file names:
+
+| Platform | Asset |
 |---|---|
-| Linux x64 | `PromptVault.Lite_1.12.0_amd64.deb` (Debian package) |
-| Linux x64 | `PromptVault Lite-1.12.0-1.x86_64.rpm` (RPM package) |
-| Linux x64 | `PromptVault Lite-1.12.0_amd64.AppImage` (portable package) |
+| Linux x64 | `PromptVault-Lite_1.13.0_amd64.deb` (Debian package) |
+| Linux x64 | `PromptVault-Lite-1.13.0-1.x86_64.rpm` (RPM package) |
+| Linux x64 | `PromptVault-Lite_1.13.0_amd64.AppImage` (portable package) |
+| Container | Docker image built from `deploy/Dockerfile` |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
 
-Windows `v1.12.0` and macOS installers are not produced in this Linux-only release run. The prior Windows `v1.11.1` release remains immutable; Windows SmartScreen may show an "Unknown publisher" warning.
+Windows and macOS installers are not produced in this Linux-only release run. The prior Windows `v1.11.1` release remains immutable; Windows SmartScreen may show an "Unknown publisher" warning.
 
 The existing `promptvault` CLI remains a separate Windows/NSIS release stream at `1.11.1`; it is not used by the Linux installer path.
 
@@ -89,12 +94,29 @@ The existing `promptvault` CLI remains a separate Windows/NSIS release stream at
 
 ### Native App
 
-**Linux (v1.12.0 candidate):** the `.deb`, `.rpm` and AppImage are prepared locally but are not publicly downloadable until the GitHub Release is published. Once published, install the `.deb` with:
+**Linux (v1.13.0):** download the package from the [releases page](https://github.com/Mueller-Systems-Lab/promptvault-lite/releases/latest) and verify it against `SHA256SUMS.txt`, then install:
 
 ```text
 # Debian/Ubuntu
-sudo apt install ./PromptVault.Lite_1.12.0_amd64.deb
+sudo apt install ./PromptVault-Lite_1.13.0_amd64.deb
+
+# Fedora/RHEL
+sudo dnf install ./PromptVault-Lite-1.13.0-1.x86_64.rpm
+
+# AppImage (portable)
+chmod +x PromptVault-Lite_1.13.0_amd64.AppImage && ./PromptVault-Lite_1.13.0_amd64.AppImage
 ```
+
+### Web / LAN Mode (Docker)
+
+The server is read-only by default and binds to `127.0.0.1` unless you explicitly opt into LAN exposure. Set `PROMPTVAULT_VAULT_HOST_PATH` to your prompt folder, then:
+
+```bash
+cp deploy/.env.example deploy/.env   # set values; never commit .env
+docker compose -f deploy/docker-compose.yml up
+```
+
+See `docs/DEPLOYMENT.md` for the full contract (read-only semantics, read-only vault mount, LAN exposure).
 
 ### Developer / source build
 
@@ -252,7 +274,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Latest published desktop release: v1.11.1 (GitHub Release). The v1.12.0 Linux x64 release candidate is built, checksummed and tagged on `main`, but its GitHub Release publication is still pending (owner action). The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Latest published desktop release: v1.12.0 (GitHub Release, Linux x64). The v1.13.0 release candidate adds the Web/LAN server (`promptvault-server`), the `promptvault-core` split and Docker/Compose deployment on top of it. The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

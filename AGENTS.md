@@ -48,11 +48,14 @@ Get-Location; $PSVersionTable.PSVersion; git --version; node --version; pnpm --v
 
 ## 3. Local-CI-First Policy
 
-GitHub Actions / Remote-CI is currently **`REMOTE_CI_INFRA_BLOCKED`** (see Issue #154).
+GitHub Actions runs on every push to `main` and currently passes there. The
+earlier **`REMOTE_CI_INFRA_BLOCKED`** classification (Issue #154, now closed)
+no longer matches the observed behavior.
 
 - Do NOT trigger GitHub Actions re-runs without explicit owner approval.
 - Do NOT treat remote CI failures as code errors.
-- Local CI is the technical quality gate until Remote-CI is restored or intentionally re-enabled.
+- Local CI gates remain required before merge; remote CI is an additional
+  signal, not a replacement for them.
 
 ### Required Local Gates (Pre-Commit / Pre-Merge)
 

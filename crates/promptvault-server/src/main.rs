@@ -2,8 +2,37 @@
 
 use promptvault_server::{build_router, load_config, AppState};
 
+/// Resolve when the process is asked to stop.
+///
+/// SIGTERM must be handled as well as SIGINT: container runtimes send SIGTERM
+/// first and force-kill after the grace period, so ctrl_c alone turns every
+/// `docker stop` into a hard kill instead of a graceful shutdown.
+async fn shutdown_signal() {
+    #[cfg(unix)]
+    {
+        use tokio::signal::unix::{signal, SignalKind};
+        match signal(SignalKind::terminate()) {
+            Ok(mut sigterm) => {
+                tokio::select! {
+                    _ = tokio::signal::ctrl_c() => {}
+                    _ = sigterm.recv() => {}
+                }
+            }
+            Err(_) => {
+                let _ = tokio::signal::ctrl_c().await;
+            }
+        }
+    }
+    #[cfg(not(unix))]
+    {
+        let _ = tokio::signal::ctrl_c().await;
+    }
+    log::info!("Shutdown-Signal empfangen");
+}
+
 fn main() {
-    env_logger::init();
+    // Default to `info` so operators see startup/shutdown in `docker logs`.
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
     let cfg = match load_config(&|k| std::env::var(k)) {
         Ok(c) => c,
         Err(e) => {
@@ -34,11 +63,9 @@ fn main() {
         log::info!("Listening on {}", cfg.bind_addr());
         let app = build_router(state);
         axum::serve(listener, app)
-            .with_graceful_shutdown(async {
-                let _ = tokio::signal::ctrl_c().await;
-                log::info!("Shutdown-Signal empfangen");
-            })
+            .with_graceful_shutdown(shutdown_signal())
             .await
             .expect("Server-Lauf");
+        log::info!("Server beendet");
     });
 }
