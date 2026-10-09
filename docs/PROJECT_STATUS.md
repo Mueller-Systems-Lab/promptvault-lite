@@ -1,27 +1,44 @@
 # Project Status — PromptVault Lite
 
-**Last updated:** 2026-09-30
-**Latest published release:** v1.11.1 (GitHub Release, Windows NSIS stream)
-**v1.12.0:** Linux x64 release candidate — tag on `main`, packages built and checksummed; **GitHub Release publication still pending** (asset upload blocked from the build host; owner action required)
+**Last updated:** 2026-10-09
+**Latest published release:** v1.12.0 (GitHub Release, Linux x64 — `.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.12.0`
+**v1.13.0:** release candidate on `main` — Web/LAN server, `promptvault-core` / `promptvault-server` split and Docker/Compose deployment
 **Branch:** main
 
 ---
 
-**v1.12.0 release:** bounded local/offline/deterministic Analyzer contract prepared for Linux x64. Broad external semantic generalization is not claimed; the 86/176 external study remains incomplete due to provider instability. The Windows-only CLI remains on its last compatible `1.11.1` PyPI release.
+**v1.13.0 release candidate:** adds an optional LAN-deployable HTTP server (`promptvault-server`, read-only by default) plus Docker/Compose deployment on top of the v1.12.0 desktop application. The offline, local-first and deterministic Analyzer contract is unchanged. Broad external semantic generalization is not claimed; the 86/176 external study remains incomplete due to provider instability. The Windows-only CLI remains on its last compatible `1.11.1` PyPI release.
 
-## Current Status: GREEN_CODE / v1.12.0 PUBLICATION PENDING 🟡
+## Current Status: GREEN_CODE / v1.13.0 RELEASE CANDIDATE 🟢
 
-**Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`) and native E2E (Playwright + WebdriverIO on Windows) suites are verified locally.
-**Remote-CI:** `REMOTE_CI_INFRA_BLOCKED` (Issue #154) — local CI is authoritative.
-**Release candidate:** v1.12.0 Linux x64 packages, release manifest and `SHA256SUMS.txt` are prepared from the final `main` source; the GitHub Release itself is **not yet published** (owner action from a capable host required).
+**Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`), server API tests and native E2E (Playwright + WebdriverIO on Windows) suites are verified.
+**Remote-CI:** GitHub Actions runs and passes on `main` (13/13 on `4add9d20`); Issue #154 is closed. Local gates remain required before merge.
+**Release candidate:** v1.13.0 Linux x64 packages plus the Web/LAN server and its Docker image.
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
 
 ---
 
-## v1.12.0 — FINAL INSTALLABLE DESKTOP RELEASE CANDIDATE 🟡
+## v1.13.0 — Web/LAN & Container Release (release candidate) 🟢
 
-**Status: BUILD COMPLETE / PUBLICATION BLOCKED** — Linux x64 package, checksums and source-identity manifest are prepared. Windows `v1.12.0` and macOS installers were not produced on this Linux host; the immutable Windows `v1.11.1` release remains available.
+**Status: RELEASE CANDIDATE** — the Web/LAN server, the `promptvault-core` / `promptvault-server` split and the Docker/Compose deployment are on `main`.
+
+| Feature | Status | Evidence |
+| --- | --- | --- |
+| `promptvault-core` — framework-free engine (models, parser, scanner, analysis, database) | ✅ IMPLEMENTED | `crates/promptvault-core/` + ADR-007 |
+| `promptvault-server` — axum HTTP API under `/api` (health, scan, prompts, favorites, evidence, export) | ✅ IMPLEMENTED | `crates/promptvault-server/src/routes/*` + API tests |
+| Web mode — the server serves the built UI; frontend uses the HTTP adapter | ✅ IMPLEMENTED | `src/lib/backend/httpAdapter.ts` + backend adapter tests |
+| Read-only by default; mutating routes return `403` unless `PROMPTVAULT_SERVER_READ_ONLY=0` | ✅ VERIFIED | `routes/mod.rs` guard; runtime check returns 403 with a German message |
+| Fail-closed config: loopback bind default, absolute existing vault directory required | ✅ VERIFIED | `crates/promptvault-server/src/config.rs` + unit tests |
+| Traversal defense: `..` segments rejected, paths canonicalized, scanner enforces symlink containment | ✅ IMPLEMENTED | `routes/scan.rs::validate_scan_path` + `scanner/file_scanner.rs` |
+| Docker / Compose deployment (multi-stage, non-root runtime user, vault `:ro`) | ✅ VERIFIED | `deploy/Dockerfile` + `deploy/docker-compose.yml`; image builds and serves `/api/health` at version 1.13.0 |
+| Web-mode export surfaces save failures with stage-aware German messages | ✅ IMPLEMENTED | `src/lib/export/webExport.ts` + adversarial write-failure test |
+| Local embeddings MVP (#199) | ✅ IMPLEMENTED (synthetic provider) | `src/lib/embeddings/*` + storage/commands |
+| Recommendation-apply workflow (#45) | ✅ IMPLEMENTED | recommendation blocks + test suites |
+
+## v1.12.0 — Bounded Offline Analyzer Release (published, historical)
+
+**Status: RELEASED** — published 2026-10-09 from tag `v1.12.0` (commit `ab242f74853469cf3360d870678883fe39412f74`) as Linux x64 `.deb`, `.rpm` and AppImage, plus `SHA256SUMS.txt` and a source-identity manifest. Windows and macOS installers were not produced in that Linux run; the immutable Windows `v1.11.1` release remains available.
 
 | Feature | Status | Evidence |
 | --- | --- | --- |
@@ -123,8 +140,6 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 - macOS pre-built installer
 - Cloud backend / API / telemetry
 - Real semantic search / ML embeddings (Phase 1 mock-only)
-- Docker production deployment (deferred)
-- Web/LAN Backend Adapter (deferred)
 
 ---
 
@@ -132,7 +147,8 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 
 - **Windows installer unsigned:** SmartScreen shows "Unknown publisher" warning
 - **No auto-updater:** manual update for each release
-- **Remote-CI infra-blocked** (Issue #154); local CI authoritative
+- **Web/LAN-Server ohne Authentifizierung** — für ein vertrauenswürdiges LAN gedacht, nicht für WAN. `POST /api/scan` akzeptiert einen beliebigen absoluten Verzeichnispfad (Ordnerauswahl-UX); im Container-Deployment ist der erreichbare Pfadraum auf das Container-Dateisystem plus den gemounteten Vault begrenzt (verifiziert), bei einem Bare-Metal-Lauf nicht. Details: `docs/DEPLOYMENT.md` → Sicherheitsgrenzen
+- **Remote-CI:** GitHub Actions runs and passes on `main` (Issue #154 is closed); local gates remain required before merge
 - **Embeddings Phase 1 mock-only** — no real semantic search
 - **Local TTS neural path** — adapter implemented and verified end-to-end on Windows against a real local Piper runtime + German model (`de_DE-thorsten-high`); Piper/model are external local runtime requirements (not bundled); Web Speech remains the fallback
 - **SQLite not fully wired** as primary persistence for scanned prompts (filesystem remains the canonical storage; since v1.10.0 authored prompts persist directly via the filesystem through `create_prompt`/`update_prompt`, which is the canonical storage layer — SQLite keeps its existing roles, e.g. favorites)
@@ -161,7 +177,8 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 ## Next Steps (Recommended)
 
 1. **v1.10.0 released (done):** GitHub Release v1.10.0 (Windows x64 NSIS installer + release manifest + checksums) and PyPI `promptvault-lite-manager==1.10.0` (OIDC Trusted Publishing) published; tag `v1.10.0` pushed. Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
-2. **v1.12.0 Advanced Workflows GA — final in source, publication pending:** production build and bounded Analyzer contract are part of the tagged v1.12.0 release candidate; the GitHub Release publication is still pending (owner action). The Windows-only CLI remains on its separate v1.11.1 stream.
-3. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
-4. **Code signing for the Windows installer.**
-5. **Architecture Contract Audit / Security Posture Review.**
+2. **v1.12.0 published (done):** Linux x64 packages, checksums and source-identity manifest published 2026-10-09 from tag `v1.12.0`. The Windows-only CLI remains on its separate `1.11.1` stream.
+3. **v1.13.0 (in preparation):** Web/LAN server, `promptvault-core` / `promptvault-server` split and Docker/Compose deployment.
+4. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
+5. **Code signing for the Windows installer.**
+6. **Architecture Contract Audit / Security Posture Review.**

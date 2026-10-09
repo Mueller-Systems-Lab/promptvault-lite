@@ -23,7 +23,7 @@ from promptvault_cli.platform import platform_tag, os_name, arch
 
 RELEASE_MANIFEST_VERSION = 1
 
-RELEASE_OWNER = "xxammaxx"
+RELEASE_OWNER = "Mueller-Systems-Lab"
 RELEASE_REPO = "promptvault-lite"
 RELEASE_MANIFEST_FILENAME = "promptvault-release-manifest.json"
 RELEASE_BASE_URL = (

@@ -1,19 +1,94 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.12.0
+version: 1.13.0
 ---
 
 # Changelog
 
+## v1.13.0 — Web/LAN & Container Release
+
+**Status: RELEASE CANDIDATE** — the post-v1.12.0 line. Ships the local-first
+desktop application together with a LAN-deployable server: the framework-free
+core moves into `promptvault-core`, the HTTP API lives in
+`promptvault-server`, and Docker/Compose deployment artifacts are included.
+Offline desktop behavior is unchanged; the Web/LAN mode is additive.
+
+### Added
+
+- **`promptvault-core` crate** — framework-free Rust core (models, parser,
+  scanner, analysis, database) shared by the desktop application and the
+  server (ADR-007).
+- **`promptvault-server` crate** — axum HTTP API mounted under `/api`:
+  `GET /health`, `GET /prompts`, `GET /prompts/:id`,
+  `POST /prompts/:id/analyze`, `GET /prompts/:id/context`, `POST /scan`,
+  `GET /favorites`, `POST /favorites/:id/toggle`, `GET /evidence/:id`,
+  `POST /export`.
+- **Web mode** — the server serves the built UI
+  (`PROMPTVAULT_SERVER_STATIC`), so a browser on another LAN device can use the
+  application.
+- **Docker/Compose deployment** — `deploy/Dockerfile` (multi-stage build,
+  non-root runtime user, no package manager in the runtime image) and
+  `deploy/docker-compose.yml` (loopback bind by default, vault mounted `:ro`).
+- **Local embeddings MVP (#199)** — storage, synthetic provider, flag-gated
+  commands and settings UI.
+- **Recommendation-apply workflow (#45)** — checkboxes, editable blocks,
+  preview, re-analyze and before/after comparison.
+- **Project identity contract validator (#316).**
+
+### Security
+
+- The server binds to `127.0.0.1` by default; LAN exposure requires an explicit
+  `PROMPTVAULT_SERVER_HOST` override.
+- Read-only is the default: mutating routes return `403` unless the server was
+  started with `PROMPTVAULT_SERVER_READ_ONLY=0`. `POST /api/scan` is
+  intentionally exempt because it writes only the server-side cache, never the
+  vault.
+- The vault path must be absolute, must exist and must be a directory
+  (fail-closed) — the server refuses to start without it.
+- Symlink containment: scanned files are canonicalized and must stay inside the
+  vault root.
+- Export surfaces browser-side save failures instead of treating them as a
+  cancel, with stage-aware German error messages.
+- The Web/LAN security gate (J5) runs in CI.
+
+### Fixed
+
+- Web-mode "analyze all" routes through the backend correctly.
+- Browser export save failures are surfaced; an adversarial write-failure test
+  was added.
+- Canonical repository references updated after the default-branch rename.
+- The CLI now derives its release URLs from the canonical repository owner
+  (`Mueller-Systems-Lab`); previously they pointed at a stale owner and returned
+  404 from `promptvault install`/`update`.
+- The real-corpus Rust test no longer hard-codes a private local folder path; it
+  reads `PROMPTVAULT_REAL_CORPUS_DIR` and skips when unset.
+
+### Infrastructure
+
+- Repository default branch renamed `master` → `main`; references aligned.
+- CI branch triggers narrowed to `main`; Pages deployment and docs aligned.
+- Docker/Compose smoke hardened with `.dockerignore` and security-gate `G7`.
+
+### Known limitations
+
+- No authentication: the server is intended for trusted LAN use, not WAN
+  exposure.
+- Windows and macOS installers are not produced in this Linux-only release run.
+- The Windows-only `promptvault-lite-manager` CLI remains a separate release
+  stream at `1.11.1`.
+- Broad external semantic generalization is not claimed.
+
 ## v1.12.0 — Bounded Offline Analyzer Release
 
-**Status: RELEASE CANDIDATE** — Linux x64 packages are built from the final
-master source. The release preserves the local-first, offline and deterministic
-Analyzer contract for structure, completeness, hygiene, contradictions and
-actionable improvement signals. External semantic generalization is not
-claimed; the development study remains incomplete because of provider
-instability. Windows and macOS packages are not produced in this Linux run.
+**Status: RELEASED** — published 2026-10-09 from tag `v1.12.0`
+(commit `ab242f74853469cf3360d870678883fe39412f74`) as Linux x64 packages
+(`.deb`, `.rpm`, AppImage) plus `SHA256SUMS.txt` and a source-identity manifest.
+The release preserves the local-first, offline and deterministic Analyzer
+contract for structure, completeness, hygiene, contradictions and actionable
+improvement signals. External semantic generalization is not claimed; the
+development study remains incomplete because of provider instability. Windows
+and macOS packages were not produced in that Linux run.
 
 ### Release readiness
 
@@ -22,9 +97,8 @@ instability. Windows and macOS packages are not produced in this Linux run.
   deterministic.
 - Privacy evidence remains sanitized and no production LLM dependency or
   external semantic-study runtime is included.
-- Linux installation assets, checksums and a source-identity manifest are
-  prepared for the GitHub release; publication is still pending (asset upload
-  blocked from the build host — owner action required).
+- Linux installation assets, checksums and a source-identity manifest were
+  built from the tagged source and published as the GitHub release.
 
 ## v1.11.1 — Patch: Release/Version-Test-Contract-Reparatur (PATCH)
 

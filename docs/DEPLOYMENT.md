@@ -1,8 +1,8 @@
 ---
 title: Deployment (Web/LAN)
 description: promptvault-server in Docker/LXC mit NAS-Vault (Epic #97).
-version: 1.12.0
-last_updated: 2026-10-01
+version: 1.13.0
+last_updated: 2026-10-09
 ---
 
 # Deployment — Web/LAN-Server (Epic #97)
@@ -68,3 +68,24 @@ UI im Browser: `http://<CONTAINER_IP>:8080` (same-origin, kein CORS).
 - Read-only-Default; Write-Endpunkte 403 ohne explizite Freigabe.
 - Keine Credentials im Repository; Traversal-/Symlink-Red-Tests (J1) grün.
 - `scripts/security-gate.mjs` (J5) prüft diese Invarianten in CI.
+
+## Sicherheitsgrenzen (bewusst, dokumentiert)
+
+- **Keine Authentifizierung.** Der Server ist für ein vertrauenswürdiges LAN
+  gedacht, nicht für WAN-Exposition. Für Fernzugriff einen Reverse-Proxy mit
+  Auth vorziehen.
+- **`POST /api/scan` akzeptiert einen beliebigen absoluten Verzeichnispfad**
+  (analog zur Ordnerauswahl der Desktop-App; die Web-UI erfragt ihn per
+  Eingabe). Abgelehnt werden nur `..`-Segmente und nicht existierende bzw.
+  nicht-Verzeichnis-Pfade; eine Bindung an den konfigurierten Vault erzwingt
+  der Server nicht. Ein Client kann damit jedes Verzeichnis scannen, das der
+  Server-Prozess lesen darf, und über `GET /api/prompts` die gefundenen
+  `.md`/`.markdown`/`.txt`-Inhalte zurückerhalten.
+  **Im dokumentierten Container-Deployment ist das auf das Container-Dateisystem
+  begrenzt** (verifiziert: ein host-seitiger Pfad wie `/home/<user>` ist im
+  Container nicht vorhanden und wird mit HTTP 400 abgelehnt); erreichbar sind
+  damit nur das Container-Dateisystem selbst und der read-only gemountete Vault.
+  Bei einem Bare-Metal-Lauf des Servers gilt diese Grenze nicht — dort nur auf
+  einem vertrauenswürdigen Host betreiben.
+- **Vault-Schreibschutz** wird strukturell doppelt abgesichert: read-only
+  gemountetes Volume (`:ro`) plus `PROMPTVAULT_SERVER_READ_ONLY=1` (Default).

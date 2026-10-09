@@ -1,9 +1,9 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-08-24
-**Current version:** v1.12.0 candidate (Linux x64 packages, checksums and manifest prepared)
-**Current milestone:** FINAL INSTALLABLE DESKTOP RELEASE — **BUILD COMPLETE / PUBLICATION BLOCKED**
-**Next target:** no release work is required for the bounded product contract; optional future research is independent external semantic validation.
+**Last updated:** 2026-10-09
+**Current version:** v1.13.0 release candidate (Web/LAN server + `promptvault-core` / `promptvault-server` split + Docker/Compose deployment)
+**Latest published release:** v1.12.0 (GitHub Release, Linux x64 — published 2026-10-09)
+**Next target:** publish v1.13.0; optional future work is independent external semantic validation.
 
 ---
 
@@ -19,19 +19,35 @@
 | Windows x64 NSIS installer + release manifest + checksums | ✅ PUBLISHED (v1.10.0 GitHub Release) |
 | PyPI `promptvault-lite-manager==1.10.0` | ✅ PUBLISHED (OIDC Trusted Publishing) |
 
-## Current Milestone (v1.12.0 — Release Candidate, Veröffentlichung ausstehend)
+## Current Milestone (v1.13.0 — Web/LAN & Container, Release Candidate)
 
 | Task | Status |
 | --- | --- |
-| Advanced Workflows GA — Missing Info (#216) + Direction/Variants (#215) as normal product capabilities | ✅ IMPLEMENTED / PENDING RELEASE |
-| Build-time env gates removed; production build can never be disabled via env (dev-only override remains) | ✅ IMPLEMENTED / REGRESSION-PROVEN |
-| No Developer Mode required | ✅ IMPLEMENTED |
-| Apply-to-editor integration (Missing-Info enrichment + direction variants → PromptEditor, dirty state, explicit Save) | ✅ IMPLEMENTED |
-| Stale-state invalidation (source change → results invalidated, apply refused `STALE_SOURCE`) | ✅ IMPLEMENTED |
-| Safe observability: `missing_info.*` / `direction.*` + bounded reason codes (safe-metadata-v1 fail-closed) | ✅ IMPLEMENTED |
-| Version bump to 1.12.0 for the desktop application | ✅ FINAL IN SOURCE |
+| `promptvault-core` — framework-free engine extracted from the desktop backend (ADR-007) | ✅ DONE |
+| `promptvault-server` — axum HTTP API (`/api`) for Web/LAN mode | ✅ DONE |
+| Web mode — the server serves the built UI; frontend uses the HTTP adapter | ✅ DONE |
+| Read-only-by-default guard + fail-closed configuration | ✅ DONE / VERIFIED |
+| Traversal defense (`..` rejection, canonicalization, symlink containment) | ✅ DONE |
+| Docker / Compose deployment (non-root runtime user, vault `:ro`) | ✅ DONE / IMAGE VERIFIED |
+| Web-mode export failure surfacing with stage-aware German messages | ✅ DONE |
+| Local embeddings MVP (#199) | ✅ DONE (synthetic provider) |
+| Recommendation-apply workflow (#45) | ✅ DONE |
+| Repository default branch `master` → `main` migration | ✅ DONE |
+| Version bump to 1.13.0 (desktop, core, server) | ✅ DONE |
+| Release: tag + GitHub Release + Linux packages | ⏳ IN PREPARATION |
+
+## Published (v1.12.0)
+
+| Task | Status |
+| --- | --- |
+| Advanced Workflows GA — Missing Info (#216) + Direction/Variants (#215) as normal product capabilities | ✅ RELEASED (v1.12.0) |
+| Build-time env gates removed; production build can never be disabled via env (dev-only override remains) | ✅ RELEASED (v1.12.0) |
+| No Developer Mode required | ✅ RELEASED (v1.12.0) |
+| Apply-to-editor integration (Missing-Info enrichment + direction variants → PromptEditor, dirty state, explicit Save) | ✅ RELEASED (v1.12.0) |
+| Stale-state invalidation (source change → results invalidated, apply refused `STALE_SOURCE`) | ✅ RELEASED (v1.12.0) |
+| Safe observability: `missing_info.*` / `direction.*` + bounded reason codes (safe-metadata-v1 fail-closed) | ✅ RELEASED (v1.12.0) |
 | Production native build proven (exe + NSIS + MSI, no feature env flags); native E2E 11/11; privacy sentinel 0 | ✅ PROVEN |
-| Release: tag + GitHub Release + Linux package publication | ⏳ TAGGED; PUBLIC ASSET PUBLICATION BLOCKED |
+| Release: tag + GitHub Release + Linux package publication | ✅ PUBLISHED (2026-10-09) |
 
 ## Recently Completed (v1.9.0)
 
@@ -76,6 +92,10 @@
 | `v1.10.0` Tag | ✅ Published |
 | GitHub Release v1.10.0 (Windows installer + manifest + checksums) | ✅ Published |
 | PyPI publish (`promptvault-lite-manager==1.10.0`) | ✅ Published (OIDC Trusted Publishing) |
+| `v1.11.0` / `v1.11.1` Tags + GitHub Releases (Windows NSIS + manifest + checksums) | ✅ Published |
+| PyPI publish (`promptvault-lite-manager==1.11.1`) | ✅ Published (OIDC Trusted Publishing) |
+| `v1.12.0` Tag + GitHub Release (Linux `.deb`/`.rpm`/AppImage + `SHA256SUMS.txt` + manifest) | ✅ Published (2026-10-09) |
+| `v1.13.0` (Web/LAN + container) | ⏳ In preparation |
 
 ---
 
@@ -95,8 +115,8 @@
 
 | Priority | Feature Area | Status |
 | -------- | --- | --- |
-| P1 | Docker/LXC Web Backend Adapter MVP | Deferred — large epic |
-| P2 | Docker Deployment | Deferred |
+| P1 | Docker/LXC Web Backend Adapter MVP | ✅ Delivered in v1.13.0 (`promptvault-server`) |
+| P2 | Docker Deployment | ✅ Delivered in v1.13.0 (`deploy/Dockerfile`, `deploy/docker-compose.yml`) |
 
 ---
 
@@ -118,4 +138,4 @@
 - Mobile apps
 - Real-time collaboration
 - Real semantic search / ML embeddings in production (Phase 1 is mock-only)
-- Docker/Web/LAN production deployment (deferred)
+- Authentication for the Web/LAN server (it is intended for trusted LAN use)
