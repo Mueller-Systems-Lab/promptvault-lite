@@ -2,8 +2,12 @@
 //
 // The Linux release manifest and the CLI/Windows manifest share a file name
 // (`promptvault-release-manifest.json`) but have different shapes, so the
-// verifier must accept only the Linux schema. These tests also pin the artifact
-// name and payload-path checks.
+// verifier must accept only the Linux schema. These tests also pin the asset
+// name check and the payload-path scan, including the fail-closed behaviour
+// when an archive cannot be unpacked.
+//
+// The fixtures are REAL minimal .deb archives built with dpkg-deb, so the scan
+// exercises the same unpack path a released artifact goes through.
 //
 // Run: pnpm vitest run scripts/__tests__/release-artifact-scan.test.js
 // @vitest-environment node
@@ -27,14 +31,39 @@ function sha256(file) {
   return createHash("sha256").update(readFileSync(file)).digest("hex");
 }
 
-/** Build a staging directory: artifacts/ + checksums/promptvault-release-manifest.json */
-function makeStaging({ assetName = "PromptVault-Lite_1.13.1_amd64.deb", payload = "clean payload", manifest } = {}) {
+/** Build a real minimal .deb whose payload file contains `payload`. */
+function buildDeb(destDir, name, payload) {
+  const root = join(destDir, `${name}.tree`);
+  mkdirSync(join(root, "DEBIAN"), { recursive: true });
+  writeFileSync(
+    join(root, "DEBIAN", "control"),
+    "Package: promptvault-fixture\nVersion: 1.13.1\nArchitecture: amd64\n" +
+      "Maintainer: test <test@example.invalid>\nDescription: fixture\n",
+  );
+  writeFileSync(join(root, "payload.txt"), payload);
+  const file = join(destDir, name);
+  execFileSync("dpkg-deb", ["--build", root, file], { stdio: "ignore" });
+  return file;
+}
+
+/**
+ * Build a staging directory: artifacts/ + checksums/promptvault-release-manifest.json.
+ * `realDeb: false` writes an unopenable file with a .deb name (fail-closed case).
+ */
+function makeStaging({
+  assetName = "PromptVault-Lite_1.13.1_amd64.deb",
+  payload = "clean payload",
+  manifest,
+  realDeb = true,
+} = {}) {
   const dir = mkdtempSync(join(tmpdir(), "pv-artifacts-"));
   cleanups.push(dir);
   mkdirSync(join(dir, "artifacts"));
   mkdirSync(join(dir, "checksums"));
-  const file = join(dir, "artifacts", assetName);
-  writeFileSync(file, payload);
+  const file = realDeb
+    ? buildDeb(join(dir, "artifacts"), assetName, payload)
+    : (writeFileSync(join(dir, "artifacts", assetName), payload),
+      join(dir, "artifacts", assetName));
 
   const linuxManifest = {
     schema_version: 1,
@@ -46,7 +75,7 @@ function makeStaging({ assetName = "PromptVault-Lite_1.13.1_amd64.deb", payload 
       {
         filename: assetName,
         type: "deb",
-        size: Buffer.byteLength(payload),
+        size: readFileSync(file).length,
         sha256: sha256(file),
       },
     ],
@@ -68,7 +97,7 @@ function run(stagingDir, extra = []) {
 }
 
 describe("verify-release-artifacts", () => {
-  it("passes a well-formed Linux release manifest", () => {
+  it("passes a well-formed Linux release manifest with a clean payload", () => {
     const res = run(makeStaging());
     expect(res.out).toContain("RELEASE ARTIFACTS: PASS");
     expect(res.code).toBe(0);
@@ -93,29 +122,45 @@ describe("verify-release-artifacts", () => {
     expect(res.out).toMatch(/unsafe asset name/i);
   });
 
-  it("fails when a payload size does not match the manifest", () => {
+  it("fails when a payload no longer matches the manifest hash", () => {
     const dir = makeStaging();
-    const res = run(dir);
-    expect(res.code).toBe(0);
-    // tamper with the payload
+    expect(run(dir).code).toBe(0);
     writeFileSync(join(dir, "artifacts", "PromptVault-Lite_1.13.1_amd64.deb"), "tampered");
     const after = run(dir);
     expect(after.code).not.toBe(0);
     expect(after.out).toMatch(/size|sha256/i);
   });
 
-  it("detects a forbidden marker inside a payload", () => {
-    const res = run(makeStaging({ payload: "leaked /mnt/nvme-data/pvl-v1.13.0/path" }), [
-      "--forbid",
-      "pvl-v1\\.13\\.0",
-    ]);
+  it("finds a marker inside a real package payload (unpacks before scanning)", () => {
+    const res = run(makeStaging({ payload: "leaked /mnt/other/pvl-v1.13.0/path" }));
     expect(res.code).not.toBe(0);
-    expect(res.out).toMatch(/leak/i);
+    expect(res.out).toMatch(/project staging directory/i);
+  });
+
+  it("flags this project's staging directory by default (no --forbid needed)", () => {
+    const res = run(makeStaging({ payload: "/mnt/nvme-data/pvl-v1.13.0/target/release" }));
+    expect(res.code).not.toBe(0);
+    expect(res.out).toMatch(/project staging directory/i);
   });
 
   it("detects the build host name inside a payload", () => {
     const res = run(makeStaging({ payload: `built on ${hostname()}` }));
     expect(res.code).not.toBe(0);
     expect(res.out).toMatch(/build host name/i);
+  });
+
+  it("fails closed when an artifact cannot be unpacked", () => {
+    const res = run(makeStaging({ realDeb: false, payload: "not a real package" }));
+    expect(res.code).not.toBe(0);
+    expect(res.out).toMatch(/could not unpack|cannot inspect/i);
+  });
+
+  it("honours an extra --forbid pattern", () => {
+    const res = run(makeStaging({ payload: "contains MISSION-XYZ marker" }), [
+      "--forbid",
+      "MISSION-[A-Z]+",
+    ]);
+    expect(res.code).not.toBe(0);
+    expect(res.out).toMatch(/MISSION-/);
   });
 });

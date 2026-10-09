@@ -51,8 +51,12 @@ struct ScannedFile {
 /// Pfad).
 ///
 /// Daraus folgt: wer eine *engere* Grenze braucht (z. B. „nur innerhalb des
-/// konfigurierten Vaults"), muss sie an seiner eigenen Vertrauensgrenze
-/// durchsetzen — der HTTP-Server tut das in `validate_scan_path`.
+/// konfigurierten Vaults"), muss sie **selbst** an seiner Vertrauensgrenze
+/// durchsetzen — Core kann das nicht leisten, weil es keinen Vault kennt.
+/// Der HTTP-Server setzt in `validate_scan_path` derzeit nur absolut,
+/// existierend und Verzeichnis sowie das Verbot von `..`-Segmenten durch und
+/// beschränkt den Scan bewusst **nicht** auf `PROMPTVAULT_SERVER_VAULT`; diese
+/// Grenze ist in `docs/DEPLOYMENT.md` („Sicherheitsgrenzen") dokumentiert.
 ///
 /// # Arguments
 /// * `dir_path` - Absoluter Pfad zum zu scannenden Verzeichnis

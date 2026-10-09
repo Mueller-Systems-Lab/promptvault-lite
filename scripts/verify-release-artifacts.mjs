@@ -13,8 +13,10 @@
 //       (whitespace; the v1.12.0 release shipped dot-rewritten names by accident).
 //   G3  Every manifest asset exists on disk with the recorded size and SHA-256.
 //   G4  No artifact leaks the build user's home directory, the build host name,
-//       or an ephemeral/mission-specific staging marker. Archives are unpacked
-//       before scanning, because a compressed payload hides its strings.
+//       this project's build-staging directory names, or a caller-supplied
+//       marker. Archives are unpacked before scanning, because a compressed
+//       payload hides its strings; an artifact that cannot be unpacked is a
+//       hard failure, never a silent pass.
 //
 // Usage:
 //   node scripts/verify-release-artifacts.mjs <staging-dir> [--forbid <regex>]...
@@ -29,7 +31,6 @@ import { tmpdir, homedir, hostname } from "node:os";
 import { basename, join, resolve } from "node:path";
 
 const failures = [];
-const notes = [];
 const check = (name, fn) => {
   try {
     const detail = fn();
@@ -75,8 +76,7 @@ const manifestPath = firstExisting([
   join(stagingDir, "checksums", "promptvault-release-manifest.json"),
   join(stagingDir, "promptvault-release-manifest.json"),
 ]);
-const artifactsDir =
-  firstExistingDir([join(stagingDir, "artifacts")]) ?? stagingDir;
+const artifactsDir = firstExistingDir([join(stagingDir, "artifacts")]) ?? stagingDir;
 
 // --- G1: manifest schema -----------------------------------------------------
 
@@ -144,17 +144,25 @@ check("G3 manifest assets match the files on disk", () => {
 // Deliberately precise rules: generic markers such as "/media/" or "/tmp/"
 // also occur inside bundled system libraries (GLib ships removable-media mount
 // paths), so a substring rule on those produces false positives. Matching the
-// *build user* and the *build host* avoids that while still catching a leaked
-// build path such as /media/<user>/... or C:\Users\<user>\...
+// *build user*, the *build host* and this project's own staging directory
+// naming avoids that while still catching a leaked build path from a removable
+// media mount or from a Windows user profile directory.
 const buildUser = basename(homedir());
-const userInBuildPath = new RegExp(
-  `/(home|media|mnt|opt|Users)/${buildUser.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`,
-);
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const userInBuildPath = new RegExp(`/(home|media|mnt|opt|Users)/${escapeRe(buildUser)}`);
 const forbidden = [
   { label: "build user home directory", test: (s) => s.includes(homedir()) },
   { label: "build user in a build path", test: (s) => userInBuildPath.test(s) },
   { label: "build host name", test: (s) => s.includes(hostname()) },
   { label: "Windows user profile", test: (s) => /[A-Za-z]:\\Users\\/.test(s) },
+  // This project's worktree/staging directory convention (pvl-*). A release
+  // built from such a directory embeds it in the AppImage, which is exactly the
+  // v1.13.0 leak: build from a neutral target directory instead. Note that
+  // "promptvault-*" is deliberately NOT a rule: the product's own crate
+  // directories (crates/promptvault-core, crates/promptvault-server) appear in
+  // shipped binaries as legitimate relative source paths, so that pattern
+  // cannot distinguish a leak. Pass --forbid for any other staging path.
+  { label: "project staging directory", test: (s) => /\/[A-Za-z0-9._-]*pvl-[A-Za-z0-9._-]+\//.test(s) },
   ...forbidArgs.map((re) => ({
     label: `forbidden pattern /${re}/`,
     test: (s) => new RegExp(re).test(s),
@@ -182,26 +190,44 @@ function scanBuffer(where, buf) {
   return hits;
 }
 
+/** Unpack an archive so its (compressed) payload can be scanned. */
 function unpack(artifact, workDir) {
   const name = basename(artifact);
+  const lower = name.toLowerCase();
   const dest = join(workDir, `${name}.d`);
+  const kinds = [
+    {
+      match: lower.endsWith(".deb"),
+      what: "Debian package (dpkg-deb)",
+      run: () => execFileSync("dpkg-deb", ["-x", artifact, dest], { stdio: "ignore" }),
+      roots: () => [dest],
+    },
+    {
+      match: lower.endsWith(".appimage"),
+      what: "AppImage (--appimage-extract)",
+      run: () => execFileSync(artifact, ["--appimage-extract"], { cwd: workDir, stdio: "ignore" }),
+      roots: () => [join(workDir, "squashfs-root")],
+    },
+    {
+      match: lower.endsWith(".rpm"),
+      what: "RPM package (7z)",
+      run: () => execFileSync("7z", ["x", "-y", `-o${dest}`, artifact], { stdio: "ignore" }),
+      roots: () => [dest],
+    },
+  ];
+  const kind = kinds.find((k) => k.match);
+  if (!kind) return []; // not an archive type we know: raw bytes were already scanned
   try {
-    if (name.endsWith(".deb")) {
-      execFileSync("dpkg-deb", ["-x", artifact, dest], { stdio: "ignore" });
-      return [dest];
-    }
-    if (name.endsWith(".appimage") || name.endsWith(".AppImage")) {
-      execFileSync(artifact, ["--appimage-extract"], { cwd: workDir, stdio: "ignore" });
-      return [join(workDir, "squashfs-root")];
-    }
-    if (name.endsWith(".rpm")) {
-      execFileSync("7z", ["x", "-y", `-o${dest}`, artifact], { stdio: "ignore" });
-      return [dest];
-    }
+    kind.run();
   } catch (e) {
-    notes.push(`${name}: could not unpack (${e.message.split("\n")[0]})`);
+    // Fail closed: a release gate must not pass an artifact it cannot inspect.
+    // This also triggers when the unpack tool is missing on the scanning host.
+    throw new Error(
+      `${name}: could not unpack for scanning via ${kind.what} — ` +
+        `${e.message.split("\n")[0]}. A gate must not pass what it cannot inspect.`,
+    );
   }
-  return [];
+  return kind.roots();
 }
 
 check("G4 artifacts leak no private or ephemeral build path", () => {
@@ -227,8 +253,6 @@ check("G4 artifacts leak no private or ephemeral build path", () => {
     rmSync(workDir, { recursive: true, force: true });
   }
 });
-
-for (const note of notes) console.log(`  i ${note}`);
 
 console.log("");
 if (failures.length) {

@@ -31,6 +31,11 @@ const HISTORICAL_ALLOWLIST = new Set([
   "evidence/visual-r23/R23_VISUAL_QA_REPORT.md",
 ]);
 
+// This guard can only work if it can state what a private path looks like, so
+// its own fixtures necessarily contain example paths. They are excluded by
+// path, and a dedicated test below proves the pattern still matches.
+const FIXTURE_ALLOWLIST = new Set(["scripts/__tests__/no-private-paths.test.js"]);
+
 // A user name in a home/profile path. Two deliberate exclusions keep this
 // precise:
 //   * generic markers such as "/media/" or "/tmp/" are not matched — bundled
@@ -75,7 +80,8 @@ afterEach(() => {
 
 describe("private absolute paths in the tracked tree", () => {
   it("are confined to the documented historical records", () => {
-    const unexpected = filesWithPrivatePaths().filter((f) => !HISTORICAL_ALLOWLIST.has(f));
+    const allowed = (f) => HISTORICAL_ALLOWLIST.has(f) || FIXTURE_ALLOWLIST.has(f);
+    const unexpected = filesWithPrivatePaths().filter((f) => !allowed(f));
     expect(unexpected, `new private path(s) in: ${unexpected.join(", ")}`).toEqual([]);
   });
 
