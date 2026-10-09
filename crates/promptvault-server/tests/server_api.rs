@@ -490,7 +490,7 @@ async fn scan_resolves_symlinked_vault_without_escape() {
     assert!(json.as_array().map(|a| !a.is_empty()).unwrap_or(false));
     // Kanonischer Pfad ist der reale Vault (kein Escape in fremde Verzeichnisse)
     let cached = state.prompts.lock().unwrap().clone();
-    let canonical_vault = std::fs::canonicalize(vault.path()).unwrap();
+    let canonical_vault = dunce::canonicalize(vault.path()).unwrap();
     assert!(cached
         .iter()
         .all(|p| std::path::Path::new(&p.file_path).starts_with(&canonical_vault)));

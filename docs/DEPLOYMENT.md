@@ -77,8 +77,12 @@ UI im Browser: `http://<CONTAINER_IP>:8080` (same-origin, kein CORS).
 - **`POST /api/scan` ist auf konfigurierte Scan-Wurzeln beschränkt**
   (seit v1.13.2). Standard ist **Least Privilege: nur der konfigurierte Vault**
   (`PROMPTVAULT_SERVER_VAULT`), zusätzlich scanbar sind alle Verzeichnisse
-  *unterhalb* dieser Wurzel. Weitere Wurzeln gibt der Operator explizit über
-  `PROMPTVAULT_SERVER_SCAN_ROOTS` frei (auf Unix `:`-getrennt, Windows `;`).
+  *unterhalb* dieser Wurzel. Der Operator kann die erlaubten Wurzeln explizit
+  über `PROMPTVAULT_SERVER_SCAN_ROOTS` setzen (auf Unix `:`-getrennt, Windows
+  `;`). **Die Liste ersetzt den Default, sie erweitert ihn nicht:** ist die
+  Variable gesetzt und enthält den Vault nicht, ist der Vault selbst nicht mehr
+  scanbar. Sie muss ihn also enthalten, z. B.
+  `PROMPTVAULT_SERVER_SCAN_ROOTS=/vault:/opt/extra-prompts`.
   Mit dem Sonderwert `PROMPTVAULT_SERVER_SCAN_ROOTS=*` wird die Beschränkung
   bewusst abgeschaltet (uneingeschränktes Scannen — nur für einen
   vertrauenswürdigen Host).

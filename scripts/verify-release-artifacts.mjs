@@ -17,25 +17,27 @@
 //       marker. Archives are unpacked before scanning, because a compressed
 //       payload hides its strings; an artifact that cannot be unpacked is a
 //       hard failure, never a silent pass.
-//   G5  Every symlink in the extracted AppImage resolves inside the tree. An
+//   G5  Every symlink in the extracted AppImage resolves INSIDE the tree. An
 //       absolute `.DirIcon` pointing at the build directory (v1.13.0/v1.13.1)
-//       is broken after extraction and is refused.
+//       is refused even when that path still exists on the verifying host.
 //   G6  No secret-like files (.env, id_rsa, private-key blocks) in a payload.
 //   G7  The manifest's release_version/source_commit match the release being
 //       published, when the caller names them (`--expect-version`,
 //       `--expect-commit`).
-//   G8  The artifact set contains no unexpected files; with
-//       `--require-full-set` it must contain deb + rpm + appimage, and a staged
-//       SHA256SUMS.txt has to agree with the files.
+//   G8  The artifact set matches the manifest exactly and contains no
+//       unexpected files; with `--require-full-set` it must also contain
+//       deb + rpm + appimage and a staged SHA256SUMS.txt that agrees with the
+//       files.
 //
 // Usage:
-//   node scripts/verify-release-artifacts.mjs <staging-dir> [--forbid <regex>]...
+//   node scripts/verify-release-artifacts.mjs <staging-dir> [--forbid <literal>]...
 //       [--expect-version <x.y.z>] [--expect-commit <40-hex>] [--require-full-set]
 //
 // Run this on the machine that built the artifacts: two of the default rules
 // ("build user", "build host") are evaluated against the scanning host, so on a
 // different machine they describe that host instead of the builder. Use
-// --forbid for build-staging locations that are specific to your environment.
+// --forbid (a literal path fragment) for build-staging locations specific to
+// your environment.
 //
 // <staging-dir> must contain the manifest (at <dir>/ or <dir>/checksums/) and
 // the packages (at <dir>/ or <dir>/artifacts/). Exit code 0 = all checks pass.
@@ -47,11 +49,10 @@ import { tmpdir, homedir, hostname } from "node:os";
 import { basename, join, resolve } from "node:path";
 
 import {
-  SECRET_FILE_NAMES,
   hasPrivateKeyBlock,
-  isDanglingSymlink,
   isScannableForSecrets,
   isSecretFileName,
+  isUnusableSymlink,
 } from "./lib/release-artifacts-rules.mjs";
 
 const failures = [];
@@ -66,7 +67,23 @@ const check = (name, fn) => {
 };
 
 const argv = process.argv.slice(2);
-const stagingDir = resolve(argv.find((a) => !a.startsWith("--")) ?? ".");
+
+// Options that consume the following token. The positional staging directory is
+// located by walking the arguments and skipping these values, so
+// `verify.mjs --forbid /home/x staging` cannot mistake the forbid value for the
+// staging directory (which `argv.find((a) => !a.startsWith("--"))` would).
+const OPTIONS_WITH_VALUE = new Set(["forbid", "expect-version", "expect-commit"]);
+let stagingArg = null;
+for (let i = 0; i < argv.length; i += 1) {
+  const token = argv[i];
+  if (token.startsWith("--")) {
+    if (OPTIONS_WITH_VALUE.has(token.slice(2))) i += 1; // skip its value
+    continue;
+  }
+  if (stagingArg === null) stagingArg = token;
+}
+const stagingDir = resolve(stagingArg ?? ".");
+
 const forbidArgs = [];
 for (let i = 0; i < argv.length; i += 1) {
   if (argv[i] === "--forbid" && argv[i + 1]) forbidArgs.push(argv[i + 1]);
@@ -209,9 +226,11 @@ const forbidden = [
   // the string (…/pvl-v1.13.0 with no further component) or a `pvl_` spelling is
   // not matched — use --forbid for staging names outside this convention.
   { label: "project staging directory", test: (s) => /\/[A-Za-z0-9._-]*pvl-[A-Za-z0-9._-]+\//.test(s) },
-  ...forbidArgs.map((re) => ({
-    label: `forbidden pattern /${re}/`,
-    test: (s) => new RegExp(re).test(s),
+  // --forbid takes a literal string (a staging path), not a regex: escaping it
+  // keeps a path with `.` or `+` from over-matching unrelated bytes.
+  ...forbidArgs.map((literal) => ({
+    label: `forbidden literal ${JSON.stringify(literal)}`,
+    test: (s) => s.includes(literal),
   })),
 ];
 
@@ -320,14 +339,14 @@ check("G4 artifacts leak no private or ephemeral build path", () => {
 // --- G5: symlink integrity in the AppImage -----------------------------------
 
 // An AppImage is a *self-contained* directory tree: every symlink in it has to
-// resolve inside the tree. An absolute symlink that points at the build tree
-// (the v1.13.0/v1.13.1 `.DirIcon` -> /…/PromptVault Lite.AppDir/PromptVault
-// Lite.png) is broken the moment the AppImage is extracted anywhere else, and
-// it is also the reason an absolute build path was embedded at all.
+// resolve INSIDE the tree. A link that points at the build machine's filesystem
+// is wrong even when that path still exists on the verifying host — which is
+// exactly why this gate must not be satisfied by "the target happens to exist
+// here". The v1.13.0/v1.13.1 `.DirIcon` was such an absolute link.
 //
 // Scope: the AppImage only. A .deb/.rpm legitimately ships absolute symlinks
-// into system paths (`/lib/...`) that do not exist inside the payload, so the
-// rule would be a false-positive generator there.
+// into system paths (`/lib/...`) that live outside the payload, so the rule
+// would be a false-positive generator there.
 check("G5 AppImage symlinks resolve inside the extracted tree", () => {
   if (unpackError) throw new Error(unpackError);
   const appimages = extracted.filter((e) => e.isAppImage);
@@ -337,7 +356,7 @@ check("G5 AppImage symlinks resolve inside the extracted tree", () => {
     for (const root of roots) {
       for (const file of walk(root)) {
         if (!lstatSync(file).isSymbolicLink()) continue;
-        if (isDanglingSymlink(file)) {
+        if (isUnusableSymlink(file, root)) {
           broken.push(`${name}!${file.slice(root.length)} -> ${readlinkSync(file)}`);
         }
       }
@@ -345,10 +364,11 @@ check("G5 AppImage symlinks resolve inside the extracted tree", () => {
   }
   if (broken.length) {
     throw new Error(
-      `${broken.length} dangling symlink(s) in the AppImage: ${broken.slice(0, 6).join("; ")}`,
+      `${broken.length} symlink(s) in the AppImage do not resolve inside the tree: ` +
+        `${broken.slice(0, 6).join("; ")}`,
     );
   }
-  return "all symlinks resolve";
+  return "all symlinks resolve inside the tree";
 });
 
 // --- G6: secret-like files in the payload ------------------------------------
@@ -405,18 +425,42 @@ check("G7 manifest identity matches the release being published", () => {
 // in the staging directory is either a stale build or an accidental upload, and
 // both must stop the release rather than be published.
 //
+// Two independent comparisons, because either alone is escapable:
+//   - the on-disk set against the *manifest* (so a manifest that under-lists
+//     the files on disk is caught);
+//   - the on-disk set against the expected package extensions (so an extra
+//     file with a package extension — e.g. a second `.deb` — is caught too,
+//     which a suffix test alone would miss).
+//
 // The *completeness* half (all three package types present) is opt-in via
 // `--require-full-set`, which the release workflow always passes. The verifier
 // is also used against partial sets (single-package fixtures, a CLI-only
-// release), and demanding an AppImage there would make it unusable.
+// release), and demanding an AppImage there would make it unusable. Under
+// `--require-full-set` a staged SHA256SUMS.txt is mandatory: the published
+// `sha256sum -c` has to be backed by something the gate checked.
 const EXPECTED_SUFFIXES = [".deb", ".rpm", ".appimage"];
-check("G8 asset set contains no unexpected files", () => {
+check("G8 asset set matches the manifest and holds no unexpected files", () => {
   const names = artifacts.map((p) => basename(p)).sort();
   if (names.length === 0) throw new Error("no artifacts found");
   const unexpected = names.filter(
     (n) => !EXPECTED_SUFFIXES.some((s) => n.toLowerCase().endsWith(s)),
   );
   if (unexpected.length) throw new Error(`unexpected asset(s): ${unexpected.join(", ")}`);
+
+  if (!manifest?.assets) throw new Error("manifest not usable (see G1)");
+  const inManifest = manifest.assets.map((a) => a.filename).sort();
+  const onlyOnDisk = names.filter((n) => !inManifest.includes(n));
+  const onlyInManifest = inManifest.filter((n) => !names.includes(n));
+  if (onlyOnDisk.length) throw new Error(`on disk but not in the manifest: ${onlyOnDisk.join(", ")}`);
+  if (onlyInManifest.length) {
+    throw new Error(`in the manifest but not on disk: ${onlyInManifest.join(", ")}`);
+  }
+  // A manifest that lists the same file twice would let the set above pass with
+  // a duplicate on disk.
+  if (new Set(inManifest).size !== inManifest.length) {
+    throw new Error("manifest lists the same asset twice");
+  }
+
   if (flag("require-full-set")) {
     const missing = EXPECTED_SUFFIXES.filter((s) => !names.some((n) => n.toLowerCase().endsWith(s)));
     if (missing.length) throw new Error(`missing package type(s): ${missing.join(", ")}`);
@@ -424,15 +468,18 @@ check("G8 asset set contains no unexpected files", () => {
   return names.join(", ");
 });
 
-// When a SHA256SUMS.txt is staged, it must agree with the artifacts — otherwise
-// the published `sha256sum -c` would fail for a user even though the manifest
-// matched.
+// The published `sha256sum -c SHA256SUMS.txt` must be backed by the gate.
 check("G8b SHA256SUMS.txt agrees with the artifacts", () => {
   const sums = firstExisting([
     join(stagingDir, "checksums", "SHA256SUMS.txt"),
     join(stagingDir, "SHA256SUMS.txt"),
   ]);
-  if (!sums) return "no SHA256SUMS.txt staged";
+  if (!sums) {
+    if (flag("require-full-set")) {
+      throw new Error("no SHA256SUMS.txt staged (required with --require-full-set)");
+    }
+    return "no SHA256SUMS.txt staged";
+  }
   const onDisk = new Map(
     artifacts.map((p) => [basename(p), createHash("sha256").update(readFileSync(p)).digest("hex")]),
   );

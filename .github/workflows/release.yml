@@ -154,7 +154,7 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/release/stage-linux-release.mjs \
-            --bundles src-tauri/target/release/bundle \
+            --bundles target/release/bundle \
             --version "${{ steps.identity.outputs.version }}" \
             --commit "${{ steps.commit.outputs.commit }}" \
             --out release-staging

@@ -160,13 +160,20 @@ describe("verify-release-artifacts", () => {
     expect(res.out).toMatch(/could not unpack|cannot inspect/i);
   });
 
-  it("honours an extra --forbid pattern", () => {
-    const res = run(makeStaging({ payload: "contains MISSION-XYZ marker" }), [
+  it("honours an extra --forbid literal", () => {
+    const res = run(makeStaging({ payload: "contains /opt/mission-staging marker" }), [
       "--forbid",
-      "MISSION-[A-Z]+",
+      "/opt/mission-staging",
     ]);
     expect(res.code).not.toBe(0);
-    expect(res.out).toMatch(/MISSION-/);
+    expect(res.out).toMatch(/mission-staging/);
+  });
+
+  it("treats --forbid as a literal, not as a regex", () => {
+    // A path fragment with regex metacharacters must not over-match: a `.`
+    // has to match a literal dot, so `a.b` must NOT trip on `axb`.
+    const res = run(makeStaging({ payload: "contains axb here" }), ["--forbid", "a.b"]);
+    expect(res.code).toBe(0);
   });
 
   // --- v1.13.2 gates --------------------------------------------------------

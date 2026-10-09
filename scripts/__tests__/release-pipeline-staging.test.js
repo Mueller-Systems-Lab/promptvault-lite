@@ -23,7 +23,7 @@ const TEST_DIR = dirname(fileURLToPath(import.meta.url));
 const SCRIPT = resolve(TEST_DIR, "..", "release", "stage-linux-release.mjs");
 
 const VERSION = "1.13.2";
-const COMMIT = "2603c7665659f8ceb4ac061bd9578ed8baf1e47a";
+const COMMIT = "0123456789abcdef0123456789abcdef01234567"; // fixture identity
 
 const cleanups = [];
 afterEach(() => {

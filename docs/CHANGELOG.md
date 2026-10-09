@@ -17,9 +17,10 @@ automates the release gate that v1.13.1 introduced as a manual step.
 - **`POST /api/scan` is now authorisierte Wurzel-Auswahl, nicht beliebiger
   Pfad.** Der Server akzeptiert Scan-Pfade nur noch innerhalb der konfigurierten
   Scan-Wurzeln; **Default ist Least Privilege: nur der konfigurierte Vault**
-  (`PROMPTVAULT_SERVER_VAULT`) und alles darunter. Weitere Wurzeln gibt der
-  Operator explizit über `PROMPTVAULT_SERVER_SCAN_ROOTS` frei (Unix `:`,
-  Windows `;`); `PROMPTVAULT_SERVER_SCAN_ROOTS=*` hebt die Grenze auf
+  (`PROMPTVAULT_SERVER_VAULT`) und alles darunter. Der Operator kann die Wurzeln
+  explizit über `PROMPTVAULT_SERVER_SCAN_ROOTS` setzen (Unix `:`, Windows `;`) —
+  **die Liste ersetzt den Default**, muss den Vault also selbst enthalten;
+  `PROMPTVAULT_SERVER_SCAN_ROOTS=*` hebt die Grenze auf
   (vertrauenswürdiger Host). Ein Pfad außerhalb der Wurzeln ist **HTTP 403**.
   Die Prüfung läuft auf dem kanonischen Pfad, ein aus einer Wurzel
   herausführender Symlink wird also abgelehnt. Die erlaubten Wurzeln werden
@@ -59,7 +60,7 @@ automates the release gate that v1.13.1 introduced as a manual step.
   <8-s-Zusage machte die Korrektheits-CI lastabhängig (ein parallel laufender
   Kompilierlauf konnte sie reißen, ohne dass sich an der Analyse etwas
   verschlechtert hätte). Die Korrektheit wird weiter geprüft; die Performance
-  prüft jetzt ein eigenes, lastinvariantes Gate in einer isolierten CI-Spur.
+  prüft jetzt ein eigenes Gate in einer isolierten CI-Spur.
 
 ### Added
 
@@ -76,15 +77,25 @@ automates the release gate that v1.13.1 introduced as a manual step.
   `scripts/lib/release-artifacts-rules.mjs` und sind direkt getestet.
 - **Neue Performance-Spur** in `.github/workflows/ci.yml` (`performance`,
   Release-Modus, seriell) mit dem Gate
-  `test_large_prompt_scaling_is_subquadratic`. Das Gate ist an der gemessenen
-  Realität ausgerichtet: die Analysezeit ist zwischen 256 KiB und 16 MiB
-  praktisch konstant (~0,17 s, der Aufruf-Overhead dominiert), also gibt es
-  keinen messbaren Term pro Byte. Gemeldet wird deshalb nur ein Wachstum, das
-  *zugleich* proportional groß ist (≥ 1,5x bei 4x Eingabe) *und* absolut groß
-  (≥ 0,20 s); zusätzlich eine Katastrophengrenze von 5 s für 1 MiB. Unter
-  12-facher CPU-Last wurde das Verhältnis verifiziert (Messwerte 4x höher,
-  Verhältnis unverändert ~0,95 → PASS), und ein injizierter superlinearer Term
-  wurde verifiziert gefangen (Verhältnis 2,76, Zuwachs 0,32 s → FAIL).
+  `test_analysis_cost_is_bounded_and_linear_below_the_cap`. Beim Umbau stellte
+  sich heraus, dass die Analyse **nach oben begrenzt** ist: `r2::evaluate`
+  schneidet die Eingabe auf `MAX_ANALYSIS_CHARS` (100 000 Zeichen) ab. Alles
+  darüber kostet per Konstruktion nichts zusätzlich — ein Gate, das dort misst,
+  ist strukturell blind (genau das ergab ein erster Versuch über 256 KiB/1 MiB:
+  konstante Zeit, weil beide Eingaben auf dieselben 100 000 Zeichen gekürzt
+  wurden). Das Gate prüft deshalb:
+  1. **deterministisch**, dass die Analyse eines überdimensionierten Prompts
+     *verhaltensgleich* zur Analyse seines gekürzten Präfixes ist — damit kann
+     kein Term hinter dem Cap wirken;
+  2. **messbasiert unterhalb des Caps** (8 KiB vs 64 KiB, beide < Cap) ein
+     Laufzeitverhältnis < 6,5 (linear gemessen 4,0-4,4);
+  3. eine Katastrophengrenze von 5 s für 1 MiB (Ist-Wert ~0,25 s).
+  Verifiziert: unter 12-facher CPU-Last wuchsen die Messwerte 4x (188 ms →
+  654 ms), das Verhältnis blieb 3,5 — Last verschiebt es vom Limit *weg*; ein
+  injizierter realistischer O(n²)-Term im analysierten Pfad wurde gefangen
+  (Verhältnis 11,1 → FAIL). Ehrliche Grenze: ein sehr kleiner, aber stark
+  wachsender Term bleibt einer Zeitmessung verborgen — deshalb steht die
+  deterministische Cap-Invariante daneben.
 - **Scan-Autorisierungs-Red-Tests** (erlaubte Wurzel, Unterverzeichnis,
   Geschwister-Pfad, Eltern-Escape, Symlink-Escape, mehrere Wurzeln,
   uneingeschränkter Modus, Default-Deny) und Config-Tests für die neuen

@@ -17,14 +17,56 @@ import { basename, dirname, join } from "node:path";
  * `readlink` returns whatever string was stored. A relative target is resolved
  * against the link's own directory; an absolute target is used verbatim — and
  * that is exactly the v1.13.0/v1.13.1 `.DirIcon` defect: the stored target was
- * the *build machine's* absolute path, so after extraction it points at
- * nothing.
+ * the *build machine's* absolute path, so after extraction it points at the
+ * local filesystem instead of the tree.
  */
 export function resolveLinkTarget(linkPath, target) {
   return target.startsWith("/") ? target : join(dirname(linkPath), target);
 }
 
-/** True when the symlink at `linkPath` does not resolve to an existing path. */
+/**
+ * True when a symlink inside a *self-contained* tree (an AppImage AppDir) is
+ * not usable after extraction. That is the case when
+ *
+ *   - the stored target is absolute — such a link resolves against the host
+ *     filesystem, never against the tree, so it is wrong even on a machine
+ *     where the path happens to exist (an AppImage must not depend on the
+ *     build machine); or
+ *   - the (relatively) resolved target does not exist inside the tree.
+ *
+ * `treeRoot` is the extraction root the link belongs to; a relative target that
+ * resolves outside it (via `../..`) is refused as well.
+ */
+export function isUnusableSymlink(linkPath, treeRoot) {
+  let target;
+  try {
+    target = readlinkSync(linkPath);
+  } catch {
+    return false; // not a symlink (or unreadable): not our problem here
+  }
+  if (target.startsWith("/")) return true;
+  const resolved = resolveLinkTarget(linkPath, target);
+  // A relative escape out of the tree is as broken as an absolute link.
+  const root = treeRoot.endsWith("/") ? treeRoot : `${treeRoot}/`;
+  if (!resolved.startsWith(root) && resolved !== treeRoot) return true;
+  try {
+    statSync(resolved);
+    return false;
+  } catch {
+    return true;
+  }
+}
+
+/**
+ * True when the symlink at `linkPath` does not resolve to an existing path.
+ *
+ * NOTE: this is *not* the AppImage rule. An absolute link whose target happens
+ * to exist on the machine running the check is reported as NOT dangling, which
+ * is precisely the trap the AppImage needs to avoid. Use
+ * [`isUnusableSymlink`] for a self-contained tree; this helper stays for
+ * contexts where only resolvability matters (e.g. a package payload whose
+ * links legitimately point into system paths).
+ */
 export function isDanglingSymlink(linkPath) {
   let target;
   try {
@@ -39,7 +81,6 @@ export function isDanglingSymlink(linkPath) {
     return true;
   }
 }
-
 /** File names that have no business inside a desktop bundle. */
 export const SECRET_FILE_NAMES = new Set([
   ".env",

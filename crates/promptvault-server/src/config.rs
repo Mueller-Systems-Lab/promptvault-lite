@@ -208,7 +208,10 @@ mod tests {
         )]))
         .unwrap();
         assert!(!cfg.allow_unrestricted_scan);
-        let expected = std::fs::canonicalize(dir.path()).unwrap();
+        // Same canonicalizer as production (`canonical_root`): on Windows
+        // `std::fs::canonicalize` keeps the `\\?\` verbatim prefix and the
+        // assertions would differ from the server's own value.
+        let expected = dunce::canonicalize(dir.path()).unwrap();
         assert_eq!(cfg.scan_roots, vec![expected]);
     }
 
@@ -226,8 +229,8 @@ mod tests {
         assert_eq!(
             cfg.scan_roots,
             vec![
-                std::fs::canonicalize(vault.path()).unwrap(),
-                std::fs::canonicalize(extra.path()).unwrap()
+                dunce::canonicalize(vault.path()).unwrap(),
+                dunce::canonicalize(extra.path()).unwrap()
             ]
         );
     }
@@ -282,7 +285,7 @@ mod tests {
         .unwrap();
         assert_eq!(
             cfg.scan_roots,
-            vec![std::fs::canonicalize(dir.path()).unwrap()]
+            vec![dunce::canonicalize(dir.path()).unwrap()]
         );
     }
 

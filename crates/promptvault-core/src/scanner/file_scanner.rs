@@ -53,10 +53,12 @@ struct ScannedFile {
 /// Daraus folgt: wer eine *engere* Grenze braucht (z. B. „nur innerhalb des
 /// konfigurierten Vaults"), muss sie **selbst** an seiner Vertrauensgrenze
 /// durchsetzen — Core kann das nicht leisten, weil es keinen Vault kennt.
-/// Der HTTP-Server setzt in `validate_scan_path` derzeit nur absolut,
-/// existierend und Verzeichnis sowie das Verbot von `..`-Segmenten durch und
-/// beschränkt den Scan bewusst **nicht** auf `PROMPTVAULT_SERVER_VAULT`; diese
-/// Grenze ist in `docs/DEPLOYMENT.md` („Sicherheitsgrenzen") dokumentiert.
+/// Der HTTP-Server prüft in `validate_scan_path` absolut, existierend und
+/// Verzeichnis sowie das Verbot von `..`-Segmenten und autorisiert den Pfad
+/// **zusätzlich** in `authorize_scan_path` gegen die konfigurierten
+/// Scan-Wurzeln (Default: `PROMPTVAULT_SERVER_VAULT`, seit v1.13.2; per
+/// `PROMPTVAULT_SERVER_SCAN_ROOTS=*` abschaltbar). Diese Grenze ist in
+/// `docs/DEPLOYMENT.md` („Sicherheitsgrenzen") dokumentiert.
 ///
 /// # Arguments
 /// * `dir_path` - Absoluter Pfad zum zu scannenden Verzeichnis

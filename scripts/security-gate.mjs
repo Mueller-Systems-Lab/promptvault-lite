@@ -148,10 +148,17 @@ check("G8 — Scan-Wurzel-Autorisierung (Default Least Privilege, v1.13.2)", () 
     scan.includes("ErrorCode::Forbidden") || scan.includes("forbidden("),
     "403 für nicht autorisierte Wurzel fehlt",
   );
-  // Traversal (400) und Autorisierung (403) müssen getrennte Pfade bleiben.
+  // Traversal (400) und Autorisierung (403) müssen getrennte Schritte bleiben.
+  // Geprüft wird die *Reihenfolge im Handler* — ein `indexOf`-Vergleich zweier
+  // irgendwo vorkommender Namen wäre wahr, selbst wenn die Autorisierung
+  // entfernt würde (dann ist indexOf == -1 und die Ungleichheit gilt trotzdem).
+  const shape = scan.indexOf("validate_scan_path(&req.path)?");
+  const authz = scan.indexOf("authorize_scan_path(&dir,");
+  assert(shape !== -1, "scan_vault ruft validate_scan_path(&req.path) nicht auf");
+  assert(authz !== -1, "scan_vault ruft authorize_scan_path(&dir, ...) nicht auf");
   assert(
-    scan.indexOf("validate_scan_path") !== scan.indexOf("authorize_scan_path"),
-    "Traversal-Validierung und Wurzel-Autorisierung sind nicht getrennt",
+    shape < authz,
+    "Traversal-Validierung muss vor der Wurzel-Autorisierung laufen",
   );
   const tests = read("crates/promptvault-server/tests/server_api.rs");
   const required = [

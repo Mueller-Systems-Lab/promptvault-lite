@@ -88,8 +88,8 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            src-tauri/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
 
       - name: Format check (E7)
         working-directory: src-tauri
@@ -132,14 +132,16 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: ${{ runner.os }}-cargo-release-${{ hashFiles('Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-perf-${{ hashFiles('Cargo.lock') }}
 
       - name: Performance gates (release, isolated)
         # Release-Modus, damit die `debug_assertions`-ignorierten Perf-Tests
         # ausgeführt werden; seriell, damit sich die Messungen nicht gegenseitig
         # verfälschen. `--nocapture` zeigt die gemessenen Zeiten im Log. Die
         # ganze Core-Lib-Suite läuft mit, damit die Performance-Spur nicht nur
-        # zwei Tests ausführt.
+        # zwei Tests ausführt. Das Gate misst unterhalb des Analyse-Caps
+        # (8 KiB vs 64 KiB) und verlangt ein Verhältnis < 6,5 (linear ~4) plus
+        # eine Katastrophengrenze von 5 s.
         run: >-
           cargo test --locked --release -p promptvault-core --lib --
           --nocapture --test-threads=1

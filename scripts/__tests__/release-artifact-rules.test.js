@@ -19,6 +19,7 @@ import {
   isDanglingSymlink,
   isScannableForSecrets,
   isSecretFileName,
+  isUnusableSymlink,
   resolveLinkTarget,
 } from "../lib/release-artifacts-rules.mjs";
 
@@ -70,7 +71,10 @@ describe("isDanglingSymlink", () => {
     expect(isDanglingSymlink(link)).toBe(true);
   });
 
-  it("reports an absolute symlink to an existing path as intact", () => {
+  it("reports an absolute symlink to an existing path as intact (resolvability only)", () => {
+    // Deliberately *not* the AppImage rule — see isUnusableSymlink below. This
+    // pins the distinction so the weaker helper cannot silently be used for a
+    // self-contained tree.
     const dir = fixtureDir();
     writeFileSync(join(dir, "target.png"), "x");
     const link = join(dir, ".DirIcon");
@@ -125,5 +129,65 @@ describe("secret-like files", () => {
     expect(isScannableForSecrets(big)).toBe(false);
 
     expect(isScannableForSecrets(join(dir, "missing"))).toBe(false);
+  });
+})
+
+describe("isUnusableSymlink (the AppImage rule)", () => {
+  it("accepts a relative symlink to an existing file inside the tree", () => {
+    const dir = fixtureDir();
+    writeFileSync(join(dir, "PromptVault Lite.png"), "x");
+    const link = join(dir, ".DirIcon");
+    symlinkSync("PromptVault Lite.png", link);
+    expect(isUnusableSymlink(link, dir)).toBe(false);
+  });
+
+  it("rejects a relative symlink to a missing file", () => {
+    const dir = fixtureDir();
+    const link = join(dir, "broken");
+    symlinkSync("missing.png", link);
+    expect(isUnusableSymlink(link, dir)).toBe(true);
+  });
+
+  it("rejects an ABSOLUTE symlink even when its target exists", () => {
+    // The v1.13.0/v1.13.1 .DirIcon shape: absolute into the build tree. On the
+    // build host the target exists, so a resolvability check would pass it —
+    // an AppImage may never depend on the machine that built it.
+    const dir = fixtureDir();
+    writeFileSync(join(dir, "target.png"), "x");
+    const link = join(dir, ".DirIcon");
+    symlinkSync(join(dir, "target.png"), link); // absolute, and it exists
+    expect(isDanglingSymlink(link)).toBe(false);
+    expect(isUnusableSymlink(link, dir)).toBe(true);
+  });
+
+  it("rejects an absolute symlink into another tree", () => {
+    const dir = fixtureDir();
+    const link = join(dir, ".DirIcon");
+    symlinkSync("/mnt/other/pvbuild/release/bundle/appimage/App.AppDir/App.png", link);
+    expect(isUnusableSymlink(link, dir)).toBe(true);
+  });
+
+  it("rejects a relative symlink that escapes the tree", () => {
+    const dir = fixtureDir();
+    const outside = fixtureDir();
+    writeFileSync(join(outside, "secret.png"), "x");
+    const link = join(dir, "escape");
+    symlinkSync("../" + outside.split("/").pop() + "/secret.png", link);
+    expect(isUnusableSymlink(link, dir)).toBe(true);
+  });
+
+  it("follows a two-hop relative chain inside the tree", () => {
+    const dir = fixtureDir();
+    mkdirSync(join(dir, "usr", "share"), { recursive: true });
+    writeFileSync(join(dir, "usr", "share", "icon.png"), "x");
+    symlinkSync("usr/share/icon.png", join(dir, "link-a"));
+    expect(isUnusableSymlink(join(dir, "link-a"), dir)).toBe(false);
+  });
+
+  it("treats a non-symlink as usable", () => {
+    const dir = fixtureDir();
+    writeFileSync(join(dir, "plain"), "x");
+    expect(isUnusableSymlink(join(dir, "plain"), dir)).toBe(false);
+    expect(isUnusableSymlink(join(dir, "missing"), dir)).toBe(false);
   });
 });
