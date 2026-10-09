@@ -162,6 +162,10 @@ const forbidden = [
   // directories (crates/promptvault-core, crates/promptvault-server) appear in
   // shipped binaries as legitimate relative source paths, so that pattern
   // cannot distinguish a leak. Pass --forbid for any other staging path.
+  //
+  // The pattern needs a hyphen and a trailing separator, so a marker that ends
+  // the string (…/pvl-v1.13.0 with no further component) or a `pvl_` spelling is
+  // not matched — use --forbid for staging names outside this convention.
   { label: "project staging directory", test: (s) => /\/[A-Za-z0-9._-]*pvl-[A-Za-z0-9._-]+\//.test(s) },
   ...forbidArgs.map((re) => ({
     label: `forbidden pattern /${re}/`,

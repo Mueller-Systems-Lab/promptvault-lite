@@ -119,7 +119,7 @@ cp deploy/.env.example deploy/.env   # set values; never commit .env
 docker compose -f deploy/docker-compose.yml up
 ```
 
-See `docs/DEPLOYMENT.md` for the full contract (read-only semantics, read-only vault mount, LAN exposure).
+See `docs/DEPLOYMENT.md` for the full contract (read-only semantics, read-only vault mount, LAN exposure) and its **Security boundaries** section (no authentication; `POST /api/scan` accepts an absolute directory — bounded by the container filesystem in the recommended deployment).
 
 ### Developer / source build
 
