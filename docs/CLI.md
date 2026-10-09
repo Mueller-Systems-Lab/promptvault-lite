@@ -58,6 +58,32 @@ Nur Windows. Löst das native Artefakt über das Release-Manifest auf. Das Manif
 
 Seit v1.9.1 ist der Release-Vertrag strikt fail-closed: Ein installierbares Artefakt **muss** `filename`, `type`, `sha256` und `size` besitzen; das Manifest **muss** eine gültige `version` haben, die exakt der angeforderten CLI-Version entspricht. Fehlende oder ungültige Pflichtfelder, Version-Mismatch, falsche SHA-256/Größe oder eine unsupported Plattform brechen die Installation ab, bevor ein Installer gestartet wird.
 
+#### Zwei Manifest-Schemas mit demselben Dateinamen
+
+`promptvault-release-manifest.json` existiert in zwei **unterschiedlichen**
+Formen. Der Dateiname ist bewusst nicht unterscheidend — die Form ist es:
+
+| | CLI-/Windows-Manifest | Linux-Release-Manifest |
+| --- | --- | --- |
+| Vorkommen | `tools/promptvault-cli/promptvault-release-manifest.json` (eingecheckt, CLI-Stream `1.11.1`) | Release-Asset der Linux-Desktop-Releases (Source-Identity-Nachweis) |
+| `schema_version` | `1` | `1` |
+| Versionsfeld | `version` | `release_version` |
+| Artefakte | `artifacts` (**Objekt**, Key = Plattform-Tag) | `assets` (**Array**) |
+| Zusätzlich | `platform`, `architecture` | `source_commit`, `generated_at` |
+| Konsument | die CLI (`promptvault install`/`update`) | kein Code — Nachweis für Menschen |
+
+Deshalb prüft jede Seite die andere Form aktiv:
+
+- `releases.load_manifest()` erkennt die Linux-Form (`release_version` +
+  `assets[]`) und bricht mit einer präzisen Meldung ab, statt sie als
+  CLI-Manifest zu deuten (`looks_like_linux_release_manifest`, Regressionstests
+  in `tools/promptvault-cli/tests/test_releases.py`).
+- `scripts/verify-release-artifacts.mjs` validiert die Linux-Form und weist die
+  CLI-Form zurück (Tests in `scripts/__tests__/release-artifact-scan.test.js`).
+
+Wer das Linux-Manifest in ein Arbeitsverzeichnis lädt, in dem die CLI sucht,
+bekommt damit eine klare Fehlermeldung statt einer stillen Fehlinterpretation.
+
 ### `launch`
 
 Startet das installierte native Executable und erkennt einen sofortigen Crash (frühes Exit).

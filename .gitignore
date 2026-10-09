@@ -58,6 +58,7 @@ scripts/*
 !scripts/security-gate.mjs
 !scripts/docker-smoke.sh
 !scripts/eval-flywheel.mjs
+!scripts/verify-release-artifacts.mjs
 !scripts/lib/
 !scripts/__tests__/
 site/

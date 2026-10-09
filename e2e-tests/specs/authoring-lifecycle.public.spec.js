@@ -3,9 +3,9 @@
 // v1.10.0 AUTHORING LIFECYCLE — PUBLIC RELEASE BINARY PROOF (Windows)
 // ---------------------------------------------------------------------------
 // PUBLIC BINARY PROOF: this spec drives the PUBLICLY INSTALLED release
-// executable
-//   C:\Users\xxammaxx\AppData\Local\PromptVault Lite\promptvault-lite.exe
-// (FileVersion/ProductVersion 1.10.0, Debug: False) via tauri-driver +
+// executable from the per-user install location
+// (`%LOCALAPPDATA%\PromptVault Lite\promptvault-lite.exe`) at
+// FileVersion/ProductVersion 1.10.0, Debug: False, via tauri-driver +
 // WebView2 — NOT the target/debug build and NOT a Vite/browser fallback.
 //
 // Debug-bridge absence (ADR-005): the debug-only E2E bridge

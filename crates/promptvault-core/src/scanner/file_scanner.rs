@@ -41,6 +41,19 @@ struct ScannedFile {
 
 /// Rekursives Scannen eines Verzeichnisses nach Prompt-Textdateien (.md, .markdown, .txt)
 ///
+/// # Vertrag (Pfad-Invarianten)
+/// Der Aufrufer bestimmt die Wurzel; Core bindet sie **nicht** an einen
+/// konfigurierten Vault. Die Wurzel wird kanonisch aufgelöst (Symlinks und
+/// `..`-Segmente inklusive) und **definiert damit selbst die Grenze**.
+/// Garantiert wird, dass jede zurückgegebene Datei innerhalb dieser
+/// aufgelösten Wurzel liegt: symbolische Links, die aus der Wurzel
+/// hinauszeigen, werden verworfen (`starts_with`-Prüfung auf den kanonischen
+/// Pfad).
+///
+/// Daraus folgt: wer eine *engere* Grenze braucht (z. B. „nur innerhalb des
+/// konfigurierten Vaults"), muss sie an seiner eigenen Vertrauensgrenze
+/// durchsetzen — der HTTP-Server tut das in `validate_scan_path`.
+///
 /// # Arguments
 /// * `dir_path` - Absoluter Pfad zum zu scannenden Verzeichnis
 ///
@@ -478,22 +491,45 @@ mod tests {
     // =========================================================================
 
     #[test]
-    fn test_path_traversal_in_root_is_blocked() {
-        // Passing `..` in the root path scans the resolved parent directory.
-        // This test documents current behavior: OS-resolved paths are accepted.
-        // A future hardening step should canonicalize and enforce containment.
+    fn test_root_with_dotdot_is_canonicalized_and_stays_contained() {
+        // Ein '..' im Root ist keine Traversal-Flucht: die Wurzel wird kanonisch
+        // aufgelöst und definiert selbst die Grenze. Entscheidend ist die
+        // Invariante, dass kein Ergebnis außerhalb der aufgelösten Wurzel liegt.
         let dir = TempDir::new().unwrap();
         let sub = dir.path().join("sub");
         fs::create_dir(&sub).unwrap();
         create_test_file(&sub, "inside.md", "# Inside");
 
-        // Construct a path with .. that resolves to the same temp dir
         let traversed = sub.join("..").join("sub");
         let result = scan_directory(traversed.to_str().unwrap()).unwrap();
 
-        // Currently accepted — OS resolves the path
+        let canonical_root = std::fs::canonicalize(&sub).unwrap();
         assert_eq!(result.len(), 1);
         assert_eq!(result[0].title, "inside");
+        for item in &result {
+            let canonical_file =
+                std::fs::canonicalize(&item.file_path).expect("Datei muss auflösbar sein");
+            assert!(
+                canonical_file.starts_with(&canonical_root),
+                "Ergebnis außerhalb des aufgelösten Roots: {}",
+                item.file_path
+            );
+        }
+    }
+
+    #[test]
+    fn test_arbitrary_absolute_root_is_supported() {
+        // Desktop-Semantik: ein beliebiges absolutes Verzeichnis ist ein gültiger
+        // Root. Core bindet den Root bewusst nicht an einen konfigurierten Vault —
+        // eine engere Grenze muss die jeweilige Vertrauensgrenze selbst ziehen.
+        let dir = TempDir::new().unwrap();
+        create_test_file(dir.path(), "standalone.md", "# Standalone");
+
+        let result = scan_directory(dir.path().to_str().unwrap()).unwrap();
+
+        assert_eq!(result.len(), 1);
+        assert_eq!(result[0].title, "standalone");
+        assert!(std::path::Path::new(&result[0].file_path).is_absolute());
     }
 
     #[test]
