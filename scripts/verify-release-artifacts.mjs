@@ -21,6 +21,11 @@
 // Usage:
 //   node scripts/verify-release-artifacts.mjs <staging-dir> [--forbid <regex>]...
 //
+// Run this on the machine that built the artifacts: two of the default rules
+// ("build user", "build host") are evaluated against the scanning host, so on a
+// different machine they describe that host instead of the builder. Use
+// --forbid for build-staging locations that are specific to your environment.
+//
 // <staging-dir> must contain the manifest (at <dir>/ or <dir>/checksums/) and
 // the packages (at <dir>/ or <dir>/artifacts/). Exit code 0 = all checks pass.
 // =============================================================================
