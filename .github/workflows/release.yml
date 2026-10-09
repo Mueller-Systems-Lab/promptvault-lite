@@ -132,7 +132,7 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-            src-tauri/target
+            target
           key: ${{ runner.os }}-cargo-release-${{ hashFiles('Cargo.lock') }}
 
       - name: Install frontend dependencies
@@ -172,6 +172,7 @@ jobs:
             --expect-version "${{ steps.identity.outputs.version }}" \
             --expect-commit "${{ steps.commit.outputs.commit }}" \
             --forbid "$HOME" \
+            --forbid "/opt/hostedtoolcache" \
             --require-full-set
 
       - name: Upload the verified staging set
@@ -221,6 +222,7 @@ jobs:
             --expect-version "${{ needs.build-linux.outputs.version }}" \
             --expect-commit "${{ needs.build-linux.outputs.commit }}" \
             --forbid "$HOME" \
+            --forbid "/opt/hostedtoolcache" \
             --require-full-set
 
       - name: Refuse to overwrite an existing release (idempotency guard)

@@ -1706,8 +1706,8 @@ mod edge_tests {
     /// eine absolute Zeitgrenze in der normalen Korrektheits-CI hing allein von
     /// der Auslastung des Rechners ab (ein parallel laufender `cargo test`
     /// konnte sie reißen), ohne je eine echte Regression anzuzeigen. Die
-    /// Performance wird load-invariant in
-    /// `test_large_prompt_scaling_is_subquadratic` geprüft.
+    /// Performance wird in
+    /// `test_analysis_cost_is_bounded_and_linear_below_the_cap` geprüft.
     #[test]
     fn test_large_prompt() {
         // Generate a ~100KB prompt
@@ -1764,21 +1764,25 @@ mod edge_tests {
     /// Die Prüfungen:
     ///
     /// 1. **Deterministische Obergrenze.** Analyse ist für jede Eingabe
-    ///    oberhalb des Caps *verhaltensgleich* zur Analyse des gekürzten
-    ///    Präfixes. Damit kann kein noch so teurer Term hinter dem Cap
-    ///    überhaupt wirken — das ist die eigentliche Blow-up-Bremse und braucht
-    ///    keine Zeitmessung.
+    ///    oberhalb des Caps *ergebnisgleich* zur Analyse des gekürzten Präfixes
+    ///    (verglichen werden Kriterien, Gesamtwert, fehlende Abschnitte und
+    ///    Empfehlungen). Damit kann Arbeit hinter dem Cap das *gemeldete
+    ///    Ergebnis* nicht verändern; teure Arbeit dort wäre reine Verschwendung.
+    ///    Heute gilt das per Konstruktion (beide Seiten rufen denselben
+    ///    Kürzungshelfer) — der Test ist also eine Regressionsbremse für einen
+    ///    künftigen Pfad, der vor der Kürzung arbeitet.
     /// 2. **Superlinearität unterhalb des Caps.** `t(64 KiB)/t(8 KiB)` wird
     ///    gemessen (beide < Cap). Linear: gemessen 4,0-4,4. Das Verhältnis ist
     ///    **lastinvariant** — unter 12-facher CPU-Last wurden die Messwerte 4x
     ///    höher (188 ms / 654 ms), das Verhältnis blieb 3,5, also vom Limit weg.
     ///    Grenze 6,5 (kalibriert, ~1,5x Reserve).
-    ///    Ehrliche Grenze der Aussagekraft: ein superlinearer Term wird nur
-    ///    erkannt, wenn er die Zeit bei 64 KiB relevant verschiebt (>~100 ms);
-    ///    ein winziger, aber stark wachsender Term bleibt unsichtbar. Das ist
-    ///    einer Zeitmessung inhärent — deshalb steht daneben die
-    ///    deterministische Cap-Invariante, die den unbeschränkten Fall
-    ///    vollständig ausschließt.
+    ///    Ehrliche Grenzen der Aussagekraft: (a) ein superlinearer Term wird
+    ///    nur erkannt, wenn er die Zeit bei 64 KiB relevant verschiebt
+    ///    (>~100 ms) — ein winziger, aber stark wachsender Term bleibt
+    ///    unsichtbar; (b) ein *linearer* Faktor (z. B. 10x pro Byte) hält das
+    ///    Verhältnis bei ~4 und wird nur von der Katastrophengrenze (5 s)
+    ///    gefangen. Beides ist einer Zeitmessung inhärent; die deterministische
+    ///    Cap-Invariante ist das, was den unbeschränkten Fall ausschließt.
     /// 3. **Absolute Katastrophengrenze** für den konstanten Anteil: Ist-Wert
     ///    ~0,25 s für 96 KiB, Grenze 5 s (20x Abstand).
     ///
@@ -1793,7 +1797,7 @@ mod edge_tests {
         const SMALL_KIB: usize = 8;
         const LARGE_KIB: usize = 8 * SMALL_KIB; // 8x input
         /// Linear: ~3.9 measured. Quadratic would be ~64. 8 separates cleanly.
-        const RATIO_LIMIT: f64 = 8.0;
+        const RATIO_LIMIT: f64 = 6.5;
         /// Ceiling for the (constant + capped-linear) cost. Measured ~0.25 s.
         const ABSOLUTE_LIMIT_S: f64 = 5.0;
         /// Size used to prove the cap bounds the cost.
@@ -1809,22 +1813,42 @@ mod edge_tests {
             content
         }
 
-        fn signature(eval: &crate::models::PromptEvaluation) -> Vec<(String, u8, u8)> {
-            let mut v: Vec<(String, u8, u8)> = eval
-                .criteria
-                .iter()
-                .map(|c| (c.name.clone(), c.score, c.max_score))
-                .collect();
-            v.push(("__overall__".to_string(), eval.overall_score, 0));
-            v
+        /// Everything the analysis *reports*, minus the volatile fields
+        /// (`id`, `evaluated_at`). A comparison that ignored
+        /// `missing_sections`/`recommendations` would miss a change that only
+        /// moves those.
+        #[derive(PartialEq, Debug)]
+        struct Signature {
+            criteria: Vec<(String, u8, u8)>,
+            overall: u8,
+            missing_sections: Vec<String>,
+            recommendations: Vec<String>,
+        }
+
+        fn signature(eval: &crate::models::PromptEvaluation) -> Signature {
+            Signature {
+                criteria: eval
+                    .criteria
+                    .iter()
+                    .map(|c| (c.name.clone(), c.score, c.max_score))
+                    .collect(),
+                overall: eval.overall_score,
+                missing_sections: eval.missing_sections.clone(),
+                recommendations: eval.recommendations.clone(),
+            }
         }
 
         /// Best of `samples` runs. Das Minimum nähert sich der unbelasteten
         /// Laufzeit an und ist robuster gegen Scheduling-Aussetzer als der
         /// Median; ein Ausreißer nach oben kann das Minimum nicht verzerren.
-        fn best_of(samples: usize, content: &str) -> (std::time::Duration, Vec<(String, u8, u8)>) {
+        fn best_of(samples: usize, content: &str) -> (std::time::Duration, Signature) {
             let mut best = std::time::Duration::MAX;
-            let mut sig = Vec::new();
+            let mut sig = Signature {
+                criteria: Vec::new(),
+                overall: 0,
+                missing_sections: Vec::new(),
+                recommendations: Vec::new(),
+            };
             for _ in 0..samples {
                 let start = std::time::Instant::now();
                 let eval = evaluate_prompt(content, "test-scaling");
@@ -1852,7 +1876,7 @@ mod edge_tests {
         assert_eq!(
             sig_above, sig_prefix,
             "analysis of an oversized prompt differs from analysis of its capped prefix — \
-             work beyond the cap would be unbounded"
+             work beyond the cap would change the reported result"
         );
         println!("perf: cap {ABOVE_CAP_KIB} KiB = {t_above:?}, cap-prefix = {t_prefix:?}");
 

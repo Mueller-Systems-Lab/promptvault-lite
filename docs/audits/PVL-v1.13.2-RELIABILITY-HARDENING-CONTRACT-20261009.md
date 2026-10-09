@@ -99,26 +99,45 @@ bound. The single failure happened under a concurrent compile.
    (a) detect a genuine super-linear regression and (b) not fail under ambient
    host load.
 
-**Measured reality that shaped the design** (release, `best_of(3)`):
+**A first design attempt was wrong, and the independent review caught it.**
+The analysis is bounded: `r2::evaluate` truncates its input at
+`MAX_ANALYSIS_CHARS` (100 000 chars). A gate comparing 256 KiB with 1 MiB
+therefore measured the *same* clamped workload — constant time, ratio ~1 by
+construction, and the super-linearity check could never fire. The flat profile
+first quoted here ("O(1) in input size") was the cap, not the analyzer.
+
+**Measured reality below the cap** (release, `best_of(5)`, warmed up):
 
 ```text
-   64 KiB -> 0.115 s    256 KiB -> 0.169 s
- 1024 KiB -> 0.168 s   4096 KiB -> 0.172 s   16384 KiB -> 0.166 s
+    1 KiB -> 0.032 s      4 KiB -> 0.041 s      8 KiB -> 0.042 s
+   16 KiB -> 0.060 s     32 KiB -> 0.090 s     64 KiB -> 0.165 s
+   96 KiB -> 0.241 s    128 KiB -> 0.249 s   1024 KiB -> 0.236 s
 ```
 
-The cost is flat in input size, so a pure ratio bound is weak (a 15x incremental
-regression can still show a total ratio of 2.6). The gate therefore reports only
-a growth that is *both* proportionally large (ratio ≥ 1.5 at 4x input) *and*
-absolutely large (growth ≥ 0.20 s), plus a 5 s catastrophe ceiling.
+Linear up to the cap, flat above it. The gate
+(`test_analysis_cost_is_bounded_and_linear_below_the_cap`) therefore checks:
+
+1. **deterministically** that analysis of an oversized prompt is behaviourally
+   identical (criteria + overall-score signature) to analysis of its capped
+   prefix — no term behind the cap can act at all;
+2. **by measurement below the cap** that `t(64 KiB)/t(8 KiB) < 6.5`
+   (linear measured 4.0–4.4);
+3. a 5 s catastrophe ceiling for 1 MiB (actual ~0.25 s).
 
 **Evidence.**
 
 | Probe | Result |
 | --- | --- |
-| baseline, 3 consecutive runs | ratio 0.99 / 1.01 / 1.01 → PASS |
-| 12 CPU hogs, measurements inflated 4x (651 ms / 619 ms) | ratio 0.95 → **PASS** (load-invariant) |
-| injected super-linear term (`O(n²/4096)`) | ratio 2.76, growth 0.32 s → **FAIL** (detected) |
+| cap invariant (1 MiB vs its 100 000-char prefix) | signatures identical |
+| baseline, 3 consecutive runs | ratio 4.0 / 4.1 / 4.4 → PASS |
+| 12 CPU hogs (measurements 4x higher: 188 ms / 654 ms) | ratio 3.5 → **PASS** (load moves it *away* from the limit) |
+| injected realistic `O(n²)` term **inside the analysed path** | ratio 11.1 → **FAIL** (detected) |
 | correctness test under 12x load | PASS, no timing dependency |
+
+**Honest limit of the method.** A time-based gate only detects a super-linear
+term that shifts the 64 KiB time materially (>~100 ms). A tiny but strongly
+growing term stays invisible; the deterministic cap invariant is what rules out
+the unbounded case entirely. This is documented in the test itself.
 
 ---
 
@@ -139,10 +158,16 @@ writing **relative** symlinks.
 | Check | Result |
 | --- | --- |
 | verifier G5 on the **published v1.13.1** AppImage | **FAIL** — `/.DirIcon -> /mnt/nvme-data/pvbuild/.../PromptVault Lite.png` (the known defect, exactly one site) |
-| verifier G5 on the **v1.13.2** AppImage built with 2.12.1 | see the release evidence |
-| `.DirIcon` resolves after extraction | see the release evidence |
-| no user/host/project staging path in the AppImage | G4 on both sets: clean |
+| `.DirIcon` in the **v1.13.2 AppDir** built with CLI 2.12.1 | relative (`PromptVault Lite.png`) and resolves — the upstream fix, present by construction |
+| verifier G5 on the v1.13.2 AppImage | PASS (`all symlinks resolve inside the tree`) |
+| `.DirIcon` resolves after extraction | PASS |
+| no user/host/project staging path | **G4 initially FAILED** on the locally built set: 35 hits of `<home>/.rustup/toolchains/...` in both the AppImage and the RPM. Root cause: the remap covered `$HOME/.cargo` but not `$HOME`, so rustup's toolchain path survived. Fixed by remapping `$HOME` as a whole; re-verified on the rebuilt set (see below). |
 | package launches | see the release evidence |
+
+**Why this mattered.** The failure was found by running the *real* pipeline
+locally against real bundles, not by reading the workflow. The identical gap
+would have broken the first CI release run. It is the reason the "known-good
+package passes" half of the contract is verified by execution.
 
 ---
 
