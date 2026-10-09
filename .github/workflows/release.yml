@@ -237,11 +237,16 @@ jobs:
           fi
 
       - name: Assemble release notes from the changelog
+        # The `## v<version>` changelog entry is written BEFORE the release, so
+        # it carries a candidate status ("Status: RELEASE CANDIDATE"). Copying it
+        # verbatim into the published release page would contradict the release
+        # being published; the status line is therefore replaced here, and the
+        # changelog itself is aligned in a follow-up doc commit (as for v1.13.1).
         run: |
           set -euo pipefail
           node -e '
             const fs = require("node:fs");
-            const version = process.argv[1];
+            const [version, tag] = process.argv.slice(1);
             const lines = fs.readFileSync("docs/CHANGELOG.md", "utf8").split("\n");
             const start = lines.findIndex((l) => l.startsWith("## v" + version));
             if (start === -1) {
@@ -252,9 +257,24 @@ jobs:
             for (let i = start + 1; i < lines.length; i += 1) {
               if (lines[i].startsWith("## ")) { end = i; break; }
             }
-            fs.writeFileSync("release-notes.md", lines.slice(start, end).join("\n").trimEnd() + "\n");
-          ' "${{ needs.build-linux.outputs.version }}"
+            let body = lines.slice(start, end).join("\n").trimEnd();
+            // Replace only the bolded status token, so the descriptive sentence
+            // that follows it in the same paragraph is preserved:
+            //   "**Status: RELEASE CANDIDATE** — a hardening patch …"
+            // becomes
+            //   "**Status: RELEASED** (published from tag v1.13.2) — a hardening patch …"
+            if (/^\*\*Status: [^*]+\*\*/m.test(body)) {
+              body = body.replace(
+                /^\*\*Status: [^*]+\*\*/m,
+                "**Status: RELEASED** (published from tag " + tag + ")",
+              );
+            } else {
+              console.error("::warning::no status line found in the changelog section");
+            }
+            fs.writeFileSync("release-notes.md", body + "\n");
+          ' "${{ needs.build-linux.outputs.version }}" "${{ needs.build-linux.outputs.tag }}"
           test -s release-notes.md
+          grep -q "RELEASED" release-notes.md
 
       - name: Publish release with verified assets
         env:
