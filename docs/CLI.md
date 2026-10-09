@@ -21,7 +21,7 @@ Zwei Ebenen sind strikt zu trennen:
 
 The CLI is a separate Windows/NSIS-only release stream. Its last compatible
 published version is `1.11.1`; the Linux desktop packages are published as
-GitHub releases (v1.13.1 published, v1.13.2 in preparation) and are installed
+GitHub releases (v1.13.2 published) and are installed
 directly by the user — they are not resolved by this CLI.
 
 - **GitHub Release / Tag `v1.11.1`:** `PUBLISHED` — Windows-x64-NSIS-Installer, Release-Manifest und `SHA256SUMS.txt`.

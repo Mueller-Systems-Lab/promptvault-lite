@@ -8,7 +8,8 @@ version: 1.13.2
 
 ## v1.13.2 — Reliability, Trust-Boundary & Release-Automation Hardening (PATCH)
 
-**Status: RELEASE CANDIDATE** — a hardening patch on top of v1.13.1. It changes
+**Status: RELEASED** — published 2026-10-09 from tag `v1.13.2` (commit `80593cf2d4824f4e5c9cc7afbc1b0f142daa9e84`). A
+hardening patch on top of v1.13.1. It changes
 observable behaviour in exactly one place (the server's scan authorization) and
 automates the release gate that v1.13.1 introduced as a manual step.
 

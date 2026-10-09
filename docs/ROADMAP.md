@@ -1,9 +1,9 @@
 # Roadmap — PromptVault Lite
 
 **Last updated:** 2026-10-09
-**Current version:** v1.13.2 release candidate (post-release hardening on top of v1.13.1; narrow behaviour change: scan authorization)
-**Latest published release:** v1.13.1 (GitHub Release, Linux x64 — published 2026-10-09)
-**Next target:** publish v1.13.2; optional future work is independent external semantic validation.
+**Current version:** v1.13.2 (published 2026-10-09)
+**Latest published release:** v1.13.2 (GitHub Release, Linux x64 — published 2026-10-09)
+**Next target:** none scheduled; optional future work is independent external semantic validation.
 
 ---
 
@@ -34,7 +34,7 @@
 | Recommendation-apply workflow (#45) | ✅ DONE |
 | Repository default branch `master` → `main` migration | ✅ DONE |
 | Version bump to 1.13.0 (desktop, core, server) | ✅ DONE |
-| Release: tag + GitHub Release + Linux packages | ⏳ IN PREPARATION |
+| Release: tag + GitHub Release + Linux packages | ✅ RELEASED (v1.13.0; v1.13.1 and v1.13.2 published since) |
 
 ## Published (v1.12.0)
 
@@ -97,7 +97,7 @@
 | `v1.12.0` Tag + GitHub Release (Linux `.deb`/`.rpm`/AppImage + `SHA256SUMS.txt` + manifest) | ✅ Published (2026-10-09) |
 | `v1.13.0` (Web/LAN + container) | ✅ Published (2026-10-09) |
 | `v1.13.1` (post-release hardening) | ✅ Published (2026-10-09) |
-| `v1.13.2` (scan-root authorization, release-gate automation, perf-gate redesign, AppImage `.DirIcon` fix) | 🔜 In preparation |
+| `v1.13.2` (scan-root authorization, release-gate automation, perf-gate redesign, AppImage `.DirIcon` fix) | ✅ Published (2026-10-09) |
 
 ---
 

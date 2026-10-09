@@ -1,21 +1,21 @@
 # Project Status — PromptVault Lite
 
 **Last updated:** 2026-10-09
-**Latest published release:** v1.13.1 (GitHub Release, Linux x64 — `.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.13.1`
-**v1.13.2:** hardening patch in preparation — scan-root authorization, automated release gate, load-invariant performance gate, AppImage `.DirIcon` fix
+**Latest published release:** v1.13.2 (GitHub Release, Linux x64 — `.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.13.2` (commit `80593cf2d4824f4e5c9cc7afbc1b0f142daa9e84`)
+**v1.13.2:** scan-root authorization, automated release gate, load-invariant performance gate, AppImage `.DirIcon` fix
 **Branch:** main
 
 ---
 
-**v1.13.2 (in preparation):** post-release hardening on top of v1.13.1; see `docs/CHANGELOG.md` for the exact scope.
+**v1.13.2 (published):** post-release hardening on top of v1.13.1; see `docs/CHANGELOG.md` for the exact scope.
 
 **v1.13.0 (published):** adds an optional LAN-deployable HTTP server (`promptvault-server`, read-only by default) plus Docker/Compose deployment on top of the v1.12.0 desktop application. The offline, local-first and deterministic Analyzer contract is unchanged. Broad external semantic generalization is not claimed; the 86/176 external study remains incomplete due to provider instability. The Windows-only CLI remains on its last compatible `1.11.1` PyPI release.
 
-## Current Status: GREEN_CODE / v1.13.2 RELEASE CANDIDATE 🟢
+## Current Status: GREEN_CODE / v1.13.2 RELEASED 🟢
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`), server API tests and native E2E (Playwright + WebdriverIO on Windows) suites are verified.
 **Remote-CI:** GitHub Actions runs and passes on `main` (13/13 on `4add9d20`); Issue #154 is closed. Local gates remain required before merge.
-**Release candidate:** v1.13.2 hardening patch — the v1.13.1 Linux x64 packages were published on 2026-10-09.
+**Latest release:** v1.13.2 hardening patch — published 2026-10-09 from tag `v1.13.2`; the release pipeline built, verified and published it end to end.
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
 
@@ -182,7 +182,7 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 2. **v1.12.0 published (done):** Linux x64 packages, checksums and source-identity manifest published 2026-10-09 from tag `v1.12.0`. The Windows-only CLI remains on its separate `1.11.1` stream.
 3. **v1.13.0 published (done):** Web/LAN server, `promptvault-core` / `promptvault-server` split and Docker/Compose deployment, published 2026-10-09.
 4. **v1.13.1 published (done):** post-release hardening — manifest-schema discrimination, artifact path scanning, invariant documentation and regression coverage, published 2026-10-09.
-5. **v1.13.2 (in preparation):** scan-root authorization, automated release gate, load-invariant performance gate, AppImage `.DirIcon` fix.
+5. **v1.13.2 published (done):** scan-root authorization, automated release gate, load-invariant performance gate, AppImage `.DirIcon` fix — published 2026-10-09 from tag `v1.13.2`.
 6. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
 7. **Code signing for the Windows installer.**
 8. **Architecture Contract Audit / Security Posture Review.**
