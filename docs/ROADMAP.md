@@ -19,7 +19,7 @@
 | Windows x64 NSIS installer + release manifest + checksums | ✅ PUBLISHED (v1.10.0 GitHub Release) |
 | PyPI `promptvault-lite-manager==1.10.0` | ✅ PUBLISHED (OIDC Trusted Publishing) |
 
-## Current Milestone (v1.13.0 — Web/LAN & Container, Release Candidate)
+## Published (v1.13.0 — Web/LAN & Container)
 
 | Task | Status |
 | --- | --- |
@@ -95,7 +95,8 @@
 | `v1.11.0` / `v1.11.1` Tags + GitHub Releases (Windows NSIS + manifest + checksums) | ✅ Published |
 | PyPI publish (`promptvault-lite-manager==1.11.1`) | ✅ Published (OIDC Trusted Publishing) |
 | `v1.12.0` Tag + GitHub Release (Linux `.deb`/`.rpm`/AppImage + `SHA256SUMS.txt` + manifest) | ✅ Published (2026-10-09) |
-| `v1.13.0` (Web/LAN + container) | ⏳ In preparation |
+| `v1.13.0` (Web/LAN + container) | ✅ Published (2026-10-09) |
+| `v1.13.1` (post-release hardening) | ✅ Published (2026-10-09) |
 
 ---
 
