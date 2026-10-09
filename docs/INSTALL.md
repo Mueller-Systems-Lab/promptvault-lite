@@ -101,9 +101,10 @@ chmod +x PromptVault-Lite_1.13.0_amd64.AppImage && ./PromptVault-Lite_1.13.0_amd
 
 Verify the download against `SHA256SUMS.txt` before installing.
 
-Hinweis: Für die bereits veröffentlichten v1.12.0-Pakete verwendet GitHub
-punktenierte Dateinamen (`PromptVault.Lite_1.12.0_amd64.deb`), weil GitHub
-Leerzeichen in Asset-Namen durch Punkte ersetzt.
+Hinweis zur Benennung: GitHub ersetzt Leerzeichen in Release-Asset-Namen durch
+Punkte. Deshalb erscheinen die veröffentlichten v1.12.0-Pakete als
+`PromptVault.Lite_1.12.0_amd64.deb`, während die v1.13.0-Pakete ohne Leerzeichen
+(hypheniert) veröffentlicht werden, damit GitHub die Namen nicht umschreibt.
 
 ## CLI / uv tool
 

@@ -12,7 +12,7 @@
 ## Current Status: GREEN_CODE / v1.13.0 RELEASE CANDIDATE 🟢
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`), server API tests and native E2E (Playwright + WebdriverIO on Windows) suites are verified.
-**Remote-CI:** GitHub Actions runs and passes on `main` (13/13 on the current head); Issue #154 is closed. Local gates remain required before merge.
+**Remote-CI:** GitHub Actions runs and passes on `main` (13/13 on `4add9d20`); Issue #154 is closed. Local gates remain required before merge.
 **Release candidate:** v1.13.0 Linux x64 packages plus the Web/LAN server and its Docker image.
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
@@ -147,6 +147,7 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 
 - **Windows installer unsigned:** SmartScreen shows "Unknown publisher" warning
 - **No auto-updater:** manual update for each release
+- **Web/LAN-Server ohne Authentifizierung** — für ein vertrauenswürdiges LAN gedacht, nicht für WAN. `POST /api/scan` akzeptiert einen beliebigen absoluten Verzeichnispfad (Ordnerauswahl-UX); im Container-Deployment ist der erreichbare Pfadraum auf das Container-Dateisystem plus den gemounteten Vault begrenzt (verifiziert), bei einem Bare-Metal-Lauf nicht. Details: `docs/DEPLOYMENT.md` → Sicherheitsgrenzen
 - **Remote-CI:** GitHub Actions runs and passes on `main` (Issue #154 is closed); local gates remain required before merge
 - **Embeddings Phase 1 mock-only** — no real semantic search
 - **Local TTS neural path** — adapter implemented and verified end-to-end on Windows against a real local Piper runtime + German model (`de_DE-thorsten-high`); Piper/model are external local runtime requirements (not bundled); Web Speech remains the fallback

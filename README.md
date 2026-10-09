@@ -73,16 +73,19 @@ Aufnahme: 1440×900, Vite-Renderer-Modus mit gemocktem Tauri-IPC (identischer Re
 
 **Latest published GitHub Release: `v1.12.0`** — the bounded offline Analyzer release for Linux x64 (`.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.12.0`. It preserves the local-first, offline-capable and deterministic contract (structure, completeness, hygiene, contradictions plus actionable improvement signals). Broad external semantic generalization is not claimed; the development study remains incomplete because of provider instability.
 
-**`v1.13.0` (current release candidate)** adds the Web/LAN server, the `promptvault-core` / `promptvault-server` split and Docker/Compose deployment on top of the v1.12.0 desktop application. Its Linux packages use GitHub-safe file names:
+**`v1.13.0` (current release candidate)** adds the Web/LAN server, the `promptvault-core` / `promptvault-server` split and Docker/Compose deployment on top of the v1.12.0 desktop application.
+
+Its Linux packages are published under space-free names. The Tauri bundler emits `PromptVault Lite_…` (the `productName` contains a space) and GitHub rewrites a space in a release-asset name to a dot, which is why the v1.12.0 assets appear as `PromptVault.Lite_…`. For v1.13.0 the bundler output is renamed to space-free names before the checksums are generated, so GitHub does not rewrite them:
 
 | Platform | Asset |
 |---|---|
 | Linux x64 | `PromptVault-Lite_1.13.0_amd64.deb` (Debian package) |
 | Linux x64 | `PromptVault-Lite-1.13.0-1.x86_64.rpm` (RPM package) |
 | Linux x64 | `PromptVault-Lite_1.13.0_amd64.AppImage` (portable package) |
-| Container | Docker image built from `deploy/Dockerfile` |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
+
+A container image is not a release asset; build it from `deploy/Dockerfile` (see `docs/DEPLOYMENT.md`).
 
 Windows and macOS installers are not produced in this Linux-only release run. The prior Windows `v1.11.1` release remains immutable; Windows SmartScreen may show an "Unknown publisher" warning.
 
