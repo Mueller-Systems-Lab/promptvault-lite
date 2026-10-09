@@ -89,7 +89,7 @@
   },
   "hermes_config_change": {
     "key": "skills.external_dirs",
-    "added": "/home/xxammaxx/Schreibtisch/promptvault-lite/.agents/skills",
+    "added": "~/Schreibtisch/promptvault-lite/.agents/skills",
     "reason": "Project .agents/skills/ required for Hermes discovery of npx-installed skills"
   },
   "excluded_by_run_card": [

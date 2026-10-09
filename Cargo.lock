@@ -2977,7 +2977,7 @@ dependencies = [
 
 [[package]]
 name = "promptvault-core"
-version = "1.13.0"
+version = "1.13.1"
 dependencies = [
  "chrono",
  "dunce",
@@ -2994,7 +2994,7 @@ dependencies = [
 
 [[package]]
 name = "promptvault-lite"
-version = "1.13.0"
+version = "1.13.1"
 dependencies = [
  "chrono",
  "dunce",
@@ -3021,7 +3021,7 @@ dependencies = [
 
 [[package]]
 name = "promptvault-server"
-version = "1.13.0"
+version = "1.13.1"
 dependencies = [
  "axum",
  "dunce",

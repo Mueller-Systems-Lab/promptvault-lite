@@ -1,7 +1,7 @@
 {
   "name": "promptvault-lite",
   "private": true,
-  "version": "1.13.0",
+  "version": "1.13.1",
   "license": "MIT",
   "description": "Lokales Prompt-Management-System mit Qualitäts- und Hygieneanalyse",
   "type": "module",
@@ -21,7 +21,8 @@
     "test:e2e:usb": "playwright test tests/e2e/usb-corpus.spec.ts",
     "verify:quick": "node scripts/verify-all.mjs --quick",
     "verify:all": "node scripts/verify-all.mjs --full",
-    "verify:independent": "node scripts/verify-all.mjs --independent"
+    "verify:independent": "node scripts/verify-all.mjs --independent",
+    "verify:release-artifacts": "node scripts/verify-release-artifacts.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0",

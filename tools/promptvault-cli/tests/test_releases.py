@@ -347,3 +347,58 @@ def test_checked_in_manifest_matches_derived_release_base_url() -> None:
     manifest = json.loads(manifest_path.read_text())
     for entry in manifest["artifacts"].values():
         assert entry["url"].startswith(releases.RELEASE_BASE_URL), entry["url"]
+
+
+# --- manifest schema discrimination ------------------------------------------
+#
+# The Linux desktop release publishes a manifest with the SAME file name as the
+# CLI manifest but a different shape. A Windows user who downloads it into the
+# working directory must get a precise error, never a confusing one and never a
+# silent misinterpretation.
+
+_LINUX_RELEASE_MANIFEST = {
+    "schema_version": 1,
+    "release_version": "1.13.0",
+    "source_commit": "bd001f48d162612b38af608684083fe639aecb66",
+    "generated_at": "2026-10-09T12:15:10Z",
+    "platform": "linux",
+    "architecture": "x86_64",
+    "assets": [
+        {
+            "filename": "PromptVault-Lite_1.13.0_amd64.deb",
+            "type": "deb",
+            "size": 3935246,
+            "sha256": "ebee759748e4ac0943cdd664bbc54c8f309c1d3f2f639f4cd5afb0b5619740c4",
+        }
+    ],
+}
+
+
+def test_linux_release_manifest_is_detected() -> None:
+    assert releases.looks_like_linux_release_manifest(_LINUX_RELEASE_MANIFEST)
+    # The CLI schema must not be mistaken for the Linux one, and vice versa.
+    cli_manifest = json.loads(
+        (
+            Path(__file__).resolve().parent.parent
+            / "promptvault-release-manifest.json"
+        ).read_text()
+    )
+    assert not releases.looks_like_linux_release_manifest(cli_manifest)
+
+
+def test_linux_release_manifest_is_rejected_with_a_precise_error() -> None:
+    with pytest.raises(releases.ArtifactIntegrityError) as excinfo:
+        releases.load_manifest(json.dumps(_LINUX_RELEASE_MANIFEST))
+    message = str(excinfo.value)
+    assert "Linux desktop release manifest" in message
+    assert "release_version" in message
+
+
+def test_checked_in_cli_manifest_still_loads() -> None:
+    """The strictness must not reject the real CLI manifest."""
+    manifest_path = (
+        Path(__file__).resolve().parent.parent / "promptvault-release-manifest.json"
+    )
+    loaded = releases.load_manifest(manifest_path.read_text())
+    assert loaded["version"] == "1.11.1"
+    assert "windows-x86_64" in loaded["artifacts"]

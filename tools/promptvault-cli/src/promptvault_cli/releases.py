@@ -121,6 +121,20 @@ def _validate_url(value, tag: str) -> str:
     return value
 
 
+def looks_like_linux_release_manifest(manifest: object) -> bool:
+    """True when a document matches the *Linux desktop* release-manifest schema.
+
+    The Linux release publishes a source-identity manifest that is named the
+    same way (`promptvault-release-manifest.json`) but has a different shape:
+    `release_version` + `source_commit` + an `assets` **list**, instead of the
+    CLI schema's `version` + an `artifacts` **object**. Both currently declare
+    `schema_version: 1`, so the presence of these keys is the discriminator.
+    """
+    if not isinstance(manifest, dict):
+        return False
+    return "release_version" in manifest and isinstance(manifest.get("assets"), list)
+
+
 def load_manifest(data: str) -> dict:
     try:
         manifest = json.loads(data)
@@ -128,6 +142,13 @@ def load_manifest(data: str) -> dict:
         raise ArtifactIntegrityError(f"Manifest is not valid JSON: {e}") from e
     if not isinstance(manifest, dict):
         raise ArtifactIntegrityError("Manifest must be a JSON object")
+    if looks_like_linux_release_manifest(manifest):
+        raise ArtifactIntegrityError(
+            "This is a Linux desktop release manifest (release_version/assets), "
+            "not the CLI/Windows manifest (version/artifacts). Point "
+            f"{MANIFEST_ENV_VAR} at the CLI manifest, or remove the Linux "
+            "manifest from the working directory."
+        )
     if manifest.get("schema_version") != RELEASE_MANIFEST_VERSION:
         raise ArtifactIntegrityError(
             f"Unsupported manifest schema version: {manifest.get('schema_version')}"

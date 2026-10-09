@@ -1,9 +1,9 @@
 # Roadmap — PromptVault Lite
 
 **Last updated:** 2026-10-09
-**Current version:** v1.13.0 release candidate (Web/LAN server + `promptvault-core` / `promptvault-server` split + Docker/Compose deployment)
-**Latest published release:** v1.12.0 (GitHub Release, Linux x64 — published 2026-10-09)
-**Next target:** publish v1.13.0; optional future work is independent external semantic validation.
+**Current version:** v1.13.1 release candidate (post-release hardening on top of v1.13.0; no product behaviour change)
+**Latest published release:** v1.13.0 (GitHub Release, Linux x64 — published 2026-10-09)
+**Next target:** publish v1.13.1; optional future work is independent external semantic validation.
 
 ---
 

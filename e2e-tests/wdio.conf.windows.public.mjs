@@ -2,9 +2,10 @@
 // release binary E2E proof (Windows)
 // ---------------------------------------------------------------------------
 // PUBLIC BINARY PROOF (v1.10.0): drives the PUBLICLY INSTALLED release
-// executable at
-//   C:\Users\xxammaxx\AppData\Local\PromptVault Lite\promptvault-lite.exe
-// (FileVersion/ProductVersion 1.10.0, Debug: False).
+// executable from the per-user install location
+// (`%LOCALAPPDATA%\PromptVault Lite\promptvault-lite.exe` by default;
+// override with `PROMPTVAULT_PUBLIC_APP_PATH`) at FileVersion/ProductVersion
+// 1.10.0, Debug: False.
 //
 // This is a clone of wdio.conf.windows.mjs (manual tauri-driver lifecycle +
 // cached msedgedriver on PATH, port 4444) with two differences:
@@ -25,8 +26,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// No hard-coded user profile: derive the per-user install path and allow an
+// explicit override so the proof is reproducible on another Windows machine.
 const APP_PATH =
-  "C:\\Users\\xxammaxx\\AppData\\Local\\PromptVault Lite\\promptvault-lite.exe";
+  process.env.PROMPTVAULT_PUBLIC_APP_PATH ??
+  path.join(
+    process.env.LOCALAPPDATA ?? path.join(os.homedir(), "AppData", "Local"),
+    "PromptVault Lite",
+    "promptvault-lite.exe",
+  );
 const TAURI_DRIVER = path.join(os.homedir(), ".cargo", "bin", "tauri-driver.exe");
 
 let tauriDriver;
