@@ -1,0 +1,290 @@
+name: Release (Linux)
+
+# =============================================================================
+# Machine-enforced Linux release pipeline (v1.13.2).
+#
+# The point of this workflow is that publication cannot happen without a
+# passing artifact scan. The order is fixed and fail-closed:
+#
+#   resolve identity -> build bundles -> stage canonical names
+#     -> verify artifacts (GATE) -> checksum + manifest (written while staging)
+#     -> re-verify the exact staged bytes -> publish
+#
+# The `publish` job re-runs the verifier on the set it is about to upload: even
+# if someone re-runs only `publish`, or the artifact store is tampered with in
+# between, the gate still has to pass on the bytes that get published.
+#
+# Triggers
+#   - push of a `v<version>` tag  -> build + verify + publish
+#   - workflow_dispatch           -> same; `publish` defaults to false
+#
+# The build always checks out `refs/tags/v<version>`, so the manifest's
+# `source_commit` is by construction the tagged commit, and the job refuses to
+# proceed unless that commit is an ancestor of origin/main.
+# =============================================================================
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version x.y.z (tag v<version> must already exist)"
+        required: true
+        type: string
+      publish:
+        description: "Publish the GitHub release after a passing verification"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-linux:
+    name: Build & verify Linux release set
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      version: ${{ steps.identity.outputs.version }}
+      tag: ${{ steps.identity.outputs.tag }}
+      commit: ${{ steps.commit.outputs.commit }}
+
+    steps:
+      - name: Resolve release identity
+        id: identity
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "push" ]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="${{ inputs.version }}"
+          fi
+          if ! printf '%s' "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::version '$VERSION' is not x.y.z"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout the tagged commit
+        uses: actions/checkout@v4
+        with:
+          # Always the tag: `source_commit` in the manifest must be the tag commit.
+          ref: refs/tags/${{ steps.identity.outputs.tag }}
+          fetch-depth: 0
+
+      - name: Require the tag to point into origin/main
+        id: commit
+        run: |
+          set -euo pipefail
+          COMMIT="$(git rev-parse HEAD)"
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$COMMIT" FETCH_HEAD; then
+            echo "::error::tag ${{ steps.identity.outputs.tag }} does not point into origin/main — refusing to build a release from a non-canonical branch"
+            exit 1
+          fi
+          echo "commit=$COMMIT" >> "$GITHUB_OUTPUT"
+
+      - name: Version consistency gate
+        run: python3 scripts/check_version_consistency.py "${{ steps.identity.outputs.version }}"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            librsvg2-dev \
+            patchelf \
+            libssl-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            libfuse2 \
+            p7zip-full
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-release-${{ hashFiles('Cargo.lock') }}
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build release bundles (deb, rpm, AppImage)
+        # `--remap-path-prefix` keeps the runner's absolute paths out of the
+        # compiled binaries. Remap `$HOME` as a whole, not `$HOME/.cargo`:
+        # rustup's toolchain lives in `$HOME/.rustup`, and that path is
+        # embedded in panic/backtrace metadata — a `.cargo`-only rule leaves it
+        # behind (found exactly that way while verifying the first local build).
+        # The AppImage `.DirIcon`/`.desktop` symlinks are relative as of
+        # @tauri-apps/cli 2.11.4 (upstream #15596), so no build tree path is
+        # embedded there either; G4 and G5 verify both claims.
+        run: |
+          set -euo pipefail
+          export RUSTFLAGS="--remap-path-prefix=$HOME=/rust-home --remap-path-prefix=$GITHUB_WORKSPACE=/promptvault"
+          pnpm tauri build --bundles deb,rpm,appimage
+        env:
+          CI: "true"
+
+      - name: Stage the canonical release set
+        run: |
+          set -euo pipefail
+          node scripts/release/stage-linux-release.mjs \
+            --bundles target/release/bundle \
+            --version "${{ steps.identity.outputs.version }}" \
+            --commit "${{ steps.commit.outputs.commit }}" \
+            --out release-staging
+
+      - name: Verify the release set (GATE)
+        # Fail closed: anything the verifier rejects stops the job here, so the
+        # `publish` job never receives an unverified set.
+        run: |
+          set -euo pipefail
+          node scripts/verify-release-artifacts.mjs release-staging \
+            --expect-version "${{ steps.identity.outputs.version }}" \
+            --expect-commit "${{ steps.commit.outputs.commit }}" \
+            --forbid "$HOME" \
+            --forbid "/opt/hostedtoolcache" \
+            --require-full-set
+
+      - name: Upload the verified staging set
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-staging
+          path: release-staging
+          retention-days: 14
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub release (gated)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: build-linux
+    if: github.event_name == 'push' || inputs.publish == true
+    permissions:
+      contents: write
+
+    steps:
+      # Checkout FIRST: actions/checkout cleans the workspace, which would
+      # delete the downloaded staging set if it ran after the download.
+      - name: Checkout the release scripts
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ needs.build-linux.outputs.tag }}
+          fetch-depth: 1
+
+      - name: Install verification tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y p7zip-full
+
+      - name: Download the verified staging set
+        uses: actions/download-artifact@v4
+        with:
+          name: release-staging
+          path: release-staging
+
+      - name: Restore the AppImage executable bit
+        run: chmod +x release-staging/artifacts/*.AppImage
+
+      - name: Re-verify the exact bytes to be published (GATE)
+        run: |
+          set -euo pipefail
+          node scripts/verify-release-artifacts.mjs release-staging \
+            --expect-version "${{ needs.build-linux.outputs.version }}" \
+            --expect-commit "${{ needs.build-linux.outputs.commit }}" \
+            --forbid "$HOME" \
+            --forbid "/opt/hostedtoolcache" \
+            --require-full-set
+
+      - name: Refuse to overwrite an existing release (idempotency guard)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "${{ needs.build-linux.outputs.tag }}" \
+               --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            echo "::error::release ${{ needs.build-linux.outputs.tag }} already exists — refusing to overwrite published assets. Delete the release explicitly if a re-release is intended."
+            exit 1
+          fi
+
+      - name: Assemble release notes from the changelog
+        # The `## v<version>` changelog entry is written BEFORE the release, so
+        # it carries a candidate status ("Status: RELEASE CANDIDATE"). Copying it
+        # verbatim into the published release page would contradict the release
+        # being published; the status line is therefore replaced here, and the
+        # changelog itself is aligned in a follow-up doc commit (as for v1.13.1).
+        run: |
+          set -euo pipefail
+          node -e '
+            const fs = require("node:fs");
+            const [version, tag] = process.argv.slice(1);
+            const lines = fs.readFileSync("docs/CHANGELOG.md", "utf8").split("\n");
+            const start = lines.findIndex((l) => l.startsWith("## v" + version));
+            if (start === -1) {
+              console.error("no changelog section for " + version);
+              process.exit(1);
+            }
+            let end = lines.length;
+            for (let i = start + 1; i < lines.length; i += 1) {
+              if (lines[i].startsWith("## ")) { end = i; break; }
+            }
+            let body = lines.slice(start, end).join("\n").trimEnd();
+            // Replace only the bolded status token, so the descriptive sentence
+            // that follows it in the same paragraph is preserved:
+            //   "**Status: RELEASE CANDIDATE** — a hardening patch …"
+            // becomes
+            //   "**Status: RELEASED** (published from tag v1.13.2) — a hardening patch …"
+            if (/^\*\*Status: [^*]+\*\*/m.test(body)) {
+              body = body.replace(
+                /^\*\*Status: [^*]+\*\*/m,
+                "**Status: RELEASED** (published from tag " + tag + ")",
+              );
+            } else {
+              console.error("::warning::no status line found in the changelog section");
+            }
+            fs.writeFileSync("release-notes.md", body + "\n");
+          ' "${{ needs.build-linux.outputs.version }}" "${{ needs.build-linux.outputs.tag }}"
+          test -s release-notes.md
+          grep -q "RELEASED" release-notes.md
+
+      - name: Publish release with verified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release create "${{ needs.build-linux.outputs.tag }}" \
+            --repo "${{ github.repository }}" \
+            --title "PromptVault Lite ${{ needs.build-linux.outputs.tag }}" \
+            --notes-file release-notes.md \
+            --verify-tag \
+            release-staging/artifacts/* \
+            release-staging/checksums/*

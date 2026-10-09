@@ -1,7 +1,7 @@
 {
   "name": "promptvault-lite",
   "private": true,
-  "version": "1.13.1",
+  "version": "1.13.2",
   "license": "MIT",
   "description": "Lokales Prompt-Management-System mit Qualitäts- und Hygieneanalyse",
   "type": "module",
@@ -39,7 +39,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.61.1",
-    "@tauri-apps/cli": "^2.0.0",
+    "@tauri-apps/cli": "^2.11.4",
     "@testing-library/jest-dom": "^6.4.0",
     "@testing-library/react": "^15.0.0",
     "@types/react": "^18.3.3",

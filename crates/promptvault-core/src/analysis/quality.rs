@@ -1702,6 +1702,12 @@ mod edge_tests {
         assert!(!eval.criteria.is_empty());
     }
 
+    /// Korrektheit für einen großen Prompt. Bewusst OHNE Wall-Clock-Grenze:
+    /// eine absolute Zeitgrenze in der normalen Korrektheits-CI hing allein von
+    /// der Auslastung des Rechners ab (ein parallel laufender `cargo test`
+    /// konnte sie reißen), ohne je eine echte Regression anzuzeigen. Die
+    /// Performance wird in
+    /// `test_analysis_cost_is_bounded_and_linear_below_the_cap` geprüft.
     #[test]
     fn test_large_prompt() {
         // Generate a ~100KB prompt
@@ -1711,15 +1717,200 @@ mod edge_tests {
         let content = format!("{}{}", base, repeated);
         assert!(content.len() > 100_000);
 
-        let start = std::time::Instant::now();
         let eval = evaluate_prompt(&content, "test-large");
-        let duration = start.elapsed();
 
         assert!(!eval.criteria.is_empty());
+        // Dieselbe Kriterienmenge wie bei einem kleinen Prompt: die Analyse
+        // verarbeitet den ganzen Inhalt, statt bei großer Eingabe abzubrechen
+        // oder Kriterien zu verlieren.
+        let small = evaluate_prompt("# Large Prompt\n\nKurz.", "test-large-small");
+        assert_eq!(
+            eval.criteria.len(),
+            small.criteria.len(),
+            "großer Prompt liefert eine andere Kriterienmenge als ein kleiner"
+        );
+        assert!(eval.criteria.iter().all(|c| !c.name.trim().is_empty()));
+    }
+
+    /// Performance-Gate für die Analysekosten (v1.13.2).
+    ///
+    /// Vorgeschichte: `test_large_prompt` hatte eine absolute Wall-Clock-Grenze
+    /// (<8 s für ~100 KB). Diese Grenze hing allein an der Maschinenauslastung —
+    /// ein parallel laufender Kompilierlauf konnte Korrektheits-CI rot machen,
+    /// ohne dass sich an der Analyse etwas verschlechtert hätte.
+    ///
+    /// **Wichtig: die Analyse ist nach oben begrenzt.** `r2::evaluate` schneidet
+    /// die Eingabe auf `MAX_ANALYSIS_CHARS` (100_000 Zeichen) ab
+    /// (`analysis::r2::truncate_content`). Alles oberhalb dieses Caps kostet
+    /// per Konstruktion *nichts* zusätzlich. Ein erster Messversuch mit
+    /// 256 KiB/1 MiB hat genau das gemessen (konstante Zeit) und damit nichts
+    /// über die Skalierung ausgesagt — beide Eingaben waren auf dieselben
+    /// 100 000 Zeichen gekürzt. Ein Gate in diesem Bereich ist strukturell
+    /// blind und wurde deshalb verworfen.
+    ///
+    /// **Messgrundlage (unterhalb des Caps, Release, `best_of(5)`, mit
+    /// Aufwärmphase):**
+    ///
+    /// ```text
+    ///    1 KiB -> 0,032 s      4 KiB -> 0,041 s      8 KiB -> 0,042 s
+    ///   16 KiB -> 0,060 s     32 KiB -> 0,090 s     64 KiB -> 0,165 s
+    ///   96 KiB -> 0,241 s    128 KiB -> 0,249 s   1024 KiB -> 0,236 s
+    /// ```
+    ///
+    /// Unterhalb des Caps ist die Kurve klar **linear** (`t ~ c + k*n`), ab dem
+    /// Cap flach (128 KiB und 1 MiB ≈ 96 KiB). Das Gate misst deshalb im
+    /// linearen Bereich — dort ist ein zusätzlicher Term pro Byte sichtbar.
+    ///
+    /// Die Prüfungen:
+    ///
+    /// 1. **Deterministische Obergrenze.** Analyse ist für jede Eingabe
+    ///    oberhalb des Caps *ergebnisgleich* zur Analyse des gekürzten Präfixes
+    ///    (verglichen werden Kriterien, Gesamtwert, fehlende Abschnitte und
+    ///    Empfehlungen). Damit kann Arbeit hinter dem Cap das *gemeldete
+    ///    Ergebnis* nicht verändern; teure Arbeit dort wäre reine Verschwendung.
+    ///    Heute gilt das per Konstruktion (beide Seiten rufen denselben
+    ///    Kürzungshelfer) — der Test ist also eine Regressionsbremse für einen
+    ///    künftigen Pfad, der vor der Kürzung arbeitet.
+    /// 2. **Superlinearität unterhalb des Caps.** `t(64 KiB)/t(8 KiB)` wird
+    ///    gemessen (beide < Cap). Linear: gemessen 4,0-4,4. Das Verhältnis ist
+    ///    **lastinvariant** — unter 12-facher CPU-Last wurden die Messwerte 4x
+    ///    höher (188 ms / 654 ms), das Verhältnis blieb 3,5, also vom Limit weg.
+    ///    Grenze 6,5 (kalibriert, ~1,5x Reserve).
+    ///    Ehrliche Grenzen der Aussagekraft: (a) ein superlinearer Term wird
+    ///    nur erkannt, wenn er die Zeit bei 64 KiB relevant verschiebt
+    ///    (>~100 ms) — ein winziger, aber stark wachsender Term bleibt
+    ///    unsichtbar; (b) ein *linearer* Faktor (z. B. 10x pro Byte) hält das
+    ///    Verhältnis bei ~4 und wird nur von der Katastrophengrenze (5 s)
+    ///    gefangen. Beides ist einer Zeitmessung inhärent; die deterministische
+    ///    Cap-Invariante ist das, was den unbeschränkten Fall ausschließt.
+    /// 3. **Absolute Katastrophengrenze** für den konstanten Anteil: Ist-Wert
+    ///    ~0,25 s für 96 KiB, Grenze 5 s (20x Abstand).
+    ///
+    /// Nur im Release-Lauf aktiv (`cargo test --release -p promptvault-core --lib`),
+    /// eigene CI-Spur `performance`; die Korrektheits-CI führt diesen Test nicht
+    /// aus.
+    #[test]
+    #[cfg_attr(debug_assertions, ignore)]
+    fn test_analysis_cost_is_bounded_and_linear_below_the_cap() {
+        // Sizes stay BELOW `r2::MAX_ANALYSIS_CHARS` (100_000 chars); above it
+        // the work is capped and says nothing about scaling.
+        const SMALL_KIB: usize = 8;
+        const LARGE_KIB: usize = 8 * SMALL_KIB; // 8x input
+        /// Linear: ~3.9 measured. Quadratic would be ~64. 8 separates cleanly.
+        const RATIO_LIMIT: f64 = 6.5;
+        /// Ceiling for the (constant + capped-linear) cost. Measured ~0.25 s.
+        const ABSOLUTE_LIMIT_S: f64 = 5.0;
+        /// Size used to prove the cap bounds the cost.
+        const ABOVE_CAP_KIB: usize = 1024;
+
+        fn make_prompt(target_bytes: usize) -> String {
+            let unit = "This is a test paragraph with enough content to simulate a real prompt. ";
+            let mut content = String::with_capacity(target_bytes + unit.len());
+            content.push_str("# Large Prompt\n\n");
+            while content.len() < target_bytes {
+                content.push_str(unit);
+            }
+            content
+        }
+
+        /// Everything the analysis *reports*, minus the volatile fields
+        /// (`id`, `evaluated_at`). A comparison that ignored
+        /// `missing_sections`/`recommendations` would miss a change that only
+        /// moves those.
+        #[derive(PartialEq, Debug)]
+        struct Signature {
+            criteria: Vec<(String, u8, u8)>,
+            overall: u8,
+            missing_sections: Vec<String>,
+            recommendations: Vec<String>,
+        }
+
+        fn signature(eval: &crate::models::PromptEvaluation) -> Signature {
+            Signature {
+                criteria: eval
+                    .criteria
+                    .iter()
+                    .map(|c| (c.name.clone(), c.score, c.max_score))
+                    .collect(),
+                overall: eval.overall_score,
+                missing_sections: eval.missing_sections.clone(),
+                recommendations: eval.recommendations.clone(),
+            }
+        }
+
+        /// Best of `samples` runs. Das Minimum nähert sich der unbelasteten
+        /// Laufzeit an und ist robuster gegen Scheduling-Aussetzer als der
+        /// Median; ein Ausreißer nach oben kann das Minimum nicht verzerren.
+        fn best_of(samples: usize, content: &str) -> (std::time::Duration, Signature) {
+            let mut best = std::time::Duration::MAX;
+            let mut sig = Signature {
+                criteria: Vec::new(),
+                overall: 0,
+                missing_sections: Vec::new(),
+                recommendations: Vec::new(),
+            };
+            for _ in 0..samples {
+                let start = std::time::Instant::now();
+                let eval = evaluate_prompt(content, "test-scaling");
+                let elapsed = start.elapsed();
+                best = best.min(elapsed);
+                sig = signature(&eval);
+            }
+            (best, sig)
+        }
+
+        // ---- 1. deterministic: the tail beyond the cap cannot matter --------
+        let above = make_prompt(ABOVE_CAP_KIB * 1024);
+        let capped_prefix = crate::analysis::r2::truncate_content(&above).to_string();
+        assert_eq!(
+            capped_prefix.len(),
+            crate::analysis::r2::MAX_ANALYSIS_CHARS,
+            "truncate_content should cut to exactly MAX_ANALYSIS_CHARS"
+        );
+        // Warm up, then single measurements: only the *signature* is asserted
+        // here, the timings are informational.
+        let _ = evaluate_prompt(&above, "cap-warmup");
+        let _ = evaluate_prompt(&capped_prefix, "cap-warmup");
+        let (t_above, sig_above) = best_of(1, &above);
+        let (t_prefix, sig_prefix) = best_of(1, &capped_prefix);
+        assert_eq!(
+            sig_above, sig_prefix,
+            "analysis of an oversized prompt differs from analysis of its capped prefix — \
+             work beyond the cap would change the reported result"
+        );
+        println!("perf: cap {ABOVE_CAP_KIB} KiB = {t_above:?}, cap-prefix = {t_prefix:?}");
+
+        // ---- 2. super-linearity below the cap -------------------------------
+        let small = make_prompt(SMALL_KIB * 1024);
+        let large = make_prompt(LARGE_KIB * 1024);
+        assert!(large.len() < crate::analysis::r2::MAX_ANALYSIS_CHARS);
+
+        // Aufwärmen (Regex-Caches, Allokator) — nicht in die Messung einbeziehen.
+        for _ in 0..3 {
+            let _ = evaluate_prompt(&small, "test-scaling-warmup");
+            let _ = evaluate_prompt(&large, "test-scaling-warmup");
+        }
+
+        let (t_small, _) = best_of(5, &small);
+        let (t_large, _) = best_of(5, &large);
+        // sichtbar mit `--nocapture`: das Gate dokumentiert seine eigene Evidenz
+        println!("perf: {SMALL_KIB} KiB = {t_small:?}, {LARGE_KIB} KiB = {t_large:?}");
+
+        let small_s = t_small.as_secs_f64();
+        let large_s = t_large.as_secs_f64();
+        let ratio = large_s / small_s.max(f64::MIN_POSITIVE);
         assert!(
-            duration.as_secs() < 8,
-            "Large prompt took too long: {:?}",
-            duration
+            ratio < RATIO_LIMIT,
+            "Analyse skaliert superlinear: {LARGE_KIB} KiB brauchte {ratio:.2}x die Zeit von \
+             {SMALL_KIB} KiB ({t_small:?} -> {t_large:?}). Linear erwartet ~4, \
+             Grenze {RATIO_LIMIT}."
+        );
+
+        // ---- 3. absolute catastrophe ceiling --------------------------------
+        assert!(
+            t_above.as_secs_f64() < ABSOLUTE_LIMIT_S,
+            "Analyse eines {ABOVE_CAP_KIB}-KiB-Prompts dauerte {t_above:?} \
+             (Grenze {ABSOLUTE_LIMIT_S} s)"
         );
     }
 

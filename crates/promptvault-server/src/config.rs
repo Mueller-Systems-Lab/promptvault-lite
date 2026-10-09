@@ -6,6 +6,11 @@
 //! - `PROMPTVAULT_SERVER_PORT` — TCP port (default `8080`)
 //! - `PROMPTVAULT_SERVER_VAULT` — absolute path of the prompt vault directory
 //!   (required; the server refuses to start without it)
+//! - `PROMPTVAULT_SERVER_SCAN_ROOTS` — directories `POST /api/scan` may scan
+//!   (**default: the configured vault**). Colon-separated absolute paths on
+//!   Unix (`;` on Windows). The special value `*` disables the restriction and
+//!   restores the pre-1.13.2 behaviour where a trusted-LAN client may scan any
+//!   server-readable absolute path.
 //! - `PROMPTVAULT_SERVER_READ_ONLY` — `1`/`true` enforces read-only mode
 //!   (**default: read-only**; write endpoints are disabled unless explicitly
 //!   opted out, and even then only after the approval work in the security
@@ -23,6 +28,13 @@ pub struct ServerConfig {
     pub port: u16,
     pub vault_path: PathBuf,
     pub read_only: bool,
+    /// Canonicalized directories a client may ask `POST /api/scan` to scan.
+    /// Empty exactly when [`ServerConfig::allow_unrestricted_scan`] is set.
+    pub scan_roots: Vec<PathBuf>,
+    /// Explicit operator opt-in (`PROMPTVAULT_SERVER_SCAN_ROOTS=*`): any
+    /// server-readable absolute directory may be scanned. This is the
+    /// documented trusted-host escape hatch, never the default.
+    pub allow_unrestricted_scan: bool,
 }
 
 impl ServerConfig {
@@ -77,12 +89,68 @@ pub fn load_config(
         Ok(v) => !matches!(v.trim(), "0" | "false" | "FALSE" | "False"),
         Err(_) => true,
     };
+
+    // Scan authorization policy. Default = least privilege: only the
+    // configured vault. `*` is the explicit operator opt-in that restores
+    // unrestricted scanning (documented trusted-LAN mode).
+    let (scan_roots, allow_unrestricted_scan) = match get("PROMPTVAULT_SERVER_SCAN_ROOTS") {
+        Ok(v) if v.trim() == "*" => (Vec::new(), true),
+        Ok(v) if v.trim().is_empty() => (vec![canonical_root(&vault_path)?], false),
+        Ok(v) => {
+            let mut roots = Vec::new();
+            // `split_paths` uses the platform's path-list separator (`:` on
+            // Unix, `;` on Windows) — splitting on '/' would shred every
+            // absolute path.
+            for raw in std::env::split_paths(v.trim()) {
+                if raw.as_os_str().is_empty() {
+                    continue;
+                }
+                roots.push(canonical_root(&raw)?);
+            }
+            if roots.is_empty() {
+                return Err(ConfigError {
+                    field: "PROMPTVAULT_SERVER_SCAN_ROOTS",
+                    reason: "keine gültigen Wurzeln — leer lassen (Default: Vault) oder '*' setzen"
+                        .to_string(),
+                });
+            }
+            (roots, false)
+        }
+        Err(_) => (vec![canonical_root(&vault_path)?], false),
+    };
+
     Ok(ServerConfig {
         host,
         port,
         vault_path,
         read_only,
+        scan_roots,
+        allow_unrestricted_scan,
     })
+}
+
+/// Canonicalize a configured scan root. Fail-closed: a root that is not an
+/// absolute, resolvable directory aborts server startup. Canonicalization is
+/// required so containment is decided on resolved paths (a symlinked root must
+/// still match a canonicalized request path).
+fn canonical_root(path: &Path) -> Result<PathBuf, ConfigError> {
+    if !path.is_absolute() {
+        return Err(ConfigError {
+            field: "PROMPTVAULT_SERVER_SCAN_ROOTS",
+            reason: format!("Wurzel muss absolut sein: {}", path.display()),
+        });
+    }
+    let canonical = dunce::canonicalize(path).map_err(|e| ConfigError {
+        field: "PROMPTVAULT_SERVER_SCAN_ROOTS",
+        reason: format!("Wurzel nicht auflösbar ({}): {}", path.display(), e),
+    })?;
+    if !canonical.is_dir() {
+        return Err(ConfigError {
+            field: "PROMPTVAULT_SERVER_SCAN_ROOTS",
+            reason: format!("Wurzel ist kein Verzeichnis: {}", path.display()),
+        });
+    }
+    Ok(canonical)
 }
 
 /// Fail-closed path validation: must exist, be a directory and be absolute
@@ -125,6 +193,100 @@ mod tests {
         assert_eq!(cfg.port, 8080);
         assert!(cfg.read_only, "read-only ist der Default");
         assert_eq!(cfg.bind_addr(), "127.0.0.1:8080");
+    }
+
+    // --- Scan-Autorisation (v1.13.2) -----------------------------------------
+
+    #[test]
+    fn scan_roots_default_to_the_vault() {
+        // Least privilege: ohne explizite Konfiguration ist nur der Vault
+        // scanbar — nicht das gesamte Server-Dateisystem.
+        let dir = tempfile::tempdir().unwrap();
+        let cfg = load_config(&env_of(&[(
+            "PROMPTVAULT_SERVER_VAULT",
+            dir.path().to_str().unwrap(),
+        )]))
+        .unwrap();
+        assert!(!cfg.allow_unrestricted_scan);
+        // Same canonicalizer as production (`canonical_root`): on Windows
+        // `std::fs::canonicalize` keeps the `\\?\` verbatim prefix and the
+        // assertions would differ from the server's own value.
+        let expected = dunce::canonicalize(dir.path()).unwrap();
+        assert_eq!(cfg.scan_roots, vec![expected]);
+    }
+
+    #[test]
+    fn scan_roots_accept_an_explicit_list() {
+        let vault = tempfile::tempdir().unwrap();
+        let extra = tempfile::tempdir().unwrap();
+        let roots = std::env::join_paths([vault.path(), extra.path()]).unwrap();
+        let cfg = load_config(&env_of(&[
+            ("PROMPTVAULT_SERVER_VAULT", vault.path().to_str().unwrap()),
+            ("PROMPTVAULT_SERVER_SCAN_ROOTS", roots.to_str().unwrap()),
+        ]))
+        .unwrap();
+        assert!(!cfg.allow_unrestricted_scan);
+        assert_eq!(
+            cfg.scan_roots,
+            vec![
+                dunce::canonicalize(vault.path()).unwrap(),
+                dunce::canonicalize(extra.path()).unwrap()
+            ]
+        );
+    }
+
+    #[test]
+    fn scan_roots_star_is_the_explicit_unrestricted_opt_in() {
+        let dir = tempfile::tempdir().unwrap();
+        let cfg = load_config(&env_of(&[
+            ("PROMPTVAULT_SERVER_VAULT", dir.path().to_str().unwrap()),
+            ("PROMPTVAULT_SERVER_SCAN_ROOTS", "*"),
+        ]))
+        .unwrap();
+        assert!(cfg.allow_unrestricted_scan);
+        assert!(cfg.scan_roots.is_empty(), "'*' braucht keine Wurzeln");
+    }
+
+    #[test]
+    fn scan_root_must_be_absolute() {
+        let dir = tempfile::tempdir().unwrap();
+        let err = load_config(&env_of(&[
+            ("PROMPTVAULT_SERVER_VAULT", dir.path().to_str().unwrap()),
+            ("PROMPTVAULT_SERVER_SCAN_ROOTS", "relative/root"),
+        ]))
+        .unwrap_err();
+        assert_eq!(err.field, "PROMPTVAULT_SERVER_SCAN_ROOTS");
+        assert!(err.reason.contains("absolut"), "{}", err.reason);
+    }
+
+    #[test]
+    fn scan_root_must_exist() {
+        // Fail-closed: eine nicht auflösbare Wurzel darf den Server nicht
+        // stillschweigend mit einer leeren Policy starten.
+        let dir = tempfile::tempdir().unwrap();
+        let err = load_config(&env_of(&[
+            ("PROMPTVAULT_SERVER_VAULT", dir.path().to_str().unwrap()),
+            (
+                "PROMPTVAULT_SERVER_SCAN_ROOTS",
+                "/definitiv/nicht/vorhanden",
+            ),
+        ]))
+        .unwrap_err();
+        assert_eq!(err.field, "PROMPTVAULT_SERVER_SCAN_ROOTS");
+    }
+
+    #[test]
+    fn empty_scan_roots_falls_back_to_the_vault() {
+        let dir = tempfile::tempdir().unwrap();
+        let cfg = load_config(&env_of(&[
+            ("PROMPTVAULT_SERVER_VAULT", dir.path().to_str().unwrap()),
+            ("PROMPTVAULT_SERVER_SCAN_ROOTS", ""),
+        ]))
+        .unwrap();
+        assert_eq!(
+            cfg.scan_roots,
+            vec![dunce::canonicalize(dir.path()).unwrap()]
+        );
     }
 
     #[test]

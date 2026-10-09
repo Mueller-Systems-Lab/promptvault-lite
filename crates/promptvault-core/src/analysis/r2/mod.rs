@@ -65,7 +65,7 @@ const GUIDELINE_CRITERIA: [&str; 8] = [
 /// Content size limit: cap at 100K chars to bound regex scanning time
 /// (mirrors `quality.rs::evaluate_prompt`). For content larger than this,
 /// only the first portion is analysed.
-const MAX_ANALYSIS_CHARS: usize = 100_000;
+pub const MAX_ANALYSIS_CHARS: usize = 100_000;
 
 /// Truncate `content` at the 100K char boundary (never splitting a UTF-8
 /// char). Returns the analysed prefix unchanged when within the limit.

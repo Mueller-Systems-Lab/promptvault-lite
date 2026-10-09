@@ -6,7 +6,7 @@ Developed by [Mueller-Systems-Lab](https://github.com/Mueller-Systems-Lab). Prom
 
 PromptVault Lite turns messy prompt folders into a structured, searchable and structure-checked local prompt archive — without cloud upload, accounts, telemetry or remote AI calls. Everything runs on your machine.
 
-![Release](https://img.shields.io/badge/release-v1.13.0%20published%20%C2%B7%20v1.13.1%20RC-blue)
+![Release](https://img.shields.io/github/v/release/Mueller-Systems-Lab/promptvault-lite?label=release)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 ![Privacy](https://img.shields.io/badge/privacy-local--first-green)
 ![Stack](https://img.shields.io/badge/stack-Tauri%20%7C%20React%20%7C%20Rust-4444ff)
@@ -71,17 +71,17 @@ Aufnahme: 1440×900, Vite-Renderer-Modus mit gemocktem Tauri-IPC (identischer Re
 
 ## Current Release & Publication Status
 
-**Latest published GitHub Release: `v1.13.0`** — the Web/LAN & Container release for Linux x64 (`.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.13.0`. It adds the LAN-deployable server, the `promptvault-core` / `promptvault-server` split and Docker/Compose deployment on top of the bounded offline Analyzer contract.
+**Latest published GitHub Release: `v1.13.1`** — post-release hardening for Linux x64 (`.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.13.1`. It tightens documented trust boundaries and adds the fail-closed artifact scanner. The Web/LAN & Container capability itself shipped in `v1.13.0`: the LAN-deployable server, the `promptvault-core` / `promptvault-server` split and Docker/Compose deployment on top of the bounded offline Analyzer contract.
 
-**`v1.13.1` (current release candidate)** is a hardening patch on top of v1.13.0: manifest-schema discrimination, artifact path scanning, invariant documentation and regression coverage — no product behaviour change.
+**`v1.13.2` (current release candidate)** is a hardening patch on top of v1.13.1: it restricts `POST /api/scan` to configured scan roots (least privilege by default, `PROMPTVAULT_SERVER_SCAN_ROOTS` to widen), automates the release-artifact gate as a workflow, replaces the contention-sensitive wall-clock assertion in `test_large_prompt` with a load-invariant performance gate, and fixes the AppImage `.DirIcon` symlink by upgrading the Tauri CLI.
 
 Its Linux packages are published under space-free names. The Tauri bundler emits `PromptVault Lite_…` (the `productName` contains a space) and GitHub rewrites a space in a release-asset name to a dot, which is why the v1.12.0 assets appear as `PromptVault.Lite_…`. From v1.13.0 on, the bundler output is renamed to space-free names before the checksums are generated, so GitHub does not rewrite them:
 
 | Platform | Asset |
 |---|---|
-| Linux x64 | `PromptVault-Lite_1.13.1_amd64.deb` (Debian package) |
-| Linux x64 | `PromptVault-Lite-1.13.1-1.x86_64.rpm` (RPM package) |
-| Linux x64 | `PromptVault-Lite_1.13.1_amd64.AppImage` (portable package) |
+| Linux x64 | `PromptVault-Lite_1.13.2_amd64.deb` (Debian package) |
+| Linux x64 | `PromptVault-Lite-1.13.2-1.x86_64.rpm` (RPM package) |
+| Linux x64 | `PromptVault-Lite_1.13.2_amd64.AppImage` (portable package) |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
 
@@ -97,17 +97,17 @@ The existing `promptvault` CLI remains a separate Windows/NSIS release stream at
 
 ### Native App
 
-**Linux (v1.13.1):** download the package from the [releases page](https://github.com/Mueller-Systems-Lab/promptvault-lite/releases/latest) and verify it against `SHA256SUMS.txt`, then install:
+**Linux (v1.13.2):** download the package from the [releases page](https://github.com/Mueller-Systems-Lab/promptvault-lite/releases/latest) and verify it against `SHA256SUMS.txt`, then install:
 
 ```text
 # Debian/Ubuntu
-sudo apt install ./PromptVault-Lite_1.13.1_amd64.deb
+sudo apt install ./PromptVault-Lite_1.13.2_amd64.deb
 
 # Fedora/RHEL
-sudo dnf install ./PromptVault-Lite-1.13.1-1.x86_64.rpm
+sudo dnf install ./PromptVault-Lite-1.13.2-1.x86_64.rpm
 
 # AppImage (portable)
-chmod +x PromptVault-Lite_1.13.1_amd64.AppImage && ./PromptVault-Lite_1.13.1_amd64.AppImage
+chmod +x PromptVault-Lite_1.13.2_amd64.AppImage && ./PromptVault-Lite_1.13.2_amd64.AppImage
 ```
 
 ### Web / LAN Mode (Docker)
@@ -277,7 +277,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Latest published desktop release: v1.13.0 (GitHub Release, Linux x64). The v1.13.1 hardening patch adds manifest-schema discrimination, artifact path scanning, invariant documentation and regression coverage — no product behaviour change. The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Latest published desktop release: v1.13.1 (GitHub Release, Linux x64). The v1.13.2 hardening patch restricts `/api/scan` to configured scan roots, automates the release-artifact gate, replaces the contention-sensitive wall-clock assertion in `test_large_prompt` with a load-invariant performance gate, and fixes the AppImage `.DirIcon` symlink. The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

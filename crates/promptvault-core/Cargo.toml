@@ -1,6 +1,6 @@
 [package]
 name = "promptvault-core"
-version = "1.13.1"
+version = "1.13.2"
 description = "Framework-free Rust core of PromptVault Lite (models, parser, scanner, analysis, database)"
 authors = ["PromptVault Team"]
 license = "MIT"

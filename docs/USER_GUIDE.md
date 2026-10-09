@@ -1,7 +1,7 @@
 ---
 title: Benutzerhandbuch
 description: Bedienung der Oberfläche, Suche, Analyse und Exportstatus.
-version: 1.13.1
+version: 1.13.2
 ---
 
 # Benutzerhandbuch

@@ -61,6 +61,8 @@ scripts/*
 !scripts/verify-release-artifacts.mjs
 !scripts/lib/
 !scripts/__tests__/
+# Release-Pipeline (v1.13.2): Staging-Skript + Workflow-Bausteine
+!scripts/release/
 site/
 
 # Python cache

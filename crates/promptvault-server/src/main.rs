@@ -41,10 +41,19 @@ fn main() {
         }
     };
     log::info!(
-        "PromptVault Server: bind={} vault={} read_only={}",
+        "PromptVault Server: bind={} vault={} read_only={} scan_roots={}",
         cfg.bind_addr(),
         cfg.vault_path.display(),
-        cfg.read_only
+        cfg.read_only,
+        if cfg.allow_unrestricted_scan {
+            "* (uneingeschränkt — vertrauenswürdiger Host)".to_string()
+        } else {
+            cfg.scan_roots
+                .iter()
+                .map(|r| r.display().to_string())
+                .collect::<Vec<_>>()
+                .join(", ")
+        }
     );
 
     let runtime = tokio::runtime::Builder::new_multi_thread()
