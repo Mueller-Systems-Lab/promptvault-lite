@@ -1,7 +1,7 @@
 ---
 title: Deployment (Web/LAN)
 description: promptvault-server in Docker/LXC mit NAS-Vault (Epic #97).
-version: 1.13.0
+version: 1.13.1
 last_updated: 2026-10-09
 ---
 

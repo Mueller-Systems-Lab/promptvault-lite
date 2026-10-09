@@ -1,16 +1,66 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.13.0
+version: 1.13.1
 ---
 
 # Changelog
 
+## v1.13.1 — Post-Release Hardening (PATCH)
+
+**Status: RELEASE CANDIDATE** — a hardening patch on top of v1.13.0. No product
+behaviour changes: it tightens trust boundaries that were already documented,
+makes two ambiguous contracts explicit, and adds the missing regression coverage.
+
+### Fixed
+
+- **Manifest schema ambiguity.** The Linux release manifest and the CLI/Windows
+  manifest share the file name `promptvault-release-manifest.json` but have
+  different shapes. `releases.load_manifest()` now recognizes the Linux shape
+  (`release_version` + `assets[]`) and fails with a precise message instead of
+  misreading it, so `promptvault install`/`update` can no longer be misled by a
+  Linux manifest downloaded into the search directory. The contract table is
+  documented in `docs/CLI.md`.
+- **Private absolute paths in active configuration.** The Windows public-binary
+  E2E configuration derived the target executable from a hard-coded user
+  profile; it now uses `%LOCALAPPDATA%` and honours
+  `PROMPTVAULT_PUBLIC_APP_PATH`, so the public-binary proof is reproducible on
+  another machine. `.agents/skills-lock.json` uses the file's own `~`-relative
+  convention. Historical audit and evidence records keep their original text.
+- **Release tooling was silently uncommittable.** `.gitignore` ignores
+  `scripts/*` with an explicit allowlist, so a new script in `scripts/` could
+  not be added to the repository without a matching entry.
+
+### Added
+
+- **`scripts/verify-release-artifacts.mjs`** — verifies a Linux release staging
+  directory: Linux manifest schema (rejecting the CLI/Windows shape), asset
+  names GitHub will not rewrite, manifest↔file size/SHA-256 agreement, and a
+  scan of every artifact payload (including symlink targets) for the build
+  user, the build host and caller-supplied markers. Archives are unpacked first,
+  because a compressed payload hides its strings.
+- **Invariant documentation for `scan_directory`** — `promptvault-core` trusts
+  the caller-supplied root and guarantees only that returned files stay inside
+  the canonicalized root. It has no configured vault; a vault constraint belongs
+  to the caller's own trust boundary (`promptvault-server` already enforces
+  absolute paths, rejects `..` segments and canonicalizes).
+- **Regression coverage** — core scanner root/containment invariants, both
+  manifest-schema directions, artifact-name and artifact-payload scanning, and a
+  guard that fails when a new private absolute path enters the tracked tree.
+
+### Notes
+
+- No gate, threshold or security check was weakened.
+- The `test_large_prompt` wall-clock assertion is unchanged; it is
+  contention-sensitive and needs a serial run on a loaded host.
+
 ## v1.13.0 — Web/LAN & Container Release
 
-**Status: RELEASE CANDIDATE** — the post-v1.12.0 line. Ships the local-first
-desktop application together with a LAN-deployable server: the framework-free
-core moves into `promptvault-core`, the HTTP API lives in
+**Status: RELEASED** — published 2026-10-09 from tag `v1.13.0`
+(commit `bd001f48d162612b38af608684083fe639aecb66`): Linux x64 `.deb`, `.rpm`
+and AppImage plus `SHA256SUMS.txt` and a source-identity manifest. Ships the
+local-first desktop application together with a LAN-deployable server: the
+framework-free core moves into `promptvault-core`, the HTTP API lives in
 `promptvault-server`, and Docker/Compose deployment artifacts are included.
 Offline desktop behavior is unchanged; the Web/LAN mode is additive.
 

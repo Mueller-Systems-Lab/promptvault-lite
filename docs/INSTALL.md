@@ -1,7 +1,7 @@
 ---
 title: Installation
 description: Installationsanleitung für PromptVault Lite.
-version: 1.13.0
+version: 1.13.1
 last_updated: 2026-10-09
 ---
 
@@ -10,7 +10,7 @@ last_updated: 2026-10-09
 ## Unterstützte Nutzung
 
 - **Entwicklung:** Linux, Windows (getestet auf Linux Mint 22.1 und Windows 10)
-- **Linux x64 (v1.12.0 published, v1.13.0 in Vorbereitung):** `.deb`, `.rpm` und AppImage inklusive `SHA256SUMS.txt` und Source-Identity-Manifest
+- **Linux x64 (v1.13.0 published, v1.13.1 in Vorbereitung):** `.deb`, `.rpm` und AppImage inklusive `SHA256SUMS.txt` und Source-Identity-Manifest
 - Windows: the prior `v1.11.1` NSIS release remains available; no new Windows asset was produced in this Linux run
 - macOS: Nur Quellbau — kein pre-built Installer verfügbar
 - Docker: Web/LAN-Server über `deploy/Dockerfile` und `deploy/docker-compose.yml` (Read-only-Default, Vault `:ro`)
@@ -86,17 +86,17 @@ pnpm tauri build
 
 ## Native App (pre-built)
 
-### Linux (v1.12.0 published, v1.13.0 candidate)
+### Linux (v1.13.0 published, v1.13.1 candidate)
 
 ```text
 # Debian/Ubuntu
-sudo apt install ./PromptVault-Lite_1.13.0_amd64.deb
+sudo apt install ./PromptVault-Lite_1.13.1_amd64.deb
 
 # Fedora/RHEL (if using the RPM asset)
-sudo dnf install ./PromptVault-Lite-1.13.0-1.x86_64.rpm
+sudo dnf install ./PromptVault-Lite-1.13.1-1.x86_64.rpm
 
 # AppImage (portable)
-chmod +x PromptVault-Lite_1.13.0_amd64.AppImage && ./PromptVault-Lite_1.13.0_amd64.AppImage
+chmod +x PromptVault-Lite_1.13.1_amd64.AppImage && ./PromptVault-Lite_1.13.1_amd64.AppImage
 ```
 
 Verify the download against `SHA256SUMS.txt` before installing.

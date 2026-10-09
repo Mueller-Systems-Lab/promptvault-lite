@@ -132,7 +132,7 @@ flowchart TD
     J -. "Nur Metadaten (safe-metadata-v1)" .-> M
 ```
 
-Eigenschaften des Flows (Stand v1.13.0, Code-verifiziert):
+Eigenschaften des Flows (Stand v1.13.1, Code-verifiziert):
 
 - Die Klassifikation läuft **automatisch** nach dem Scan als Chunk-Batch
   (25 Prompts pro Chunk) — kein manueller Schritt nötig.
