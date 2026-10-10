@@ -1,0 +1,46 @@
+{
+  "pr": 342,
+  "code_head_reviewed": "f906779b68e045b8d85fc908bc19b7bec8cb8114",
+  "review_type": "AGENT_INDEPENDENT_REVIEW",
+  "reviewer_role": "independent-reviewer-agent",
+  "timestamp": "2026-10-10T12:22:00Z",
+  "verdict": "APPROVE",
+  "findings_summary": "Independent adversarial review of the review-package privacy builder and governance changes across four review rounds. One critical privacy fail-open (a tracked symlink embedded its target's CONTENT in the tar linkname field via readFileSync) and several medium/low correctness and metadata-disclosure defects were found, all fixed and re-verified; a final terminal review returned APPROVE with no blocking findings. The content boundary (restricted/untracked content never entering the archive) holds under every probe: tracked Promps/private.md, tracked symlink to a restricted file, tracked symlink to an untracked file, symlink chains, symlinks escaping the root, absolute targets, and backslash/over-long path forms.",
+  "findings": [
+    { "id": "F1", "severity": "critical", "description": "Tracked symlink archived with linkname = readFileSync(abs), which FOLLOWS the link and embedded the target file's content (restricted tracked, restricted untracked, or arbitrary untracked) into the tar linkname — a reproducible privacy fail-open.", "fixed": true },
+    { "id": "F2", "severity": "medium", "description": "ustar name handling silently truncated paths >100/255 bytes, so archive entries disagreed with inventory.json and MANIFEST.sha256.", "fixed": true },
+    { "id": "F3", "severity": "medium", "description": "git paths were backslash-normalized on Linux (where backslash is a legal filename character), causing misleading aborts and duplicate tar entries.", "fixed": true },
+    { "id": "F4", "severity": "medium", "description": "git() output was untrimmed, so inventory.head/branch/head_commit_time carried a trailing newline and the packaged SHA was unusable verbatim in a review record.", "fixed": true },
+    { "id": "F5", "severity": "low", "description": "Validator treated the self-referential evidence_commit == code_head_reviewed shape as a warning only, HUMAN_APPROVAL did not require human_approval:true, and the shipped template failed its own validator.", "fixed": true },
+    { "id": "F6", "severity": "low", "description": "restricted_untracked reported an untracked-only count, reading as 'nothing here' for a private root excluded because it is tracked.", "fixed": true },
+    { "id": "F7", "severity": "nit", "description": "The review-evidence validator was not invoked in CI, so the format rule was documentation-only.", "fixed": true },
+    { "id": "NEW-D1", "severity": "medium", "description": "A symlink linkname longer than 100 bytes was truncated while MANIFEST.sha256 hashed the full target, so the archive disagreed with its own manifest and the extracted link dangled.", "fixed": true },
+    { "id": "NEW-D2", "severity": "low", "description": "An absolute inside-root symlink target was recorded verbatim, disclosing the local build layout.", "fixed": true },
+    { "id": "NEW-D3", "severity": "low", "description": "A symlink chain (a -> b -> restricted) kept a dangling 'a -> b' after b was dropped.", "fixed": true },
+    { "id": "NEW-D4", "severity": "nit", "description": "The CLI allowlist normalized backslashes while classifyPaths did not; the two paths disagreed.", "fixed": true },
+    { "id": "NEW-D5", "severity": "nit", "description": "The CI review-evidence step validated nothing because the directory held only the non-matching template, so it could not catch a rotted template.", "fixed": true },
+    { "id": "N1", "severity": "low", "description": "The archived inventory leaked the NAME of a restricted or untracked symlink target via package.symlink_excluded[].target, contradicting the module's 'counts only, never names' contract.", "fixed": true },
+    { "id": "N2", "severity": "nit", "description": "A tracked root file named inventory.json or MANIFEST.sha256 produced duplicate archive entries and made file_count disagree with the archive.", "fixed": true },
+    { "id": "N3", "severity": "nit", "description": "No unit test covered the --dir template validation behaviour.", "fixed": true },
+    { "id": "N4", "severity": "nit", "description": "The module header comment over-claimed that no restricted/private path name is ever emitted, while excluded_restricted_tracked legitimately lists tracked names.", "fixed": true },
+    { "id": "N5", "severity": "nit", "description": "A symlink to the bare restricted root (dirlink -> Promps) was labelled target_kind 'not-packaged' because the restricted globs were Promps/** and did not match the bare root.", "fixed": true },
+    { "id": "N6", "severity": "low", "description": "An unrepresentable UNTRACKED path (e.g. a backslash filename) was emitted by name in package.excluded_unrepresentable, contradicting the header contract.", "fixed": true },
+    { "id": "N-a", "severity": "low", "description": "git()'s trim() stripped the leading space of the first `git status --porcelain` line, so tracked_modified_paths[0] was reported mangled (README.md -> EADME.md).", "fixed": true }
+  ],
+  "delta_review_sha": null,
+  "review_chain": [
+    { "sha": "90b5c3838611e9ea8097fe4057dfaaecf06fe00c", "verdict": "REQUEST_CHANGES", "note": "initial review; found F1-F7" },
+    { "sha": "c64005c8dd052147aa71a5bf0b97c86d77905ad3", "verdict": "REQUEST_CHANGES", "note": "delta; F1-F7 confirmed fixed, found NEW-D1..D5" },
+    { "sha": "8014a0fab081f020912bec13839c27a5d82e867c", "verdict": "APPROVE_WITH_NITS", "note": "delta; NEW-D1..D5 fixed, found N1..N3" },
+    { "sha": "2aeb2b2971ca176de60aa55cbcf5bee8e0b5f8ee", "verdict": "APPROVE", "note": "N1..N3 fixed, found N4/N5" },
+    { "sha": "05ef63f146fc17acea965b293740b8c18770ef75", "verdict": "APPROVE_WITH_NITS", "note": "N4/N5 fixed, found N6" },
+    { "sha": "77de96d563b486e55c7714b5d23002fb46aa3f59", "verdict": "APPROVE_WITH_NITS", "note": "N6 fixed, found N-a" },
+    { "sha": "f906779b68e045b8d85fc908bc19b7bec8cb8114", "verdict": "APPROVE", "note": "terminal review; N-a fixed, no new findings" }
+  ],
+  "evidence_commit": null,
+  "human_approval": false,
+  "enforcement": {
+    "review_evidence": "DOCUMENT_ONLY",
+    "validator": "VALIDATOR_AVAILABLE"
+  }
+}
