@@ -390,6 +390,17 @@ describe("review-package hostile-input regressions", () => {
     expect(readTar(gunzipSync(readFileSync(result.archivePath)))).not.toContain("leak");
   });
 
+  it("labels a symlink to the bare restricted directory as restricted, not not-packaged", (context) => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    if (!trySymlink("Promps", join(root, "dirlink"))) return context.skip("host cannot symlink");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "dirlink"], root);
+    git(["commit", "--quiet", "-m", "symlink to bare restricted dir"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `bare-${sequence++}`) });
+    expect(result.inventory.package.symlink_excluded).toContainEqual({ path: "dirlink", target_kind: "restricted" });
+  });
+
   it("refuses a tracked path that collides with the generated metadata names", () => {
     const root = makeRepo();
     writeFileSync(join(root, "README.md"), "# fixture\n");

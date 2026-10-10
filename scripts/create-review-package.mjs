@@ -11,10 +11,12 @@
 //     exact-path allowlist, and a restricted path is refused even then.
 //   * Symlinks that resolve outside the repository root abort the run.
 //
-// The inventory (metadata) is sanitized: it lists included TRACKED paths and
-// counts untracked/restricted material by number only — never private contents
-// and never restricted/private path NAMES (a name is not emitted even to prove
-// exclusion; excluded symlink targets report only a category).
+// The inventory (metadata) is sanitized: it lists included TRACKED paths, plus
+// the paths of excluded TRACKED entries and excluded symlinks — all of which are
+// already visible in the Git tree, so naming them discloses nothing new. It
+// counts UNTRACKED and restricted material by number only, and never emits an
+// untracked or private path NAME, nor a withheld symlink TARGET (a name is not
+// emitted even to prove exclusion).
 //
 // Usage:
 //   node scripts/create-review-package.mjs [--out DIR] [--json]
@@ -46,7 +48,9 @@ const CONTRACT_RELATIVE = ".agents/project-contract.v1.json";
 // Defence in depth: even if the contract's restricted list were narrowed, these
 // roots never leave the machine in a review package.
 const BASELINE_RESTRICTED = [
+  "Promps",
   "Promps/**",
+  ".aws",
   ".aws/**",
   ".git/**",
   "node_modules/**",
