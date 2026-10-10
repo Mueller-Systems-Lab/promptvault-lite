@@ -3,42 +3,73 @@
 Machine-applicable governance configuration, kept next to the policy it
 encodes so a change is reviewable in a PR before it is applied in GitHub.
 
-## `main-protection-ruleset.json` — PROPOSED, NOT YET APPLIED
+## `main-protection-ruleset.json`
 
-> **Status: `READY_FOR_OWNER_ADMIN_APPROVAL`.**
-> Applying a ruleset is an administrative mutation of the GitHub repository
-> (`AGENTS.md` §7: branch-protection changes require approval). This file
-> prepares the exact payload; it does **not** prove protection exists.
+> **Status: corrected and prepared for application.** The payload is validated
+> and intended to be created on `main` via the documented `gh api` call. Do not
+> claim protection exists until the API read-back returns the ruleset with
+> `enforcement: "active"` (see *Read back and verify*).
 
-### Observed state before this change
+### Correction history
 
-Read live on 2026-10-10 (evidence, not assumption):
+The first committed version of this file carried two choices that do **not**
+match the repository's governance and must not be activated as-is:
 
-- `GET /repos/Mueller-Systems-Lab/promptvault-lite/branches/main/protection`
-  → HTTP 404 `Branch not protected`
-- `GET /repos/Mueller-Systems-Lab/promptvault-lite/rulesets` → `[]`
+1. `bypass_actors` granted an unconditional `bypass_mode: "always"` to the
+   repository-admin role. `AGENTS.md` §9 forbids branch-protection bypass, so a
+   permanent admin bypass is not an acceptable default. It is **removed**
+   (`bypass_actors: []`).
+2. `required_approving_review_count: 0` was described as if it enforced review.
+   It does not. `0` is a *technical necessity* here, not review enforcement —
+   see the next section.
 
-So `main` was **unprotected**, with no repository ruleset.
+### Review enforcement: `REVIEW_ENFORCEMENT_TOOL_GAP`
 
-### What the proposal does
+Owner policy is *no unreviewed merge*. GitHub cannot enforce that for this
+repository today:
+
+- The `Mueller-Systems-Lab` organization has exactly **one** member
+  (`xxammaxx`), **no teams**, and **no pending invitations** — verified live on
+  2026-10-10. There is no distinct, eligible GitHub identity that could approve.
+- GitHub does not let a PR author approve their own pull request.
+
+Setting `required_approving_review_count: 1` would therefore put `main` in a
+**permanent deadlock**: every PR — including this repository's own governance
+PRs — could never be merged.
+
+`required_approving_review_count` is consequently `0`. **This is not review
+enforcement and must never be described as such.** The independent-review rule
+continues to be enforced as a *process* gate through the durable evidence in
+`docs/audits/reviews/` (`AGENT_INDEPENDENT_REVIEW`), which is **not** a native
+GitHub approval. The distinction is mandatory:
+
+```
+AGENT_INDEPENDENT_REVIEW  !=  HUMAN_GITHUB_APPROVAL
+```
+
+If a second eligible reviewer is ever added to the organization, raise
+`required_approving_review_count` to `1` and re-evaluate
+`dismiss_stale_reviews_on_push` / `require_last_push_approval` in the same
+change.
+
+### What the ruleset enforces
 
 | Rule | Intent |
 | --- | --- |
 | `deletion` | `main` cannot be deleted. |
 | `non_fast_forward` | No force-push. |
-| `pull_request` | Changes land via PR. Approval count is `0` because this is a single-owner repository — requiring ≥1 approval would deadlock every merge. Review-thread resolution is on. |
-| `required_status_checks` | The CI gates below must be green. `strict` is off (the branch need not be up to date with `main` immediately before merge). |
-| `bypass_actors` | The repository-admin role keeps `bypass_mode: always`, i.e. intentional owner emergency access. Remove this entry if the owner does not want any bypass. |
+| `pull_request` | Changes land via a pull request; review conversations must be resolved. Approval count is `0` (see the tool-gap note above) — **not** review enforcement. |
+| `required_status_checks` | The CI gates below must be green. `strict` is **off**: this repository merges short-lived PRs promptly and does not require rebasing every PR onto the newest `main` first; turning it on would add merge churn without changing what runs. |
+| `bypass_actors` | **`[]`** — no bypass. No actor may push to or merge into `main` outside the rules. |
 
 Deliberately **not** enabled: signed commits, linear-history enforcement,
-merge-method restrictions, code-owner review. They are available toggles but
-not part of the repository's observed workflow.
+merge-method restrictions, code-owner review. They are available toggles but not
+part of the repository's observed workflow.
 
 ### Required checks — and why exactly these
 
-The 14 entries are the CI job names observed green on `main` at
-`68fa663b08021cfc5ccfab631417fe7cbc5e615f` (`.github/workflows/ci.yml`). Every
-one of them runs on `pull_request`, so none can deadlock a merge.
+The 14 entries are the CI job names in `.github/workflows/ci.yml`. Every one of
+them runs on `pull_request`, so none can deadlock a merge.
 
 **Excluded on purpose** (they never run on PRs — requiring them would block every
 merge forever):
@@ -66,8 +97,8 @@ gh api --method POST \
 gh api repos/Mueller-Systems-Lab/promptvault-lite/rulesets \
   --jq '.[] | {id,name,enforcement,target}'
 gh api repos/Mueller-Systems-Lab/promptvault-lite/rulesets/<id> \
-  --jq '.rules[] | .type'
+  --jq '{rules: [.rules[].type], bypass: .bypass_actors}'
 ```
 
 Do not claim protection exists until the read-back returns the ruleset with
-`enforcement: "active"`.
+`enforcement: "active"` and `bypass_actors: []`.
