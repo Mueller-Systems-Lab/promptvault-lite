@@ -73,15 +73,17 @@ Aufnahme: 1440×900, Vite-Renderer-Modus mit gemocktem Tauri-IPC (identischer Re
 
 **Latest published GitHub Release: `v1.13.2`** — reliability, trust-boundary and release-automation hardening for Linux x64 (`.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.13.2`. It restricts `POST /api/scan` to configured scan roots, makes the release-artifact gate machine-enforced, replaces the contention-sensitive wall-clock assertion with a load-invariant performance gate, and fixes the AppImage `.DirIcon` symlink. The Web/LAN & Container capability itself shipped in `v1.13.0`: the LAN-deployable server, the `promptvault-core` / `promptvault-server` split and Docker/Compose deployment on top of the bounded offline Analyzer contract.
 
+**`v1.13.3` (current release candidate)** is a performance patch on top of v1.13.2: the hygiene role-mismatch scan compiled its sector patterns for *every prompt line*, so its cost grew with lines × patterns × regex-compilation instead of with the number of lines. The patterns are now compiled once and reused. Analyzer results, scores, criteria and data formats are unchanged — the normalized analysis output over a real archive is identical between v1.13.2 and this patch. A regression guard pins the bounded cost.
+
 `v1.13.1` (previous release) was post-release hardening on top of v1.13.0: manifest-schema discrimination, artifact path scanning, invariant documentation and regression coverage.
 
 Its Linux packages are published under space-free names. The Tauri bundler emits `PromptVault Lite_…` (the `productName` contains a space) and GitHub rewrites a space in a release-asset name to a dot, which is why the v1.12.0 assets appear as `PromptVault.Lite_…`. From v1.13.0 on, the bundler output is renamed to space-free names before the checksums are generated, so GitHub does not rewrite them:
 
 | Platform | Asset |
 |---|---|
-| Linux x64 | `PromptVault-Lite_1.13.2_amd64.deb` (Debian package) |
-| Linux x64 | `PromptVault-Lite-1.13.2-1.x86_64.rpm` (RPM package) |
-| Linux x64 | `PromptVault-Lite_1.13.2_amd64.AppImage` (portable package) |
+| Linux x64 | `PromptVault-Lite_1.13.3_amd64.deb` (Debian package) |
+| Linux x64 | `PromptVault-Lite-1.13.3-1.x86_64.rpm` (RPM package) |
+| Linux x64 | `PromptVault-Lite_1.13.3_amd64.AppImage` (portable package) |
 | Checksums | `SHA256SUMS.txt` |
 | Release manifest | `promptvault-release-manifest.json` |
 
@@ -97,17 +99,17 @@ The existing `promptvault` CLI remains a separate Windows/NSIS release stream at
 
 ### Native App
 
-**Linux (v1.13.2):** download the package from the [releases page](https://github.com/Mueller-Systems-Lab/promptvault-lite/releases/latest) and verify it against `SHA256SUMS.txt`, then install:
+**Linux (v1.13.3):** download the package from the [releases page](https://github.com/Mueller-Systems-Lab/promptvault-lite/releases/latest) and verify it against `SHA256SUMS.txt`, then install:
 
 ```text
 # Debian/Ubuntu
-sudo apt install ./PromptVault-Lite_1.13.2_amd64.deb
+sudo apt install ./PromptVault-Lite_1.13.3_amd64.deb
 
 # Fedora/RHEL
-sudo dnf install ./PromptVault-Lite-1.13.2-1.x86_64.rpm
+sudo dnf install ./PromptVault-Lite-1.13.3-1.x86_64.rpm
 
 # AppImage (portable)
-chmod +x PromptVault-Lite_1.13.2_amd64.AppImage && ./PromptVault-Lite_1.13.2_amd64.AppImage
+chmod +x PromptVault-Lite_1.13.3_amd64.AppImage && ./PromptVault-Lite_1.13.3_amd64.AppImage
 ```
 
 ### Web / LAN Mode (Docker)
@@ -277,7 +279,7 @@ Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E
 
 ## Project Status
 
-Latest published desktop release: v1.13.2 (GitHub Release, Linux x64). The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
+Latest published desktop release: v1.13.2 (GitHub Release, Linux x64); the current release candidate is v1.13.3. The Windows-only `promptvault-lite-manager` CLI remains at its last compatible release, 1.11.1. See `docs/PROJECT_STATUS.md` and `docs/ROADMAP.md`.
 
 ## License
 

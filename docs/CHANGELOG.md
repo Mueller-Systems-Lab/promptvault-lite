@@ -1,10 +1,50 @@
 ---
 title: Changelog
 description: Versionshinweise für PromptVault Lite.
-version: 1.13.2
+version: 1.13.3
 ---
 
 # Changelog
+
+## v1.13.3 — Hygiene-Analyse-Performance (PATCH)
+
+**Status: RELEASE CANDIDATE** — Patch auf v1.13.2. **Keine Änderung an
+Analyse-Semantik, Bewertungskriterien, Dateiformaten, Datenmodell oder
+API-Verträgen**; die normalisierte Analyseausgabe über ein reales Archiv ist
+zwischen v1.13.2 und diesem Patch identisch.
+
+### Performance
+
+- **Die Rollen-Konflikt-Prüfung (`detect_role_mismatch`) kompilierte ihre
+  Sektor-Regexe pro Prompt-Zeile neu.** Sobald drei oder mehr Rollen-Sektoren im
+  Inhalt vorkamen, wurde für **jede Zeile** erneut für jeden Sektor ein Regex
+  gebaut. Die Kosten wuchsen damit mit *Zeilen × Muster ×
+  Regex-Kompilierung* statt mit der Zeilenzahl. Auf zeilenreichen Prompts
+  dominierte das den gesamten Hygiene-Durchlauf: die Analyse eines echten
+  Archivs verbrachte den überwiegenden Teil ihrer Laufzeit in
+  `analyze_hygiene`, während der Qualitäts-Durchlauf (R2) im Millisekundenbereich
+  blieb; die Latenz folgte der *Zeilenstruktur, nicht der Dateigröße*.
+- **Fix:** Die sechs Sektor-Muster werden jetzt **einmal kompiliert und
+  wiederverwendet**. Die Muster selbst, alle Schwellenwerte und alle
+  Artefaktfelder bleiben unverändert.
+- **Regression-/Performance-Guard:** `test_role_mismatch_scan_cost_is_bounded`
+  (Release-Spur, wie der bestehende R2-Kostentest) pinnt die obere Schranke
+  eines 1 500-Zeilen-Prompts; `test_role_mismatch_multi_sector_lines_are_reported`
+  stellt sicher, dass die Erkennung nicht still abgeschaltet werden kann.
+
+### Herkunft
+
+Der Defekt wurde bei der Analyse eines **echten privaten Prompt-Archivs**
+(187 Prompts) entdeckt. Zur Reproduktion wurde ausschließlich ein
+**synthetisches** Dokument verwendet — zwei gleich lange, gleich große
+Dokumente, die sich nur darin unterscheiden, ob Wörter aus drei oder mehr
+Rollen-Sektoren vorkommen. Es werden **keine** Inhalte, Dateinamen oder Pfade
+aus dem privaten Archiv in Repository, Tests oder Release-Notes übernommen.
+
+### Datenschutz / Datenformate
+
+- Keine Änderung. Kein externer Dienst, keine Netzwerkübertragung von
+  Prompt-Inhalten, keine Schema- oder Formatänderung.
 
 ## v1.13.2 — Reliability, Trust-Boundary & Release-Automation Hardening (PATCH)
 
