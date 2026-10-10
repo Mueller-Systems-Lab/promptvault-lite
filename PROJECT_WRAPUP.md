@@ -8,8 +8,7 @@
 > - [`docs/EVIDENCE_PORTFOLIO.md`](./docs/EVIDENCE_PORTFOLIO.md)
 > - [`AGENTS.md`](./AGENTS.md)
 > - GitHub Issues and PRs (#145, #147, #148, #151, #158, #159, #160 all merged)
-> - Issue [#154](https://github.com/xxammaxx/promptvault-lite/issues/154) — Remote-CI is `REMOTE_CI_INFRA_BLOCKED`
-> - Issue [#157](https://github.com/xxammaxx/promptvault-lite/issues/157) — ongoing docs backlog triage
+> - Issue [#154](https://github.com/xxammaxx/promptvault-lite/issues/154) — closed; GitHub Actions runs and is green on `main`
 
 ---
 

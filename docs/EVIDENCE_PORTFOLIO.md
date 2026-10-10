@@ -118,7 +118,7 @@
 | MkDocs build               | `mkdocs build --strict`       | TOOL_MISSING (not installed) |
 | pnpm build                 | `pnpm build`                  | PASS                         |
 | Local CI (10/11 gates)     | —                             | 10/11 PASS (mkdocs excluded) |
-| Remote CI (GitHub Actions) | `gh run list`                 | PASS on `main` (13/13); Issue #154 closed |
+| Remote CI (GitHub Actions) | `gh run list`                 | PASS on `main` (14/14 jobs); Issue #154 closed |
 
 ---
 
