@@ -765,26 +765,31 @@ fn detect_role_mismatch(content: &str) -> Vec<DetectedArtifact> {
     ];
 
     let mut found_sectors: Vec<&str> = Vec::new();
+    // Sector patterns compiled once, so the per-line scan below reuses them
+    // instead of rebuilding a regex for every line.
+    let mut sector_res: Vec<(&str, Regex)> = Vec::with_capacity(role_sectors.len());
 
     for (pattern, sector) in &role_sectors {
         if let Ok(re) = Regex::new(&format!(r"(?i)\b(?:{})\b", pattern)) {
             if re.is_match(content) {
                 found_sectors.push(sector);
             }
+            sector_res.push((sector, re));
         }
     }
 
     // Flag if 3+ different sectors are mentioned (suggests role confusion)
     if found_sectors.len() >= 3 {
-        // Find the context line with role mentions
+        // Find the context line with role mentions.
+        //
+        // The per-line scan must reuse the compiled patterns: compiling them
+        // here cost one regex build per line per sector, which dominated the
+        // whole hygiene pass on line-heavy content (see
+        // `test_role_mismatch_scan_cost_is_bounded`).
         for (line_idx, line) in content.lines().enumerate() {
-            let match_count = role_sectors
+            let match_count = sector_res
                 .iter()
-                .filter(|(p, _)| {
-                    Regex::new(&format!(r"(?i)\b(?:{})\b", p))
-                        .map(|re| re.is_match(line))
-                        .unwrap_or(false)
-                })
+                .filter(|(_, re)| re.is_match(line))
                 .count();
             if match_count >= 2 {
                 artifacts.push(DetectedArtifact::new(
@@ -1233,6 +1238,71 @@ mod tests {
         // May or may not detect depending on sector threshold (3+)
         // Main assertion: should not panic
         assert_eq!(result.prompt_id, "test-role-mismatch");
+    }
+
+    /// Guard against a "fix" that silently disables the sector scan: multi
+    /// role-sector lines must keep producing RoleMismatch artifacts.
+    #[test]
+    fn test_role_mismatch_multi_sector_lines_are_reported() {
+        let unit = "Der Entwickler und der Designer sowie der Analyst pruefen das Dokument.";
+        let mut content = String::new();
+        for i in 0..40 {
+            content.push_str(&format!("## Abschnitt {}\n{}\n", i, unit));
+        }
+        let result = analyze_hygiene(&content, "role-multi");
+        assert!(
+            artifact_count(&result.artifacts, ArtifactCategory::RoleMismatch) >= 1,
+            "multi-sector role lines must still be flagged. Artifacts: {:?}",
+            result
+                .artifacts
+                .iter()
+                .filter(|a| a.category == ArtifactCategory::RoleMismatch)
+                .collect::<Vec<_>>()
+        );
+    }
+
+    /// Regression for the role-sector scan cost.
+    ///
+    /// When three or more role sectors are present, the sector scan walks every
+    /// line. It used to *compile every sector regex inside that per-line loop*,
+    /// so the pass cost lines x patterns x regex-compilation — measured ~11 s
+    /// for a 1 500-line prompt, and the dominant cost of the whole hygiene pass
+    /// on real line-heavy archives. The work must stay proportional to the
+    /// number of lines.
+    ///
+    /// Release-only (same convention as the R2 cost test): a wall-clock bound
+    /// is meaningless in a debug build.
+    #[test]
+    #[cfg_attr(debug_assertions, ignore)]
+    fn test_role_mismatch_scan_cost_is_bounded() {
+        /// Long enough that per-line work dominates; still far below the
+        /// scanner's 1 MiB per-file cap.
+        const LINES: usize = 1_500;
+        /// Ceiling for the whole hygiene pass. Measured ~0.06 s after the fix
+        /// and ~11 s before it, so this separates by more than two orders of
+        /// magnitude.
+        const LIMIT_S: f64 = 2.0;
+
+        // Three sectors on every line: the >=3 gate is open, so the per-line
+        // scan runs for the whole document.
+        let unit = "Der Entwickler und der Designer sowie der Analyst pruefen das Dokument. ";
+        let mut content = String::with_capacity(LINES * (unit.len() + 20));
+        for i in 0..LINES {
+            content.push_str(&format!("## Abschnitt {}\n", i));
+            content.push_str(unit);
+            content.push('\n');
+        }
+
+        let start = std::time::Instant::now();
+        let hygiene = analyze_hygiene(&content, "role-cost");
+        let elapsed = start.elapsed().as_secs_f64();
+
+        assert_eq!(hygiene.prompt_id, "role-cost");
+        assert!(
+            elapsed < LIMIT_S,
+            "hygiene pass took {elapsed:.2}s for {LINES} lines (limit {LIMIT_S}s) - \
+             the role-sector scan is compiling regexes per line again"
+        );
     }
 
     #[test]
