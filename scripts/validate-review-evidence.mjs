@@ -90,7 +90,10 @@ function collectFiles(argv) {
     const dir = resolve(argv[1]);
     if (!statSync(dir).isDirectory()) throw new Error(`${dir} is not a directory`);
     return readdirSync(dir)
-      .filter((name) => /^REVIEW-.*\.json$/.test(name))
+      // Reviewed records are named REVIEW-*.json. The shipped template is
+      // validated too, so the CI step is never vacuous and the template cannot
+      // silently rot out of format.
+      .filter((name) => /^REVIEW-.*\.json$/.test(name) || name === "review-evidence.template.json")
       .map((name) => join(dir, name));
   }
   return argv.map((file) => resolve(file));

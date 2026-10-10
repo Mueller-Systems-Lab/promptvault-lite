@@ -175,8 +175,9 @@ function assertAncestorContained(root, relPath) {
 }
 
 /**
- * Classify a symlink WITHOUT following it. Returns the link target to record
- * (never the target's content), or throws when the link escapes the root.
+ * Classify a symlink WITHOUT following it. Returns the target's repo-relative
+ * path (never the target's content, never a local absolute path), or throws
+ * when the link escapes the root.
  */
 function resolveSymlink(root, relPath) {
   const abs = resolve(root, relPath);
@@ -191,7 +192,9 @@ function resolveSymlink(root, relPath) {
       throw new Error(`SYMLINK_ESCAPES_REPOSITORY: ${relPath} -> ${realTarget}`);
     }
   }
-  return { linkTarget, targetRel: relative(root, resolvedTarget) };
+  // Record the repo-relative target so the archive never discloses the local
+  // absolute layout, and so it matches what `included` holds.
+  return { targetRel: relative(root, resolvedTarget).split(sep).join("/") };
 }
 
 // ── deterministic ustar writer ────────────────────────────────────────────
@@ -218,6 +221,12 @@ export function splitTarName(name) {
 function tarHeader({ name, size, typeflag, linkname = "" }) {
   const block = Buffer.alloc(512);
   const { prefix, name: shortName } = splitTarName(name);
+  if (typeflag === "2" && Buffer.byteLength(linkname) > 100) {
+    // ustar has no prefix field for the link target: a longer target is
+    // unrepresentable, so refuse rather than emit a truncated (dangling) link
+    // that would also disagree with MANIFEST.sha256.
+    throw new Error(`TAR_NAME_TOO_LONG: symlink target not representable: ${linkname}`);
+  }
   block.write(shortName, 0, 100, "utf8");
   block.write(octal(typeflag === "5" ? 0o755 : 0o644, 8), 100, 8, "ascii");
   block.write(octal(0, 8), 108, 8, "ascii");
@@ -281,12 +290,15 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
     throw new Error("UNTRACKED_INCLUSION_NOT_AUTHORIZED: --purpose is required with --allow-untracked");
   }
   for (const raw of allowUntracked) {
-    const path = raw.replaceAll("\\", "/").replace(/^\.\//, "");
-    if (!untracked.includes(path)) {
-      throw new Error(`ALLOWLIST_PATH_NOT_UNTRACKED: ${path}`);
-    }
+    const path = raw.replace(/^\.\//, "");
     if (isRestrictedPath(path, restrictedGlobs)) {
       throw new Error(`RESTRICTED_PATH_REFUSED: ${path} is restricted and can never be packaged`);
+    }
+    if (isUnrepresentable(path)) {
+      throw new Error(`ALLOWLIST_PATH_UNREPRESENTABLE: ${path} cannot be represented portably`);
+    }
+    if (!untracked.includes(path)) {
+      throw new Error(`ALLOWLIST_PATH_NOT_UNTRACKED: ${path}`);
     }
   }
 
@@ -295,23 +307,26 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
   const includedSet = new Set(included);
 
   // Fail-closed on any symlink escaping the repository root (tracked or allowed).
-  // A symlink is recorded by its TARGET PATH — never the target's content — and
-  // only when its target is itself packaged. A link to a restricted or
-  // non-packaged path is dropped, so nothing leaks through the link.
-  const entries = [];
-  const symlinkExcluded = [];
+  // A symlink is recorded by its repo-relative TARGET PATH — never the target's
+  // content — and only when its target is itself a packaged REGULAR file. Links
+  // to restricted paths, to non-packaged paths, and to other symlinks (chains)
+  // are dropped, so the archive never contains a dangling or leaking link.
+  const regularNames = new Set();
+  const symlinkCandidates = [];
   for (const relPath of included) {
     const abs = assertAncestorContained(root, relPath);
-    if (lstatSync(abs).isSymbolicLink()) {
-      const { linkTarget, targetRel } = resolveSymlink(root, relPath);
-      if (isRestrictedPath(targetRel, restrictedGlobs) || !includedSet.has(targetRel)) {
-        symlinkExcluded.push({ path: relPath, reason: "symlink-target-not-packaged", target: targetRel });
-        continue;
-      }
-      entries.push({ name: relPath, typeflag: "2", linkname: linkTarget });
-    } else {
-      entries.push({ name: relPath, content: readFileSync(abs) });
+    if (lstatSync(abs).isSymbolicLink()) symlinkCandidates.push(relPath);
+    else regularNames.add(relPath);
+  }
+  const entries = [...regularNames].map((relPath) => ({ name: relPath, content: readFileSync(resolve(root, relPath)) }));
+  const symlinkExcluded = [];
+  for (const relPath of symlinkCandidates) {
+    const { targetRel } = resolveSymlink(root, relPath);
+    if (isRestrictedPath(targetRel, restrictedGlobs) || !regularNames.has(targetRel) || !includedSet.has(targetRel)) {
+      symlinkExcluded.push({ path: relPath, reason: "symlink-target-not-packaged", target: targetRel });
+      continue;
     }
+    entries.push({ name: relPath, typeflag: "2", linkname: targetRel });
   }
 
   const includedSorted = entries.map((e) => e.name).sort();

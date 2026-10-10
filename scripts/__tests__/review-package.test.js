@@ -314,6 +314,67 @@ describe("review-package hostile-input regressions", () => {
     expect(appEntries[0].content).toBe("REAL_APP\n"); // the impostor did not win
     expect(result.inventory.package.excluded_unrepresentable).toContain("src\\app.ts");
   });
+
+  it("refuses a symlink whose target path is too long for ustar (no dangling link)", (context) => {
+    const root = makeRepo();
+    const dir = "d".repeat(60);
+    const file = `${"f".repeat(60)}.md`;
+    mkdirSync(join(root, dir), { recursive: true });
+    writeFileSync(join(root, dir, file), "target\n");
+    if (!trySymlink(`${dir}/${file}`, join(root, "deep-link"))) return context.skip("host cannot symlink");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", dir, "deep-link"], root);
+    git(["commit", "--quiet", "-m", "long symlink target"], root);
+    expect(() => createReviewPackage({ cwd: root, outDir: join(scratch, `sl-${sequence++}`) })).toThrow(/TAR_NAME_TOO_LONG/);
+  });
+
+  it("drops a symlink chain that would dangle (a -> b -> restricted)", (context) => {
+    const root = makeRepo();
+    mkdirSync(join(root, "Promps"), { recursive: true });
+    writeFileSync(join(root, "Promps/private.md"), "PRIVATE_CORPUS_SENTINEL\n");
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    if (!trySymlink("Promps/private.md", join(root, "b"))) return context.skip("host cannot symlink");
+    if (!trySymlink("b", join(root, "a"))) return context.skip("host cannot symlink");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "Promps/private.md", "a", "b"], root);
+    git(["commit", "--quiet", "-m", "symlink chain"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `chain-${sequence++}`) });
+    const raw = gunzipSync(readFileSync(result.archivePath));
+    const names = readTar(raw);
+    expect(names).not.toContain("a"); // no dangling link
+    expect(names).not.toContain("b");
+    expect(raw.toString("utf8")).not.toContain("PRIVATE_CORPUS_SENTINEL");
+    expect(result.inventory.package.symlink_excluded.map((e) => e.path).sort()).toEqual(["a", "b"]);
+  });
+
+  it("records an inside-root symlink with a relative target, never the local absolute path", (context) => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    if (!trySymlink(join(root, "README.md"), join(root, "abs-link"))) return context.skip("host cannot symlink");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "abs-link"], root);
+    git(["commit", "--quiet", "-m", "absolute symlink target"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `abs-${sequence++}`) });
+    const raw = gunzipSync(readFileSync(result.archivePath));
+    const link = readTarEntries(raw).find((entry) => entry.name === "abs-link");
+    expect(link.linkname).toBe("README.md");
+    expect(raw.toString("utf8")).not.toContain(root); // no local absolute layout in the archive
+  });
+
+  it("refuses to allowlist an unrepresentable untracked path", () => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    writeFileSync(join(root, "bs\\name.txt"), "x\n");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md"], root);
+    git(["commit", "--quiet", "-m", "base"], root);
+    expect(() =>
+      createReviewPackage({
+        cwd: root,
+        allowUntracked: ["bs\\name.txt"],
+        authorizedUntracked: true,
+        purpose: "probe",
+      })
+    ).toThrow(/ALLOWLIST_PATH_UNREPRESENTABLE/);
+  });
 });
 
 describe("review-package mutation probe (the guard is load-bearing)", () => {
