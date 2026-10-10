@@ -414,6 +414,19 @@ describe("review-package hostile-input regressions", () => {
     expect(JSON.stringify(result.inventory)).not.toContain("back\\slash-untracked.txt");
   });
 
+  it("reports tracked modified paths verbatim (leading status space preserved)", () => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    writeFileSync(join(root, "src-marker.ts"), "export const a = 1;\n");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "src-marker.ts"], root);
+    git(["commit", "--quiet", "-m", "base"], root);
+    writeFileSync(join(root, "README.md"), "# modified\n"); // unstaged modification
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `mod-${sequence++}`) });
+    expect(result.inventory.workspace.tracked_modified_paths).toContain("README.md");
+    expect(result.inventory.workspace.dirty).toBe(true);
+  });
+
   it("refuses a tracked path that collides with the generated metadata names", () => {
     const root = makeRepo();
     writeFileSync(join(root, "README.md"), "# fixture\n");

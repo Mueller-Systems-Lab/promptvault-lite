@@ -13,7 +13,8 @@
 //
 // The inventory (metadata) is sanitized. It names only material that is already
 // visible, or that the operator explicitly handed over:
-//   * included paths, and excluded TRACKED paths — already in the Git tree;
+//   * included TRACKED paths, and excluded TRACKED paths — already in the Git tree
+//     (an explicitly allowlisted untracked path is the sole non-tracked name, below);
 //   * withheld symlink TARGETS are never named (only a category);
 //   * UNTRACKED names are counted, never named — the single exception is a path
 //     the operator explicitly allowlisted (`allowlisted_untracked`), which is the
@@ -96,7 +97,10 @@ const RESERVED_ENTRY_NAMES = new Set(["inventory.json", "MANIFEST.sha256"]);
 const EXAMPLE_CONFIG = /^(.*\/)?\.env\.(example|sample|template|dist)$/;
 
 function git(args, cwd) {
-  return execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+  // Trim only the trailing newline: `git status --porcelain` lines begin with a
+  // meaningful leading space (" M path"), so a full .trim() would corrupt the
+  // first line's path.
+  return execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).replace(/\s+$/, "");
 }
 
 function gitZ(args, cwd) {
