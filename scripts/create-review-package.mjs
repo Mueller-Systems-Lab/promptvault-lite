@@ -12,8 +12,9 @@
 //   * Symlinks that resolve outside the repository root abort the run.
 //
 // The inventory (metadata) is sanitized: it lists included TRACKED paths and
-// counts untracked/restricted material by number only, never private names or
-// contents used merely to prove they existed.
+// counts untracked/restricted material by number only — never private contents
+// and never restricted/private path NAMES (a name is not emitted even to prove
+// exclusion; excluded symlink targets report only a category).
 //
 // Usage:
 //   node scripts/create-review-package.mjs [--out DIR] [--json]
@@ -80,6 +81,10 @@ const BASELINE_RESTRICTED = [
 
 // Named private roots reported in the inventory by count only.
 const NAMED_PRIVATE_ROOTS = ["Promps", ".aws"];
+
+// Generated metadata entries; a tracked path with one of these names is refused
+// (see RESERVED_NAME_COLLISION) rather than silently duplicated.
+const RESERVED_ENTRY_NAMES = new Set(["inventory.json", "MANIFEST.sha256"]);
 
 // A tracked placeholder such as `.env.example` carries no secret by convention;
 // it is the one `.env*` form that stays packageable, and the inventory labels it.
@@ -323,13 +328,28 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
   for (const relPath of symlinkCandidates) {
     const { targetRel } = resolveSymlink(root, relPath);
     if (isRestrictedPath(targetRel, restrictedGlobs) || !regularNames.has(targetRel) || !includedSet.has(targetRel)) {
-      symlinkExcluded.push({ path: relPath, reason: "symlink-target-not-packaged", target: targetRel });
+      // The link PATH is an ordinary tracked repository path (listable, like any
+      // other included path). The TARGET is withheld: it can name restricted or
+      // private material, and a name must never be emitted to prove exclusion.
+      symlinkExcluded.push({
+        path: relPath,
+        target_kind: isRestrictedPath(targetRel, restrictedGlobs) ? "restricted" : "not-packaged",
+      });
       continue;
     }
     entries.push({ name: relPath, typeflag: "2", linkname: targetRel });
   }
 
   const includedSorted = entries.map((e) => e.name).sort();
+
+  // The archive carries two generated metadata entries. A tracked path with the
+  // same name would produce a duplicate entry and make file_count disagree with
+  // the archive — refuse instead of silently overwriting either one.
+  const collision = includedSorted.find((name) => RESERVED_ENTRY_NAMES.has(name));
+  if (collision) {
+    throw new Error(`RESERVED_NAME_COLLISION: tracked path '${collision}' collides with generated package metadata`);
+  }
+
   const manifest = includedSorted
     .map((name) => {
       const entry = entries.find((e) => e.name === name);
@@ -376,7 +396,8 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
       included: includedSorted,
       excluded_restricted_tracked: excludedTracked.map((e) => e.path).sort(),
       excluded_unrepresentable: excluded.filter((e) => e.reason === "unrepresentable-path").map((e) => e.path).sort(),
-      symlink_excluded: symlinkExcluded.map((e) => ({ path: e.path, target: e.target })).sort((a, b) => (a.path < b.path ? -1 : 1)),
+      symlink_excluded_count: symlinkExcluded.length,
+      symlink_excluded: symlinkExcluded.slice().sort((a, b) => (a.path < b.path ? -1 : 1)),
       example_config_classified: includedSorted.filter(isExampleConfig),
       allowlisted_untracked: allowUntracked.map((p) => p.replace(/^\.\//, "")).sort(),
       purpose: purpose ?? null,

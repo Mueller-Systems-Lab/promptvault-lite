@@ -375,6 +375,29 @@ describe("review-package hostile-input regressions", () => {
       })
     ).toThrow(/ALLOWLIST_PATH_UNREPRESENTABLE/);
   });
+
+  it("never emits a restricted symlink target NAME in the inventory", (context) => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    if (!trySymlink("Promps/highly-confidential-thing.md", join(root, "leak"))) return context.skip("host cannot symlink");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "leak"], root);
+    git(["commit", "--quiet", "-m", "symlink to restricted name"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `n1-${sequence++}`) });
+    const serialized = JSON.stringify(result.inventory);
+    expect(serialized).not.toContain("highly-confidential-thing"); // no target name
+    expect(result.inventory.package.symlink_excluded).toContainEqual({ path: "leak", target_kind: "restricted" });
+    expect(readTar(gunzipSync(readFileSync(result.archivePath)))).not.toContain("leak");
+  });
+
+  it("refuses a tracked path that collides with the generated metadata names", () => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    writeFileSync(join(root, "inventory.json"), "{\"impostor\":true}\n");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "inventory.json"], root);
+    git(["commit", "--quiet", "-m", "reserved name collision"], root);
+    expect(() => createReviewPackage({ cwd: root, outDir: join(scratch, `n2-${sequence++}`) })).toThrow(/RESERVED_NAME_COLLISION/);
+  });
 });
 
 describe("review-package mutation probe (the guard is load-bearing)", () => {
