@@ -17,8 +17,10 @@ import { describe, expect, it } from "vitest";
 import {
   CREDENTIAL_INPUT,
   NAS_PATH_INPUTS,
+  OPTIONAL_INPUTS,
   REQUIRED_INPUTS,
   inspectInputs,
+  isIpv4,
   manualSteps,
   mountRecipe,
   renderReport,
@@ -93,6 +95,41 @@ describe("inspectInputs — the blocked-state contract", () => {
   it("documents exactly one of the two NAS path inputs", () => {
     expect(NAS_PATH_INPUTS).toEqual(["NAS_SHARE", "NAS_EXPORT"]);
   });
+
+  it("validates GATEWAY unconditionally (regression)", () => {
+    // An earlier version only checked GATEWAY when it started with a digit, so
+    // a hostname-style gateway passed silently.
+    const res = inspectInputs(env({ ...COMPLETE, GATEWAY: "gateway.local" }));
+    expect(res.ok).toBe(false);
+    expect(res.invalid.map((i) => i.name)).toContain("GATEWAY");
+  });
+
+  it("reports each malformed address exactly once", () => {
+    const res = inspectInputs(env({ ...COMPLETE, LXC_IP: "999.1.1.1" }));
+    const forLxc = res.invalid.filter((i) => i.name === "LXC_IP");
+    expect(forLxc).toHaveLength(1);
+  });
+
+  it("lists NAS_IP as optional, not required", () => {
+    expect(OPTIONAL_INPUTS).toContain("NAS_IP");
+    expect(REQUIRED_INPUTS.map((i) => i.name)).not.toContain("NAS_IP");
+    expect(inspectInputs(env(COMPLETE)).ok).toBe(true);
+  });
+
+  it("keeps a supplied NAS_IP valid when it is an address", () => {
+    expect(inspectInputs(env({ ...COMPLETE, NAS_IP: "192.0.2.144" })).ok).toBe(true);
+  });
+});
+
+describe("isIpv4", () => {
+  it("accepts dotted quads and rejects everything else", () => {
+    for (const good of ["0.0.0.0", "192.0.2.10", "255.255.255.255"]) {
+      expect(isIpv4(good)).toBe(true);
+    }
+    for (const bad of ["256.0.0.1", "192.0.2", "192.0.2.10.1", "gateway.local", "", "1.2.3."]) {
+      expect(isIpv4(bad)).toBe(false);
+    }
+  });
 });
 
 describe("mountRecipe", () => {
@@ -102,7 +139,7 @@ describe("mountRecipe", () => {
       share: "prompts",
       credentialRef: "file:/root/.nas-credentials",
       mountPoint: "/mnt/promptvault-prompts",
-      ip: "192.0.2.144",
+      nasIp: "192.0.2.144",
     });
     expect(recipe).toContain("-t cifs");
     expect(recipe).toContain("//192.0.2.144/prompts");
@@ -116,15 +153,21 @@ describe("mountRecipe", () => {
       protocol: "nfs",
       exportPath: "/export/prompts",
       mountPoint: "/mnt/promptvault-prompts",
-      ip: "192.0.2.144",
+      nasIp: "192.0.2.144",
     });
     expect(recipe).toContain("-t nfs");
     expect(recipe).toContain("192.0.2.144:/export/prompts");
     expect(recipe).toContain("-o ro");
   });
 
+  it("falls back to a visible placeholder when the NAS host is unknown", () => {
+    const recipe = mountRecipe({ protocol: "smb", share: "s", mountPoint: "/mnt/x" });
+    expect(recipe).toContain("<NAS_IP>");
+    expect(recipe).not.toContain("undefined");
+  });
+
   it("never emits a credential value, only a reference path", () => {
-    const recipe = mountRecipe({ protocol: "smb", share: "s", credentialRef: "env:NAS_CREDENTIALS", mountPoint: "/mnt/x", ip: "192.0.2.1" });
+    const recipe = mountRecipe({ protocol: "smb", share: "s", credentialRef: "env:NAS_CREDENTIALS", mountPoint: "/mnt/x", nasIp: "192.0.2.1" });
     // env: form falls back to a file path placeholder; no secret is printed
     expect(recipe).not.toMatch(/password|token|secret/i);
   });
@@ -176,5 +219,21 @@ describe("renderReport", () => {
 
   it("never contains a credential value", () => {
     expect(report).not.toMatch(/password\s*[:=]\s*\S/i);
+  });
+
+  it("prints the mount recipe, with a placeholder when NAS_IP is absent", () => {
+    const withRecipe = renderReport({
+      inputs: {},
+      results: [],
+      manual: [],
+      recipe: mountRecipe({ protocol: "nfs", exportPath: "/export/p", mountPoint: "/mnt/p" }),
+    });
+    expect(withRecipe).toContain("## Mount recipe");
+    expect(withRecipe).toContain("<NAS_IP>");
+    expect(withRecipe).toContain("NAS_IP` was not supplied");
+  });
+
+  it("omits the recipe section entirely when no recipe is passed", () => {
+    expect(report).not.toContain("## Mount recipe");
   });
 });

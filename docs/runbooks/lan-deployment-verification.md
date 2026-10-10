@@ -36,7 +36,7 @@ local stand-in:
 | `scan_traversal_rejected` | `..` is **400** — a shape error, not a permission error |
 | `list_prompts` / `list_latency` | listing works within the issue's 500 ms budget |
 | `write_refused_read_only` / `export_refused_read_only` | mutating endpoints are 403 |
-| `no_credential_material_in_responses` | no credential material appears in any response body |
+| `no_credential_material_in_responses` | **partial by design**: the credential *reference* string does not appear in any response body. The harness never possesses the credential, so a leaked password cannot be detected here — see the note under §4. |
 | `denial_does_not_disclose_roots` | the 403 body names the env var, never the configured root |
 
 The negative pass sets `PROMPTVAULT_SERVER_SCAN_ROOTS=*` and requires
@@ -45,8 +45,9 @@ the check is vacuous.
 
 ## 2. What the owner must provide
 
-Exactly six non-secret values and one credential **reference**. Never a password
-or token in issue text, in this repository, or in a command line.
+Exactly six required inputs — **five non-secret values plus one credential
+reference**. Never a password or token in issue text, in this repository, or in
+a command line. `--check-inputs` prints the same six line items.
 
 | Input | What it is | Example shape |
 | --- | --- | --- |
@@ -57,7 +58,10 @@ or token in issue text, in this repository, or in a command line.
 | `NAS_SHARE` *(smb)* or `NAS_EXPORT` *(nfs)* | share name or export path | `prompts` / `/export/prompts` |
 | `NAS_CREDENTIALS_REF` | **reference** to the read-only credential, created in the LXC only, `chmod 600` | `file:/root/.nas-credentials` or `env:NAS_CREDENTIALS` or `systemd-cred:nas-credentials` |
 
-Optional: `LXC_PORT` (default 8080), `NAS_MOUNT_POINT` (default
+Optional: `NAS_IP` (the NAS host — only needed to emit the mount recipe; the
+issue body names `192.168.1.144`, but that has to be confirmed rather than
+assumed, so the harness prints a `<NAS_IP>` placeholder when it is absent),
+`LXC_PORT` (default 8080), `NAS_MOUNT_POINT` (default
 `/mnt/promptvault-prompts`).
 
 The harness **refuses to run** and refuses `NAS_PASSWORD`/`NAS_TOKEN`
@@ -118,8 +122,15 @@ already pins the scan boundary to the mounted vault
 | Only on LAN, not from WAN | `wan_not_exposed` (from outside the LAN) |
 
 Red tests from the issue: WAN access blocked (`wan_not_exposed`), NAS write
-rejected (`nas_write_rejected`), invalid credentials must not leak details
-(`no_credential_material_in_responses`).
+rejected (`nas_write_rejected`), invalid credentials must not leak details.
+
+**Limit of `no_credential_material_in_responses`.** It proves that the reference
+string (a path or a variable name) is never echoed. It cannot prove that a
+*password* is never echoed, because the harness deliberately never receives one —
+that is the same rule that keeps this handoff free of plaintext secrets. Checking
+for an actual credential leak therefore remains a manual review of the LXC logs
+and the browser session during the real run; the automated check is a regression
+guard, not full coverage.
 
 ## 5. Rollback
 
@@ -131,8 +142,10 @@ sudo umount /mnt/promptvault-prompts
 ## 6. Evidence
 
 `--evidence <path>` writes a markdown document containing the non-secret inputs,
-every automated result with its measured latency, and the manual steps with
-their expected output. Attach it to #138 together with the manual command
+every automated result with its measured latency, the read-only mount recipe for
+the given protocol, and the manual steps with their expected output. The
+credential-leak check is reported as *partial* there as well, with the same
+reason as in §4. Attach it to #138 together with the manual command
 outputs. The harness never writes the credential reference's *content* — only its
 scheme and path, which are not secret.
 

@@ -56,6 +56,20 @@ export const REQUIRED_INPUTS = [
 /** Exactly one of these must be present, matching NAS_PROTOCOL. */
 export const NAS_PATH_INPUTS = ["NAS_SHARE", "NAS_EXPORT"];
 
+/**
+ * Optional: the NAS host. Only needed to emit the mount recipe; the issue body
+ * names `192.168.1.144` for the NAS, but that value must be confirmed rather
+ * than assumed, so it is an input and not a default.
+ */
+export const OPTIONAL_INPUTS = ["NAS_IP", "LXC_PORT", "NAS_MOUNT_POINT"];
+
+/** Strict IPv4 test (four octets, each 0-255). */
+export function isIpv4(value) {
+  const parts = String(value).split(".");
+  if (parts.length !== 4) return false;
+  return parts.every((p) => /^\d{1,3}$/.test(p) && Number(p) <= 255);
+}
+
 /** A *reference* to the read-only credential — never the credential itself. */
 export const CREDENTIAL_INPUT = "NAS_CREDENTIALS_REF";
 
@@ -117,13 +131,12 @@ export function inspectInputs(get) {
     });
   }
 
-  const ip = value("LXC_IP");
-  if (ip && !/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) {
-    invalid.push({ name: "LXC_IP", why: `not an IPv4 address: '${ip}'` });
-  }
-  for (const name of ["LXC_IP", "GATEWAY"]) {
+  // Every address-like input is validated exactly once, and GATEWAY is
+  // validated unconditionally (an earlier version only checked it when it
+  // happened to start with a digit, so a hostname-looking gateway passed).
+  for (const name of ["LXC_IP", "GATEWAY", "NAS_IP"]) {
     const v = value(name);
-    if (v && /^\d/.test(v) && !/^\d{1,3}(\.\d{1,3}){3}$/.test(v)) {
+    if (v && !isIpv4(v)) {
       invalid.push({ name, why: `not an IPv4 address: '${v}'` });
     }
   }
@@ -136,20 +149,22 @@ export function inspectInputs(get) {
 // -----------------------------------------------------------------------------
 
 /** The read-only mount recipe for the given protocol, using the reference. */
-export function mountRecipe({ protocol, share, exportPath, credentialRef, mountPoint, ip }) {
+export function mountRecipe({ protocol, share, exportPath, credentialRef, mountPoint, nasIp }) {
   const p = (protocol || "").toLowerCase();
+  // `nasIp` is the NAS host, never the LXC host: mounting is `//<NAS>/<share>`.
+  const host = nasIp || "<NAS_IP>";
   if (p === "smb") {
     const ref = (credentialRef || "file:/root/.nas-credentials").replace(/^file:/, "");
     return [
       `sudo mkdir -p ${mountPoint}`,
-      `sudo mount -t cifs //${ip}/${share} ${mountPoint} \\`,
+      `sudo mount -t cifs //${host}/${share} ${mountPoint} \\`,
       `  -o credentials=${ref},iocharset=utf8,ro`,
     ].join("\n");
   }
   if (p === "nfs") {
     return [
       `sudo mkdir -p ${mountPoint}`,
-      `sudo mount -t nfs ${ip}:${exportPath} ${mountPoint} -o ro`,
+      `sudo mount -t nfs ${host}:${exportPath} ${mountPoint} -o ro`,
     ].join("\n");
   }
   return "# NAS_PROTOCOL must be 'smb' or 'nfs'";
@@ -436,7 +451,7 @@ async function waitForHealth(baseUrl, timeoutMs) {
 // Reporting
 // -----------------------------------------------------------------------------
 
-export function renderReport({ inputs, results, manual }) {
+export function renderReport({ inputs, results, manual, recipe }) {
   const lines = [];
   lines.push("# LAN deployment verification (Issue #138) — evidence");
   lines.push("");
@@ -459,6 +474,20 @@ export function renderReport({ inputs, results, manual }) {
   const failed = results.filter((r) => !r.ok);
   lines.push(`Automated: ${results.length - failed.length}/${results.length} PASS`);
   lines.push("");
+  if (recipe) {
+    lines.push("## Mount recipe (read-only, credential by reference)");
+    lines.push("");
+    lines.push("```bash");
+    lines.push(recipe);
+    lines.push("```");
+    lines.push("");
+    lines.push(
+      recipe.includes("<NAS_IP>")
+        ? "`NAS_IP` was not supplied, so the recipe shows a placeholder."
+        : "`NAS_IP` supplied by the operator.",
+    );
+    lines.push("");
+  }
   lines.push("## Steps that must be run manually (host access required)");
   lines.push("");
   for (const s of manual) {
@@ -577,6 +606,14 @@ async function main() {
     log: (m) => console.log(m),
   });
   const manual = manualSteps({ mountPoint, ip, port });
+  const recipe = mountRecipe({
+    protocol: process.env.NAS_PROTOCOL,
+    share: process.env.NAS_SHARE,
+    exportPath: process.env.NAS_EXPORT,
+    credentialRef: inputs.credentialRef,
+    mountPoint,
+    nasIp: process.env.NAS_IP,
+  });
   const report = renderReport({
     inputs: {
       LXC_ID: process.env.LXC_ID,
@@ -590,6 +627,7 @@ async function main() {
     },
     results,
     manual,
+    recipe,
   });
   const out = argValue("evidence");
   if (out) {

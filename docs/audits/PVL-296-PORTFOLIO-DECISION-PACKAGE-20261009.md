@@ -1,7 +1,7 @@
 # Issue #296 — Portfolio Decision Package: absorb `prompt_archiv`, freeze as harvest/sale asset
 
 - **Date:** 2026-10-09
-- **Repository:** `Mueller-Systems-Lab/promptvault-lite` (main = `13ec221`)
+- **Repository:** `Mueller-Systems-Lab/promptvault-lite` (main = `45dead0` at the time of writing)
 - **Status:** **OWNER_PORTFOLIO_DECISION_REQUIRED** — the comparison half is blocked on source access; the executable half is complete and evidenced
 - **Scope:** bounded analysis and a decision package. Nothing was archived, deleted or changed in any external repository.
 
@@ -25,8 +25,11 @@ authenticated GitHub API:
 | `xxammaxx/prompt_archiv` | 404 |
 | `xxammaxx/prompt-archiv` | 404 |
 
-Repository inventories taken at the same time: the organisation holds 25
-repositories and the personal account 11; **neither contains a prompt-archive
+Repository inventories taken at the same time (point-in-time counts, 2026-10-09):
+the organisation held **25** repositories and the personal account **11**. The
+2026-09-30 ledger in this repository recorded 24 for the organisation, so the
+counts differ because they were taken on different days, not because they
+disagree about the subject. **Neither inventory contains a prompt-archive
 repository**, and `gh search repos --owner … archiv` returns nothing for either
 account. This confirms the 2026-09-30 finding in the issue thread.
 
@@ -149,6 +152,9 @@ option says so.
 - **Required work:** none beyond the review; the unblocker is named (owner
   supplies the source or declares it retired).
 - **Reversibility:** high.
+- **Executable today?** Yes — it is the only option that can be adopted
+  immediately without further input, and it is the one this package recommends
+  as the interim state.
 
 ### Recommendation (non-binding)
 

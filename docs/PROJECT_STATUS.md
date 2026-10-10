@@ -184,8 +184,9 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 4. **v1.13.1 published (done):** post-release hardening — manifest-schema discrimination, artifact path scanning, invariant documentation and regression coverage, published 2026-10-09.
 5. **v1.13.2 published (done):** scan-root authorization, automated release gate, load-invariant performance gate, AppImage `.DirIcon` fix — published 2026-10-09 from tag `v1.13.2`.
 6. **Open owner decisions (no code blocker):**
-   - **#138 — LAN accessibility verification.** Blocked only on six non-secret
-     environment values plus one credential *reference*. The verification
+   - **#138 — LAN accessibility verification.** Blocked only on six required
+     inputs: five non-secret environment values plus one credential
+     *reference*. The verification
      contract, the harness (`scripts/lan-verify/verify-lan-deployment.mjs`,
      `pnpm verify:lan`) and the evidence template are complete and the automated
      sequence is proven against a local synthetic equivalent; see
