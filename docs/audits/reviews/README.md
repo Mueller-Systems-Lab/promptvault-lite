@@ -43,12 +43,13 @@ as an approval.
 
 | Mechanism | Classification |
 | --- | --- |
-| Record format + required fields | `VALIDATOR_AVAILABLE` (`scripts/validate-review-evidence.mjs`) |
+| Record format + required fields | `CI_ENFORCED` — `node scripts/validate-review-evidence.mjs --dir docs/audits/reviews` runs as a step in the CI `frontend` job (`VALIDATOR_AVAILABLE`) |
 | Review evidence being *required* on a PR | `DOCUMENT_ONLY` — GitHub branch protection cannot technically require an agent-review artifact. There is no ruleset primitive for it. |
 | Review-package privacy boundary (Promps/, .env, credentials, untracked) | `CI_ENFORCED` — `scripts/__tests__/review-package.test.js` runs under `pnpm test` in the CI frontend job |
 | Secret / restricted-path scanning | `CI_ENFORCED` (CI `security-gate` + `secret-scan` jobs) |
 
-No server-side enforcement of the review artifact is claimed.
+No server-side enforcement of the review artifact is claimed. The validator
+checks *format*; it cannot prove a review genuinely happened.
 
 ## Code HEAD vs. evidence commit
 

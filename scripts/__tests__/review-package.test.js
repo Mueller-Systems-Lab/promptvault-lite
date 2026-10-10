@@ -65,8 +65,8 @@ function makeRepo() {
 }
 
 /** A minimal ustar reader so the test never shells out to `tar`. */
-function readTar(buffer) {
-  const names = [];
+function readTarEntries(buffer) {
+  const entries = [];
   let offset = 0;
   const text = (buf, start, len) => buf.toString("utf8", start, start + len).replace(/\0.*$/, "").trim();
   while (offset + 512 <= buffer.length) {
@@ -75,10 +75,17 @@ function readTar(buffer) {
     const name = text(header, 0, 100);
     const prefix = text(header, 345, 155);
     const size = parseInt(text(header, 124, 12) || "0", 8);
-    names.push(prefix ? `${prefix}/${name}` : name);
+    const typeflag = header.toString("ascii", 156, 157);
+    const linkname = text(header, 157, 100);
+    const content = buffer.subarray(offset + 512, offset + 512 + size).toString("utf8");
+    entries.push({ name: prefix ? `${prefix}/${name}` : name, typeflag, linkname, content });
     offset += 512 + Math.ceil(size / 512) * 512;
   }
-  return names;
+  return entries;
+}
+
+function readTar(buffer) {
+  return readTarEntries(buffer).map((entry) => entry.name);
 }
 
 function runCli(root, args = []) {
@@ -122,8 +129,14 @@ describe("review-package privacy boundary", () => {
     for (const forbidden of ["Promps/private.md", ".env", "config/credentials", "random.txt"]) {
       expect(entries, `${forbidden} must not be packaged`).not.toContain(forbidden);
     }
-    expect(result.inventory.workspace.restricted_untracked).toContainEqual({ root: "Promps/", count: 1, included: false });
+    expect(result.inventory.workspace.restricted_untracked).toContainEqual({
+      root: "Promps/",
+      untracked_count: 1,
+      tracked_excluded_count: 0,
+      included: false,
+    });
     expect(result.inventory.package.excluded_restricted_tracked).toContain("config/credentials");
+    expect(result.inventory.head).toMatch(/^[0-9a-f]{40}$/); // no trailing newline (F4)
   });
 
   it("classifies an intentionally tracked .env.example as example-config and still includes it", () => {
@@ -214,6 +227,92 @@ describe("review-package privacy boundary", () => {
     const parsed = JSON.parse(result.stdout);
     expect(parsed.archive.sha256).toMatch(/^[0-9a-f]{64}$/);
     expect(parsed.package.included).toContain("src/app.ts");
+  });
+});
+
+describe("review-package hostile-input regressions", () => {
+  function trySymlink(target, linkPath) {
+    try {
+      symlinkSync(target, linkPath);
+      return true;
+    } catch (error) {
+      if (["EPERM", "EACCES", "ENOTSUP"].includes(error.code)) return false;
+      throw error;
+    }
+  }
+
+  it("does not leak content through a tracked symlink to a restricted tracked file", (context) => {
+    const root = makeRepo();
+    mkdirSync(join(root, "Promps"), { recursive: true });
+    writeFileSync(join(root, "Promps/private.md"), "PRIVATE_CORPUS_SENTINEL\n");
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    if (!trySymlink("Promps/private.md", join(root, "leak"))) return context.skip("host cannot symlink");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "Promps/private.md", "leak"], root);
+    git(["commit", "--quiet", "-m", "tracked restricted + symlink"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `sym-a-${sequence++}`) });
+    const raw = gunzipSync(readFileSync(result.archivePath));
+    expect(raw.toString("utf8")).not.toContain("PRIVATE_CORPUS_SENTINEL");
+    expect(readTar(raw)).not.toContain("leak");
+    expect(result.inventory.package.symlink_excluded.map((e) => e.path)).toContain("leak");
+  });
+
+  it("does not leak content through a tracked symlink to an untracked file", (context) => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    writeFileSync(join(root, "secret-notes.md"), "ARBITRARY_UNTRACKED_SENTINEL\n");
+    if (!trySymlink("secret-notes.md", join(root, "peek"))) return context.skip("host cannot symlink");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "peek"], root);
+    git(["commit", "--quiet", "-m", "tracked symlink to untracked file"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `sym-b-${sequence++}`) });
+    const raw = gunzipSync(readFileSync(result.archivePath));
+    expect(raw.toString("utf8")).not.toContain("ARBITRARY_UNTRACKED_SENTINEL");
+    expect(readTar(raw)).not.toContain("peek");
+    expect(readTar(raw)).not.toContain("secret-notes.md");
+  });
+
+  it("records an inside-root symlink as a link target path, never as content", (context) => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "README_TARGET_SENTINEL\n");
+    if (!trySymlink("README.md", join(root, "link-to-readme"))) return context.skip("host cannot symlink");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", "link-to-readme"], root);
+    git(["commit", "--quiet", "-m", "tracked inside-root symlink"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `sym-c-${sequence++}`) });
+    const entries = readTarEntries(gunzipSync(readFileSync(result.archivePath)));
+    const link = entries.find((entry) => entry.name === "link-to-readme");
+    expect(link).toBeDefined();
+    expect(link.typeflag).toBe("2"); // a symlink entry
+    expect(link.linkname).toBe("README.md"); // the target PATH, not its content
+    expect(link.content).not.toContain("README_TARGET_SENTINEL");
+  });
+
+  it("refuses a path that cannot be represented exactly in ustar (no silent truncation)", () => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    const deepDir = "a".repeat(200);
+    mkdirSync(join(root, deepDir), { recursive: true });
+    writeFileSync(join(root, deepDir, "b".repeat(20)), "content\n");
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md", deepDir], root);
+    git(["commit", "--quiet", "-m", "long path"], root);
+    expect(() => createReviewPackage({ cwd: root, outDir: join(scratch, `long-${sequence++}`) })).toThrow(/TAR_NAME_TOO_LONG/);
+  });
+
+  it("excludes a backslash path instead of aliasing or duplicating an entry", () => {
+    const root = makeRepo();
+    mkdirSync(join(root, "src"), { recursive: true });
+    writeFileSync(join(root, "src/app.ts"), "REAL_APP\n");
+    writeFileSync(join(root, "src\\app.ts"), "BACKSLASH_IMPOSTOR\n"); // legal filename on Linux
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "src/app.ts", "src\\app.ts"], root);
+    git(["commit", "--quiet", "-m", "backslash path"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `bs-${sequence++}`) });
+    const entries = readTarEntries(gunzipSync(readFileSync(result.archivePath)));
+    const appEntries = entries.filter((entry) => entry.name === "src/app.ts");
+    expect(appEntries).toHaveLength(1); // no duplicate
+    expect(appEntries[0].content).toBe("REAL_APP\n"); // the impostor did not win
+    expect(result.inventory.package.excluded_unrepresentable).toContain("src\\app.ts");
   });
 });
 

@@ -74,8 +74,11 @@ export function validateReviewRecord(record, { fileName = "record.json" } = {}) 
   if (record.review_type !== "HUMAN_APPROVAL" && record.human_approval === true) {
     errors.push("human_approval may only be true for review_type HUMAN_APPROVAL");
   }
+  if (record.review_type === "HUMAN_APPROVAL" && record.human_approval !== true) {
+    errors.push("review_type HUMAN_APPROVAL requires human_approval: true");
+  }
   if (typeof record.evidence_commit === "string" && record.evidence_commit === record.code_head_reviewed) {
-    warnings.push("evidence_commit equals code_head_reviewed — this is the self-referential shape the contract forbids");
+    errors.push("self-referential record: evidence_commit must not equal code_head_reviewed (record the code head; commit this evidence separately)");
   }
   if (/^\s*$/.test(record.findings_summary ?? "")) errors.push("findings_summary must not be empty");
 

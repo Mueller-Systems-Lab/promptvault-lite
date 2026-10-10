@@ -28,6 +28,7 @@ import {
   lstatSync,
   mkdirSync,
   readFileSync,
+  readlinkSync,
   realpathSync,
   writeFileSync,
 } from "node:fs";
@@ -85,7 +86,7 @@ const NAMED_PRIVATE_ROOTS = ["Promps", ".aws"];
 const EXAMPLE_CONFIG = /^(.*\/)?\.env\.(example|sample|template|dist)$/;
 
 function git(args, cwd) {
-  return execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+  return execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 }
 
 function gitZ(args, cwd) {
@@ -115,8 +116,19 @@ export function isExampleConfig(relPath) {
   return EXAMPLE_CONFIG.test(relPath);
 }
 
+/**
+ * A path that cannot be represented portably (backslash separators, NUL,
+ * absolute) is refused rather than silently rewritten: on Linux a backslash is
+ * a legal filename character, so normalizing it would alias a different path.
+ */
+export function isUnrepresentable(relPath) {
+  return relPath.includes("\\") || relPath.includes("\0") || isAbsolute(relPath);
+}
+
 export function isRestrictedPath(relPath, restrictedGlobs) {
   if (isExampleConfig(relPath)) return false;
+  // Normalize backslashes for *matching only*: this can only widen matches, so
+  // it is fail-closed (`Promps\private.md` is caught just like `Promps/private.md`).
   const normalized = relPath.replaceAll("\\", "/").replace(/^\.\//, "");
   return restrictedGlobs.some((glob) => globToRegExp(glob).test(normalized));
 }
@@ -130,42 +142,56 @@ export function isRestrictedPath(relPath, restrictedGlobs) {
 export function classifyPaths({ tracked = [], untracked = [], restrictedGlobs = [], allowUntracked = [] }) {
   const included = [];
   const excluded = [];
-  const allowSet = new Set(allowUntracked.map((p) => p.replaceAll("\\", "/").replace(/^\.\//, "")));
+  const allowSet = new Set(allowUntracked.map((p) => p.replace(/^\.\//, "")));
 
-  for (const raw of tracked) {
-    const path = raw.replaceAll("\\", "/");
-    if (isRestrictedPath(path, restrictedGlobs)) excluded.push({ path, reason: "restricted-tracked" });
+  for (const path of tracked) {
+    if (isUnrepresentable(path)) excluded.push({ path, reason: "unrepresentable-path" });
+    else if (isRestrictedPath(path, restrictedGlobs)) excluded.push({ path, reason: "restricted-tracked" });
     else included.push(path);
   }
-  for (const raw of untracked) {
-    const path = raw.replaceAll("\\", "/");
-    if (isRestrictedPath(path, restrictedGlobs)) excluded.push({ path, reason: "restricted-untracked" });
+  for (const path of untracked) {
+    if (isUnrepresentable(path)) excluded.push({ path, reason: "unrepresentable-path" });
+    else if (isRestrictedPath(path, restrictedGlobs)) excluded.push({ path, reason: "restricted-untracked" });
     else if (allowSet.has(path)) included.push(path);
     else excluded.push({ path, reason: "untracked-excluded-by-default" });
   }
   return { included, excluded };
 }
 
-/** Resolve a path's real location; must stay inside the repository root. */
-function assertContained(root, relPath) {
+/** The nearest existing ancestor must resolve inside the repository root. */
+function assertAncestorContained(root, relPath) {
   const abs = resolve(root, relPath);
-  let probe = abs;
+  let probe = dirname(abs);
   while (!existsSync(probe)) {
     const parent = dirname(probe);
     if (parent === probe) throw new Error(`PATH_HAS_NO_EXISTING_ANCESTOR: ${relPath}`);
     probe = parent;
   }
-  const realProbe = realpathSync(probe);
-  if (!within(root, realProbe) && realProbe !== root) {
-    throw new Error(`SYMLINK_ESCAPES_REPOSITORY: ${relPath} resolves to ${realProbe}`);
+  const realAncestor = realpathSync(probe);
+  if (!within(root, realAncestor) && realAncestor !== root) {
+    throw new Error(`SYMLINK_ESCAPES_REPOSITORY: ${relPath} (ancestor resolves to ${realAncestor})`);
   }
-  if (lstatSync(abs).isSymbolicLink()) {
-    const realTarget = realpathSync(abs);
+  return abs;
+}
+
+/**
+ * Classify a symlink WITHOUT following it. Returns the link target to record
+ * (never the target's content), or throws when the link escapes the root.
+ */
+function resolveSymlink(root, relPath) {
+  const abs = resolve(root, relPath);
+  const linkTarget = readlinkSync(abs); // the path string only — never file content
+  const resolvedTarget = resolve(dirname(abs), linkTarget);
+  if (!within(root, resolvedTarget)) {
+    throw new Error(`SYMLINK_ESCAPES_REPOSITORY: ${relPath} -> ${linkTarget}`);
+  }
+  if (existsSync(resolvedTarget)) {
+    const realTarget = realpathSync(resolvedTarget);
     if (!within(root, realTarget)) {
       throw new Error(`SYMLINK_ESCAPES_REPOSITORY: ${relPath} -> ${realTarget}`);
     }
   }
-  return abs;
+  return { linkTarget, targetRel: relative(root, resolvedTarget) };
 }
 
 // ── deterministic ustar writer ────────────────────────────────────────────
@@ -173,17 +199,25 @@ function octal(value, width) {
   return value.toString(8).padStart(width - 1, "0") + "\0";
 }
 
+/**
+ * Split a path into ustar `prefix`/`name` (max 155/100 bytes). Fails closed —
+ * a path that cannot be represented exactly is refused, never truncated, so the
+ * archive can never disagree with `inventory.json` / `MANIFEST.sha256`.
+ */
+export function splitTarName(name) {
+  if (Buffer.byteLength(name) <= 100) return { prefix: "", name };
+  for (let index = name.length - 1; index > 0; index -= 1) {
+    if (name[index] !== "/") continue;
+    const prefix = name.slice(0, index);
+    const rest = name.slice(index + 1);
+    if (Buffer.byteLength(rest) <= 100 && Buffer.byteLength(prefix) <= 155) return { prefix, name: rest };
+  }
+  throw new Error(`TAR_NAME_TOO_LONG: cannot represent '${name}' exactly in ustar`);
+}
+
 function tarHeader({ name, size, typeflag, linkname = "" }) {
   const block = Buffer.alloc(512);
-  let prefix = "";
-  let shortName = name;
-  if (Buffer.byteLength(name) > 100) {
-    const cut = name.lastIndexOf("/", name.length - 101);
-    const candidate = cut === -1 ? name.slice(name.length - 100) : name.slice(cut + 1);
-    if (Buffer.byteLength(candidate) > 100) throw new Error(`TAR_NAME_TOO_LONG: ${name}`);
-    prefix = cut === -1 ? "" : name.slice(0, cut);
-    shortName = candidate;
-  }
+  const { prefix, name: shortName } = splitTarName(name);
   block.write(shortName, 0, 100, "utf8");
   block.write(octal(typeflag === "5" ? 0o755 : 0o644, 8), 100, 8, "ascii");
   block.write(octal(0, 8), 108, 8, "ascii");
@@ -195,7 +229,7 @@ function tarHeader({ name, size, typeflag, linkname = "" }) {
   block.write(linkname.slice(0, 100), 157, 100, "utf8");
   block.write("ustar\0", 257, 6, "ascii");
   block.write("00", 263, 2, "ascii");
-  block.write(prefix.slice(0, 155), 345, 155, "utf8");
+  block.write(prefix, 345, 155, "utf8");
   let sum = 0;
   for (const byte of block) sum += byte;
   block.write(sum.toString(8).padStart(6, "0") + "\0 ", 148, 8, "ascii");
@@ -258,13 +292,23 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
 
   const { included, excluded } = classifyPaths({ tracked, untracked, restrictedGlobs, allowUntracked });
   const excludedTracked = excluded.filter((e) => e.reason === "restricted-tracked");
+  const includedSet = new Set(included);
 
   // Fail-closed on any symlink escaping the repository root (tracked or allowed).
+  // A symlink is recorded by its TARGET PATH — never the target's content — and
+  // only when its target is itself packaged. A link to a restricted or
+  // non-packaged path is dropped, so nothing leaks through the link.
   const entries = [];
+  const symlinkExcluded = [];
   for (const relPath of included) {
-    const abs = assertContained(root, relPath);
+    const abs = assertAncestorContained(root, relPath);
     if (lstatSync(abs).isSymbolicLink()) {
-      entries.push({ name: relPath, typeflag: "2", linkname: readFileSync(abs, "utf8") });
+      const { linkTarget, targetRel } = resolveSymlink(root, relPath);
+      if (isRestrictedPath(targetRel, restrictedGlobs) || !includedSet.has(targetRel)) {
+        symlinkExcluded.push({ path: relPath, reason: "symlink-target-not-packaged", target: targetRel });
+        continue;
+      }
+      entries.push({ name: relPath, typeflag: "2", linkname: linkTarget });
     } else {
       entries.push({ name: relPath, content: readFileSync(abs) });
     }
@@ -281,7 +325,10 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
 
   const restrictedUntracked = NAMED_PRIVATE_ROOTS.map((rootName) => ({
     root: `${rootName}/`,
-    count: untracked.filter((p) => p === rootName || p.startsWith(`${rootName}/`)).length,
+    // Both numbers are reported: an untracked-only count would read as "nothing
+    // here" for a root that is excluded *because it is tracked*.
+    untracked_count: untracked.filter((p) => p === rootName || p.startsWith(`${rootName}/`)).length,
+    tracked_excluded_count: excludedTracked.filter((e) => e.path === rootName || e.path.startsWith(`${rootName}/`)).length,
     included: false,
   }));
 
@@ -313,8 +360,10 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
       file_count: entries.length,
       included: includedSorted,
       excluded_restricted_tracked: excludedTracked.map((e) => e.path).sort(),
+      excluded_unrepresentable: excluded.filter((e) => e.reason === "unrepresentable-path").map((e) => e.path).sort(),
+      symlink_excluded: symlinkExcluded.map((e) => ({ path: e.path, target: e.target })).sort((a, b) => (a.path < b.path ? -1 : 1)),
       example_config_classified: includedSorted.filter(isExampleConfig),
-      allowlisted_untracked: allowUntracked.map((p) => p.replaceAll("\\", "/").replace(/^\.\//, "")).sort(),
+      allowlisted_untracked: allowUntracked.map((p) => p.replace(/^\.\//, "")).sort(),
       purpose: purpose ?? null,
     },
   };
@@ -377,7 +426,7 @@ function cli(argv) {
   console.log(`PACKAGE_FILE_COUNT=${result.inventory.package.file_count}`);
   console.log(`UNTRACKED_PATHS_EXCLUDED=${result.inventory.workspace.untracked_path_count}`);
   for (const entry of result.inventory.workspace.restricted_untracked) {
-    console.log(`RESTRICTED_ROOT=${entry.root} count=${entry.count} included=${entry.included}`);
+    console.log(`RESTRICTED_ROOT=${entry.root} untracked_count=${entry.untracked_count} tracked_excluded_count=${entry.tracked_excluded_count} included=${entry.included}`);
   }
   console.log(`WORKSPACE_DIRTY=${result.inventory.workspace.dirty}`);
   if (result.excludedTracked.length) {

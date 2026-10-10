@@ -55,9 +55,17 @@ describe("review-evidence validator", () => {
     expect(result.warnings.join(" ")).toMatch(/DOCUMENT_ONLY/);
   });
 
-  it("warns on the self-referential evidence_commit shape", () => {
+  it("rejects the self-referential evidence_commit shape", () => {
     const result = validateReviewRecord(record({ evidence_commit: SHA }));
-    expect(result.warnings.join(" ")).toMatch(/self-referential/);
+    expect(result.ok).toBe(false);
+    expect(result.errors.join(" ")).toMatch(/self-referential/);
+  });
+
+  it("rejects a HUMAN_APPROVAL record that does not assert human approval", () => {
+    const result = validateReviewRecord(record({ review_type: "HUMAN_APPROVAL", human_approval: false }));
+    expect(result.ok).toBe(false);
+    expect(result.errors.join(" ")).toMatch(/human_approval/);
+    expect(validateReviewRecord(record({ review_type: "HUMAN_APPROVAL", human_approval: true })).ok).toBe(true);
   });
 
   it("requires findings entries to carry id, severity and fixed", () => {
