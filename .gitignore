@@ -27,6 +27,12 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Private user corpora / cloud credentials — never tracked, never packaged.
+# (Review packages additionally exclude these by policy; see
+#  scripts/create-review-package.mjs and docs/audits/reviews/README.md.)
+/Promps/
+/.aws/
+
 # Logs
 *.log
 
@@ -59,6 +65,8 @@ scripts/*
 !scripts/docker-smoke.sh
 !scripts/eval-flywheel.mjs
 !scripts/verify-release-artifacts.mjs
+!scripts/create-review-package.mjs
+!scripts/validate-review-evidence.mjs
 !scripts/lib/
 !scripts/__tests__/
 # Release-Pipeline (v1.13.2): Staging-Skript + Workflow-Bausteine

@@ -51,6 +51,9 @@ jobs:
       - name: Unit/Integration tests (E3)
         run: pnpm test
 
+      - name: Review-evidence format (governance)
+        run: node scripts/validate-review-evidence.mjs --dir docs/audits/reviews
+
       - name: Build (E6)
         run: pnpm build
 

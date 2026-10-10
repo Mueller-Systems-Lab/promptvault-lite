@@ -5,20 +5,37 @@
 
 ---
 
-## 1. Runtime & Shell Compatibility
+## 1. Runtime, Shell & Host — discover at runtime
 
-This repository is developed on **Windows 10 (10.0.19045)**. Agents MUST:
+**`CURRENT_HOST = DISCOVER_AT_RUNTIME`.** This repository is developed on more
+than one machine. Do **not** assume Windows, Linux or macOS, and treat no fixed
+host, shell, package manager or tool version as authoritative. A remembered host
+value is a guess, never a fact.
 
-- Detect the OS and shell before executing commands.
-- On Windows: prefer PowerShell 5.1 compatible syntax.
-- Do NOT blindly assume Linux/bash or macOS/zsh when running on Windows.
-- Do NOT mix shell syntax across platforms without validation.
+At every preflight, detect and record:
 
-When in doubt, run a preflight:
+- OS and version
+- active shell and its version (`$SHELL` / `$PSVersionTable.PSVersion`)
+- path and encoding conventions
+- resolved repository root (`git rev-parse --show-toplevel`)
+- available toolchain and versions (`git`, `node`, `pnpm`, `cargo`)
+
+```bash
+# bash / POSIX profile
+uname -a; echo "$SHELL"; git --version; node --version; pnpm --version; cargo --version
+```
 
 ```powershell
+# PowerShell 5.1+ profile
 Get-Location; $PSVersionTable.PSVersion; git --version; node --version; pnpm --version
 ```
+
+Then:
+
+- Use the syntax of the shell you **actually detected**.
+- Do NOT mix shell syntax across platforms without validation.
+- Windows/PowerShell and Linux/bash are **compatibility profiles**, not rival
+  claims about the current host. Neither is more authoritative than the other.
 
 ### Project identity and workspace preflight
 
@@ -163,6 +180,13 @@ EVIDENCE_STATUS: PASS / FAIL / NOT_RUN / MISSING / BLOCKED
 - Do NOT commit untracked files blindly — every file must be intentional.
 - Do NOT commit `.playwright-mcp/` artifacts.
 - Keep docs backlog separate from feature/code PRs.
+- **Review packages:** build them only with `scripts/create-review-package.mjs`
+  (`pnpm review:package`). It packages **tracked repository state only**; every
+  untracked path is excluded by construction, and restricted roots
+  (`Promps/`, `.aws/`, `.env*`, key/credential files, caches) are excluded even
+  when tracked. Never `tar`/`zip`/copy the working directory, and never treat
+  "it is inside the repository" as permission to package a file.
+  `UNTRACKED != SAFE`. See `docs/audits/reviews/README.md`.
 
 ---
 
@@ -197,11 +221,44 @@ Delegate to these agents for specialized work. The orchestrator (`issue-orchestr
 
 ## 11. Host-Umgebung (Host Environment)
 
-- **Host:** Windows 10 (10.0.19045)
-- **Shell:** PowerShell 5.1 (primary); git-bash available for compatibility
-- **Package Manager:** pnpm (Node.js), cargo (Rust)
-- **Git:** 2.47.0+
-- **OpenCode:** 1.15.0
+`CURRENT_HOST = DISCOVER_AT_RUNTIME` — see §1. The host is whatever the §1
+preflight reports; nothing here is a fixed claim about the current machine.
+
+Compatibility profiles (examples of what a preflight may report, **not** fixed
+facts):
+
+- **Windows 10 + PowerShell 5.1** (git-bash available) — supported profile.
+- **Linux (e.g. Linux Mint / Ubuntu) + bash** — supported profile.
+
+Shared toolchain, verified at every preflight rather than pinned here: `git`,
+Node.js + `pnpm`, Rust + `cargo`, Docker + Compose when deployment is involved.
+Tool versions move — read them from the preflight and never quote a remembered
+version as current.
+
+---
+
+## 12. Review-Evidence (durable)
+
+Independent review must be durable evidence, not only prose in a commit message
+or PR body. For each reviewed PR:
+
+- Record the **exact reviewed commit SHA**, the review type, the reviewer role,
+  the verdict and the findings in `docs/audits/reviews/REVIEW-<pr>-<sha>.json`,
+  and validate it with `pnpm review:evidence`. Format:
+  `docs/audits/reviews/README.md`.
+- Post the independent review as a PR comment quoting that same SHA.
+
+Keep the classes distinct; never conflate them:
+
+| Class | Meaning |
+| --- | --- |
+| `CI_VALIDATION` | Automated gates (local + GitHub Actions). |
+| `AGENT_INDEPENDENT_REVIEW` | An independent reviewer agent inspected the exact HEAD. **Not a human approval.** |
+| `HUMAN_APPROVAL` | The owner approved the merge (§7). |
+
+Enforcement is documented, not server-side: GitHub branch protection cannot
+require an agent-review artifact (`DOCUMENT_ONLY`); the record format has a
+`VALIDATOR_AVAILABLE`. Do not claim server-side enforcement that does not exist.
 
 ---
 
@@ -209,11 +266,15 @@ Delegate to these agents for specialized work. The orchestrator (`issue-orchestr
 
 ### Issue tracker
 
-Issues and specs live as GitHub issues (via `gh` CLI). See `docs/agents/issue-tracker.md`.
+Issues and specs live as GitHub issues (via `gh` CLI). Governance and merge
+intent: `docs/GOVERNANCE.md`. Pull-request expectations:
+`.github/pull_request_template.md`.
 
 ### Domain docs
 
-Single-context: `CONTEXT.md` at repo root; ADRs at `.opencode/spec/adr/` (project convention). See `docs/agents/domain.md`.
+Context: `docs/ARCHITECTURE.md` (system overview) and `docs/GOVERNANCE.md`
+(rules). ADRs at `.opencode/spec/adr/` (project convention). There is no
+`CONTEXT.md` at the repo root.
 
 ### Engineering skills
 

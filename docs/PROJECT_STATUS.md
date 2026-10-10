@@ -1,6 +1,6 @@
 # Project Status — PromptVault Lite
 
-**Last updated:** 2026-10-09
+**Last updated:** 2026-10-10
 **Latest published release:** v1.13.2 (GitHub Release, Linux x64 — `.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.13.2` (commit `80593cf2d4824f4e5c9cc7afbc1b0f142daa9e84`)
 **v1.13.2:** scan-root authorization, automated release gate, load-invariant performance gate, AppImage `.DirIcon` fix
 **Branch:** main
@@ -14,7 +14,7 @@
 ## Current Status: GREEN_CODE / v1.13.2 RELEASED 🟢
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`), server API tests and native E2E (Playwright + WebdriverIO on Windows) suites are verified.
-**Remote-CI:** GitHub Actions runs and passes on `main` (14/14 jobs on `13ec221`); Issue #154 is closed. Local gates remain required before merge.
+**Remote-CI:** GitHub Actions runs and passes on `main` (the full CI job set is green; see [Actions](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/workflows/ci.yml) for live status — no transient SHA is pinned here). Issue #154 is closed. Local gates remain required before merge.
 **Latest release:** v1.13.2 hardening patch — published 2026-10-09 from tag `v1.13.2`; the release pipeline built, verified and published it end to end.
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
@@ -150,7 +150,7 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 - **Windows installer unsigned:** SmartScreen shows "Unknown publisher" warning
 - **No auto-updater:** manual update for each release
 - **Web/LAN-Server ohne Authentifizierung** — für ein vertrauenswürdiges LAN gedacht, nicht für WAN. **Seit v1.13.2 ist `POST /api/scan` auf konfigurierte Scan-Wurzeln beschränkt** (Default: nur der konfigurierte Vault; `PROMPTVAULT_SERVER_SCAN_ROOTS` ersetzt die Liste, `=*` ist der ausdrückliche Trusted-Host-Opt-in). Ein Pfad außerhalb ist HTTP 403, Traversal/malformed ist HTTP 400. Im Container-Deployment greift zusätzlich die Begrenzung auf das Container-Dateisystem. Details: `docs/DEPLOYMENT.md` → Sicherheitsgrenzen
-- **Remote-CI:** GitHub Actions runs and passes on `main` (14/14 jobs; Issue #154 is closed); local gates remain required before merge
+- **Remote-CI:** GitHub Actions runs and passes on `main` (see the live [Actions](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/workflows/ci.yml) status; Issue #154 is closed); local gates remain required before merge
 - **Embeddings Phase 1 mock-only** — no real semantic search
 - **Local TTS neural path** — adapter implemented and verified end-to-end on Windows against a real local Piper runtime + German model (`de_DE-thorsten-high`); Piper/model are external local runtime requirements (not bundled); Web Speech remains the fallback
 - **SQLite not fully wired** as primary persistence for scanned prompts (filesystem remains the canonical storage; since v1.10.0 authored prompts persist directly via the filesystem through `create_prompt`/`update_prompt`, which is the canonical storage layer — SQLite keeps its existing roles, e.g. favorites)
