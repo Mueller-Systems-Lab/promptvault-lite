@@ -178,7 +178,14 @@ describe("manualSteps", () => {
 
   it("covers every acceptance criterion that needs host access", () => {
     expect(steps.map((s) => s.id).sort()).toEqual(
-      ["nas_mount_readonly", "nas_write_rejected", "restart_survives", "second_lan_device", "wan_not_exposed"].sort(),
+      [
+        "credential_log_review",
+        "nas_mount_readonly",
+        "nas_write_rejected",
+        "restart_survives",
+        "second_lan_device",
+        "wan_not_exposed",
+      ].sort(),
     );
   });
 
@@ -235,5 +242,25 @@ describe("renderReport", () => {
 
   it("omits the recipe section entirely when no recipe is passed", () => {
     expect(report).not.toContain("## Mount recipe");
+  });
+
+  it("marks the credential-leak check PARTIAL in the evidence document", () => {
+    // The automated check cannot detect a leaked password (the harness never
+    // receives one), so the attached evidence must say so instead of implying
+    // full coverage.
+    const withLeakRow = renderReport({
+      inputs: {},
+      results: [
+        {
+          id: "no_credential_material_in_responses",
+          ok: true,
+          detail:
+            "PARTIAL: the credential reference is not echoed in any response; a leaked password cannot be detected here",
+        },
+      ],
+      manual: manualSteps({ mountPoint: "/mnt/p", ip: "192.0.2.10" }),
+    });
+    expect(withLeakRow).toMatch(/no_credential_material_in_responses \| PASS \| PARTIAL:/);
+    expect(withLeakRow).toContain("credential_log_review");
   });
 });

@@ -36,7 +36,7 @@ local stand-in:
 | `scan_traversal_rejected` | `..` is **400** — a shape error, not a permission error |
 | `list_prompts` / `list_latency` | listing works within the issue's 500 ms budget |
 | `write_refused_read_only` / `export_refused_read_only` | mutating endpoints are 403 |
-| `no_credential_material_in_responses` | **partial by design**: the credential *reference* string does not appear in any response body. The harness never possesses the credential, so a leaked password cannot be detected here — see the note under §4. |
+| `no_credential_material_in_responses` | **partial by design**: the credential *reference* string does not appear in any response body. The harness never possesses a credential, so a leaked password cannot be detected here. Its own output line says `PARTIAL:` and the `credential_log_review` manual step covers the rest. |
 | `denial_does_not_disclose_roots` | the 403 body names the env var, never the configured root |
 
 The negative pass sets `PROMPTVAULT_SERVER_SCAN_ROOTS=*` and requires
@@ -118,7 +118,7 @@ already pins the scan boundary to the mounted vault
 | NAS mounted read-only (verified) | `nas_mount_readonly`, `nas_write_rejected`, `read_only_default` |
 | All core features work from a remote LAN device | `scan_*`, `list_prompts`, `write_/export_refused_read_only` |
 | Response times acceptable (<2 s scan, <500 ms list) | `scan_latency`, `list_latency` |
-| No credentials visible in UI, logs, responses | `no_credential_material_in_responses` |
+| No credentials visible in UI, logs, responses | `no_credential_material_in_responses` (**partial**) + the `credential_log_review` manual step |
 | Only on LAN, not from WAN | `wan_not_exposed` (from outside the LAN) |
 
 Red tests from the issue: WAN access blocked (`wan_not_exposed`), NAS write
@@ -127,10 +127,10 @@ rejected (`nas_write_rejected`), invalid credentials must not leak details.
 **Limit of `no_credential_material_in_responses`.** It proves that the reference
 string (a path or a variable name) is never echoed. It cannot prove that a
 *password* is never echoed, because the harness deliberately never receives one —
-that is the same rule that keeps this handoff free of plaintext secrets. Checking
-for an actual credential leak therefore remains a manual review of the LXC logs
-and the browser session during the real run; the automated check is a regression
-guard, not full coverage.
+that is the same rule that keeps this handoff free of plaintext secrets. The
+remaining coverage is the `credential_log_review` manual step (LXC logs) plus the
+browser session during the real run; the automated check is a regression guard,
+not full coverage.
 
 ## 5. Rollback
 
@@ -144,8 +144,8 @@ sudo umount /mnt/promptvault-prompts
 `--evidence <path>` writes a markdown document containing the non-secret inputs,
 every automated result with its measured latency, the read-only mount recipe for
 the given protocol, and the manual steps with their expected output. The
-credential-leak check is reported as *partial* there as well, with the same
-reason as in §4. Attach it to #138 together with the manual command
+credential-leak row is marked `PARTIAL:` in that document itself, with the reason
+and a pointer to the `credential_log_review` step. Attach it to #138 together with the manual command
 outputs. The harness never writes the credential reference's *content* — only its
 scheme and path, which are not secret.
 

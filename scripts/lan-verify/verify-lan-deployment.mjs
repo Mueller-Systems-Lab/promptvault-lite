@@ -29,6 +29,11 @@
 // never reads the file and never logs it; it only emits it inside the mount
 // command template.
 //
+// That rule also bounds one check: `no_credential_material_in_responses` can
+// only prove that the *reference* is not echoed, because the harness never
+// possesses a credential to look for. It is labelled PARTIAL in its own output,
+// and the `credential_log_review` manual step covers what it cannot.
+//
 // Usage:
 //   node scripts/lan-verify/verify-lan-deployment.mjs --check-inputs
 //   node scripts/lan-verify/verify-lan-deployment.mjs --self-test
@@ -190,6 +195,15 @@ export function manualSteps({ mountPoint, ip, port = 8080 }) {
       command: `cd <repo>/deploy && docker compose restart && sleep 5 && curl -fsS http://${ip}:${port}/api/health`,
       expect: "`{\"status\":\"ok\",…}` after the restart",
       why: "acceptance: the service comes back without manual repair",
+    },
+    {
+      id: "credential_log_review",
+      command:
+        `cd <repo>/deploy && docker compose logs | grep -iE 'password|passwd|secret|token' || echo NO_CREDENTIAL_MATERIAL_IN_LOGS`,
+      expect:
+        "`NO_CREDENTIAL_MATERIAL_IN_LOGS`, or at most the credential *path* — never a value",
+      why:
+        "the automated check can only prove that the reference is not echoed; a leaked password cannot be detected by a harness that never receives one, so this review is what closes the issue's 'no credentials visible in UI, logs, responses' criterion",
     },
     {
       id: "wan_not_exposed",
@@ -356,7 +370,9 @@ export async function runAutomatedChecks({
   record(
     "no_credential_material_in_responses",
     !leak,
-    leak ? "the credential reference value appears in a response body" : "no credential material found in any response",
+    leak
+      ? "the credential reference value appears in a response body"
+      : "PARTIAL: the credential reference is not echoed in any response; a leaked password cannot be detected here, because the harness never receives one — see the credential_log_review manual step",
   );
 
   // 9. the server must not disclose the allowed roots to an unauthenticated client
