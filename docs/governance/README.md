@@ -8,7 +8,8 @@ encodes so a change is reviewable in a PR before it is applied in GitHub.
 > **Status: APPLIED** — ruleset `main-protection` (id `24841719`) is active on
 > `main`; `branches/main.protected == true` and `bypass_actors == []` were
 > confirmed by API read-back on 2026-10-10. The payload below is the tracked
-> source of truth and is kept in exact agreement with the live ruleset.
+> source of truth for every *deliberate* settings choice; rule parameters GitHub
+> materialises from its own defaults are noted where they matter.
 
 ### Correction history
 
@@ -61,9 +62,19 @@ organization, see above). An unattributed commit — one not tied to a GitHub
 user, e.g. from an app token — would therefore deadlock its pull request
 permanently.
 
-The repository has no bot, Dependabot or commit-pushing workflow
-(`grep -rnE "git (commit|push)" .github/workflows/` → no match), so the
-protection is inert in practice while the deadlock risk is real. The parameter
+The repository has **no commit-pushing workflow and no bot-authored history**:
+`grep -rnE "git (commit|push)" .github/workflows/` returns nothing, there is no
+Dependabot/Renovate configuration, and no commit or pull request is authored by a
+bot or an unattributed identity. The protection is therefore inert in practice
+while the deadlock risk is real.
+
+**Correction (review finding):** an earlier revision of this section claimed "no
+bot … exists". That was inaccurate — one GitHub App *is* installed org-wide and
+holds `contents: write`. It has produced no commits or PRs, and this does not
+change the decision: a commit pushed by an app carries an app attribution, and
+an *app-attributed* commit is exactly what this rule would try to gate — with no
+second approver available it would deadlock the pull request rather than protect
+it. The rule can only block here, never protect. The parameter
 is pinned to `false` explicitly so the *tracked payload describes the live
 ruleset completely* and the deadlock class is closed. This is the only rule
 parameter the repository deliberately relaxes away from a GitHub default, and
