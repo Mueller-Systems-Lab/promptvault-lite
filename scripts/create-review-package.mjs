@@ -11,12 +11,13 @@
 //     exact-path allowlist, and a restricted path is refused even then.
 //   * Symlinks that resolve outside the repository root abort the run.
 //
-// The inventory (metadata) is sanitized: it lists included TRACKED paths, plus
-// the paths of excluded TRACKED entries and excluded symlinks — all of which are
-// already visible in the Git tree, so naming them discloses nothing new. It
-// counts UNTRACKED and restricted material by number only, and never emits an
-// untracked or private path NAME, nor a withheld symlink TARGET (a name is not
-// emitted even to prove exclusion).
+// The inventory (metadata) is sanitized. It names only material that is already
+// visible, or that the operator explicitly handed over:
+//   * included paths, and excluded TRACKED paths — already in the Git tree;
+//   * withheld symlink TARGETS are never named (only a category);
+//   * UNTRACKED names are counted, never named — the single exception is a path
+//     the operator explicitly allowlisted (`allowlisted_untracked`), which is the
+//     contract's required explicit authorization, not an automatic disclosure.
 //
 // Usage:
 //   node scripts/create-review-package.mjs [--out DIR] [--json]
@@ -314,6 +315,7 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
   const { included, excluded } = classifyPaths({ tracked, untracked, restrictedGlobs, allowUntracked });
   const excludedTracked = excluded.filter((e) => e.reason === "restricted-tracked");
   const includedSet = new Set(included);
+  const trackedSet = new Set(tracked);
 
   // Fail-closed on any symlink escaping the repository root (tracked or allowed).
   // A symlink is recorded by its repo-relative TARGET PATH — never the target's
@@ -399,7 +401,9 @@ export function createReviewPackage({ cwd = process.cwd(), outDir, allowUntracke
       file_count: entries.length,
       included: includedSorted,
       excluded_restricted_tracked: excludedTracked.map((e) => e.path).sort(),
-      excluded_unrepresentable: excluded.filter((e) => e.reason === "unrepresentable-path").map((e) => e.path).sort(),
+      excluded_unrepresentable: excluded.filter((e) => e.reason === "unrepresentable-path" && trackedSet.has(e.path)).map((e) => e.path).sort(),
+      // An unrepresentable UNTRACKED path is counted, not named (see the header contract).
+      excluded_unrepresentable_untracked_count: excluded.filter((e) => e.reason === "unrepresentable-path" && !trackedSet.has(e.path)).length,
       symlink_excluded_count: symlinkExcluded.length,
       symlink_excluded: symlinkExcluded.slice().sort((a, b) => (a.path < b.path ? -1 : 1)),
       example_config_classified: includedSorted.filter(isExampleConfig),

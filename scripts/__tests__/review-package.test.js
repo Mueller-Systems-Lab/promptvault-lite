@@ -401,6 +401,19 @@ describe("review-package hostile-input regressions", () => {
     expect(result.inventory.package.symlink_excluded).toContainEqual({ path: "dirlink", target_kind: "restricted" });
   });
 
+  it("counts an unrepresentable UNTRACKED path instead of naming it", () => {
+    const root = makeRepo();
+    writeFileSync(join(root, "README.md"), "# fixture\n");
+    writeFileSync(join(root, "back\\slash-untracked.txt"), "x\n"); // legal filename on Linux
+    git(["--literal-pathspecs", "add", "--", ".agents", "AGENTS.md", "README.md"], root);
+    git(["commit", "--quiet", "-m", "base"], root);
+
+    const result = createReviewPackage({ cwd: root, outDir: join(scratch, `n6-${sequence++}`) });
+    expect(result.inventory.package.excluded_unrepresentable).toEqual([]);
+    expect(result.inventory.package.excluded_unrepresentable_untracked_count).toBe(1);
+    expect(JSON.stringify(result.inventory)).not.toContain("back\\slash-untracked.txt");
+  });
+
   it("refuses a tracked path that collides with the generated metadata names", () => {
     const root = makeRepo();
     writeFileSync(join(root, "README.md"), "# fixture\n");
