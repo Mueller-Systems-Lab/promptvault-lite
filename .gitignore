@@ -63,6 +63,8 @@ scripts/*
 !scripts/__tests__/
 # Release-Pipeline (v1.13.2): Staging-Skript + Workflow-Bausteine
 !scripts/release/
+# LAN/LXC deployment verification harness (Issue #138)
+!scripts/lan-verify/
 site/
 
 # Python cache

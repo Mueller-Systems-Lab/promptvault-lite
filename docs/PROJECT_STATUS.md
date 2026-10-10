@@ -183,6 +183,20 @@ v1.12.0 includes the Advanced Workflows GA on the existing editor: Missing-Info 
 3. **v1.13.0 published (done):** Web/LAN server, `promptvault-core` / `promptvault-server` split and Docker/Compose deployment, published 2026-10-09.
 4. **v1.13.1 published (done):** post-release hardening — manifest-schema discrimination, artifact path scanning, invariant documentation and regression coverage, published 2026-10-09.
 5. **v1.13.2 published (done):** scan-root authorization, automated release gate, load-invariant performance gate, AppImage `.DirIcon` fix — published 2026-10-09 from tag `v1.13.2`.
-6. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
-7. **Code signing for the Windows installer.**
-8. **Architecture Contract Audit / Security Posture Review.**
+6. **Open owner decisions (no code blocker):**
+   - **#138 — LAN accessibility verification.** Blocked only on six non-secret
+     environment values plus one credential *reference*. The verification
+     contract, the harness (`scripts/lan-verify/verify-lan-deployment.mjs`,
+     `pnpm verify:lan`) and the evidence template are complete and the automated
+     sequence is proven against a local synthetic equivalent; see
+     `docs/runbooks/lan-deployment-verification.md` for the exact handoff.
+   - **#296 — portfolio consolidation.** `prompt_archiv` is not accessible (live
+     probe: 404 in both accounts), so the source diff cannot be executed. The
+     decision package with the comparison matrix, the test-enforced import
+     contract and four options is in
+     `docs/audits/PVL-296-PORTFOLIO-DECISION-PACKAGE-20261009.md`.
+7. **Embeddings Phase 2 (#199):** DB schema/storage (still mock-only).
+8. **Code signing for the Windows installer.**
+9. **Architecture Contract Audit / Security Posture Review.**
+10. **SBOM / reproducible-build attestation** — the one executable remainder of
+    the #296 harvest/sale goal; does not depend on the inaccessible source.
