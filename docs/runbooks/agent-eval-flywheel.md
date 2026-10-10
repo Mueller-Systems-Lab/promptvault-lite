@@ -17,7 +17,7 @@ node scripts/eval-flywheel.mjs --quick  # nur Vitest
   einem Regression-Test in der betroffenen Suite (Minimalreproduktion,
   strikte Assertions). **Keine Test-Abschwächung** (AGENTS.md).
 - Empfohlener Takt: vor jedem Release-Kandidat und nach jedem Merge-Wave;
-  optional als CI-Cron-Job (Owner-Entscheid, da Remote-CI-Policy #154).
+  optional als CI-Cron-Job (Owner-Entscheid; Remote-CI läuft wieder, Issue #154 ist geschlossen).
 
 ## Verknüpfungen
 

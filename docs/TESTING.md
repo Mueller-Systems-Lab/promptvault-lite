@@ -207,7 +207,7 @@ Siehe `docs/testing/autonomous-test-harness-contract.md` für das vollständige 
 ## Remote-CI
 
 GitHub Actions läuft bei jedem Push auf `main` und ist dort grün
-(13/13 Checks auf `4add9d20`). Die frühere Einstufung
+(14/14 Jobs auf `13ec221`). Die frühere Einstufung
 `REMOTE_CI_INFRA_BLOCKED` (Issue #154, inzwischen geschlossen) beschreibt das
 beobachtete Verhalten nicht mehr.
 Lokale Gates bleiben vor jedem Merge verpflichtend.

@@ -119,7 +119,7 @@ cp deploy/.env.example deploy/.env   # set values; never commit .env
 docker compose -f deploy/docker-compose.yml up
 ```
 
-See `docs/DEPLOYMENT.md` for the full contract (read-only semantics, read-only vault mount, LAN exposure) and its **Security boundaries** section (no authentication; `POST /api/scan` accepts an absolute directory — bounded by the container filesystem in the recommended deployment).
+See `docs/DEPLOYMENT.md` for the full contract (read-only semantics, read-only vault mount, LAN exposure) and its **Security boundaries** section (no authentication; `POST /api/scan` is restricted to configured scan roots — by default only the mounted vault — with `PROMPTVAULT_SERVER_SCAN_ROOTS` to widen and `=*` as the explicit trusted-host opt-in).
 
 ### Developer / source build
 
@@ -240,7 +240,7 @@ No exaggerated security guarantees are made; see `docs/ARCHITECTURE.md` for the 
 
 ## Testing & Quality
 
-Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E2E (Playwright, WebdriverIO on Windows) suites are verified locally. Remote-CI (GitHub Actions) is currently infrastructure-blocked (Issue #154); local CI gates are authoritative. See `docs/TESTING.md`.
+Frontend (Vitest), Rust (`cargo test`, `cargo clippy`, `cargo fmt`) and native E2E (Playwright, WebdriverIO on Windows) suites are verified locally; the local gates are authoritative and required before every merge. GitHub Actions also runs on every push to `main` and is green there (14/14 jobs). See `docs/TESTING.md`.
 
 > Exact test counts change frequently and are intentionally not hard-coded here. Run the local gates to reproduce current numbers.
 
