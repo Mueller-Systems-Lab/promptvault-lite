@@ -27,9 +27,11 @@ Status of that policy is tracked honestly, not assumed:
 
 | Aspect | State |
 | --- | --- |
-| Protection/ruleset on `main` | **prepared, not applied** — exact payload in [`docs/governance/main-protection-ruleset.json`](governance/main-protection-ruleset.json), rationale in [`docs/governance/README.md`](governance/README.md). Do **not** assume protection exists until a GitHub read-back proves it. |
+| Protection/ruleset on `main` | payload corrected and prepared for application: [`docs/governance/main-protection-ruleset.json`](governance/main-protection-ruleset.json), rationale in [`docs/governance/README.md`](governance/README.md). Do **not** assume protection exists until a GitHub read-back proves it. |
+| Server-side review requirement (PR approval) | `REVIEW_ENFORCEMENT_TOOL_GAP` — the organization has a single member, so `required_approving_review_count` is `0`; GitHub cannot enforce a second approval without permanently deadlocking merges. **Not** review enforcement. |
+| Branch-protection bypass | **none** — `bypass_actors: []`; no actor may bypass the rules (`AGENTS.md` §9). |
 | Human approval before merge | process rule (`AGENTS.md` §7) — `DOCUMENT_ONLY`, not server-enforced |
-| Independent review artifact | recorded under `docs/audits/reviews/` — `DOCUMENT_ONLY`, validator available |
+| Independent review artifact | recorded under `docs/audits/reviews/` — `DOCUMENT_ONLY`, validator available; **not** a native GitHub approval |
 
 A required CI check must be a check that actually runs on pull requests. Do not
 require release-, tag- or Pages-only jobs, which would deadlock merges.
