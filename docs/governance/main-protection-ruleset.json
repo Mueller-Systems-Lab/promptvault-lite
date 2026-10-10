@@ -1,0 +1,50 @@
+{
+  "name": "main-protection",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/heads/main"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    { "type": "deletion" },
+    { "type": "non_fast_forward" },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": true
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": false,
+        "required_status_checks": [
+          { "context": "Frontend Unit/Integration" },
+          { "context": "Rust (Tauri Backend)" },
+          { "context": "Performance (Analyse, Release)" },
+          { "context": "Security Gate (Web/LAN J5)" },
+          { "context": "Secret Scan" },
+          { "context": "Build Artifact Integrity (E18)" },
+          { "context": "Build Tauri Debug Binary" },
+          { "context": "Playwright Chromium (E11/E15)" },
+          { "context": "Playwright Firefox (E11)" },
+          { "context": "Playwright WebKit (E11)" },
+          { "context": "Accessibility (E16)" },
+          { "context": "Native Tauri Real E2E (E19)" },
+          { "context": "Native File Dialog Smoke (E21)" },
+          { "context": "Packaging Smoke (E20)" }
+        ]
+      }
+    }
+  ],
+  "bypass_actors": [
+    { "actor_id": 5, "actor_type": "RepositoryRole", "bypass_mode": "always" }
+  ]
+}

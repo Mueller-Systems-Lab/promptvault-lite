@@ -23,7 +23,9 @@
     "verify:all": "node scripts/verify-all.mjs --full",
     "verify:independent": "node scripts/verify-all.mjs --independent",
     "verify:release-artifacts": "node scripts/verify-release-artifacts.mjs",
-    "verify:lan": "node scripts/lan-verify/verify-lan-deployment.mjs"
+    "verify:lan": "node scripts/lan-verify/verify-lan-deployment.mjs",
+    "review:package": "node scripts/create-review-package.mjs",
+    "review:evidence": "node scripts/validate-review-evidence.mjs --dir docs/audits/reviews"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0",
