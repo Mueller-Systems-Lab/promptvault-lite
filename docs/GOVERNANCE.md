@@ -27,9 +27,9 @@ Status of that policy is tracked honestly, not assumed:
 
 | Aspect | State |
 | --- | --- |
-| Protection/ruleset on `main` | payload corrected and prepared for application: [`docs/governance/main-protection-ruleset.json`](governance/main-protection-ruleset.json), rationale in [`docs/governance/README.md`](governance/README.md). Do **not** assume protection exists until a GitHub read-back proves it. |
+| Protection/ruleset on `main` | **applied** — ruleset `main-protection` (id `24841719`) is active; `branches/main.protected == true` and `bypass_actors == []` confirmed by API read-back. Tracked source of truth: [`docs/governance/main-protection-ruleset.json`](governance/main-protection-ruleset.json), rationale in [`docs/governance/README.md`](governance/README.md). |
 | Server-side review requirement (PR approval) | `REVIEW_ENFORCEMENT_TOOL_GAP` — the organization has a single member, so `required_approving_review_count` is `0`; GitHub cannot enforce a second approval without permanently deadlocking merges. **Not** review enforcement. |
-| Branch-protection bypass | **none** — `bypass_actors: []`; no actor may bypass the rules (`AGENTS.md` §9). |
+| Branch-protection bypass | **none** — `bypass_actors: []`; `current_user_can_bypass == "never"`; no actor may bypass the rules (`AGENTS.md` §9). |
 | Human approval before merge | process rule (`AGENTS.md` §7) — `DOCUMENT_ONLY`, not server-enforced |
 | Independent review artifact | recorded under `docs/audits/reviews/` — `DOCUMENT_ONLY`, validator available; **not** a native GitHub approval |
 

@@ -5,10 +5,10 @@ encodes so a change is reviewable in a PR before it is applied in GitHub.
 
 ## `main-protection-ruleset.json`
 
-> **Status: corrected and prepared for application.** The payload is validated
-> and intended to be created on `main` via the documented `gh api` call. Do not
-> claim protection exists until the API read-back returns the ruleset with
-> `enforcement: "active"` (see *Read back and verify*).
+> **Status: APPLIED** — ruleset `main-protection` (id `24841719`) is active on
+> `main`; `branches/main.protected == true` and `bypass_actors == []` were
+> confirmed by API read-back on 2026-10-10. The payload below is the tracked
+> source of truth and is kept in exact agreement with the live ruleset.
 
 ### Correction history
 
@@ -52,13 +52,30 @@ If a second eligible reviewer is ever added to the organization, raise
 `dismiss_stale_reviews_on_push` / `require_last_push_approval` in the same
 change.
 
+### `require_extra_approval_for_unattributed_changes: false` (explicit)
+
+GitHub defaults this rule parameter to `true`. In this repository that default
+can only ever *block*, never *protect*: the extra approval it demands would have
+to come from a second eligible approver, and none exists (single-member
+organization, see above). An unattributed commit — one not tied to a GitHub
+user, e.g. from an app token — would therefore deadlock its pull request
+permanently.
+
+The repository has no bot, Dependabot or commit-pushing workflow
+(`grep -rnE "git (commit|push)" .github/workflows/` → no match), so the
+protection is inert in practice while the deadlock risk is real. The parameter
+is pinned to `false` explicitly so the *tracked payload describes the live
+ruleset completely* and the deadlock class is closed. This is the only rule
+parameter the repository deliberately relaxes away from a GitHub default, and
+it is recorded here for that reason.
+
 ### What the ruleset enforces
 
 | Rule | Intent |
 | --- | --- |
 | `deletion` | `main` cannot be deleted. |
 | `non_fast_forward` | No force-push. |
-| `pull_request` | Changes land via a pull request; review conversations must be resolved. Approval count is `0` (see the tool-gap note above) — **not** review enforcement. |
+| `pull_request` | Changes land via a pull request; review conversations must be resolved. Approval count is `0` (see the tool-gap note above) — **not** review enforcement. `require_extra_approval_for_unattributed_changes` is pinned to `false` (see below). |
 | `required_status_checks` | The CI gates below must be green. `strict` is **off**: this repository merges short-lived PRs promptly and does not require rebasing every PR onto the newest `main` first; turning it on would add merge churn without changing what runs. |
 | `bypass_actors` | **`[]`** — no bypass. No actor may push to or merge into `main` outside the rules. |
 
