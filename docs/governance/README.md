@@ -55,30 +55,44 @@ change.
 
 ### `require_extra_approval_for_unattributed_changes: false` (explicit)
 
-GitHub defaults this rule parameter to `true`. In this repository that default
-can only ever *block*, never *protect*: the extra approval it demands would have
-to come from a second eligible approver, and none exists (single-member
-organization, see above). An unattributed commit — one not tied to a GitHub
-user, e.g. from an app token — would therefore deadlock its pull request
-permanently.
+GitHub defaults this rule parameter to `true`. "Unattributed" here has a precise
+meaning: a commit whose **author email is not linked to a GitHub account**, so the
+API reports `author == null` for it. That covers commits made with an app token
+*and* commits authored under a local identity that was never linked to GitHub —
+both are the same case to the rule.
 
-The repository has **no commit-pushing workflow and no bot-authored history**:
-`grep -rnE "git (commit|push)" .github/workflows/` returns nothing, there is no
-Dependabot/Renovate configuration, and no commit or pull request is authored by a
-bot or an unattributed identity. The protection is therefore inert in practice
-while the deadlock risk is real.
+In this repository the default `true` can only ever **block**, never
+**protect**. The "extra approval" it demands must come from a second eligible
+approver, and none exists (single-member organization, see above) — so any pull
+request whose range contains an unattributed commit becomes **permanently
+unmergeable**.
 
-**Correction (review finding):** an earlier revision of this section claimed "no
-bot … exists". That was inaccurate — one GitHub App *is* installed org-wide and
-holds `contents: write`. It has produced no commits or PRs, and this does not
-change the decision: a commit pushed by an app carries an app attribution, and
-an *app-attributed* commit is exactly what this rule would try to gate — with no
-second approver available it would deadlock the pull request rather than protect
-it. The rule can only block here, never protect. The parameter
-is pinned to `false` explicitly so the *tracked payload describes the live
-ruleset completely* and the deadlock class is closed. This is the only rule
-parameter the repository deliberately relaxes away from a GitHub default, and
-it is recorded here for that reason.
+**This is not hypothetical, and it is why the parameter is pinned to `false`:**
+
+- `git log origin/main --format='%an <%ae>'` → **47 of 319 commits** on `main`
+  are authored by `Issue Orchestrator <orchestrator@promptvault.dev>`, an
+  identity that is **not linked to any GitHub account** (`author == null` in the
+  API). An orchestration-authored commit in a future PR range would deadlock that
+  PR under the default.
+- Independently: `grep -rnE "git (commit|push)" .github/workflows/` returns
+  nothing and there is no Dependabot/Renovate configuration, so no *workflow*
+  produces unattributed commits.
+- One GitHub App *is* installed org-wide and holds `contents: write`; it has
+  produced no commits or PRs to date.
+
+So the default protects nothing achievable here and closes no path that is not
+already closed, while it would block a real, already-present commit provenance.
+Pinning it to `false` closes that deadlock class. This is the **only** rule
+parameter the repository deliberately relaxes away from a GitHub default, and it
+is recorded here for that reason.
+
+> **Correction history (review findings).** An earlier revision of this section
+> claimed "no bot … exists"; that was wrong — an app is installed (see above). A
+> second revision then claimed "no commit or pull request is authored by a bot or
+> an unattributed identity"; that was *also* wrong, and in the more important
+> direction: 47 unattributed commits are already on `main` (see above). Both
+> corrections are recorded rather than silently rewritten, because the second one
+> is precisely the evidence that justifies the `false` setting.
 
 ### What the ruleset enforces
 
