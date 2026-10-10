@@ -2,20 +2,23 @@
 
 **Last updated:** 2026-10-10
 **Latest published release:** v1.13.2 (GitHub Release, Linux x64 — `.deb`, `.rpm`, AppImage plus `SHA256SUMS.txt` and a source-identity manifest), published 2026-10-09 from tag `v1.13.2` (commit `80593cf2d4824f4e5c9cc7afbc1b0f142daa9e84`)
+**v1.13.3 (release candidate):** hygiene performance fix — `detect_role_mismatch` compiles its sector regexes once instead of once per line; analyzer results, scores and data formats unchanged
 **v1.13.2:** scan-root authorization, automated release gate, load-invariant performance gate, AppImage `.DirIcon` fix
 **Branch:** main
 
 ---
 
+**v1.13.3 (release candidate):** performance patch on top of v1.13.2; see `docs/CHANGELOG.md` for the exact scope.
+
 **v1.13.2 (published):** post-release hardening on top of v1.13.1; see `docs/CHANGELOG.md` for the exact scope.
 
 **v1.13.0 (published):** adds an optional LAN-deployable HTTP server (`promptvault-server`, read-only by default) plus Docker/Compose deployment on top of the v1.12.0 desktop application. The offline, local-first and deterministic Analyzer contract is unchanged. Broad external semantic generalization is not claimed; the 86/176 external study remains incomplete due to provider instability. The Windows-only CLI remains on its last compatible `1.11.1` PyPI release.
 
-## Current Status: GREEN_CODE / v1.13.2 RELEASED 🟢
+## Current Status: GREEN_CODE / v1.13.3 RELEASE CANDIDATE 🟢
 
 **Code/Tests:** GREEN — Frontend (Vitest), Rust (`cargo test`/`clippy`/`fmt`), server API tests and native E2E (Playwright + WebdriverIO on Windows) suites are verified.
 **Remote-CI:** GitHub Actions runs and passes on `main` (the full CI job set is green; see [Actions](https://github.com/Mueller-Systems-Lab/promptvault-lite/actions/workflows/ci.yml) for live status — no transient SHA is pinned here). Issue #154 is closed. Local gates remain required before merge.
-**Latest release:** v1.13.2 hardening patch — published 2026-10-09 from tag `v1.13.2`; the release pipeline built, verified and published it end to end.
+**Latest release:** v1.13.2 hardening patch — published 2026-10-09 from tag `v1.13.2`; the release pipeline built, verified and published it end to end. **Release candidate:** v1.13.3 (hygiene performance patch).
 **Publication:** `promptvault-lite-manager` PyPI publication = `PUBLISHED` (v1.10.0, via OIDC Trusted Publishing).
 **v1.10.0 (released):** in-app prompt authoring lifecycle (create/edit/save/cancel, restart persistence, optimizer apply, stale-analysis invalidation, authoring observability). Public native + CLI install/update proofs PASS; public authoring lifecycle E2E 6/6 PASS on the installed release binary.
 

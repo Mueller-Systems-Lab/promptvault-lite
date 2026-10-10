@@ -13,7 +13,7 @@ keine Cloud-Anbindung, keine Telemetrie, kein Tracking.
 
 - **Stack:** React 18 + TypeScript + Vite (Frontend), Rust + Tauri 2 (Backend), SQLite (Daten)
 - **State Management:** Zustand
-- **Version:** v1.13.2 (latest published release; GitHub Release `v1.13.2`)
+- **Version:** v1.13.3 (release candidate; latest published release `v1.13.2`)
 - **Lizenz:** MIT
 - **Repository:** https://github.com/Mueller-Systems-Lab/promptvault-lite
 - **CI Status:** GitHub Actions green on `main` (14/14 jobs); Issue #154 is closed. Local gates remain mandatory before merge.
@@ -92,10 +92,15 @@ Referenzen in aelteren Docs auf `evidence-gates.json`, `mcp-trust-tiers.json`, `
 
 ## Release-Status
 
-- **v1.13.2** ist das aktuelle stable release (Linux x64: AppImage, `.deb`, `.rpm`,
-  plus `SHA256SUMS.txt` und Source-Identity-Manifest). Die Windows-x64-Linie endet
-  bei **v1.11.1** (unsigned); macOS hat nur Quellbau. Der Tag `v1.13.2` wurde von
-  der automatisierten Release-Pipeline gebaut, verifiziert und veroeffentlicht.
+- **v1.13.3** ist der aktuelle Release-Kandidat: ein Performance-Patch auf v1.13.2.
+  Die Hygiene-Rollenpruefung kompilierte ihre Sektor-Regexe pro Zeile neu; sie
+  werden jetzt einmal kompiliert und wiederverwendet. Analyse-Semantik,
+  Bewertungen und Datenformate sind unveraendert.
+- **v1.13.2** ist das zuletzt veroeffentlichte stable release (Linux x64: AppImage,
+  `.deb`, `.rpm`, plus `SHA256SUMS.txt` und Source-Identity-Manifest). Die
+  Windows-x64-Linie endet bei **v1.11.1** (unsigned); macOS hat nur Quellbau. Die
+  Tags werden von der automatisierten Release-Pipeline gebaut, verifiziert und
+  veroeffentlicht.
 - Keine Release/Tag/Assets duerfen ohne Owner-Approval erstellt werden
 
 ## Build und Test
@@ -142,6 +147,7 @@ pnpm exec playwright test           # optional (tool conflict on some hosts)
 
 - **Docs Baseline Sync (#207):** ✅ Completed (PR #208)
 - **v1.13.2 Release:** ✅ Published (automatisierte Pipeline: build → verify → publish)
+- **v1.13.3 Release:** in Vorbereitung (Performance-Patch; automatisierte Pipeline) — Produktquellcode gegenuber v1.13.2 nur im Hygiene-Performance-Fix geaendert
 - **Embeddings Phase 2 (#199):** DB schema/storage planning (no real provider)
 - Remote-CI: GitHub Actions gruen auf `main` (14/14); Issue #154 geschlossen
 - P3 Documentation Backlog (#40, #42, #43) — low priority

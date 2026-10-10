@@ -1,7 +1,7 @@
 # Roadmap — PromptVault Lite
 
-**Last updated:** 2026-10-09
-**Current version:** v1.13.2 (published 2026-10-09)
+**Last updated:** 2026-10-10
+**Current version:** v1.13.3 (release candidate; v1.13.2 published)
 **Latest published release:** v1.13.2 (GitHub Release, Linux x64 — published 2026-10-09)
 **Next target:** none scheduled; optional future work is independent external semantic validation.
 
@@ -98,6 +98,7 @@
 | `v1.13.0` (Web/LAN + container) | ✅ Published (2026-10-09) |
 | `v1.13.1` (post-release hardening) | ✅ Published (2026-10-09) |
 | `v1.13.2` (scan-root authorization, release-gate automation, perf-gate redesign, AppImage `.DirIcon` fix) | ✅ Published (2026-10-09) |
+| `v1.13.3` (hygiene role-mismatch performance fix; analyzer results unchanged) | 🟡 Release candidate |
 
 ---
 
