@@ -13,10 +13,10 @@ keine Cloud-Anbindung, keine Telemetrie, kein Tracking.
 
 - **Stack:** React 18 + TypeScript + Vite (Frontend), Rust + Tauri 2 (Backend), SQLite (Daten)
 - **State Management:** Zustand
-- **Version:** v1.7.1 (stable release) — v1.7.2 Release Readiness reviewed (Docs Sync completed via PR #208)
+- **Version:** v1.13.2 (latest published release; GitHub Release `v1.13.2`)
 - **Lizenz:** MIT
 - **Repository:** https://github.com/Mueller-Systems-Lab/promptvault-lite
-- **CI Status:** REMOTE_CI_INFRA_BLOCKED (Issue #154) — Local-CI-first policy
+- **CI Status:** GitHub Actions green on `main` (14/14 jobs); Issue #154 is closed. Local gates remain mandatory before merge.
 
 ## Architekturueberblick
 
@@ -72,7 +72,7 @@ Referenzen in aelteren Docs auf `evidence-gates.json`, `mcp-trust-tiers.json`, `
 1. **GitHub Issues sind die Single Source of Truth.** Kein Issue → keine Implementierung.
 2. **Spec-Driven Development:** Speckit-Workflow vor jeder Feature-Implementierung.
 3. **Evidence-Gated:** Keine Behauptung ohne Evidence (CVSS, PoC, Logs, Tests).
-4. **Local-CI-First:** Remote-CI ist `REMOTE_CI_INFRA_BLOCKED` (Issue #154). Lokale Gates sind Pflicht.
+4. **Local-CI-First:** Remote-CI (GitHub Actions) laeuft auf `main` und ist dort gruen; Issue #154 ist geschlossen. Lokale Gates bleiben vor jedem Merge Pflicht.
 5. **Human Approval** fuer: Merge, Deployment, Migrationen, Architektur-Aenderungen.
 6. **Keine Secrets, `.env`-Dateien, `*.db`-Dateien** committen.
 7. **Tests muessen gruen sein:** `pnpm test`, `cargo test --workspace`, `pnpm lint`, `tsc --noEmit`.
@@ -92,8 +92,10 @@ Referenzen in aelteren Docs auf `evidence-gates.json`, `mcp-trust-tiers.json`, `
 
 ## Release-Status
 
-- **v1.7.1** ist das aktuelle stable release (Windows x64, unsigned)
-- **v1.7.2 Release Readiness:** Reviewed — manuelle Owner-Approval erforderlich vor Release Execution. Docs Baseline Sync (#207) completed via PR #208.
+- **v1.13.2** ist das aktuelle stable release (Linux x64: AppImage, `.deb`, `.rpm`,
+  plus `SHA256SUMS.txt` und Source-Identity-Manifest). Die Windows-x64-Linie endet
+  bei **v1.11.1** (unsigned); macOS hat nur Quellbau. Der Tag `v1.13.2` wurde von
+  der automatisierten Release-Pipeline gebaut, verifiziert und veroeffentlicht.
 - Keine Release/Tag/Assets duerfen ohne Owner-Approval erstellt werden
 
 ## Build und Test
@@ -139,9 +141,9 @@ pnpm exec playwright test           # optional (tool conflict on some hosts)
 ## Offene Punkte
 
 - **Docs Baseline Sync (#207):** ✅ Completed (PR #208)
-- **v1.7.2 Release:** Readiness reviewed — manuelle Owner-Approval erforderlich
+- **v1.13.2 Release:** ✅ Published (automatisierte Pipeline: build → verify → publish)
 - **Embeddings Phase 2 (#199):** DB schema/storage planning (no real provider)
-- Remote-CI `REMOTE_CI_INFRA_BLOCKED` (Issue #154)
+- Remote-CI: GitHub Actions gruen auf `main` (14/14); Issue #154 geschlossen
 - P3 Documentation Backlog (#40, #42, #43) — low priority
 - `.opencode/policies/` references in legacy docs are planned, not yet created
 
@@ -168,5 +170,5 @@ promptvault-lite/
 ├── docs/                   # Documentation (MkDocs)
 ├── evidence/               # Local evidence artifacts
 ├── AGENTS.md               # Operative Agentenregeln (Source of Truth fuer Agenten)
-└── .github/workflows/      # CI pipeline (currently REMOTE_CI_INFRA_BLOCKED)
+└── .github/workflows/      # CI pipeline (ci.yml, pages.yml, release.yml, publish-pypi.yml)
 ```
