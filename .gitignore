@@ -75,6 +75,9 @@ scripts/*
 !scripts/lan-verify/
 # No-force-push enforcement: command guard, activation check, mutation probe
 !scripts/governance/
+# Supply-chain sale-asset tooling (Issue #296): SBOM generator/validator,
+# license metadata cache + inventory
+!scripts/supply-chain/
 site/
 
 # Python cache

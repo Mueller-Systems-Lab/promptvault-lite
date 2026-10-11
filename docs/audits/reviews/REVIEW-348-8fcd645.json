@@ -1,0 +1,30 @@
+{
+  "pr": 348,
+  "code_head_reviewed": "8fcd6457e5c191ea1a0fa8dd86c8b2acad1be661",
+  "review_type": "AGENT_INDEPENDENT_REVIEW",
+  "reviewer_role": "independent-reviewer-agent",
+  "timestamp": "2026-10-11T16:05:00Z",
+  "verdict": "APPROVE",
+  "findings_summary": "Three-pass independent adversarial review of the #296 supply-chain slice (SBOM generator/validator/license inventory, release gate G9, provenance attestation, reproducibility tooling). Pass 1 (6ede310, REQUEST_CHANGES) falsified the dependency-edge claim: nested-peer pnpm snapshot keys were silently skipped, dropping all edges of 15 packages (vitest, @typescript-eslint/*, @wdio/*, …); also found SPDX-invalid slash-shorthand license expressions (F2) and author-vs-committer-date wording (F3). Pass 2 (c40ce1b, APPROVE_WITH_NITS) verified the fixes against the real lockfile (skipped-with-deps 18 → 0; vitest 0 → 22 targets; npm edges +122) and confirmed all twelve falsification areas otherwise not falsified: byte-determinism (two runs cmp-identical), 891+573=1464 component counts exact, zero leaks (paths/corpus/tokens), least-privilege permission triples, 40-hex SHA pins verified live against the GitHub API, G9 fail-closed on every mutation, honest NOT_YET reproducibility classification, refs-not-closes #296. Pass 3 (8fcd645, APPROVE) verified the nit fixes (PR-body wording, main-binary hash recorded in the frozen report, repro-compare smoke tests 3/3). One carried nit (D1, commit-message edge statistic with non-reproducing absolute totals but exact +122 delta) is documented as immutable history under the no-force-push policy. No blocking or substantive findings remain.",
+  "findings": [
+    { "id": "F1", "severity": "high", "description": "Nested-peer snapshot keys silently skipped → 15 packages lost ALL SBOM dependency edges (single-pass paren strip in splitPnpmKey). Fixed at c40ce1b with fixpoint innermost-out stripping; verified 0 skipped-with-deps against the real lockfile; regression test added.", "fixed": true },
+    { "id": "F2", "severity": "low", "description": "Registry slash shorthands ('Apache-2.0 / MIT') were emitted as invalid SPDX {expression}. Fixed: only operator-bearing strings become expressions; shorthands become {license:{name}}; regression tests added.", "fixed": true },
+    { "id": "F3", "severity": "nit", "description": "Docs claimed 'author date' while %cI is the committer date. Comments corrected in generator and release workflow; PR body corrected at 8fcd645.", "fixed": true },
+    { "id": "F4", "severity": "nit", "description": "PR summary undercounted the --require-sbom invocations (three, not two). PR body corrected.", "fixed": true },
+    { "id": "F5", "severity": "nit", "description": "Filled-in reproducibility results initially not re-verifiable in the time-bounded pass; at c40ce1b/8fcd645 all three A→B sha256 pairs were confirmed to match the frozen report, and the direct main-binary measurement (8b792c46…cbff identical both builds) is now recorded in the frozen report.", "fixed": true },
+    { "id": "D4", "severity": "nit", "description": "repro-compare.mjs had no test coverage (and was latently unrunnable pre-895f895 via path.resolve as Array.map callback). Smoke tests added at 8fcd645 (3/3 pass).", "fixed": true },
+    { "id": "D1", "severity": "nit", "description": "Commit c40ce1b's message cites 'npm edges 1412 → 1534'; the straightforward npm-ref tally measures 1407 → 1529 (constant +5 offset both sides; the +122 delta matches exactly). Commit messages are immutable history (no-force-push policy); fix substance independently verified. Accepted, no action.", "fixed": false }
+  ],
+  "delta_review_sha": "c40ce1bb6e5f32fd8fe11fbe0f8e8eb141e2663e",
+  "review_chain": [
+    { "sha": "6ede3103904c3a0d9badac1493b559454997f589", "verdict": "REQUEST_CHANGES", "note": "12 falsification areas; A falsified (silent edge loss for 15 packages via nested-peer keys), F2/F3/F4/F5 findings; all other claims held (determinism, counts, leaks, permissions, pins, G9 fail-closed, honest docs)" },
+    { "sha": "c40ce1bb6e5f32fd8fe11fbe0f8e8eb141e2663e", "verdict": "APPROVE_WITH_NITS", "note": "F1/F2/F3 verified fixed against the real lockfile (18→0 skipped-with-deps, vitest 22 targets, +122 edges); four nits (D1–D4)" },
+    { "sha": "8fcd6457e5c191ea1a0fa8dd86c8b2acad1be661", "verdict": "APPROVE", "note": "D2/D3/D4 verified fixed (PR wording, frozen-report hash, smoke tests 3/3); D1 documented as immutable history; merge candidate" }
+  ],
+  "evidence_commit": null,
+  "human_approval": false,
+  "enforcement": {
+    "review_evidence": "DOCUMENT_ONLY",
+    "validator": "VALIDATOR_AVAILABLE"
+  }
+}

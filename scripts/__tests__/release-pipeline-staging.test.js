@@ -13,7 +13,7 @@
 // @vitest-environment node
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -171,5 +171,89 @@ describe("stage-linux-release", () => {
     const { root, out } = bundles();
     expect(run(root, out, ["--version", "1.13"]).code).not.toBe(0);
     expect(run(root, out, ["--commit", "short"]).code).not.toBe(0);
+  });
+
+  // --- supply-chain staging (--sbom) -----------------------------------------
+
+  /** A minimal, structurally valid CycloneDX 1.6 SBOM for the fixture identity. */
+  function sbomBytes(version = VERSION) {
+    return `${JSON.stringify(
+      {
+        bomFormat: "CycloneDX",
+        specVersion: "1.6",
+        serialNumber: "urn:uuid:0f14d0ab-9605-4a62-a9e4-5ed26688389b",
+        version: 1,
+        metadata: {
+          timestamp: "2026-10-11T05:46:04Z",
+          component: {
+            type: "application",
+            "bom-ref": `pkg:github/Mueller-Systems-Lab/promptvault-lite@${version}`,
+            name: "promptvault-lite",
+            version,
+            purl: `pkg:github/Mueller-Systems-Lab/promptvault-lite@${version}`,
+          },
+          properties: [{ name: "promptvault:source_commit", value: COMMIT }],
+        },
+        components: [],
+        dependencies: [
+          {
+            ref: `pkg:github/Mueller-Systems-Lab/promptvault-lite@${version}`,
+            dependsOn: [],
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`;
+  }
+
+  it("stages the SBOM and records it hash-bound in the manifest with --sbom", () => {
+    const { root, out } = bundles();
+    const sbomInput = join(root, "generated-sbom.cdx.json");
+    writeFileSync(sbomInput, sbomBytes());
+    const res = run(root, out, ["--sbom", sbomInput]);
+    expect(res.code).toBe(0);
+
+    const stagedName = `promptvault-lite-${VERSION}-sbom.cdx.json`;
+    const staged = join(out, "sbom", stagedName);
+    expect(statSync(staged).isFile()).toBe(true);
+
+    const manifest = JSON.parse(
+      readFileSync(join(out, "checksums", "promptvault-release-manifest.json"), "utf8"),
+    );
+    expect(manifest.sbom).toEqual({
+      filename: stagedName,
+      type: "cyclonedx-json",
+      spec_version: "1.6",
+      size: statSync(staged).size,
+      sha256: sha256(staged),
+    });
+
+    // SHA256SUMS keeps describing the packages only (published download
+    // verification contract unchanged).
+    const sums = readFileSync(join(out, "checksums", "SHA256SUMS.txt"), "utf8").trim().split("\n");
+    expect(sums).toHaveLength(3);
+    expect(sums.join("\n")).not.toContain("sbom");
+  });
+
+  it("produces no sbom entry or directory without --sbom (backwards compatible)", () => {
+    const { root, out } = bundles();
+    expect(run(root, out).code).toBe(0);
+    const manifest = JSON.parse(
+      readFileSync(join(out, "checksums", "promptvault-release-manifest.json"), "utf8"),
+    );
+    expect(manifest.sbom).toBeUndefined();
+    expect(existsSync(join(out, "sbom"))).toBe(false);
+  });
+
+  it("fails closed when --sbom points at a missing or malformed file", () => {
+    const { root, out } = bundles();
+    expect(run(root, out, ["--sbom", join(root, "does-not-exist.json")]).code).not.toBe(0);
+    const malformed = join(root, "malformed.cdx.json");
+    writeFileSync(malformed, "{ not json");
+    expect(run(root, out, ["--sbom", malformed]).code).not.toBe(0);
+    const notCyclone = join(root, "wrong-format.cdx.json");
+    writeFileSync(notCyclone, JSON.stringify({ bomFormat: "SPDX", specVersion: "2.3" }));
+    expect(run(root, out, ["--sbom", notCyclone]).code).not.toBe(0);
   });
 });

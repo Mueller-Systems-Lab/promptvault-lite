@@ -175,3 +175,32 @@ The decision this issue needs from the owner is therefore exactly two answers:
    depend on answer 1.)
 
 No irreversible portfolio action is taken on the owner's behalf by this package.
+
+---
+
+## Addendum 2026-10-11 — Answer B executed: SBOM, provenance, reproducibility
+
+Owner decision **B** (produce the SBOM/reproducible-build attestation) was
+executed in PR #348 (`chore/296-supply-chain`, branch
+`chore/296-supply-chain`). Decision **A** (source) remains
+`BLOCKED_EXTERNAL_OWNER_INPUT`: `prompt_archiv` was re-probed live on
+2026-10-11 (`Mueller-Systems-Lab/prompt_archiv`, `…/prompt-archive`,
+`xxammaxx/prompt_archiv` — all 404; no local directory by that name) and
+stays UNKNOWN, not guessed. `Promps/` is not equated with `prompt_archiv`.
+
+What now exists (all test-enforced, see `docs/supply-chain/README.md`):
+
+| Capability | Status | Evidence |
+| --- | --- | --- |
+| SBOM (CycloneDX 1.6) | **COMPLETED** | deterministic generator, 1464 components (891 npm + 573 cargo), purls/licenses/graph edges; CI regenerates twice and byte-compares on every run; independent validator S1–S10 |
+| License inventory | **COMPLETED** | `docs/supply-chain/license-inventory.md` — 1409 PERMISSIVE / 7 WEAK (MPL-2.0) / 0 STRONG / 3 MIXED / 40 CUSTOM / 5 UNKNOWN (all listed for manual review); structural triage, no legal advice |
+| Release integration | **COMPLETED** | staging + manifest binding + verifier gate G9 (`--require-sbom`, fail-closed); future releases publish the SBOM as an asset; `SHA256SUMS.txt` contract unchanged |
+| Build provenance | **COMPLETED** | GitHub artifact attestations, action commit-pinned, least-privilege permissions; SBOM attested on every main push; packages+SBOM attested on future tag builds |
+| Reproducibility | **VERIFIED with honest classification** | two clean builds of the same commit: compiled binaries **byte-identical** (incl. `usr/bin/promptvault-lite`, sha256 `8b792c46…` on both sides); package files **not** bit-for-bit — sole identified cause: build-time mtimes in deb/squashfs packaging layers (upstream bundler behavior; remediation path documented, nothing patched to force equality) |
+| Bit-for-bit packages | **NOT_YET** | see above; `REPRODUCIBLE_BUILD_INPUTS` and `BUILD_PROVENANCE`: PASS |
+
+This addendum supersedes the earlier "Licence / SBOM" matrix row
+("no SBOM or reproducible-build attestation") and the §4 "SBOM / attestation
+→ OPEN" line: that gap is closed. The issue's remaining open requirement is
+unchanged and singular: **owner answer A on `prompt_archiv`** (provide the
+source or withdraw the requirement). #138 is untouched.

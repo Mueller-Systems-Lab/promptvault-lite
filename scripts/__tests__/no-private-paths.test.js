@@ -34,7 +34,14 @@ const HISTORICAL_ALLOWLIST = new Set([
 // This guard can only work if it can state what a private path looks like, so
 // its own fixtures necessarily contain example paths. They are excluded by
 // path, and a dedicated test below proves the pattern still matches.
-const FIXTURE_ALLOWLIST = new Set(["scripts/__tests__/no-private-paths.test.js"]);
+// The supply-chain test fixtures are in the same situation: their leak
+// negative-tests must embed a realistic private path to prove the SBOM
+// validator rejects it.
+const FIXTURE_ALLOWLIST = new Set([
+  "scripts/__tests__/no-private-paths.test.js",
+  "scripts/__tests__/supply-chain-sbom.test.js",
+  "scripts/__tests__/release-verifier-sbom.test.js",
+]);
 
 // A user name in a home/profile path. Two deliberate exclusions keep this
 // precise:

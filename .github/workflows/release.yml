@@ -6,9 +6,9 @@ name: Release (Linux)
 # The point of this workflow is that publication cannot happen without a
 # passing artifact scan. The order is fixed and fail-closed:
 #
-#   resolve identity -> build bundles -> stage canonical names
+#   resolve identity -> build bundles -> stage canonical names (+ SBOM)
 #     -> verify artifacts (GATE) -> checksum + manifest (written while staging)
-#     -> re-verify the exact staged bytes -> publish
+#     -> re-verify the exact staged bytes -> publish (+ attest what was published)
 #
 # The `publish` job re-runs the verifier on the set it is about to upload: even
 # if someone re-runs only `publish`, or the artifact store is tampered with in
@@ -154,6 +154,21 @@ jobs:
         env:
           CI: "true"
 
+      - name: Generate the release SBOM
+        # Deterministic CycloneDX 1.6 over both lockfiles, bound to this
+        # release identity. The timestamp is the tagged commit's committer
+        # date, so the same source state always regenerates identical SBOM bytes.
+        run: |
+          set -euo pipefail
+          # The generator demands a UTC 'Z' instant; %cI yields a local offset.
+          TIMESTAMP="$(date -u -d "$(git log -1 --format=%cI)" +%Y-%m-%dT%H:%M:%SZ)"
+          echo "sbom timestamp: $TIMESTAMP"
+          node scripts/supply-chain/generate-sbom.mjs \
+            --version "${{ steps.identity.outputs.version }}" \
+            --commit "${{ steps.commit.outputs.commit }}" \
+            --timestamp "$TIMESTAMP" \
+            --out generated-sbom.cdx.json
+
       - name: Stage the canonical release set
         run: |
           set -euo pipefail
@@ -161,6 +176,7 @@ jobs:
             --bundles target/release/bundle \
             --version "${{ steps.identity.outputs.version }}" \
             --commit "${{ steps.commit.outputs.commit }}" \
+            --sbom generated-sbom.cdx.json \
             --out release-staging
 
       - name: Verify the release set (GATE)
@@ -173,7 +189,8 @@ jobs:
             --expect-commit "${{ steps.commit.outputs.commit }}" \
             --forbid "$HOME" \
             --forbid "/opt/hostedtoolcache" \
-            --require-full-set
+            --require-full-set \
+            --require-sbom
 
       - name: Upload the verified staging set
         uses: actions/upload-artifact@v4
@@ -182,6 +199,61 @@ jobs:
           path: release-staging
           retention-days: 14
           if-no-files-found: error
+
+  attest:
+    name: Attest build provenance (gated)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build-linux
+    permissions:
+      # Least privilege for GitHub artifact attestations — exactly what the
+      # OIDC flow and the attestation API require, nothing broader. This job
+      # never writes repository contents.
+      id-token: write
+      attestations: write
+      contents: read
+
+    steps:
+      - name: Checkout the verification scripts
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ needs.build-linux.outputs.tag }}
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.11.0"
+
+      - name: Download the verified staging set
+        uses: actions/download-artifact@v4
+        with:
+          name: release-staging
+          path: release-staging
+
+      - name: Restore the AppImage executable bit
+        run: chmod +x release-staging/artifacts/*.AppImage
+
+      - name: Re-verify the exact bytes to be attested (GATE)
+        run: |
+          set -euo pipefail
+          node scripts/verify-release-artifacts.mjs release-staging \
+            --expect-version "${{ needs.build-linux.outputs.version }}" \
+            --expect-commit "${{ needs.build-linux.outputs.commit }}" \
+            --forbid "$HOME" \
+            --forbid "/opt/hostedtoolcache" \
+            --require-full-set \
+            --require-sbom
+
+      - name: Attest the staged packages and the SBOM
+        # SLSA-compatible build provenance: binds each artifact digest to this
+        # repository, the tagged commit, the workflow and the build event.
+        # Commit-pinned (v2.4.0) — no floating tags on supply-chain actions.
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be
+        with:
+          subject-path: |
+            release-staging/artifacts/*
+            release-staging/sbom/*
 
   publish:
     name: Publish GitHub release (gated)
@@ -223,7 +295,8 @@ jobs:
             --expect-commit "${{ needs.build-linux.outputs.commit }}" \
             --forbid "$HOME" \
             --forbid "/opt/hostedtoolcache" \
-            --require-full-set
+            --require-full-set \
+            --require-sbom
 
       - name: Refuse to overwrite an existing release (idempotency guard)
         env:
@@ -287,4 +360,5 @@ jobs:
             --notes-file release-notes.md \
             --verify-tag \
             release-staging/artifacts/* \
-            release-staging/checksums/*
+            release-staging/checksums/* \
+            release-staging/sbom/*

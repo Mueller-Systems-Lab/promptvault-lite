@@ -53,6 +53,7 @@ const bundles = arg("bundles");
 const version = arg("version");
 const commit = arg("commit");
 const out = arg("out");
+const sbomInput = arg("sbom");
 
 for (const [label, value] of [
   ["--bundles", bundles],
@@ -155,6 +156,39 @@ try {
     architecture: "x86_64",
     assets,
   };
+
+  // Optional supply-chain staging (issue #296): a CycloneDX SBOM generated for
+  // exactly this (version, commit) is copied under <out>/sbom/ with its
+  // canonical name and recorded hash-bound in the manifest. The SBOM is NOT
+  // added to SHA256SUMS.txt — that file is the published packages' download
+  // verification contract and must stay unchanged.
+  if (sbomInput) {
+    let sbomJson;
+    try {
+      sbomJson = JSON.parse(readFileSync(sbomInput, "utf8"));
+    } catch (e) {
+      throw new Error(`--sbom ${sbomInput} is not valid JSON: ${e.message}`);
+    }
+    if (sbomJson.bomFormat !== "CycloneDX") {
+      throw new Error(`--sbom ${sbomInput}: bomFormat '${sbomJson.bomFormat}' ≠ 'CycloneDX'`);
+    }
+    if (!/^\d+\.\d+$/.test(String(sbomJson.specVersion ?? ""))) {
+      throw new Error(`--sbom ${sbomInput}: missing numeric specVersion`);
+    }
+    const sbomName = `promptvault-lite-${version}-sbom.cdx.json`;
+    mkdirSync(join(outDir, "sbom"), { recursive: true });
+    const sbomDest = join(outDir, "sbom", sbomName);
+    copyFileSync(sbomInput, sbomDest);
+    manifest.sbom = {
+      filename: sbomName,
+      type: "cyclonedx-json",
+      spec_version: String(sbomJson.specVersion),
+      size: statSync(sbomDest).size,
+      sha256: sha256(sbomDest),
+    };
+    console.log(`  staged ${sbomName} (${manifest.sbom.size} bytes)`);
+  }
+
   writeFileSync(
     join(outDir, "checksums", "promptvault-release-manifest.json"),
     `${JSON.stringify(manifest, null, 2)}\n`,
