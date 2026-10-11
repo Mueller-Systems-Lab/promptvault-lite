@@ -35,3 +35,20 @@ sha256 (A → B):
 - `PromptVault Lite-1.13.3-1.x86_64.rpm`: `d6a186de05d69e63ab4976e5b525fcbb05ad008c81e53cb30f8f07192311f003` → `3908f40876a2c09e08752ad03e803fe0477a35296f98bd69604489c2a1b1bb2b`
 - `PromptVault Lite_1.13.3_amd64.AppImage`: `f53fcf6f0e9fb4ba5091a6118f7b362a958e506e5f0bb07083be841b0761e90c` → `965ad5868d70efe9ba583058c604d83fad620455e82e06af562fcc2a94d2651e`
 - `PromptVault Lite_1.13.3_amd64.deb`: `467276814ee113d9f332a3e23d79caa5abfe8d0627d32fec2db4ae32b6bffab9` → `25362d766fb5e6166ea9ecfd1f14f14cc9f95a8ae7db9c8959ee1d84a39394b7`
+
+## Direct post-run measurement (added after independent review nit D3)
+
+The `usr/bin/promptvault-lite` binary was extracted from **both** AppImages
+after the run and hashed directly (outside repro-compare.mjs):
+
+```
+8b792c4648cb401d440836f3e22d3e506f53e8196725eee20d0b5f3842e1cbff  build A
+8b792c4648cb401d440836f3e22d3e506f53e8196725eee20d0b5f3842e1cbff  build B
+```
+
+Identical — the compiled main binary is bit-for-bit reproducible across the
+two clean builds; the package divergence is packaging-layer mtimes only
+(review finding D4 also correctly notes that the frozen report above was
+produced with the post-fix repro-compare.mjs from commit 895f895: the
+`positionals.map(resolve)` bug made the script unrunnable at the originally
+reviewed head 6ede310).
