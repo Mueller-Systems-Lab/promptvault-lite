@@ -82,7 +82,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p repro-out
-          find src-tauri/target/release/bundle -type f \( -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) \
+          find target/release/bundle -type f \( -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) \
             -exec cp {} repro-out/ \;
           ls -la repro-out/
           (cd repro-out && sha256sum * > SHA256SUMS.txt)
@@ -153,7 +153,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p repro-out
-          find src-tauri/target/release/bundle -type f \( -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) \
+          find target/release/bundle -type f \( -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) \
             -exec cp {} repro-out/ \;
           ls -la repro-out/
           (cd repro-out && sha256sum * > SHA256SUMS.txt)
