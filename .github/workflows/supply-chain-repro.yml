@@ -1,0 +1,225 @@
+name: Supply-chain reproducibility experiment
+
+# =============================================================================
+# Two-clean-build experiment for issue #296 (sale-asset hardening).
+#
+# Builds the SAME source commit (the dispatch ref's exact SHA) twice, on two
+# independent runner instances, with pinned tool versions, and compares the
+# resulting .deb/.rpm/.AppImage byte-for-byte. A divergence is experiment
+# DATA, not a pipeline failure: the compare job always reports, and attaches
+# repro-report.{json,md} as artifacts.
+#
+# Deliberate independence: build-a and build-b are separate jobs with their
+# own runners and no shared caches — a cached build would make "same result
+# twice" trivially true and prove nothing.
+#
+# Toolchain pins (record into the report when citing results):
+#   pnpm 9.15.9, Node 22.11.0, Rust 1.92.0 via dtolnay/rust-toolchain@e2a55d2
+#   (commit-pinned), Cargo.lock v3 / pnpm-lock v9.0 frozen, RUSTFLAGS path
+#   remapping identical to the release workflow. The runner image
+#   (ubuntu-latest) and its apt packages are platform inputs and float — that
+#   limitation is documented in docs/supply-chain/README.md.
+# =============================================================================
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-a:
+    name: Clean build A
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the exact run SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            librsvg2-dev \
+            patchelf \
+            libssl-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            libfuse2 \
+            p7zip-full
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: "9.15.9"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.11.0"
+          cache: "pnpm"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f
+        with:
+          toolchain: "1.92.0"
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build release bundles (deb, rpm, AppImage)
+        run: |
+          set -euo pipefail
+          export RUSTFLAGS="--remap-path-prefix=$HOME=/rust-home --remap-path-prefix=$GITHUB_WORKSPACE=/promptvault"
+          pnpm tauri build --bundles deb,rpm,appimage
+        env:
+          CI: "true"
+
+      - name: Collect packages and checksums
+        run: |
+          set -euo pipefail
+          mkdir -p repro-out
+          find src-tauri/target/release/bundle -type f \( -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) \
+            -exec cp {} repro-out/ \;
+          ls -la repro-out/
+          (cd repro-out && sha256sum * > SHA256SUMS.txt)
+          cat repro-out/SHA256SUMS.txt
+
+      - name: Upload build A packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: repro-packages-a
+          path: repro-out
+          retention-days: 14
+          if-no-files-found: error
+
+  build-b:
+    name: Clean build B
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the exact run SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            librsvg2-dev \
+            patchelf \
+            libssl-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            libfuse2 \
+            p7zip-full
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: "9.15.9"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.11.0"
+          cache: "pnpm"
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f
+        with:
+          toolchain: "1.92.0"
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build release bundles (deb, rpm, AppImage)
+        run: |
+          set -euo pipefail
+          export RUSTFLAGS="--remap-path-prefix=$HOME=/rust-home --remap-path-prefix=$GITHUB_WORKSPACE=/promptvault"
+          pnpm tauri build --bundles deb,rpm,appimage
+        env:
+          CI: "true"
+
+      - name: Collect packages and checksums
+        run: |
+          set -euo pipefail
+          mkdir -p repro-out
+          find src-tauri/target/release/bundle -type f \( -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) \
+            -exec cp {} repro-out/ \;
+          ls -la repro-out/
+          (cd repro-out && sha256sum * > SHA256SUMS.txt)
+          cat repro-out/SHA256SUMS.txt
+
+      - name: Upload build B packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: repro-packages-b
+          path: repro-out
+          retention-days: 14
+          if-no-files-found: error
+
+  compare:
+    name: Compare A/B artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [build-a, build-b]
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout the comparison script
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.11.0"
+
+      - name: Download both build outputs
+        uses: actions/download-artifact@v4
+        with:
+          path: downloads
+
+      - name: Record the toolchain context
+        run: |
+          {
+            echo "source_sha: ${{ github.sha }}"
+            echo "pnpm: 9.15.9"
+            echo "node: 22.11.0"
+            echo "rust: 1.92.0"
+            echo "rust_toolchain_action: dtolnay/rust-toolchain@e2a55d2ffb04f378e9626c28d38b36d230d1e12f"
+            echo "runner_image: ubuntu-latest (floating platform input)"
+            echo "build_a_runner: ${{ needs.build-a.result }}"
+            echo "build_b_runner: ${{ needs.build-b.result }}"
+          } > toolchain-context.yaml
+          cat toolchain-context.yaml
+
+      - name: Compare the two clean builds
+        run: |
+          set -euo pipefail
+          node scripts/release/repro-compare.mjs downloads/repro-packages-a downloads/repro-packages-b \
+            --json repro-report.json \
+            --markdown repro-report.md \
+            --label "two-clean-builds @ ${{ github.sha }}"
+
+      - name: Upload the comparison report
+        uses: actions/upload-artifact@v4
+        with:
+          name: repro-report
+          path: |
+            repro-report.json
+            repro-report.md
+            toolchain-context.yaml
+          retention-days: 90
+          if-no-files-found: error

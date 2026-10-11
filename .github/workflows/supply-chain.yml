@@ -1,0 +1,85 @@
+name: Supply Chain (SBOM + provenance)
+
+# =============================================================================
+# Supply-chain gate for issue #296 (sale-asset hardening).
+#
+# On every push to main and every PR:
+#   1. generate the CycloneDX 1.6 SBOM TWICE from the same source state and
+#      prove byte-determinism (cmp);
+#   2. validate it structurally against this exact commit's identity;
+#   3. prove the committed license inventory is in sync with the lockfiles;
+#   4. on pushes to main, attest the SBOM artifact digest with GitHub artifact
+#      attestations (SLSA-style build provenance bound to repository, commit,
+#      workflow and digest).
+#
+# Attestation runs only for `push` events: pull_request runs must not hold
+# id-token write. The permissions below are granted to this job ONLY — the
+# least-privilege triple GitHub artifact attestations actually need.
+# =============================================================================
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: supplychain-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sbom:
+    name: SBOM determinism + validation + license inventory
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.11.0"
+
+      - name: Generate the SBOM twice and prove byte-determinism
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "require('./package.json').version")"
+          TIMESTAMP="$(git log -1 --format=%cI)"
+          echo "version=$VERSION commit=$GITHUB_SHA timestamp=$TIMESTAMP"
+          node scripts/supply-chain/generate-sbom.mjs \
+            --version "$VERSION" --commit "$GITHUB_SHA" --timestamp "$TIMESTAMP" \
+            --out sbom-a.json
+          node scripts/supply-chain/generate-sbom.mjs \
+            --version "$VERSION" --commit "$GITHUB_SHA" --timestamp "$TIMESTAMP" \
+            --out sbom-b.json
+          sha256sum sbom-a.json sbom-b.json
+          cmp --silent sbom-a.json sbom-b.json
+          echo "SBOM_BYTE_DETERMINISM: PASS"
+
+      - name: Validate the SBOM against this commit's identity
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p "require('./package.json').version")"
+          node scripts/supply-chain/validate-sbom.mjs sbom-a.json \
+            --expect-version "$VERSION" \
+            --expect-commit "$GITHUB_SHA" \
+            --min-components 1200 \
+            --require pkg:npm/react@ \
+            --require pkg:cargo/tauri@ \
+            --require pkg:cargo/serde@
+
+      - name: License inventory is in sync with the lockfiles
+        run: node scripts/supply-chain/license-inventory.mjs --check docs/supply-chain/license-inventory.md
+
+      - name: Attest the SBOM artifact digest (build provenance)
+        # push only: PR runs do not receive id-token write.
+        if: github.event_name == 'push'
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
+        with:
+          subject-path: sbom-a.json

@@ -46,7 +46,8 @@ import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, lstatSync, readdirSync, readFileSync, readlinkSync, rmSync, statSync } from "node:fs";
 import { tmpdir, homedir, hostname } from "node:os";
-import { basename, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   hasPrivateKeyBlock,
@@ -54,6 +55,12 @@ import {
   isSecretFileName,
   isUnusableSymlink,
 } from "./lib/release-artifacts-rules.mjs";
+
+const VALIDATE_SBOM = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  "supply-chain",
+  "validate-sbom.mjs",
+);
 
 const failures = [];
 const check = (name, fn) => {
@@ -502,6 +509,65 @@ check("G8b SHA256SUMS.txt agrees with the artifacts", () => {
   }
   if (problems.length) throw new Error(problems.join("; "));
   return `${listed.size} checksum(s) verified`;
+});
+
+// --- G9: supply-chain SBOM ----------------------------------------------------
+
+// The SBOM is a published supply-chain artifact (issue #296): it must be
+// staged, hash-bound to the manifest, free of leaks, and structurally valid
+// FOR THIS RELEASE identity — not just present. Without --require-sbom a
+// legacy manifest without an `sbom` entry still verifies (backwards
+// compatibility for the v1.13.x line); an entry that EXISTS is always fully
+// verified, required or not.
+check("G9 SBOM staged, hash-bound and structurally valid", () => {
+  if (!manifest?.release_version) throw new Error("manifest not usable (see G1)");
+  const sbomEntry = manifest.sbom ?? null;
+  if (!sbomEntry) {
+    if (flag("require-sbom")) {
+      throw new Error("manifest has no 'sbom' entry — the release cannot ship without an SBOM (--require-sbom)");
+    }
+    return "no SBOM recorded (not required)";
+  }
+  const shape = [
+    ["filename", (v) => typeof v === "string" && v.length > 0 && !v.includes("/")],
+    ["type", (v) => v === "cyclonedx-json"],
+    ["spec_version", (v) => v === "1.6"],
+    ["sha256", (v) => /^[0-9a-f]{64}$/.test(v)],
+    ["size", (v) => Number.isInteger(v) && v > 0],
+  ];
+  for (const [key, ok] of shape) {
+    if (!ok(sbomEntry[key])) throw new Error(`manifest.sbom.${key} is missing or malformed`);
+  }
+  const sbomFile = firstExisting([
+    join(stagingDir, "sbom", sbomEntry.filename),
+    join(stagingDir, "checksums", sbomEntry.filename),
+  ]);
+  if (!sbomFile) throw new Error(`SBOM '${sbomEntry.filename}' is recorded but not staged`);
+  const size = statSync(sbomFile).size;
+  const digest = createHash("sha256").update(readFileSync(sbomFile)).digest("hex");
+  if (size !== sbomEntry.size || digest !== sbomEntry.sha256) {
+    throw new Error(
+      `SBOM bytes differ from the manifest (size ${size} ≠ ${sbomEntry.size}, sha256 ${digest.slice(0, 12)}… ≠ ${sbomEntry.sha256.slice(0, 12)}…)`,
+    );
+  }
+  // Same leak rules as G4, applied to the SBOM's own text.
+  const hits = scanBuffer(basename(sbomFile), readFileSync(sbomFile));
+  if (hits.length) throw new Error(`SBOM leaks private material: ${hits.slice(0, 4).join("; ")}`);
+  // Independent structural validation bound to THIS release identity.
+  const args = [VALIDATE_SBOM, sbomFile, "--expect-version", manifest.release_version];
+  if (manifest.source_commit) args.push("--expect-commit", manifest.source_commit);
+  try {
+    execFileSync("node", args, { encoding: "utf8" });
+  } catch (e) {
+    const failed = `${e.stdout ?? ""}${e.stderr ?? ""}`
+      .split("\n")
+      .filter((l) => l.includes("✗"))
+      .map((l) => l.replace(/^\s*✗\s*/, ""))
+      .join("; ")
+      .slice(0, 300);
+    throw new Error(`SBOM failed structural validation: ${failed || "validator did not run"}`);
+  }
+  return `${sbomEntry.filename} verified (CycloneDX ${sbomEntry.spec_version}, ${size} bytes)`;
 });
 
 // Extracted trees were only needed for the gates above.

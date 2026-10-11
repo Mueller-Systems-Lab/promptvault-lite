@@ -41,6 +41,7 @@
       "playwright.config.ts",
       ".agents/project-contract.v1.json",
       ".agents/schemas/project-contract.v1.schema.json",
+      ".github/workflows/**",
       ".agents/skills/**",
       "docs/**",
       ".opencode/spec/**",
