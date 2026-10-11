@@ -89,11 +89,21 @@ function fixtureRoot() {
       "  vite@5.4.2:",
       "    resolution: {integrity: sha512-E4nK}",
       "",
+      "  vitest@1.6.0:",
+      "    resolution: {integrity: sha512-v1t}",
+      "",
+      "  chai@4.3.7:",
+      "    resolution: {integrity: sha512-ch}",
+      "",
       "snapshots:",
       "",
       "  react-dom@18.3.1:",
       "    dependencies:",
       "      react: 18.3.1",
+      "",
+      "  vitest@1.6.0(@types/node@25.9.1)(jsdom@24.0.0(supports-color@8.1.1)):",
+      "    dependencies:",
+      "      chai: 4.3.7",
       "",
     ].join("\n"),
   );
@@ -173,6 +183,8 @@ function fixtureRoot() {
           "react@18.3.1": "MIT",
           "react-dom@18.3.1": "MIT",
           "vite@5.4.2": "MIT",
+          "vitest@1.6.0": "Apache-2.0 / MIT",
+          "chai@4.3.7": "MIT/Apache-2.0",
         },
         cargo: {
           "promptvault-core@1.13.3": "MIT",
@@ -288,6 +300,19 @@ describe("generate-sbom", () => {
     expect(deps.get("pkg:npm/react-dom@18.3.1")).toContain("pkg:npm/react@18.3.1");
     expect(deps.get("pkg:cargo/promptvault-lite@1.13.3")).toContain("pkg:cargo/tauri@2.1.1");
     expect(deps.get("pkg:cargo/promptvault-core@1.13.3")).toContain("pkg:cargo/serde@1.0.210");
+
+    // Regression (review finding F1): NESTED peer-suffix snapshot keys must
+    // keep their dependency edges instead of being silently skipped.
+    expect(deps.get("pkg:npm/vitest@1.6.0")).toContain("pkg:npm/chai@4.3.7");
+
+    // Regression (review finding F2): registry slash shorthands are license
+    // NAMES, never bogus SPDX expressions.
+    expect(refs.get("pkg:npm/vitest@1.6.0")?.licenses).toEqual([
+      { license: { name: "Apache-2.0 / MIT" } },
+    ]);
+    expect(refs.get("pkg:npm/chai@4.3.7")?.licenses).toEqual([
+      { license: { name: "MIT/Apache-2.0" } },
+    ]);
 
     // components are sorted -> stable bytes
     const names = bom.components.map((c) => c["bom-ref"]);

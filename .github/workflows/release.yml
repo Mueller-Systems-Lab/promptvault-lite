@@ -156,8 +156,8 @@ jobs:
 
       - name: Generate the release SBOM
         # Deterministic CycloneDX 1.6 over both lockfiles, bound to this
-        # release identity. The timestamp is the tagged commit's author date,
-        # so the same source state always regenerates identical SBOM bytes.
+        # release identity. The timestamp is the tagged commit's committer
+        # date, so the same source state always regenerates identical SBOM bytes.
         run: |
           set -euo pipefail
           # The generator demands a UTC 'Z' instant; %cI yields a local offset.

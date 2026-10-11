@@ -9,7 +9,7 @@
 //       (lockfiles, license-data.json, --version, --commit, --timestamp).
 //     No wall clock, no randomness: the serial number is a UUIDv5 of the
 //     release identity, and the timestamp comes in as an argument (the
-//     release pipeline passes the tagged commit's author date, so the same
+//     release pipeline passes the tagged commit's committer date, so the same
 //     source state always yields the same bytes).
 //   * ZERO new dependencies: hand-rolled strict parsers for the exact
 //     machine-generated formats this repository pins (pnpm-lock v9,
@@ -95,7 +95,10 @@ const cargoPurl = (name, v) => `pkg:cargo/${name.toLowerCase()}@${v}`;
 /** CycloneDX license array from an SPDX id, expression, or free-text name. */
 function licenseEntry(license) {
   if (!license || license === "UNKNOWN") return null;
-  if (/[() ]/.test(license) || /\b(OR|AND|WITH)\b/.test(license)) {
+  // A real SPDX expression carries operators or parens. Registry shorthands
+  // like "Apache-2.0 / MIT" or "MIT/Apache-2.0" are NOT expressions — an
+  // `expression` field with them would be invalid SPDX, so they become names.
+  if (/\b(OR|AND|WITH)\b/.test(license) || /[()]/.test(license)) {
     return { expression: license };
   }
   if (/^[A-Za-z0-9.()+-]+$/.test(license)) return { license: { id: license } };

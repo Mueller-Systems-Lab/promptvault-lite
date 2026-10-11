@@ -10,9 +10,20 @@ export function stripQuotes(s) {
   return s.startsWith("'") || s.startsWith('"') ? s.slice(1, -1) : s;
 }
 
-/** Split a pnpm package key `@scope/name@1.2.3(peer@1)` into name/version. */
+/** Strip balanced peer-suffix groups, innermost-out, to a fixpoint. */
+function stripPeerGroups(s) {
+  let out = s;
+  while (out.includes("(")) {
+    const next = out.replace(/\([^()]*\)/g, "");
+    if (next === out) break; // unbalanced remainder: give up, caller decides
+    out = next;
+  }
+  return out;
+}
+
+/** Split a pnpm package key `@scope/name@1.2.3(peer@1)(nested(peer@2))` into name/version. */
 export function splitPnpmKey(key) {
-  const withoutPeers = key.replace(/\([^)]*\)/g, "");
+  const withoutPeers = stripPeerGroups(key);
   const at = withoutPeers.lastIndexOf("@");
   if (at <= 0) return null;
   const name = withoutPeers.slice(0, at);
@@ -23,7 +34,7 @@ export function splitPnpmKey(key) {
 
 /** Strip a peer suffix from a version value: `18.3.1(react@18.3.1)` → `18.3.1`. */
 export function stripPeerSuffix(value) {
-  return value.replace(/\([^)]*\)/g, "");
+  return stripPeerGroups(value);
 }
 
 /**
