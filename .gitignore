@@ -73,6 +73,8 @@ scripts/*
 !scripts/release/
 # LAN/LXC deployment verification harness (Issue #138)
 !scripts/lan-verify/
+# No-force-push enforcement: command guard, activation check, mutation probe
+!scripts/governance/
 site/
 
 # Python cache

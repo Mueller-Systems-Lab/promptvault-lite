@@ -194,6 +194,15 @@ EVIDENCE_STATUS: PASS / FAIL / NOT_RUN / MISSING / BLOCKED
 
 - No auto-merge.
 - No force-merge.
+- **No force push — on any branch, in any form** (`--force`, `-f`,
+  `--force-with-lease`, `--force-if-includes`, or a forced `+refspec`). To fix a
+  bad commit, add a correction commit; do not rewrite history.
+  Enforced by three independent layers: a project-local command guard
+  (`.zcode/config.json` → `scripts/governance/force-push-hook.mjs`), the tracked
+  `.githooks/pre-push` non-fast-forward defense, and the GitHub ruleset
+  `all-branches-no-force-push`. Command-level *intent* enforcement and
+  server-side *effect* enforcement are separate claims — see
+  `docs/governance/no-force-push-enforcement.md`.
 - No branch-protection bypass.
 - Merge only with explicit Human Approval and green local gates.
 - No untracked docs mass-commit without per-file owner review.
