@@ -43,6 +43,18 @@ const BLOCKED = [
   "command git push --force origin feature",
   "env git push --force origin feature",
   "nohup git push --force origin feature",
+  // Wrappers with their own options/values
+  "sudo git push --force origin feature",
+  "doas git push --force origin feature",
+  "sudo -u root git push --force origin feature",
+  "timeout 5 git push --force origin feature",
+  "nice -n 10 git push --force origin feature",
+  "command -p git push --force origin feature",
+  "xargs -I{} git push --force origin feature",
+  "watch git push --force origin feature",
+  // Subshell and brace group
+  "(git push --force origin feature)",
+  "{ git push --force origin feature; }",
   // Shell -c
   "bash -c 'git push --force origin feature'",
   'sh -c "git push --force origin feature"',
@@ -52,6 +64,9 @@ const BLOCKED = [
   "git push `echo --force` origin feature",
   // Substitution that itself contains the push
   "$(git push --force origin feature)",
+  // A bare variable where a flag belongs (fail closed)
+  "git push $FLAG origin feature",
+  "F=--force; git push $F origin feature",
   // Unambiguous Git long-option abbreviations
   "git push --force-w origin feature",
   "git push --force-with-l origin feature",
@@ -62,6 +77,8 @@ const BLOCKED = [
   "git push --no-verify --force origin feature",
   // Force intent is rejected even when the update would be a fast-forward.
   "git push --force origin main",
+  // A trailing comment must not excuse the force flag before it.
+  "git push --force origin main # ok",
 ];
 
 const ALLOWED = [
@@ -85,6 +102,10 @@ const ALLOWED = [
   // Trailing comments must not be read as arguments (adversarial-review finding).
   "git push origin main # never use --force here",
   "git push origin main # avoid +refs",
+  // A variable in refspec position cannot be a force flag (review finding).
+  "git push origin $BRANCH",
+  "git push origin HEAD:$TARGET",
+  'git push origin "refs/heads/$BRANCH"',
 ];
 
 describe("force-push command guard", () => {

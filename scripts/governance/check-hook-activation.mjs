@@ -71,13 +71,29 @@ try {
 
 const guardEnabled = guardConfig?.hooks?.enabled === true;
 const preToolUse = guardConfig?.hooks?.events?.PreToolUse;
+// The matcher is a case-sensitive regex tested against the tool name, so it has
+// to be evaluated, not merely found: a `Read` matcher would never fire for Bash.
 const guardMatcherPresent =
   Array.isArray(preToolUse) &&
-  preToolUse.some((entry) =>
-    Array.isArray(entry?.hooks)
-      ? entry.hooks.some((h) => typeof h?.command === "string" && h.command.includes("force-push-hook.mjs"))
-      : false,
-  );
+  preToolUse.some((entry) => {
+    if (!Array.isArray(entry?.hooks)) return false;
+    let matchesBash = false;
+    if (entry.matcher === undefined) {
+      matchesBash = true; // an omitted matcher matches everything
+    } else {
+      try {
+        matchesBash = new RegExp(entry.matcher).test("Bash");
+      } catch {
+        matchesBash = false; // an invalid regex never matches
+      }
+    }
+    return (
+      matchesBash &&
+      entry.hooks.some(
+        (h) => typeof h?.command === "string" && h.command.includes("force-push-hook.mjs"),
+      )
+    );
+  });
 
 lines.push(`hooks.command_guard.config_present=${existsSync(GUARD_CONFIG)}`);
 lines.push(`hooks.command_guard.script_present=${existsSync(GUARD_SCRIPT)}`);

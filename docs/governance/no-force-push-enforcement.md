@@ -1,6 +1,6 @@
 # No force push — enforcement layers
 
-`AGENTS.md` §4 already forbids force pushing. This document records **which
+`AGENTS.md` §9 already forbids force pushing. This document records **which
 layers enforce it technically**, what each layer does and does not prove, and
 how to apply the server-side rule.
 
@@ -54,15 +54,23 @@ These are different contracts. Do not let one stand in for another.
   `--force`, `-f` (including short clusters such as `-uf`),
   `--force-with-lease[=ref]`, `--force-if-includes`, forced `+refspec`,
   unambiguous long-option abbreviations (`--force-w`), unquoted backslash
-  escapes, shell wrapper words (`command`, `env`, `nohup`, …), `sh -c '…'`,
-  command substitution and backticks, and `--no-verify` on a push. A push
-  argument that would need the shell to be evaluated (`git push $(…)` or
-  `git push $FLAG`) is **rejected rather than guessed at** — write the resolved
-  form.
+  escapes, wrapper words and their options/arguments (`command`, `sudo -u …`,
+  `env`, `timeout 5`, `nice -n 10`, `xargs -I{}`, `nohup`, `watch`, …),
+  subshells and brace groups (`(git push …)`, `{ git push …; }`), `sh -c '…'`,
+  command substitution and backticks, and `--no-verify` on a push.
 
-  It cannot defeat arbitrary runtime indirection where the flag is assembled
-  somewhere the guard never sees, and it never sees a human's own shell. Those
-  are what Layers C and D are for.
+  Two fail-closed rules, with their exact scope:
+
+  * a push argument containing a **substitution** (`$(…)` or backticks) is
+    rejected, because its value cannot be known without running the shell;
+  * a push argument containing a **plain variable** (`$FLAG`) is rejected only
+    in *flag position* — before the remote argument. A variable in refspec
+    position (`git push origin $BRANCH`, `git push origin HEAD:$TARGET`) is an
+    ordinary push and is allowed.
+
+  It cannot defeat a flag that never appears in the command string at all — one
+  assembled by a script the guard never sees, or a human typing `git` in their
+  own shell. Those are what Layers C and D are for.
 
 Neither B nor C nor D alone is sufficient; they are layered deliberately.
 

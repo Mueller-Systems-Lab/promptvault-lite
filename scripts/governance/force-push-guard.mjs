@@ -17,12 +17,17 @@
 // sees the resulting ref update. Neither one alone proves the other.
 //
 // Scope of the lexical check, stated honestly: it defeats the forms a person or
-// an agent plausibly types, including shell wrappers (`command`/`env`/`nohup`),
-// `bash -c '…'`, command substitution and backticks, unquoted backslash
-// escapes, trailing `#` comments, unambiguous Git long-option abbreviations
-// (`--force-w`) and `--no-verify` on a push. It cannot defeat arbitrary runtime
-// indirection such as building the flag in a variable (`F=--force; git push $F`);
-// that is what the pre-push hook and the server-side ruleset are for.
+// an agent plausibly types, including shell wrappers (`command`, `env`, `sudo`,
+// `timeout`, `nohup`, …), subshells and brace groups, `bash -c '…'`, command
+// substitution and backticks, unquoted backslash escapes, trailing `#`
+// comments, unambiguous Git long-option abbreviations (`--force-w`) and
+// `--no-verify` on a push. Indirection the guard cannot resolve is rejected
+// rather than guessed at (see `isIndeterminateToken`).
+//
+// It cannot defeat a flag that never appears in the command string at all — for
+// example one assembled by a script the guard never sees, or a human typing
+// `git` directly in their own shell. Those are what the pre-push hook and the
+// server-side ruleset are for.
 
 /** Git long options that mean "make this update non-fast-forward". */
 const FORCE_LONG_OPTIONS = ["--force", "--force-with-lease", "--force-if-includes"];
@@ -44,15 +49,23 @@ const GIT_GLOBAL_WITH_VALUE = new Set([
 
 /** Leading words that only wrap the real command. */
 const COMMAND_WRAPPERS = new Set([
-  "command",
   "builtin",
-  "exec",
+  "chrt",
+  "command",
+  "doas",
   "env",
-  "nohup",
+  "exec",
+  "flock",
+  "ionice",
   "nice",
+  "nohup",
   "setsid",
   "stdbuf",
+  "sudo",
   "time",
+  "timeout",
+  "watch",
+  "xargs",
 ]);
 
 /** Shells whose `-c <string>` form holds the real command. */
@@ -192,22 +205,69 @@ export function tokenize(segment) {
   return tokens;
 }
 
-/** Drop leading wrappers and environment assignments from a token list. */
+/**
+ * Drop leading wrappers, their options/arguments and environment assignments
+ * from a token list, so `sudo timeout 5 env FOO=1 git push …` reduces to
+ * `git push …`. Stops at the first token that is not wrapper-like.
+ */
 function stripLeadingWrappers(tokens) {
   let i = 0;
+  let expectWrapperValue = false;
+
   while (i < tokens.length) {
-    const token = tokens[i];
+    const token = tokens[i].replace(/^[({]+/, "");
+    if (token === "") {
+      i += 1;
+      continue;
+    }
     if (COMMAND_WRAPPERS.has(token)) {
+      expectWrapperValue = false;
       i += 1;
       continue;
     }
     if (/^[A-Za-z_][A-Za-z0-9_]*=/.test(token)) {
+      expectWrapperValue = false;
+      i += 1;
+      continue;
+    }
+    // A wrapper's own flag (`sudo -u`, `timeout -k`, `xargs -I{}`).
+    if (token.startsWith("-")) {
+      expectWrapperValue = true;
+      i += 1;
+      continue;
+    }
+    // The value of such a flag — unless the wrapper is about to run `git`.
+    if (expectWrapperValue && token !== "git") {
+      expectWrapperValue = false;
+      i += 1;
+      continue;
+    }
+    // A wrapper's bare numeric argument (`timeout 5`, `nice 10`).
+    if (i > 0 && /^\d+$/.test(token)) {
       i += 1;
       continue;
     }
     break;
   }
-  return tokens.slice(i);
+
+  const rest = tokens.slice(i);
+  if (rest.length > 0) rest[0] = rest[0].replace(/^[({]+/, "");
+  return rest;
+}
+
+/**
+ * Strip wrapping subshell/brace-group punctuation: `(git push …)`,
+ * `{ git push …; }`. Only punctuation that is glued to a real token is removed.
+ *
+ * @param {string[]} tokens
+ * @returns {string[]}
+ */
+function stripGrouping(tokens) {
+  const out = tokens.slice();
+  if (out.length > 0) out[0] = out[0].replace(/^[({]+/, "");
+  const last = out.length - 1;
+  if (last >= 0) out[last] = out[last].replace(/[)};]+$/, "");
+  return out.filter((token) => token.length > 0);
 }
 
 /**
@@ -217,11 +277,12 @@ function stripLeadingWrappers(tokens) {
  * @returns {string | null}
  */
 function unwrapShell(tokens) {
-  const rest = stripLeadingWrappers(tokens);
-  if (!SHELLS.has(rest[0])) return null;
-  const index = rest.indexOf("-c");
-  if (index === -1 || rest[index + 1] === undefined) return null;
-  return rest[index + 1];
+  for (let i = 0; i < tokens.length - 1; i += 1) {
+    if (!SHELLS.has(tokens[i])) continue;
+    const index = tokens.indexOf("-c", i + 1);
+    if (index !== -1 && tokens[index + 1] !== undefined) return tokens[index + 1];
+  }
+  return null;
 }
 
 /**
@@ -289,7 +350,7 @@ export function extractSubstitutions(command) {
  * @returns {string[] | null}
  */
 export function gitPushArguments(tokens) {
-  const rest = stripLeadingWrappers(tokens);
+  const rest = stripGrouping(stripLeadingWrappers(tokens));
   let i = 0;
 
   if (rest[i] !== "git") return null;
@@ -368,9 +429,16 @@ export function isForcedRefspec(token) {
   return token.startsWith("+");
 }
 
-/** True when a token's value cannot be determined without evaluating a shell. */
+/**
+ * True when a token's value cannot be determined without evaluating a shell.
+ *
+ * Only substitutions (`$(…)`, backticks) are unconditionally indeterminate.
+ * A plain `$VAR` is reported by the caller, which knows whether the token sits
+ * in a flag position — a variable in refspec position (`git push origin $BRANCH`)
+ * cannot be a force flag and must not be blocked.
+ */
 export function isIndeterminateToken(token) {
-  return token.includes("$(") || token.includes("`") || /\$[A-Za-z_{]/.test(token);
+  return token.includes("$(") || token.includes("`");
 }
 
 /**
@@ -381,9 +449,11 @@ export function isIndeterminateToken(token) {
  * @returns {{ reason: string, matched: string, kind: string } | null}
  */
 export function inspectSegment(segment) {
-  const tokens = tokenize(segment);
+  const tokens = stripGrouping(tokenize(segment));
   const args = gitPushArguments(tokens);
   if (args === null) return null;
+
+  let seenRemote = false;
 
   for (const token of args) {
     if (isForceOption(token)) {
@@ -403,15 +473,21 @@ export function inspectSegment(segment) {
         reason: `forced refspec \`${token}\``,
       };
     }
-    // A flag the shell must evaluate could expand to `--force`. Fail closed:
-    // write the resolved form instead.
-    if (isIndeterminateToken(token)) {
+
+    const optionPosition = token.startsWith("-") || !seenRemote;
+    if (isIndeterminateToken(token) || (optionPosition && /\$[A-Za-z_{]/.test(token))) {
+      // Could expand to `--force`, or is a bare variable where a flag belongs.
+      // Fail closed: write the resolved form.
       return {
         kind: "indeterminate-argument",
         matched: token,
         reason: `argument \`${token}\` cannot be resolved without running the shell, so it cannot be cleared of force intent`,
       };
     }
+
+    // First non-option token is the remote; everything after it is a refspec,
+    // where a variable cannot carry a force flag.
+    if (!token.startsWith("-")) seenRemote = true;
   }
   return null;
 }
