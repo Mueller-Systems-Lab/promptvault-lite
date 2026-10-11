@@ -194,6 +194,18 @@ EVIDENCE_STATUS: PASS / FAIL / NOT_RUN / MISSING / BLOCKED
 
 - No auto-merge.
 - No force-merge.
+- **No force push — on any branch, in any form** (`--force`, `-f`,
+  `--force-with-lease`, `--force-if-includes`, or a forced `+refspec`). To fix a
+  bad commit, add a correction commit; do not rewrite history.
+  Three layers are designed to enforce this: a project-local command guard
+  (`.zcode/config.json` → `scripts/governance/force-push-hook.mjs`), the tracked
+  `.githooks/pre-push` non-fast-forward defense, and the GitHub ruleset
+  `all-branches-no-force-push`. Two of them need activation or are per-session:
+  the Git hook only applies after `pnpm governance:hooks:activate`, and the
+  workspace command guard only loads when a session starts. Run
+  `pnpm governance:hooks:check` to see the actual state of a checkout — never
+  assume it. Command-level *intent* enforcement and server-side *effect*
+  enforcement are separate claims; see `docs/governance/no-force-push-enforcement.md`.
 - No branch-protection bypass.
 - Merge only with explicit Human Approval and green local gates.
 - No untracked docs mass-commit without per-file owner review.

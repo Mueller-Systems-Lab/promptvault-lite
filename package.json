@@ -25,7 +25,10 @@
     "verify:release-artifacts": "node scripts/verify-release-artifacts.mjs",
     "verify:lan": "node scripts/lan-verify/verify-lan-deployment.mjs",
     "review:package": "node scripts/create-review-package.mjs",
-    "review:evidence": "node scripts/validate-review-evidence.mjs --dir docs/audits/reviews"
+    "review:evidence": "node scripts/validate-review-evidence.mjs --dir docs/audits/reviews",
+    "governance:hooks:check": "node scripts/governance/check-hook-activation.mjs",
+    "governance:hooks:activate": "git config core.hooksPath .githooks && node scripts/governance/check-hook-activation.mjs --require-active",
+    "governance:guard:probe": "node scripts/governance/run-guard-mutation-probe.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0",
