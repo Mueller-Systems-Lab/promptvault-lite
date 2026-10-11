@@ -434,7 +434,7 @@ describe("validate-sbom", () => {
       name: "token-holder",
       version: "1.0.0",
       purl: "pkg:npm/token-holder@1.0.0",
-      description: "token ghp_0123456789abcdefghijklmnopqrstuvwxyz",
+      description: "token ghp_0123456789abcdefghij",
     });
     const secret = join(root, "secret.json");
     writeFileSync(secret, JSON.stringify(bom));

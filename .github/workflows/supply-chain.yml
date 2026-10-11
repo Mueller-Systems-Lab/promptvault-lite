@@ -50,7 +50,8 @@ jobs:
         run: |
           set -euo pipefail
           VERSION="$(node -p "require('./package.json').version")"
-          TIMESTAMP="$(git log -1 --format=%cI)"
+          # The generator demands a UTC 'Z' instant; %cI yields a local offset.
+          TIMESTAMP="$(date -u -d "$(git log -1 --format=%cI)" +%Y-%m-%dT%H:%M:%SZ)"
           echo "version=$VERSION commit=$GITHUB_SHA timestamp=$TIMESTAMP"
           node scripts/supply-chain/generate-sbom.mjs \
             --version "$VERSION" --commit "$GITHUB_SHA" --timestamp "$TIMESTAMP" \

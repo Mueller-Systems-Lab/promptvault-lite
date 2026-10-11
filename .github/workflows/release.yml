@@ -160,7 +160,8 @@ jobs:
         # so the same source state always regenerates identical SBOM bytes.
         run: |
           set -euo pipefail
-          TIMESTAMP="$(git log -1 --format=%cI)"
+          # The generator demands a UTC 'Z' instant; %cI yields a local offset.
+          TIMESTAMP="$(date -u -d "$(git log -1 --format=%cI)" +%Y-%m-%dT%H:%M:%SZ)"
           echo "sbom timestamp: $TIMESTAMP"
           node scripts/supply-chain/generate-sbom.mjs \
             --version "${{ steps.identity.outputs.version }}" \
