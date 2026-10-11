@@ -20,10 +20,10 @@ commit is the supported way to fix a mistake.
 
 | Layer | Mechanism | What it enforces | Verified how |
 | --- | --- | --- | --- |
-| A | `AGENTS.md` §4, this document | Policy, on paper | Documented |
-| B | `.zcode/config.json` → `scripts/governance/force-push-hook.mjs` | **Command intent**: a `Bash` tool call whose command carries force intent is blocked before Git runs | Unit-tested lexical guard; hook activation is per-session (see below) |
-| C | `.githooks/pre-push` | **Local effect**: the forced updates Git is otherwise willing to send (`--force`, `-f`, `--force-with-lease`, `+refspec`) are rejected | Synthetic git fixture tests: new branch / fast-forward / plain rewrite / reset-backwards / `+refspec` / `--force-with-lease` / `--force` / deletion / mutation probe |
-| D | GitHub ruleset `all-branches-no-force-push` | **Server-side effect**: GitHub refuses a non-fast-forward update on any branch | Ruleset active, read back via API; negative proof on a disposable branch |
+| A | `AGENTS.md` §9, this document | Policy, on paper | Documented |
+| B | `.zcode/config.json` → `scripts/governance/force-push-hook.mjs` | **Command intent**: a `Bash` tool call whose command carries force intent is blocked before Git runs | 53 unit cases; hook activation is per-session (see below) |
+| C | `.githooks/pre-push` | **Local effect**: the forced updates Git is otherwise willing to send (`--force`, `-f`, `--force-with-lease`, `+refspec`) are rejected | 9 synthetic git fixture cases + mutation probe; **requires activation** (below) |
+| D | GitHub ruleset `all-branches-no-force-push` (id `24865972`) | **Server-side effect**: GitHub refuses a non-fast-forward update on any branch | Read back via API; live negative proof (below) |
 
 ## What each layer does NOT enforce
 
@@ -49,6 +49,20 @@ These are different contracts. Do not let one stand in for another.
   *intent* even when the proposed update would be a fast-forward. It only covers
   tool calls routed through the agent runtime; a human running `git` directly in
   a shell is outside its reach. That case is covered by Layers C and D.
+
+  Within its reach it covers the forms a person or an agent plausibly types:
+  `--force`, `-f` (including short clusters such as `-uf`),
+  `--force-with-lease[=ref]`, `--force-if-includes`, forced `+refspec`,
+  unambiguous long-option abbreviations (`--force-w`), unquoted backslash
+  escapes, shell wrapper words (`command`, `env`, `nohup`, …), `sh -c '…'`,
+  command substitution and backticks, and `--no-verify` on a push. A push
+  argument that would need the shell to be evaluated (`git push $(…)` or
+  `git push $FLAG`) is **rejected rather than guessed at** — write the resolved
+  form.
+
+  It cannot defeat arbitrary runtime indirection where the flag is assembled
+  somewhere the guard never sees, and it never sees a human's own shell. Those
+  are what Layers C and D are for.
 
 Neither B nor C nor D alone is sufficient; they are layered deliberately.
 
@@ -109,6 +123,41 @@ Design notes:
   add `deletion`, so mission/feature branches remain deletable through the normal
   owner-approved cleanup workflow. `main` keeps its deletion protection from
   `main-protection`.
+
+### Layer D — verified state
+
+Read back from the API after creation (`gh api repos/…/rulesets/24865972`):
+
+```json
+{
+  "id": 24865972,
+  "name": "all-branches-no-force-push",
+  "target": "branch",
+  "enforcement": "active",
+  "bypass_actors": [],
+  "conditions": { "ref_name": { "include": ["~ALL"], "exclude": [] } },
+  "rules": [{ "type": "non_fast_forward" }]
+}
+```
+
+`main-protection` (id `24841719`) is unchanged: `deletion`, `non_fast_forward`,
+`pull_request`, `required_status_checks`, no bypass. Exactly two rulesets exist.
+
+Live negative proof on a throwaway branch (`no-force-push-probe`, created from
+`main` in a clone with **no** `core.hooksPath`, so only the server rule could
+act — the branch was deleted afterwards):
+
+| attempt | result |
+| --- | --- |
+| create the branch (new ref) | accepted |
+| ordinary second commit (fast-forward) | accepted |
+| `git push --force` after rewinding | **rejected** — `GH013 … Cannot force-push to this branch` |
+| `git push origin +refs/heads/…:refs/heads/…` | **rejected** — `GH013 … Repository rule violations` |
+| `git push --force-with-lease` | **rejected** — `GH013 … Repository rule violations` |
+| `git push --delete` the probe branch | accepted (deletion is not blocked) |
+
+So the server-side rule is not merely configured; it was observed refusing the
+effect on a real branch, while still allowing branch creation and deletion.
 
 ## Audit record — prior deviation
 

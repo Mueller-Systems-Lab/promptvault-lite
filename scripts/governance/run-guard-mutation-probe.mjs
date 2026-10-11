@@ -74,27 +74,47 @@ function buildRewritableFixture(root, hooksPath) {
 const sandbox = mkdtempSync(join(tmpdir(), "pvl-guard-probe-"));
 let exitCode = 0;
 
+/**
+ * Forced forms where the pre-push hook is the deciding actor, so the hook's own
+ * marker must be present. `--force-if-includes` is deliberately absent: Git
+ * refuses that form itself (the "if-includes" precondition does not hold in a
+ * rewound clone), so it never reaches the hook and its rejection would prove
+ * nothing about this guard.
+ */
+const FORCED_FORMS = [
+  ["--force", ["push", "--force", "origin", "main"]],
+  ["-f", ["push", "-f", "origin", "main"]],
+  ["--force-with-lease", ["push", "--force-with-lease", "origin", "main"]],
+  ["+refspec", ["push", "origin", "+HEAD:main"]],
+];
+
 try {
-  const guarded = buildRewritableFixture(join(sandbox, "guarded"), REAL_HOOKS);
-  const guardedPush = git(["push", "--force", "origin", "main"], guarded, {
-    allowFailure: true,
-  });
-  const guardRejected = guardedPush.status !== 0 && guardedPush.stderr.includes(MARKER);
+  const results = [];
+
+  for (const [label, argv] of FORCED_FORMS) {
+    const guarded = buildRewritableFixture(join(sandbox, `guarded-${label.replace(/\W/g, "")}`), REAL_HOOKS);
+    const guardedPush = git(argv, guarded, { allowFailure: true });
+    results.push({
+      label,
+      guardRejected: guardedPush.status !== 0 && guardedPush.stderr.includes(MARKER),
+    });
+  }
 
   const mutatedHooks = join(sandbox, "mutated-hooks");
   mkdirSync(mutatedHooks, { recursive: true });
   writeFileSync(join(mutatedHooks, "pre-push"), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
 
   const mutated = buildRewritableFixture(join(sandbox, "mutated"), mutatedHooks);
-  const mutatedPush = git(["push", "--force", "origin", "main"], mutated, {
-    allowFailure: true,
-  });
+  const mutatedPush = git(["push", "--force", "origin", "main"], mutated, { allowFailure: true });
   const mutationAccepted = mutatedPush.status === 0;
 
-  process.stdout.write(`guard_rejected=${guardRejected}\n`);
+  for (const result of results) {
+    process.stdout.write(`guard_rejected[${result.label}]=${result.guardRejected}\n`);
+  }
   process.stdout.write(`mutation_accepted=${mutationAccepted}\n`);
 
-  if (guardRejected && mutationAccepted) {
+  const allGuarded = results.every((result) => result.guardRejected);
+  if (allGuarded && mutationAccepted) {
     process.stdout.write("GUARD_MUTATION_PROBE=PASS\n");
   } else {
     process.stdout.write("GUARD_MUTATION_PROBE=FAIL\n");

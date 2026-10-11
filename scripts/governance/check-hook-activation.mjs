@@ -15,7 +15,7 @@
 //   node scripts/governance/check-hook-activation.mjs --require-active
 
 import { execFileSync } from "node:child_process";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -56,19 +56,44 @@ const lines = [
   `hooks.prepush.executable=${hookExecutable}`,
   `hooks.prepush.core_hooks_path=${hooksPath || "<unset>"}`,
   `hooks.prepush.expected=${EXPECTED_HOOKS_PATH}`,
-  `hooks.command_guard.config_present=${existsSync(GUARD_CONFIG)}`,
-  `hooks.command_guard.script_present=${existsSync(GUARD_SCRIPT)}`,
   `hooks.classification=${classification}`,
 ];
 
-// The workspace command guard is activated by the agent runtime at session
-// start; a checker running inside an already-started session cannot prove it is
-// live. Say so explicitly rather than implying it.
-if (existsSync(GUARD_CONFIG)) {
-  lines.push(
-    "hooks.command_guard.activation=REQUIRES_SESSION_RESTART (workspace hooks load at session start)",
-  );
+// Report the command guard from the file's actual contents, not from its
+// presence: a config that exists but has `hooks.enabled: false` or no matching
+// PreToolUse matcher enforces nothing.
+let guardConfig = null;
+try {
+  guardConfig = JSON.parse(readFileSync(GUARD_CONFIG, "utf8"));
+} catch {
+  guardConfig = null;
 }
+
+const guardEnabled = guardConfig?.hooks?.enabled === true;
+const preToolUse = guardConfig?.hooks?.events?.PreToolUse;
+const guardMatcherPresent =
+  Array.isArray(preToolUse) &&
+  preToolUse.some((entry) =>
+    Array.isArray(entry?.hooks)
+      ? entry.hooks.some((h) => typeof h?.command === "string" && h.command.includes("force-push-hook.mjs"))
+      : false,
+  );
+
+lines.push(`hooks.command_guard.config_present=${existsSync(GUARD_CONFIG)}`);
+lines.push(`hooks.command_guard.script_present=${existsSync(GUARD_SCRIPT)}`);
+lines.push(`hooks.command_guard.hooks_enabled=${guardEnabled}`);
+lines.push(`hooks.command_guard.matcher_present=${guardMatcherPresent}`);
+lines.push(
+  `hooks.command_guard.classification=${
+    guardEnabled && guardMatcherPresent ? "CONFIGURED" : "NOT_CONFIGURED"
+  }`,
+);
+
+// Workspace hooks load at session start, so a checker running inside an
+// already-started session cannot prove the guard is live. Say exactly that.
+lines.push(
+  "hooks.command_guard.activation=REQUIRES_SESSION_START (workspace hooks are read when a session starts)",
+);
 
 process.stdout.write(lines.join("\n") + "\n");
 
