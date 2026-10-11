@@ -122,12 +122,51 @@ Known floating platform inputs (documented, not hidden): the runner image
 (`ubuntu-latest`) and its apt packages. The experiment controls everything
 above them.
 
-### Experiment results
+### Experiment results — two clean local builds @ `6ede3103904c3a0d9badac1493b559454997f589` (2026-10-11)
 
-<!-- RESULTS: filled in from the repro-report artifact of the mission run; see git history. -->
+Toolchain context: pnpm 9.15.9, Node v24.11.1, rustc 1.92.0, Linux Mint 22.2
+(kernel 6.11.0-17-generic); two fresh clones of the same commit in
+`/mnt/nvme-data/pvl-repro-a` / `-b`, each with its own empty `target/`, frozen
+lockfiles, release profile (`lto`, `codegen-units=1`), the same
+`RUSTFLAGS` path remapping as the release pipeline, builds run serially.
+(The shared cargo registry cache only shortens build time; it cannot change
+outputs. `.github/workflows/supply-chain-repro.yml` repeats the experiment on
+two independent GitHub runners for the cross-environment variant.)
 
-_Results pending — this section is updated from the `repro-report` artifact
-when the experiment for this change has run._
+| Artifact | sha256 build A | sha256 build B | byte-identical |
+| --- | --- | --- | --- |
+| `.deb` | `467276814ee1…` | `25362d766fb5…` | NO |
+| `.rpm` | `d6a186de05d6…` | `3908f40876a2…` | NO |
+| `.AppImage` | `f53fcf6f0e9f…` | `965ad5868d70…` | NO |
+
+**Diagnosis (the important part):** the divergence is **entirely
+packaging-layer timestamps, not code** —
+
+- `.deb`: all 7 payload files **byte-equal**; all 7 differ only in mtime
+  (plus archive header ordering).
+- `.AppImage` (814 payload files): **0 files with differing bytes**; 372
+  byte-equal with differing mtimes, 442 fully equal.
+- Main binary `usr/bin/promptvault-lite` extracted from both AppImages:
+  **identical sha256 `8b792c4648cb…`** — the compiled artifact is
+  bit-identical across the two clean builds.
+- `.rpm`: no guaranteed diagnosis tooling on the runner; given the other two
+  formats show timestamp-only divergence at equal sizes, the same layer is
+  the reasonable working hypothesis (unproven for rpm).
+
+**Classification (honest):**
+
+| Claim | Status |
+| --- | --- |
+| `REPEATABLE_BUILD` (same environment, same source ⇒ same result) | **PASS for everything the compiler produces** — binaries byte-identical |
+| `BIT_FOR_BIT_REPRODUCIBLE` (independent clean builds ⇒ identical packages) | **NOT_YET** — `.deb`/`.rpm`/`.AppImage` embed build-time filesystem mtimes (deb data layer, squashfs mtimes, archive headers) |
+| `REPRODUCIBLE_BUILD_INPUTS` | **PASS** — frozen lockfiles, pinned tool versions, documented remapping |
+| `BUILD_PROVENANCE` | **PASS** — attestations bind digest ↔ repository/commit/workflow |
+
+Bounded remediation path (not attempted here — it lives upstream, and a
+partial fix would not change the verdict): `SOURCE_DATE_EPOCH` support in
+Tauri's deb writer and clamped mtimes (`-mkfs-time`/`-all-time` style flags)
+in the linuxdeploy/mksquashfs AppImage step. No patching was done to force
+hash equality.
 
 ## What has NOT been demonstrated (honest limitations)
 

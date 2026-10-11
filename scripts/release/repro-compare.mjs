@@ -53,7 +53,7 @@ const jsonOut = arg("json");
 const markdownOut = arg("markdown");
 const label = arg("label") ?? "two-clean-builds";
 
-const [dirA, dirB] = positionals.map(resolve);
+const [dirA, dirB] = positionals.map((p) => resolve(p));
 
 /** Recursively find package files under a root. */
 function findPackages(root) {
@@ -190,9 +190,12 @@ function diagnose(name, fileA, fileB) {
           const noteB = execFileSync("readelf", ["-n", join(rootB, "usr", "bin", candidates[0])], { encoding: "utf8" });
           const idA = /Build ID: ([0-9a-f]+)/.exec(noteA)?.[1];
           const idB = /Build ID: ([0-9a-f]+)/.exec(noteB)?.[1];
-          findings.push(
-            `ELF build-id of usr/bin/${candidates[0]}: ${idA ?? "?"} vs ${idB ?? "?"} ${idA && idA === idB ? "(identical)" : "(DIFFERENT — compiled code diverged, not just packaging metadata)"}`,
-          );
+          const verdict = !idA || !idB
+            ? "(build-id not extracted — the payload byte comparison above is the authoritative signal)"
+            : idA === idB
+              ? "(identical)"
+              : "(DIFFERENT — compiled code diverged, not just packaging metadata)";
+          findings.push(`ELF build-id of usr/bin/${candidates[0]}: ${idA ?? "?"} vs ${idB ?? "?"} ${verdict}`);
         } catch {
           findings.push("readelf probe of the main binary failed (tooling)");
         }
