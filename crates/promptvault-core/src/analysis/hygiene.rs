@@ -521,28 +521,187 @@ fn detect_pii(content: &str) -> Vec<DetectedArtifact> {
         ));
     }
 
-    // Telefonnummern (Deutschland, International)
+    // Telefonnummern (Deutschland, International).
+    //
+    // The candidate regex is intentionally broad; every hit is validated
+    // afterwards so technical identifiers are never reported as *critical*
+    // personal data:
+    // - unambiguous technical numerics (dates, versions, decimals, model ids,
+    //   epoch milliseconds) are skipped entirely;
+    // - `critical` requires a phone-specific shape (international `+`,
+    //   national trunk `0`, parenthesised area code, `/` grouping) or a phone
+    //   keyword directly before the candidate;
+    // - everything else stays visible as `warning`, so an unusual but real
+    //   number is never silently dropped.
     let phone_re = Regex::new(
         r"(?:\+?(\d{1,3})[\s\-\.]?)?(?:\(?0?\d{2,4}\)?[\s\-\.]?)?\d{3,4}[\s\-\.]?\d{3,5}",
     )
     .unwrap();
+    let mut consumed_until = 0usize;
     for m in phone_re.find_iter(content) {
-        let matched = m.as_str();
-        // Nur als Telefon markieren wenn es wie eine Telefonnummer aussieht
-        let digit_count = matched.chars().filter(|c| c.is_ascii_digit()).count();
-        if (7..=15).contains(&digit_count) {
-            artifacts.push(DetectedArtifact::new(
-                ArtifactCategory::Pii,
-                "critical".into(),
-                matched.to_string(),
-                line_of(content, m.start()),
-                col_of(content, m.start()),
-                Some("{PHONE}".into()),
-            ));
+        if m.start() < consumed_until {
+            continue; // overlapping partial matches of one number
         }
+        let matched = m.as_str();
+        let digit_count = matched.chars().filter(|c| c.is_ascii_digit()).count();
+        if !(7..=15).contains(&digit_count) {
+            continue;
+        }
+        if is_technical_numeric_identifier(matched) {
+            continue;
+        }
+        let severity =
+            if phone_has_strong_structure(matched) || phone_context_before(content, m.start()) {
+                "critical"
+            } else {
+                "warning"
+            };
+        artifacts.push(DetectedArtifact::new(
+            ArtifactCategory::Pii,
+            severity.into(),
+            matched.to_string(),
+            line_of(content, m.start()),
+            col_of(content, m.start()),
+            Some("{PHONE}".into()),
+        ));
+        consumed_until = m.end();
     }
 
     artifacts
+}
+
+/// Returns true when a numeric candidate is an unambiguous technical
+/// identifier rather than a phone number.
+///
+/// Covered shapes (documented in the issue #76 regression suite):
+/// - ISO dates `2025-10-31`, `2025/10/31`, `2025.10.31` and German dates
+///   `31.10.2026` (with or without a trailing time);
+/// - versions and short decimals `1.13.3`, `0.2.1`, `3.141592`;
+/// - model/version date suffixes such as `4-20250514`;
+/// - year ranges `2024-2026`;
+/// - epoch timestamps with 13+ bare digits.
+fn is_technical_numeric_identifier(raw: &str) -> bool {
+    let token = raw
+        .trim()
+        .trim_matches(|c: char| c == ',' || c == ';' || c == ':');
+    if token.is_empty() {
+        return false;
+    }
+    let digit_count = token.chars().filter(|c| c.is_ascii_digit()).count();
+    let all_digits = token.chars().all(|c| c.is_ascii_digit());
+
+    // Epoch milliseconds (and longer ids): never a phone number.
+    if all_digits && digit_count >= 13 {
+        return true;
+    }
+
+    let groups: Vec<&str> = token
+        .split(['-', '.', '/', ' '])
+        .filter(|part| !part.is_empty())
+        .collect();
+    if groups
+        .iter()
+        .any(|group| !group.chars().all(|c| c.is_ascii_digit()))
+    {
+        return false;
+    }
+
+    match groups.len() {
+        3 => {
+            // ISO-like date `2025-10-31` / `2025.10.31` / `2025/10/31`.
+            let iso_like = groups[0].len() == 4
+                && is_year(groups[0])
+                && groups[1].len() == 2
+                && groups[2].len() == 2;
+            // German date `31.10.2026`.
+            let german_like = groups[0].len() <= 2
+                && groups[1].len() == 2
+                && groups[2].len() == 4
+                && is_year(groups[2]);
+            // Version / short decimal `1.13.3`, `0.2.1`.
+            let version_like = groups.iter().all(|group| group.len() <= 3) && digit_count <= 7;
+            iso_like || german_like || version_like
+        }
+        2 => {
+            let first = groups[0];
+            let last = groups[1];
+            // Decimal with a long fraction: `3.141592` (a national trunk such
+            // as `030.1234567` is a phone, not a decimal).
+            let decimal_like = first.len() <= 2 && last.len() >= 4 && !first.starts_with('0');
+            // Model/version date suffix such as `4-20250514`.
+            let model_date_like =
+                first.len() <= 2 && last.len() == 8 && looks_like_compact_date(last);
+            // Year range `2024-2026`.
+            let year_range = first.len() == 4 && last.len() == 4 && is_year(first) && is_year(last);
+            decimal_like || model_date_like || year_range
+        }
+        _ => false,
+    }
+}
+
+fn is_year(value: &str) -> bool {
+    value.len() == 4 && (value.starts_with("19") || value.starts_with("20"))
+}
+
+fn looks_like_compact_date(value: &str) -> bool {
+    if value.len() != 8 || !value.chars().all(|c| c.is_ascii_digit()) {
+        return false;
+    }
+    let year = &value[0..4];
+    let month: u32 = value[4..6].parse().unwrap_or(0);
+    let day: u32 = value[6..8].parse().unwrap_or(0);
+    is_year(year) && (1..=12).contains(&month) && (1..=31).contains(&day)
+}
+
+/// True when the candidate carries a phone-specific shape.
+fn phone_has_strong_structure(raw: &str) -> bool {
+    let token = raw.trim();
+    let digit_count = token.chars().filter(|c| c.is_ascii_digit()).count();
+    if digit_count < 8 {
+        return false;
+    }
+    let has_plus = token.starts_with('+');
+    let has_trunk = token.starts_with('0') || token.starts_with("(0");
+    let has_area_code = token.contains('(') && token.contains(')');
+    let has_slash = token.contains('/');
+    let groups: Vec<&str> = token
+        .split(['-', '.', '/', ' '])
+        .filter(|part| !part.is_empty())
+        .collect();
+    let grouped_like_phone = groups.len() >= 3
+        && groups.iter().all(|group| group.len() <= 5)
+        && groups[groups.len() - 1].len() >= 3;
+
+    (has_plus && digit_count >= 8)
+        || ((has_trunk || has_area_code) && digit_count >= 8)
+        || (has_slash && groups.len() == 2 && digit_count >= 8)
+        || grouped_like_phone
+}
+
+/// Phone keyword directly before the candidate ("Tel.: +49 ...").
+fn phone_context_before(content: &str, start: usize) -> bool {
+    const KEYWORDS: &[&str] = &[
+        "tel", "telefon", "phone", "mobil", "handy", "fax", "ruf", "kontakt", "hotline",
+        "whatsapp", "call",
+    ];
+    let window_start = content[..start]
+        .char_indices()
+        .rev()
+        .take(40)
+        .last()
+        .map(|(index, _)| index)
+        .unwrap_or(0);
+    let window = content[window_start..start].to_lowercase();
+    KEYWORDS.iter().any(|keyword| {
+        window.match_indices(keyword).any(|(index, _)| {
+            let before_ok = index == 0
+                || !window[..index]
+                    .chars()
+                    .next_back()
+                    .is_some_and(|c| c.is_alphanumeric());
+            before_ok
+        })
+    })
 }
 
 // -----------------------------------------------------------------------------
@@ -1092,6 +1251,75 @@ mod tests {
         let content = "Kontakt: max.mustermann@example.com";
         let result = analyze_hygiene(content, "test-pii");
         assert!(artifact_count(&result.artifacts, ArtifactCategory::Pii) >= 1);
+    }
+
+    fn pii_phone_artifacts(content: &str) -> Vec<(String, String)> {
+        analyze_hygiene(content, "test-phone")
+            .artifacts
+            .into_iter()
+            .filter(|artifact| artifact.category == ArtifactCategory::Pii)
+            .map(|artifact| (artifact.r#match, artifact.severity))
+            .collect()
+    }
+
+    #[test]
+    fn test_real_phone_numbers_stay_critical() {
+        for content in [
+            "Telefon: +49 30 12345678",
+            "Erreichbar unter 030 1234567",
+            "Mobil: 0170-1234567",
+            "Fax: (030) 1234567",
+            "Call +1 (555) 123-4567",
+            "Ruf uns an: 030/1234567",
+            "Kontakt: 030.123.4567",
+            "Tel. 12345678",
+        ] {
+            let phones = pii_phone_artifacts(content);
+            assert!(!phones.is_empty(), "no phone found in {content:?}");
+            assert!(
+                phones.iter().all(|(_, severity)| severity == "critical"),
+                "expected a critical phone in {content:?}, got {phones:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_technical_identifiers_are_not_phone_pii() {
+        for content in [
+            "Modell: claude-sonnet-4-20250514",
+            "Version 1.13.3 ist installiert",
+            "Wert: 3.141592",
+            "Zeitstempel 1793365208488",
+            "Datum 2025-10-31",
+            "Datum 31.10.2026",
+            "Zeitraum 2024-2026",
+            "Achse 2025.10.31",
+        ] {
+            let pii = pii_phone_artifacts(content);
+            assert!(pii.is_empty(), "unexpected PII in {content:?}: {pii:?}");
+        }
+    }
+
+    #[test]
+    fn test_ambiguous_numeric_runs_are_warning_only() {
+        for content in ["Gruppe 9999-9999", "Code 9999999", "Kennung 9999 999"] {
+            let pii = pii_phone_artifacts(content);
+            assert!(!pii.is_empty(), "ambiguous number dropped in {content:?}");
+            assert!(
+                pii.iter().all(|(_, severity)| severity == "warning"),
+                "ambiguous number must not be critical in {content:?}: {pii:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn test_pii_email_remains_critical() {
+        let pii = pii_phone_artifacts("Kontakt: max.mustermann@example.com");
+        assert!(
+            pii.iter()
+                .any(|(matched, severity)| matched.contains('@') && severity == "critical"),
+            "email must stay a critical PII finding: {pii:?}"
+        );
     }
 
     #[test]

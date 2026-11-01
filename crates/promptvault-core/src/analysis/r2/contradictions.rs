@@ -438,13 +438,45 @@ enum LengthKind {
     Max,
 }
 
-/// Blank-line separated paragraphs (paragraph index = position in this list).
-fn paragraphs(content: &str) -> Vec<&str> {
-    content
-        .split("\n\n")
-        .map(str::trim)
-        .filter(|p| !p.is_empty())
-        .collect()
+/// Paragraph scopes for the C8 same-paragraph gate: blank-line separated
+/// blocks, except that every markdown table row (`| ... |`) is its own scope.
+/// A long table is a list of rows, not one instruction block; without this,
+/// unrelated rows of a concept table were paired as an intent contrast
+/// (issue #76).
+fn paragraphs(content: &str) -> Vec<String> {
+    fn flush(block: &mut String, out: &mut Vec<String>) {
+        let trimmed = block.trim();
+        if !trimmed.is_empty() {
+            out.push(trimmed.to_string());
+        }
+        block.clear();
+    }
+
+    let mut out = Vec::new();
+    let mut block = String::new();
+    for line in content.lines() {
+        let trimmed = line.trim();
+        if trimmed.starts_with('|') {
+            // Each table cell is its own scope: columns of one table row are
+            // not a single instruction block.
+            flush(&mut block, &mut out);
+            for cell in trimmed.split('|') {
+                let cell = cell.trim();
+                if !cell.is_empty() && !cell.chars().all(|c| c == '-' || c == ':') {
+                    out.push(cell.to_string());
+                }
+            }
+        } else if trimmed.is_empty() {
+            flush(&mut block, &mut out);
+        } else {
+            if !block.is_empty() {
+                block.push('\n');
+            }
+            block.push_str(trimmed);
+        }
+    }
+    flush(&mut block, &mut out);
+    out
 }
 
 /// Rough sentence split inside a paragraph (on `.`, `!`, `?`, newline).
@@ -494,7 +526,12 @@ fn topic_of(lower: &str) -> Option<String> {
         }
     }
     for (topic, terms) in TOPIC_SUPPLEMENT {
-        if terms.iter().any(|t| lower.contains(*t)) {
+        let hit = if *topic == "language" {
+            terms.iter().any(|term| language_term_present(lower, term))
+        } else {
+            terms.iter().any(|t| lower.contains(*t))
+        };
+        if hit {
             return Some((*topic).to_string());
         }
     }
@@ -505,7 +542,39 @@ fn topic_of(lower: &str) -> Option<String> {
 /// (FIX D2): the sentence names a language (DE or EN, case-insensitive
 /// containment of the canonical trigger terms).
 fn is_language_topic(lower: &str) -> bool {
-    LANGUAGE_TOPIC_TERMS.iter().any(|t| lower.contains(t))
+    LANGUAGE_TOPIC_TERMS
+        .iter()
+        .any(|t| language_term_present(lower, t))
+}
+
+/// Word-aware language-term match (issue #76): `deutsch` must not match
+/// inside compound nouns such as `Beamtendeutsch` and must not match
+/// `Deutschland`. Common German adjective/inflection endings are allowed
+/// (`deutsche`, `deutscher`, `deutschen`, `deutsches`, `deutschem`), so real
+/// language demands keep working.
+fn language_term_present(lower: &str, term: &str) -> bool {
+    const INFLECTIONS: &[&str] = &["", "e", "er", "en", "es", "em"];
+    let mut search_from = 0usize;
+    while let Some(relative) = lower[search_from..].find(term) {
+        let start = search_from + relative;
+        let before_ok = lower[..start]
+            .chars()
+            .next_back()
+            .is_none_or(|c| !c.is_alphanumeric());
+        let after = &lower[start + term.len()..];
+        let after_ok = INFLECTIONS.iter().any(|ending| {
+            after.starts_with(ending)
+                && after[ending.len()..]
+                    .chars()
+                    .next()
+                    .is_none_or(|c| !c.is_alphanumeric())
+        });
+        if before_ok && after_ok {
+            return true;
+        }
+        search_from = start + term.len().max(1);
+    }
+    false
 }
 
 /// Demanded output language of a language-topic sentence (FIX D3): "german"
@@ -528,14 +597,17 @@ fn language_value(lower: &str) -> Option<String> {
         "into english",
         "auf englisch",
     ];
-    if GERMAN_TERMS.iter().any(|t| lower.contains(t)) {
+    if GERMAN_TERMS.iter().any(|t| language_term_present(lower, t)) {
         Some("german".to_string())
-    } else if ENGLISH_TERMS.iter().any(|t| lower.contains(t)) {
+    } else if ENGLISH_TERMS
+        .iter()
+        .any(|t| language_term_present(lower, t))
+    {
         Some("english".to_string())
     } else {
         LANGUAGE_NAMES
             .iter()
-            .find(|name| lower.contains(**name))
+            .find(|name| language_term_present(lower, name))
             .map(|name| name.to_string())
     }
 }
@@ -605,7 +677,7 @@ fn mandate_clauses(sentence: &str) -> Vec<&str> {
 pub fn extract_mandates(content: &str) -> Vec<Mandate> {
     let mut out = Vec::new();
     for (paragraph_idx, paragraph) in paragraphs(content).into_iter().enumerate() {
-        for sentence in sentences_of(paragraph) {
+        for sentence in sentences_of(&paragraph) {
             for clause in mandate_clauses(sentence) {
                 let lower = clause.to_lowercase();
                 if !is_mandate(&lower) {
@@ -893,11 +965,18 @@ fn conflict_for_topic(topic: &str, mandates: &[Mandate]) -> Option<Conflict> {
 
     // C2 format: conservative exclusivity pairing (separate mandates with an
     // exclusivity marker each); all other format demands stay with the
-    // whole-content multi-format check.
+    // mandate-based multi-format check. A plain opposite-polarity pair is only
+    // accepted when both mandates demand the SAME structured value and the
+    // negator sits next to that value (issue #76: "no Rust needed" must not
+    // negate an unrelated YAML mention in the same sentence).
     if topic == "format" {
         if let Some((a, b)) = format_exclusive_pair(&ms) {
             return Some(make_pair_conflict(class, weight, topic, a, b));
         }
+        if let Some((a, b)) = format_negation_pair(&ms) {
+            return Some(make_pair_conflict(class, weight, topic, a, b));
+        }
+        return None;
     }
 
     // C3 length: a single sentence demanding "exactly N words" AND
@@ -943,24 +1022,156 @@ fn conflict_for_topic(topic: &str, mandates: &[Mandate]) -> Option<Conflict> {
 
     let same_paragraph = matches!(topic, "procedure_order" | "budget");
     if let Some((a, b)) = first_opposite_pair(&ms, same_paragraph) {
-        return Some(make_pair_conflict(class, weight, topic, a, b));
+        // C8 intent contrast additionally requires a shared subject word:
+        // two unrelated rows of one long list/table are not an intent
+        // contrast merely because they sit in the same paragraph and one of
+        // them contains a negator (issue #76).
+        if !same_paragraph || shares_subject(a.text.as_str(), b.text.as_str()) {
+            return Some(make_pair_conflict(class, weight, topic, a, b));
+        }
     }
     None
 }
 
-/// C2 format-exclusivity check over the whole content (spec §8): json AND csv
-/// AND markdown demanded in the same paragraph is a standalone class-2
-/// weight-4 conflict.
-pub fn multi_format_conflict(content: &str) -> Option<Conflict> {
-    let lower = content.to_lowercase();
-    for paragraph in paragraphs(&lower) {
-        if paragraph.contains("json") && paragraph.contains("csv") && paragraph.contains("markdown")
-        {
+/// Format pair with the same demanded value and a negator next to it
+/// ("Return JSON. Do not return JSON."). The distance gate keeps unrelated
+/// negations ("... YAML parser (no Rust needed)") out of the conflict.
+fn format_negation_pair<'a>(mandates: &[&'a Mandate]) -> Option<(&'a Mandate, &'a Mandate)> {
+    const MAX_NEGATOR_DISTANCE: usize = 15;
+    for first in mandates {
+        let Some(value) = first.value.as_deref() else {
+            continue;
+        };
+        for second in mandates {
+            if std::ptr::eq(*first, *second) || second.polarity == first.polarity {
+                continue;
+            }
+            if second.value.as_deref() != Some(value) {
+                continue;
+            }
+            let negative = if second.polarity < 0 { second } else { first };
+            if negator_near_value(&negative.text.to_lowercase(), value, MAX_NEGATOR_DISTANCE) {
+                return Some((first, second));
+            }
+        }
+    }
+    None
+}
+
+/// True when a negator term sits within `max_distance` characters of the
+/// demanded value inside the mandate.
+fn negator_near_value(text: &str, value: &str, max_distance: usize) -> bool {
+    let Some(value_pos) = text.find(value) else {
+        return false;
+    };
+    negator_re().find_iter(text).any(|m| {
+        let distance = if m.start() >= value_pos {
+            m.start() - value_pos
+        } else {
+            value_pos.saturating_sub(m.end())
+        };
+        distance <= max_distance
+    })
+}
+
+/// At least one shared content word (length >= 4, stopwords excluded) between
+/// two mandates — the conservative C8 intent-contrast subject gate.
+fn shares_subject(first: &str, second: &str) -> bool {
+    const STOPWORDS: &[&str] = &[
+        "aber",
+        "alle",
+        "allen",
+        "auch",
+        "dass",
+        "dies",
+        "diese",
+        "diesem",
+        "diesen",
+        "dieser",
+        "dieses",
+        "eine",
+        "einem",
+        "einen",
+        "einer",
+        "eines",
+        "immer",
+        "kein",
+        "keine",
+        "keinen",
+        "keiner",
+        "nicht",
+        "oder",
+        "soll",
+        "sollen",
+        "sofort",
+        "über",
+        "unter",
+        "vom",
+        "wenn",
+        "werden",
+        "wird",
+        "with",
+        "that",
+        "this",
+        "from",
+        "into",
+        "must",
+        "should",
+        "always",
+        "never",
+        "immediately",
+        "only",
+        "have",
+        "does",
+        "then",
+        "than",
+        "there",
+        "their",
+    ];
+    fn words(text: &str) -> std::collections::BTreeSet<String> {
+        text.to_lowercase()
+            .split(|c: char| !c.is_alphanumeric())
+            .filter(|word| word.chars().count() >= 4 && !STOPWORDS.contains(word))
+            .map(str::to_string)
+            .collect()
+    }
+    let first_words = words(first);
+    let second_words = words(second);
+    !first_words.is_disjoint(&second_words)
+}
+
+/// C2 multi-format demand (spec §8): three or more *demanded* structured
+/// formats inside one paragraph scope are a class-2 weight-4 conflict.
+///
+/// The check is mandate-based on purpose (issue #76): merely mentioning
+/// `json`, `csv` and `markdown` in a long documentation paragraph is not a
+/// format demand and must not raise a contradiction.
+pub fn multi_format_conflict(mandates: &[Mandate]) -> Option<Conflict> {
+    use std::collections::{BTreeMap, BTreeSet};
+
+    const STRUCTURED: &[&str] = &["json", "csv", "markdown", "yaml", "xml", "table"];
+    let mut per_paragraph: BTreeMap<usize, BTreeSet<&'static str>> = BTreeMap::new();
+    for mandate in mandates {
+        if mandate.topic.as_deref() != Some("format") {
+            continue;
+        }
+        for (label, _) in value_hits(&mandate.text.to_lowercase(), "format") {
+            if STRUCTURED.contains(&label) {
+                per_paragraph
+                    .entry(mandate.paragraph)
+                    .or_default()
+                    .insert(label);
+            }
+        }
+    }
+    for values in per_paragraph.values() {
+        if values.len() >= 3 {
+            let joined = values.iter().copied().collect::<Vec<_>>().join("+");
             return Some(make_conflict(
                 2,
                 4,
                 "format",
-                "json+csv+markdown",
+                &joined,
                 "single format expected",
             ));
         }
@@ -995,7 +1206,7 @@ pub fn detect(content: &str, _lang: Language) -> Vec<Conflict> {
     let mut conflicts: Vec<Conflict> = Vec::new();
 
     // C2 format exclusivity — separate whole-content check (spec §8).
-    if let Some(c) = multi_format_conflict(content) {
+    if let Some(c) = multi_format_conflict(&mandates) {
         conflicts.push(c);
     }
     if let Some(c) = prose_format_conflict(&mandates) {
@@ -1155,6 +1366,100 @@ mod tests {
         let conflicts = detect("Write formally. Do not write formally.", EN);
         assert!(conflicts.iter().any(|c| c.class == 7 && c.weight == 4));
         assert_eq!(conflict_weight(&conflicts), 4);
+    }
+
+    #[test]
+    fn compound_nouns_are_not_language_demands() {
+        // "Amtsdeutsch"/"Deutschland" contain "deutsch" but demand no output
+        // language; issue #76 regression.
+        let conflicts = detect(
+            "Nutzer verstehen Amtsdeutsch nicht. Baue die App in Deutschland.",
+            Language::De,
+        );
+        assert!(
+            !conflicts.iter().any(|c| c.topic == "language"),
+            "compound nouns must not become a language conflict: {conflicts:?}"
+        );
+    }
+
+    #[test]
+    fn german_inflections_stay_language_demands() {
+        let mandates = extract_mandates("Beantworte die Anfrage in deutscher Sprache.");
+        assert!(
+            mandates
+                .iter()
+                .any(|m| m.topic.as_deref() == Some("language")),
+            "inflected language term must stay a language mandate: {:?}",
+            mandates.iter().map(|m| m.text.clone()).collect::<Vec<_>>()
+        );
+        let same = detect(
+            "Beantworte die Anfrage auf Deutsch. Beantworte sie in deutscher Sprache.",
+            Language::De,
+        );
+        assert!(
+            same.iter().all(|c| c.topic != "language"),
+            "same language twice is not a conflict: {same:?}"
+        );
+        let mixed = detect(
+            "Beantworte die Anfrage in deutscher Sprache. Answer in English.",
+            Language::De,
+        );
+        assert!(
+            mixed.iter().any(|c| c.class == 1 && c.topic == "language"),
+            "expected a language conflict, got {mixed:?}"
+        );
+    }
+
+    #[test]
+    fn mentioning_formats_is_not_a_multi_format_conflict() {
+        // Documentation prose that names three formats without demanding them
+        // must not fire the C2 multi-format check (issue #76).
+        let conflicts = detect(
+            "Das System nutzt JSON, CSV und Markdown fuer Exporte und Importe.",
+            Language::De,
+        );
+        assert!(
+            !conflicts
+                .iter()
+                .any(|c| c.class == 2 && c.topic == "format"),
+            "format mentions are not a demand: {conflicts:?}"
+        );
+        let demanded = detect("Return JSON, CSV and Markdown.", EN);
+        assert!(
+            demanded
+                .iter()
+                .any(|c| c.class == 2 && c.weight == 4 && c.topic == "format"),
+            "three demanded formats must stay a conflict: {demanded:?}"
+        );
+    }
+
+    #[test]
+    fn unrelated_negation_does_not_negate_a_format_value() {
+        // "no Rust" is far from the YAML value and must not pair with the
+        // positive YAML mandate (issue #76 regression, synthetic wording).
+        let conflicts = detect(
+            "The config must include YAML. Implement a parser in pure Dart \
+             using a YAML-based tree (no Rust needed here).",
+            EN,
+        );
+        assert!(
+            !conflicts.iter().any(|c| c.topic == "format"),
+            "unrelated negation must not create a format conflict: {conflicts:?}"
+        );
+    }
+
+    #[test]
+    fn table_cells_are_separate_c8_scopes() {
+        // Columns of one table row are not one instruction block.
+        let conflicts = detect(
+            "| Prompt: build the form offline | Rust for deterministic rendering |\n\
+             | Mitigation: start with 3 types | Flutter for the local UI |",
+            EN,
+        );
+        assert!(
+            !conflicts.iter().any(|c| c.class == 8),
+            "table cells must not pair as an intent contrast: {conflicts:?}"
+        );
     }
 
     #[test]
