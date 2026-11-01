@@ -533,8 +533,10 @@ fn detect_pii(content: &str) -> Vec<DetectedArtifact> {
     //   keyword directly before the candidate;
     // - everything else stays visible as `warning`, so an unusual but real
     //   number is never silently dropped.
+    // Separators are limited to spaces, dashes, dots and slashes: a match
+    // spanning a line break ("4711\n2026") is never a phone number.
     let phone_re = Regex::new(
-        r"(?:\+?(\d{1,3})[\s\-\.]?)?(?:\(?0?\d{2,4}\)?[\s\-\.]?)?\d{3,4}[\s\-\.]?\d{3,5}",
+        r"(?:\+?(\d{1,3})[ \t\-\.]?)?(?:\(?0?\d{2,4}\)?[ \t\-\.]?)?\d{3,4}[ \t\-\.]?\d{3,5}",
     )
     .unwrap();
     let mut consumed_until = 0usize;
