@@ -536,28 +536,24 @@ fn detect_pii(content: &str) -> Vec<DetectedArtifact> {
     // Separators are limited to spaces, dashes, dots and slashes: a match
     // spanning a line break ("4711\n2026") is never a phone number.
     let phone_re = Regex::new(
-        r"(?:\+?(\d{1,3})[ \t\-\.]?)?(?:\(?0?\d{2,4}\)?[ \t\-\.]?)?\d{3,4}[ \t\-\.]?\d{3,5}",
+        r"(?:\+?(\d{1,3})[ \t\-\./]?)?(?:\(?0?\d{2,4}\)?[ \t\-\./]?)?\d{3,4}[ \t\-\./]?\d{3,5}",
     )
     .unwrap();
-    let mut consumed_until = 0usize;
     for m in phone_re.find_iter(content) {
-        if m.start() < consumed_until {
-            continue; // overlapping partial matches of one number
-        }
         let matched = m.as_str();
         let digit_count = matched.chars().filter(|c| c.is_ascii_digit()).count();
         if !(7..=15).contains(&digit_count) {
             continue;
         }
-        if is_technical_numeric_identifier(matched) {
+        let has_phone_context = phone_context_before(content, m.start());
+        if is_technical_numeric_identifier(matched, has_phone_context) {
             continue;
         }
-        let severity =
-            if phone_has_strong_structure(matched) || phone_context_before(content, m.start()) {
-                "critical"
-            } else {
-                "warning"
-            };
+        let severity = if phone_has_strong_structure(matched) || has_phone_context {
+            "critical"
+        } else {
+            "warning"
+        };
         artifacts.push(DetectedArtifact::new(
             ArtifactCategory::Pii,
             severity.into(),
@@ -566,7 +562,6 @@ fn detect_pii(content: &str) -> Vec<DetectedArtifact> {
             col_of(content, m.start()),
             Some("{PHONE}".into()),
         ));
-        consumed_until = m.end();
     }
 
     artifacts
@@ -582,7 +577,7 @@ fn detect_pii(content: &str) -> Vec<DetectedArtifact> {
 /// - model/version date suffixes such as `4-20250514`;
 /// - year ranges `2024-2026`;
 /// - epoch timestamps with 13+ bare digits.
-fn is_technical_numeric_identifier(raw: &str) -> bool {
+fn is_technical_numeric_identifier(raw: &str, has_phone_context: bool) -> bool {
     let token = raw
         .trim()
         .trim_matches(|c: char| c == ',' || c == ';' || c == ':');
@@ -592,8 +587,10 @@ fn is_technical_numeric_identifier(raw: &str) -> bool {
     let digit_count = token.chars().filter(|c| c.is_ascii_digit()).count();
     let all_digits = token.chars().all(|c| c.is_ascii_digit());
 
-    // Epoch milliseconds (and longer ids): never a phone number.
-    if all_digits && digit_count >= 13 {
+    // Bare digits: a 13+ digit run is an epoch/id. Two exceptions stay phone
+    // candidates: the '00' international dial prefix and a nearby phone
+    // keyword ("Rufnummer 0049301234567").
+    if all_digits && digit_count >= 13 && !token.starts_with("00") && !has_phone_context {
         return true;
     }
 
@@ -629,10 +626,17 @@ fn is_technical_numeric_identifier(raw: &str) -> bool {
             let last = groups[1];
             // Decimal with a long fraction: `3.141592` (a national trunk such
             // as `030.1234567` is a phone, not a decimal).
-            let decimal_like = first.len() <= 2 && last.len() >= 4 && !first.starts_with('0');
+            // Space-separated international notation (`49 3012345678`) stays a
+            // phone candidate; only a dot makes this a decimal.
+            let decimal_like = token.contains('.')
+                && first.len() <= 2
+                && last.len() >= 4
+                && !first.starts_with('0');
             // Model/version date suffix such as `4-20250514`.
-            let model_date_like =
-                first.len() <= 2 && last.len() == 8 && looks_like_compact_date(last);
+            let model_date_like = token.contains('-')
+                && first.len() <= 2
+                && last.len() == 8
+                && looks_like_compact_date(last);
             // Year range `2024-2026`.
             let year_range = first.len() == 4 && last.len() == 4 && is_year(first) && is_year(last);
             decimal_like || model_date_like || year_range
@@ -686,13 +690,14 @@ fn phone_context_before(content: &str, start: usize) -> bool {
         "tel", "telefon", "phone", "mobil", "handy", "fax", "ruf", "kontakt", "hotline",
         "whatsapp", "call",
     ];
-    let window_start = content[..start]
+    let line_start = content[..start].rfind('\n').map_or(0, |index| index + 1);
+    let window_start = content[line_start..start]
         .char_indices()
         .rev()
         .take(40)
         .last()
-        .map(|(index, _)| index)
-        .unwrap_or(0);
+        .map(|(index, _)| line_start + index)
+        .unwrap_or(line_start);
     let window = content[window_start..start].to_lowercase();
     KEYWORDS.iter().any(|keyword| {
         window.match_indices(keyword).any(|(index, _)| {
@@ -701,7 +706,12 @@ fn phone_context_before(content: &str, start: usize) -> bool {
                     .chars()
                     .next_back()
                     .is_some_and(|c| c.is_alphanumeric());
-            before_ok
+            let after_index = index + keyword.len();
+            let after_ok = window[after_index..]
+                .chars()
+                .next()
+                .is_none_or(|c| !c.is_alphanumeric());
+            before_ok && after_ok
         })
     })
 }
@@ -1283,6 +1293,38 @@ mod tests {
                 "expected a critical phone in {content:?}, got {phones:?}"
             );
         }
+    }
+
+    #[test]
+    fn test_compact_and_slash_phone_notations() {
+        // International dial prefix without '+' must stay critical.
+        let pii = pii_phone_artifacts("Rufnummer 0049301234567");
+        assert!(
+            pii.iter().any(|(_, severity)| severity == "critical"),
+            "00-prefixed international number must stay critical: {pii:?}"
+        );
+        // Space-separated international notation stays visible (warning).
+        let space = pii_phone_artifacts("Nummer 49 3012345678");
+        assert!(
+            !space.is_empty(),
+            "space-separated international number must not be dropped"
+        );
+        // Slash grouping is a documented phone shape.
+        let slash = pii_phone_artifacts("Meine Nummer ist 030/1234567");
+        assert!(
+            slash.iter().any(|(_, severity)| severity == "critical"),
+            "slash-grouped number must stay critical: {slash:?}"
+        );
+    }
+
+    #[test]
+    fn test_partial_keywords_do_not_promote_numbers() {
+        // "Kontaktformular" is not the keyword "Kontakt".
+        let pii = pii_phone_artifacts("Kontaktformular 12345678");
+        assert!(
+            pii.iter().all(|(_, severity)| severity == "warning"),
+            "partial keyword must not promote a bare number: {pii:?}"
+        );
     }
 
     #[test]
