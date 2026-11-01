@@ -680,7 +680,12 @@ fn phone_has_strong_structure(raw: &str) -> bool {
 
     (has_plus && digit_count >= 8)
         || ((has_trunk || has_area_code) && digit_count >= 8)
-        || (has_slash && groups.len() == 2 && digit_count >= 8)
+        // A slash grouping only counts with a trunk/area code ("030/1234567");
+        // an arbitrary "1234/5678" pair stays ambiguous.
+        || (has_slash
+            && groups.len() == 2
+            && digit_count >= 8
+            && (has_plus || groups[0].starts_with('0')))
         || grouped_like_phone
 }
 
@@ -1314,6 +1319,15 @@ mod tests {
         assert!(
             slash.iter().any(|(_, severity)| severity == "critical"),
             "slash-grouped number must stay critical: {slash:?}"
+        );
+    }
+
+    #[test]
+    fn test_arbitrary_slash_pairs_are_not_critical() {
+        let pii = pii_phone_artifacts("Kurs 1234/5678");
+        assert!(
+            pii.iter().all(|(_, severity)| severity != "critical"),
+            "an arbitrary slash pair is not a phone number: {pii:?}"
         );
     }
 

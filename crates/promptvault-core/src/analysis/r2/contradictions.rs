@@ -439,7 +439,9 @@ enum LengthKind {
 }
 
 /// Paragraph scopes for the C8 same-paragraph gate: blank-line separated
-/// blocks, except that every markdown table row (`| ... |`) is its own scope.
+/// blocks, except that every markdown table cell (`| ... |`) is its own scope.
+/// Known limitation: a structured-format demand spread over several cells of
+/// one row is therefore not reported by the mandate-based C2 check.
 /// A long table is a list of rows, not one instruction block; without this,
 /// unrelated rows of a concept table were paired as an intent contrast
 /// (issue #76).
