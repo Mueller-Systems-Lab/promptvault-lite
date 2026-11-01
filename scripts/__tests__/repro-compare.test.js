@@ -34,7 +34,13 @@ function buildDeb(destDir, name, payload) {
   );
   writeFileSync(join(root, "payload.txt"), payload);
   const file = join(destDir, name);
-  execFileSync("dpkg-deb", ["--build", root, file], { stdio: "ignore" });
+  // Pin the archive-entry timestamps: without SOURCE_DATE_EPOCH two fixture
+  // builds that straddle a second boundary differ only by mtimes and the
+  // "identical sets" expectation becomes time-flaky.
+  execFileSync("dpkg-deb", ["--build", root, file], {
+    stdio: "ignore",
+    env: { ...process.env, SOURCE_DATE_EPOCH: "1700000000" },
+  });
   return file;
 }
 
