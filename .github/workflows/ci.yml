@@ -477,7 +477,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             libwebkit2gtk-4.1-dev \
-            webkit2gtk-driver \
             xvfb \
             python3-xlib \
             xdotool \
@@ -486,6 +485,10 @@ jobs:
             gir1.2-atspi-2.0 \
             at-spi2-core \
             dbus-daemon
+          # Ubuntu 26.04 runner images renamed webkit2gtk-driver to
+          # webkitgtk-webdriver; install whichever name the image provides.
+          sudo apt-get install -y webkit2gtk-driver \
+            || sudo apt-get install -y webkitgtk-webdriver
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -551,7 +554,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             libwebkit2gtk-4.1-dev \
-            webkit2gtk-driver \
             xvfb \
             python3-xlib \
             xdotool \
@@ -560,6 +562,10 @@ jobs:
             gir1.2-atspi-2.0 \
             at-spi2-core \
             dbus-daemon
+          # Ubuntu 26.04 runner images renamed webkit2gtk-driver to
+          # webkitgtk-webdriver; install whichever name the image provides.
+          sudo apt-get install -y webkit2gtk-driver \
+            || sudo apt-get install -y webkitgtk-webdriver
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
